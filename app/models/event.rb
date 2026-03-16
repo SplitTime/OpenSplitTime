@@ -32,8 +32,8 @@ class Event < ApplicationRecord
   delegate :concealed, :concealed?, :visible?, :available_live, :available_live?,
            :organization, :permit_notifications?, :home_time_zone, to: :event_group
 
-  validates_presence_of :course_id, :scheduled_start_time, :laps_required, :event_group, :results_template
-  validates_uniqueness_of :short_name, case_sensitive: false, scope: :event_group_id
+  validates :scheduled_start_time, :laps_required, presence: true
+  validates :short_name, uniqueness: { case_sensitive: false, scope: :event_group_id }
   validate :course_is_consistent
 
   before_validation :add_default_results_template
@@ -42,11 +42,11 @@ class Event < ApplicationRecord
   after_save :validate_event_group
   after_touch :notify_event_update, if: :topic_resource_key?
 
-  scope :name_search, -> (search_param) { where("events.name ILIKE ?", "%#{search_param}%") }
+  scope :name_search, ->(search_param) { where("events.name ILIKE ?", "%#{search_param}%") }
   scope :select_with_params, lambda { |search_param|
     search(search_param)
-        .left_joins(:efforts).left_joins(:event_group)
-        .group("events.id, event_groups.id")
+      .left_joins(:efforts).left_joins(:event_group)
+      .group("events.id, event_groups.id")
   }
   scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
   scope :with_policy_scope_attributes, lambda {
@@ -68,7 +68,7 @@ class Event < ApplicationRecord
   end
 
   def self.most_recent
-    where("scheduled_start_time < ?", Time.now).order(scheduled_start_time: :desc).first
+    where(scheduled_start_time: ...Time.zone.now).order(scheduled_start_time: :desc).first
   end
 
   def events_within_group
@@ -89,9 +89,9 @@ class Event < ApplicationRecord
   end
 
   def course_is_consistent
-    if splits.any? { |split| split.course_id != course_id }
-      errors.add(:course_id, "does not reconcile with one or more splits")
-    end
+    return unless splits.any? { |split| split.course_id != course_id }
+
+    errors.add(:course_id, "does not reconcile with one or more splits")
   end
 
   def to_s
@@ -99,11 +99,12 @@ class Event < ApplicationRecord
   end
 
   def split_times
-    SplitTime.joins(:effort).where(efforts: {event_id: id})
+    SplitTime.joins(:effort).where(efforts: { event_id: id })
   end
 
   def split_times_data
-    @split_times_data ||= SplitTimeQuery.time_detail(scope: {efforts: {event_id: id}}, home_time_zone: home_time_zone)
+    @split_times_data ||= SplitTimeQuery.time_detail(scope: { efforts: { event_id: id } },
+                                                     home_time_zone: home_time_zone)
   end
 
   def course_name
@@ -119,7 +120,7 @@ class Event < ApplicationRecord
   end
 
   def started?
-    SplitTime.joins(:effort).where(efforts: {event_id: id}).limit(1).present?
+    SplitTime.joins(:effort).where(efforts: { event_id: id }).limit(1).present?
   end
 
   def required_lap_splits
@@ -157,11 +158,11 @@ class Event < ApplicationRecord
   end
 
   def conform_changed_course
-    if persisted? && course_id_changed?
-      response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
-      response.errors.each { |error| errors.add(:base, error[:title]) }
-      response.successful?
-    end
+    return unless persisted? && course_id_changed?
+
+    response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
+    response.errors.each { |error| errors.add(:base, error[:title]) }
+    response.successful?
   end
 
   def add_all_course_splits
@@ -169,7 +170,7 @@ class Event < ApplicationRecord
   end
 
   def notify_event_update
-    NotifyEventUpdateJob.perform_later(self.id)
+    NotifyEventUpdateJob.perform_later(id)
   end
 
   def generate_new_topic_resource?
@@ -179,9 +180,9 @@ class Event < ApplicationRecord
   def validate_event_group
     event_group = EventGroup.includes(events: :splits).find_by(id: event_group_id)
 
-    unless event_group.valid?
-      errors.merge!(event_group.errors)
-      raise ActiveRecord::RecordInvalid, self # Causes a transaction to rollback
-    end
+    return if event_group.valid?
+
+    errors.merge!(event_group.errors)
+    raise ActiveRecord::RecordInvalid, self # Causes a transaction to rollback
   end
 end

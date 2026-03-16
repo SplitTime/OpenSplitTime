@@ -1,5 +1,5 @@
 class RawTime < ApplicationRecord
-  enum :data_status, [:bad, :questionable, :good]
+  enum :data_status, { :bad => 0, :questionable => 1, :good => 2 }
   VALID_STATUSES = [nil, data_statuses[:good], data_statuses[:questionable]].freeze
 
   include TimeZonable
@@ -32,17 +32,18 @@ class RawTime < ApplicationRecord
 
   after_create_commit :broadcast_raw_time_create
 
-  validates_presence_of :entered_time, :event_group, :split_name, :bitkey, :bib_number, :source
-  validates :bib_number, length: { maximum: 6 }, format: { with: /\A[\d*]+\z/, message: "may contain only digits and asterisks" }
+  validates :entered_time, :split_name, :bitkey, :bib_number, :source, presence: true
+  validates :bib_number, length: { maximum: 6 },
+                         format: { with: /\A[\d*]+\z/, message: "may contain only digits and asterisks" }
 
   scope :with_policy_scope_attributes, lambda {
     from(select("raw_times.*, event_groups.organization_id, event_groups.concealed").joins(:event_group), :raw_times)
   }
-  
+
   scope :with_relation_ids, ->(args = {}) { from(RawTimeQuery.with_relations(self, args)) }
 
   def self.search(search_text)
-    return all unless search_text.present?
+    return all if search_text.blank?
 
     bib_numbers = search_text.split(/[\s,]+/)
     where(matchable_bib_number: bib_numbers)
@@ -59,12 +60,13 @@ class RawTime < ApplicationRecord
     @effort = if has_effort_id?
                 Effort.find(attributes["effort_id"])
               else
-                Effort.joins(:event).find_by(bib_number: matchable_bib_number, events: { event_group_id: event_group_id })
+                Effort.joins(:event).find_by(bib_number: matchable_bib_number,
+                                             events: { event_group_id: event_group_id })
               end
   end
 
   def effort_id
-    attributes.has_key?("effort_id") ? attributes["effort_id"] : effort&.id
+    attributes.key?("effort_id") ? attributes["effort_id"] : effort&.id
   end
 
   def has_effort_id?
@@ -83,7 +85,7 @@ class RawTime < ApplicationRecord
   end
 
   def event_id
-    attributes.has_key?("event_id") ? attributes["event_id"] : event&.id
+    attributes.key?("event_id") ? attributes["event_id"] : event&.id
   end
 
   def has_event_id?
@@ -92,7 +94,7 @@ class RawTime < ApplicationRecord
 
   def split
     @split = nil if matchable_bib_number.nil? ||
-      (attributes.has_key?("split_id") && attributes["split_id"].nil?)
+                    (attributes.key?("split_id") && attributes["split_id"].nil?)
     return @split if defined?(@split)
 
     if attributes["split_id"]
@@ -105,7 +107,7 @@ class RawTime < ApplicationRecord
 
   def split_id
     # We need to return nil if the split_id key exists and is nil
-    return attributes["split_id"] if attributes.has_key?("split_id")
+    return attributes["split_id"] if attributes.key?("split_id")
 
     split&.id
   end
@@ -125,7 +127,8 @@ class RawTime < ApplicationRecord
   private
 
   def broadcast_raw_time_create
-    broadcast_render_later_to event_group, partial: "raw_times/created", locals: { event_group: event_group, raw_time: self }
+    broadcast_render_later_to event_group, partial: "raw_times/created",
+                                           locals: { event_group: event_group, raw_time: self }
   end
 
   def create_sortable_bib_number

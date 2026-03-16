@@ -7,7 +7,7 @@ class DuplicateEventGroup
   attribute :new_start_date, :date
   attr_reader :new_event_group
 
-  validates_presence_of :existing_event_group, :new_name, :new_start_date
+  validates :existing_event_group, :new_name, :new_start_date, presence: true
   validate :merge_event_group_errors, if: :new_event_group
 
   def self.create(params)
@@ -34,7 +34,8 @@ class DuplicateEventGroup
     new_event_group.assign_attributes(name: new_name, concealed: true, available_live: false)
     existing_event_group.events.each do |existing_event|
       new_event = existing_event.dup
-      new_event.assign_attributes(scheduled_start_time: existing_event.scheduled_start_time + offset, historical_name: nil, beacon_url: nil, efforts_count: 0)
+      new_event.assign_attributes(scheduled_start_time: existing_event.scheduled_start_time + offset,
+                                  historical_name: nil, beacon_url: nil, efforts_count: 0)
       new_event_group.events << new_event
     end
   end
@@ -43,7 +44,9 @@ class DuplicateEventGroup
   # conform splits by deleting those that are not included in the original.
   def conform_splits
     new_event_group.events.each do |new_event|
-      existing_event = existing_event_group.events.find { |existing_event| existing_event.short_name == new_event.short_name }
+      existing_event = existing_event_group.events.find do |existing_event|
+        existing_event.short_name == new_event.short_name
+      end
       new_event.aid_stations.each do |aid_station|
         aid_station.destroy unless aid_station.split_id.in?(existing_event.split_ids)
       end
@@ -55,7 +58,9 @@ class DuplicateEventGroup
   end
 
   def existing_event_group
-    @existing_event_group ||= EventGroup.includes(:events).find_by(id: existing_id)
+    return @existing_event_group if defined?(@existing_event_group)
+
+    @existing_event_group = EventGroup.includes(:events).find_by(id: existing_id)
   end
 
   def merge_event_group_errors

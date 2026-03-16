@@ -1,7 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
-require_relative "./initializers/01_ost_config"
+require_relative "initializers/01_ost_config"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -56,6 +56,6 @@ module OpenSplitTime
     require_relative "../lib/middleware/reject_invalid_utf8"
     config.middleware.insert_before 0, Middleware::RejectInvalidUtf8
 
-    Dir[Rails.root.join("lib/core_ext/**/*.rb")].each { |file| require file }
+    Rails.root.glob("lib/core_ext/**/*.rb").each { |file| require file }
   end
 end

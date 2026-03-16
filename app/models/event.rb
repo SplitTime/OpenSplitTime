@@ -177,7 +177,7 @@ class Event < ApplicationRecord
   end
 
   def validate_event_group
-    event_group = EventGroup.where(id: event_group_id).includes(events: :splits).first
+    event_group = EventGroup.includes(events: :splits).find_by(id: event_group_id)
 
     unless event_group.valid?
       errors.merge!(event_group.errors)

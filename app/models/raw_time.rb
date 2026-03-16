@@ -98,7 +98,7 @@ class RawTime < ApplicationRecord
     if attributes["split_id"]
       @split = Split.find(attributes["split_id"])
     else
-      rt = RawTime.where(id: self).with_relation_ids.first
+      rt = RawTime.where(id: self).with_relation_ids.order(:id).first
       @split = (Split.find(rt.split_id) if rt&.split_id)
     end
   end

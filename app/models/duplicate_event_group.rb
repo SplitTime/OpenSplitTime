@@ -55,7 +55,7 @@ class DuplicateEventGroup
   end
 
   def existing_event_group
-    @existing_event_group ||= EventGroup.includes(:events).where(id: existing_id).first
+    @existing_event_group ||= EventGroup.includes(:events).find_by(id: existing_id)
   end
 
   def merge_event_group_errors

@@ -19,7 +19,7 @@ module GuaranteedFindable
     def find_guaranteed(args)
       attributes = args[:attributes]
       includes = args[:includes] || {}
-      where(attributes).includes(includes).first || null_record
+      where(attributes).includes(includes).order(:id).first || null_record
     end
   end
 end

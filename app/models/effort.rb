@@ -280,7 +280,7 @@ class Effort < ApplicationRecord
   end
 
   def with_rank
-    Effort.where(id: id).ranking_subquery.first
+    Effort.where(id: id).ranking_subquery.order(:id).first
   end
 
   def template_age

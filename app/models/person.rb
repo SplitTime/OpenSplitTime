@@ -77,7 +77,7 @@ class Person < ApplicationRecord
   end
 
   def current_age_approximate
-    Person.where(id: id).with_age_and_effort_count.first&.current_age_from_efforts
+    Person.where(id: id).with_age_and_effort_count.order(:id).first&.current_age_from_efforts
   end
 
   def unclaimed?

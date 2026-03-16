@@ -38,7 +38,7 @@ module Matchable
     return unless birthdate.present?
 
     definitive_matches = potential_matches.first_name_matches(first_name).where(birthdate: birthdate)
-    definitive_matches.one? ? definitive_matches.first : nil
+    definitive_matches.one? ? definitive_matches.order(:id).first : nil
   end
 
   # @return [Person, nil]

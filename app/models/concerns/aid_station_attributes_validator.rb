@@ -18,7 +18,7 @@ class AidStationAttributesValidator < ActiveModel::Validator
   end
 
   def validate_group_split_locations
-    event_group = EventGroup.where(id: event&.event_group_id).includes(events: :splits).first
+    event_group = EventGroup.includes(events: :splits).find_by(id: event&.event_group_id)
     return unless event_group
 
     incompatible_locations = EventGroupSplitAnalyzer.new(event_group).incompatible_locations

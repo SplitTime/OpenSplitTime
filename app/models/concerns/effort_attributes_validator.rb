@@ -19,7 +19,7 @@ class EffortAttributesValidator < ActiveModel::Validator
     return unless effort.bib_number
 
     conflicting_effort = ::Effort.where(event: effort.events_within_group, bib_number: effort.bib_number)
-                                 .where.not(id: effort.id).first
+                                 .where.not(id: effort.id).order(:id).first
 
     if conflicting_effort.present?
       message = "#{effort.bib_number} already exists for #{conflicting_effort.full_name}"
@@ -32,7 +32,7 @@ class EffortAttributesValidator < ActiveModel::Validator
 
     conflicting_effort = ::Effort.where(event: effort.events_within_group)
                                  .where(first_name: effort.first_name, last_name: effort.last_name, birthdate: effort.birthdate)
-                                 .where.not(id: effort.id).first
+                                 .where.not(id: effort.id).order(:id).first
 
     if conflicting_effort.present?
       message = "#{effort.full_name} with birthdate #{effort.birthdate} already exists for bib number #{conflicting_effort.bib_number} (id #{conflicting_effort.id})"
@@ -44,7 +44,7 @@ class EffortAttributesValidator < ActiveModel::Validator
     return unless effort.person_id
 
     conflicting_person = Effort.where(event: effort.events_within_group, person_id: effort.person)
-                               .where.not(id: effort.id).first&.person
+                               .where.not(id: effort.id).order(:id).first&.person
     if conflicting_person
       effort.errors.add(:person, "#{effort.person} has already been entered in #{effort.event_group}")
     end

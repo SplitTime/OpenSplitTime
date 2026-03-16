@@ -14,7 +14,7 @@ Rails.application.configure do
   config.eager_load = true
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = {host: "opensplittime.org", protocol: "http"}
+  config.action_mailer.default_url_options = { host: "opensplittime.org", protocol: "http" }
 
   config.action_mailer.smtp_settings = {
     address: "smtp.sendgrid.net",
@@ -85,7 +85,6 @@ Rails.application.configure do
 
   # Use Solid Queue for Active Job
   config.active_job.queue_adapter = :solid_queue
-  config.active_job.queue_name_prefix = "solid"
 
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.
@@ -116,7 +115,7 @@ Rails.application.configure do
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
@@ -125,7 +124,9 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   if ENV["MEMCACHEDCLOUD_SERVERS"]
-    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(","), {username: ENV["MEMCACHEDCLOUD_USERNAME"], password: ENV["MEMCACHEDCLOUD_PASSWORD"]}
+    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(","),
+                         { username: ENV.fetch("MEMCACHEDCLOUD_USERNAME", nil),
+                           password: ENV.fetch("MEMCACHEDCLOUD_PASSWORD", nil) }
   end
 
   # Enable DNS rebinding protection and other `Host` header attacks.

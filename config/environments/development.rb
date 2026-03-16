@@ -56,9 +56,8 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
 
   config.active_job.queue_adapter = :solid_queue
-  config.active_job.queue_name_prefix = "solid"
 
-  config.solid_queue.logger = ActiveSupport::Logger.new(STDOUT)
+  config.solid_queue.logger = ActiveSupport::Logger.new($stdout)
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true

@@ -23,13 +23,13 @@ RSpec.describe Event, type: :model do
     it "is invalid without a course" do
       event = build_stubbed(:event, course: nil)
       expect(event).not_to be_valid
-      expect(event.errors[:course_id]).to include("can't be blank")
+      expect(event.errors[:course]).to include("must exist")
     end
 
     it "is invalid without an event_group" do
       event = build_stubbed(:event, event_group: nil)
       expect(event).not_to be_valid
-      expect(event.errors[:event_group]).to include("can't be blank")
+      expect(event.errors[:event_group]).to include("must exist")
     end
 
     it "is invalid without a scheduled start time" do

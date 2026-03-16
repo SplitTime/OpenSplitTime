@@ -82,7 +82,7 @@ class EffortSegmentQuery < BaseQuery
       from effort_segments
       where effort_id = #{effort_id}
         and lap = #{lap}
-        and ((begin_split_id = #{split_id} and begin_bitkey = #{bitkey})#{' '}
+        and ((begin_split_id = #{split_id} and begin_bitkey = #{bitkey})
          or (end_split_id = #{split_id} and end_bitkey = #{bitkey}));
     SQL
   end

@@ -1,12 +1,6 @@
-<%# locals: (callout_color:, icon_color:, icon_name:, main_text:, detail_paragraphs:, link: -%>
+<%# locals: (callout_color: "success", icon_color: "success", icon_name: nil, main_text: nil, detail_paragraphs: [], link: nil) %>
 
-<% callout_color ||= "success" %>
-<% icon_color ||= "success" %>
-<% icon_name ||= nil %>
-<% main_text ||= nil %>
-<% detail_paragraphs ||= [] %>
 <% detail_paragraphs = Array.wrap(detail_paragraphs) %>
-<% link ||= nil %>
 
 <div class="callout callout-<%= callout_color %>">
   <div class="row d-flex align-items-center">

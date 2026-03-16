@@ -11,9 +11,11 @@ module DataStatusHelper
     data_type = options[:data_type] || :time
     tooltip_title = "#{data_type} appears #{status}".titleize
 
-    fa_icon(attributes[:icon],
-            class: attributes[:class],
-            text: time,
-            data: { controller: :tooltip, bs_original_title: tooltip_title })
+    content_tag(:span, class: "text-nowrap") do
+      fa_icon(attributes[:icon],
+              class: attributes[:class],
+              text: time,
+              data: { controller: :tooltip, bs_original_title: tooltip_title })
+    end
   end
 end

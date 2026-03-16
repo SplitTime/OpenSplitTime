@@ -2,7 +2,7 @@ ruby "4.0.1"
 
 source "https://rubygems.org"
 
-gem "rails", "~> 8.0.0"
+gem "rails", "~> 8.1.0"
 
 gem "activerecord-import"
 gem "active_storage_validations", ">= 0.9.2"

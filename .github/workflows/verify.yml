@@ -132,6 +132,11 @@ jobs:
           yarn build
           yarn build:css
 
+      - name: Check PostgreSQL version
+        run: psql -h localhost -p ${{ job.services.postgres.ports[5432] }} -U postgres -c 'SELECT version();'
+        env:
+          PGPASSWORD: postgres
+
       - name: Setup test database
         env:
           RAILS_ENV: test

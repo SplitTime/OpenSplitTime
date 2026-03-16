@@ -20,11 +20,11 @@ RSpec.describe RawTime, type: :model do
       let!(:raw_time_4) { create(:raw_time, event_group: event_group, bib_number: event_2_efforts.second.bib_number, split_name: course_2_split.base_name) }
 
       it "returns raw_times with effort_id, split_id, and event_id attributes loaded" do
-        raw_times = RawTime.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4]).with_relation_ids
+        raw_times = described_class.where(id: [raw_time_1, raw_time_2, raw_time_3, raw_time_4]).with_relation_ids
         efforts = event_1_efforts + event_2_efforts
         expect(raw_times.map(&:effort_id)).to match_array(efforts.map(&:id))
-        expect(raw_times.map(&:split_id)).to match_array([course_1_split.id, course_1_split.id, course_2_split.id, course_2_split.id])
-        expect(raw_times.map(&:event_id)).to match_array([event_1.id, event_1.id, event_2.id, event_2.id])
+        expect(raw_times.map(&:split_id)).to contain_exactly(course_1_split.id, course_1_split.id, course_2_split.id, course_2_split.id)
+        expect(raw_times.map(&:event_id)).to contain_exactly(event_1.id, event_1.id, event_2.id, event_2.id)
       end
     end
 
@@ -35,7 +35,7 @@ RSpec.describe RawTime, type: :model do
       let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: bib_number_2, split_name: course_1_split.base_name) }
 
       it "returns raw_times with correct effort_ids associated" do
-        raw_times = RawTime.where(id: [raw_time_1, raw_time_2]).with_relation_ids
+        raw_times = described_class.where(id: [raw_time_1, raw_time_2]).with_relation_ids
         efforts = event_1_efforts
         expect(raw_times.map(&:effort_id)).to match_array(efforts.map(&:id))
       end
@@ -91,7 +91,7 @@ RSpec.describe RawTime, type: :model do
   describe "#military_time" do
     subject { raw_time.military_time(time_zone) }
 
-    let(:raw_time) { RawTime.new(entered_time: entered_time, absolute_time: absolute_time) }
+    let(:raw_time) { described_class.new(entered_time: entered_time, absolute_time: absolute_time) }
     let(:entered_time) { nil }
     let(:absolute_time) { nil }
     let(:time_zone) { nil }
@@ -136,7 +136,7 @@ RSpec.describe RawTime, type: :model do
   end
 
   describe "#data_status" do
-    subject { RawTime.new }
+    subject { described_class.new }
 
     it "acts as an ActiveRecord enum" do
       expect(subject.data_status).to be_nil
@@ -154,7 +154,8 @@ RSpec.describe RawTime, type: :model do
   end
 
   describe "#clean?" do
-    subject { RawTime.new(data_status: data_status, split_time_exists: split_time_exists) }
+    subject { described_class.new(data_status: data_status, split_time_exists: split_time_exists) }
+
     let(:data_status) { nil }
     let(:split_time_exists) { false }
 
@@ -200,8 +201,8 @@ RSpec.describe RawTime, type: :model do
     end
   end
 
-  describe "#has_time_data?" do
-    subject { RawTime.new(absolute_time: absolute_time, entered_time: entered_time) }
+  describe "#time_data?" do
+    subject { described_class.new(absolute_time: absolute_time, entered_time: entered_time) }
 
     context "when absolute_time is nil" do
       let(:absolute_time) { nil }
@@ -210,7 +211,7 @@ RSpec.describe RawTime, type: :model do
         let(:entered_time) { "12:12:12" }
 
         it "returns true" do
-          expect(subject.has_time_data?).to eq(true)
+          expect(subject.time_data?).to eq(true)
         end
       end
 
@@ -218,7 +219,7 @@ RSpec.describe RawTime, type: :model do
         let(:entered_time) { "" }
 
         it "returns false" do
-          expect(subject.has_time_data?).to eq(false)
+          expect(subject.time_data?).to eq(false)
         end
       end
 
@@ -226,7 +227,7 @@ RSpec.describe RawTime, type: :model do
         let(:entered_time) { nil }
 
         it "returns false" do
-          expect(subject.has_time_data?).to eq(false)
+          expect(subject.time_data?).to eq(false)
         end
       end
     end
@@ -238,7 +239,7 @@ RSpec.describe RawTime, type: :model do
         let(:absolute_time) { "12:12:12" }
 
         it "returns true" do
-          expect(subject.has_time_data?).to eq(true)
+          expect(subject.time_data?).to eq(true)
         end
       end
 
@@ -246,7 +247,7 @@ RSpec.describe RawTime, type: :model do
         let(:absolute_time) { "" }
 
         it "returns false" do
-          expect(subject.has_time_data?).to eq(false)
+          expect(subject.time_data?).to eq(false)
         end
       end
 
@@ -254,7 +255,7 @@ RSpec.describe RawTime, type: :model do
         let(:absolute_time) { nil }
 
         it "returns false" do
-          expect(subject.has_time_data?).to eq(false)
+          expect(subject.time_data?).to eq(false)
         end
       end
     end
@@ -264,7 +265,7 @@ RSpec.describe RawTime, type: :model do
       let(:absolute_time) { "2018-10-01 12:12:12 -0600" }
 
       it "returns true" do
-        expect(subject.has_time_data?).to eq(true)
+        expect(subject.time_data?).to eq(true)
       end
     end
   end

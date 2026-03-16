@@ -57,7 +57,7 @@ class RawTime < ApplicationRecord
     @effort = nil if matchable_bib_number.nil?
     return @effort if defined?(@effort)
 
-    @effort = if has_effort_id?
+    @effort = if effort_id?
                 Effort.find(attributes["effort_id"])
               else
                 Effort.joins(:event).find_by(bib_number: matchable_bib_number,
@@ -69,7 +69,7 @@ class RawTime < ApplicationRecord
     attributes.key?("effort_id") ? attributes["effort_id"] : effort&.id
   end
 
-  def has_effort_id?
+  def effort_id?
     attributes["effort_id"].present?
   end
 
@@ -77,7 +77,7 @@ class RawTime < ApplicationRecord
     @event = nil if matchable_bib_number.nil?
     return @event if defined?(@event)
 
-    @event = if has_event_id?
+    @event = if event_id?
                Event.find(attributes["event_id"])
              else
                Event.joins(:efforts).find_by(event_group: event_group_id, efforts: { bib_number: matchable_bib_number })
@@ -88,7 +88,7 @@ class RawTime < ApplicationRecord
     attributes.key?("event_id") ? attributes["event_id"] : event&.id
   end
 
-  def has_event_id?
+  def event_id?
     attributes["event_id"].present?
   end
 
@@ -112,11 +112,11 @@ class RawTime < ApplicationRecord
     split&.id
   end
 
-  def has_split_id?
+  def split_id?
     attributes["split_id"].present?
   end
 
-  def has_time_data?
+  def time_data?
     absolute_time.present? || entered_time.present?
   end
 

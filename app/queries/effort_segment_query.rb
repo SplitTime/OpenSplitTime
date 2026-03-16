@@ -14,7 +14,7 @@ class EffortSegmentQuery < BaseQuery
         ""
       else
         # Update only the effort_segments relevant to the split time
-        "and ((ss1.lap = #{lap} and ss1.split_id = #{split_id} and ss1.sub_split_bitkey = #{bitkey})" +
+        "and ((ss1.lap = #{lap} and ss1.split_id = #{split_id} and ss1.sub_split_bitkey = #{bitkey})" \
           "or (ss2.lap = #{lap} and ss2.split_id = #{split_id} and ss2.sub_split_bitkey = #{bitkey}))"
       end
 
@@ -41,8 +41,8 @@ class EffortSegmentQuery < BaseQuery
                        ss2.sub_split_bitkey                      as end_bitkey,
                        ss1.effort_id,
                        ss1.lap,
-                       ss1.absolute_time                         as begin_time,
-                       ss2.absolute_time                         as end_time,
+                       ss1.absolute_time::timestamp              as begin_time,
+                       ss2.absolute_time::timestamp              as end_time,
                        ss2.elapsed_seconds - ss1.elapsed_seconds as elapsed_seconds,
                        ss1.kind                                  as begin_split_kind,
                        ss2.kind                                  as end_split_kind
@@ -82,7 +82,7 @@ class EffortSegmentQuery < BaseQuery
       from effort_segments
       where effort_id = #{effort_id}
         and lap = #{lap}
-        and ((begin_split_id = #{split_id} and begin_bitkey = #{bitkey}) 
+        and ((begin_split_id = #{split_id} and begin_bitkey = #{bitkey})
          or (end_split_id = #{split_id} and end_bitkey = #{bitkey}));
     SQL
   end

@@ -18,13 +18,13 @@ jobs:
           bundler-cache: true
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 24
 
       - name: JS package cache
         id: cache-npm
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -93,7 +93,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
@@ -106,12 +106,12 @@ jobs:
           sudo apt-get install -y libvips-dev
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 24
 
       - name: JS package cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -131,6 +131,11 @@ jobs:
         run: |
           yarn build
           yarn build:css
+
+      - name: Check PostgreSQL version
+        run: psql -h localhost -p ${{ job.services.postgres.ports[5432] }} -U postgres -c 'SELECT version();'
+        env:
+          PGPASSWORD: postgres
 
       - name: Setup test database
         env:

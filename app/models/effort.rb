@@ -37,7 +37,7 @@ class Effort < ApplicationRecord
   # This is accomplished by the :dependent option on the has_many :split_times association.
   # Do not add a dependent: :destroy option to the has_many :effort_segments association
   # because it will cause postgres to throw an error when an effort is destroyed.
-  has_many :effort_segments
+  has_many :effort_segments, dependent: false
   has_many :split_times, dependent: :destroy, autosave: true
   has_many :notifications, dependent: :destroy
   has_one_attached :photo do |photo|
@@ -165,9 +165,9 @@ class Effort < ApplicationRecord
 
   def scheduled_start_offset
     @scheduled_start_offset ||=
-      begin
-        return attributes["scheduled_start_offset"] if attributes.key?("scheduled_start_offset")
-
+      if attributes.key?("scheduled_start_offset")
+        attributes["scheduled_start_offset"]
+      else
         (scheduled_start_time && event_start_time && (scheduled_start_time - event_start_time)) || 0
       end
   end
@@ -221,7 +221,7 @@ class Effort < ApplicationRecord
     attributes["laps_started"] || last_reported_split_time&.lap || 0
   end
 
-  def has_start_time?
+  def start_time?
     split_times.find(&:start?).present?
   end
 

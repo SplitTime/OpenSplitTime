@@ -19,13 +19,13 @@ RSpec.describe Effort, type: :model do
   it { is_expected.to trim_time_attribute(:scheduled_start_time) }
 
   describe "validations" do
-    context "for validations independent of existing database records" do
+    context "with validations independent of existing database records" do
       let(:course) { build_stubbed(:course) }
       let(:event) { build_stubbed(:event, course: course) }
       let(:person) { build_stubbed(:person) }
 
       it "saves a generic factory-created record to the database" do
-        expect { create(:effort) }.to change { Effort.count }.by(1)
+        expect { create(:effort) }.to change(described_class, :count).by(1)
       end
 
       it "is valid when created with an event_id, first_name, last_name, and gender" do
@@ -41,7 +41,7 @@ RSpec.describe Effort, type: :model do
         effort = build_stubbed(:effort, without_slug: true, event: nil)
         allow(effort).to receive(:finished?)
         expect(effort).not_to be_valid
-        expect(effort.errors[:event]).to include("can't be blank")
+        expect(effort.errors[:event]).to include("must exist")
       end
 
       it "is invalid without a first_name" do
@@ -63,11 +63,11 @@ RSpec.describe Effort, type: :model do
       end
     end
 
-    context "for validations dependent on existing database records" do
+    context "with validations dependent on existing database records" do
       let(:existing_event_group) { event_groups(:sum) }
       let(:event_1) { existing_event_group.events.first }
       let(:event_2) { existing_event_group.events.second }
-      let(:existing_effort) { Effort.where(event: event_1).where.not(person: nil).first }
+      let(:existing_effort) { described_class.where(event: event_1).where.not(person: nil).first }
 
       it "does not permit more than one effort by a person in a given event" do
         effort = build(:effort, event: event_1, person: existing_effort.person)
@@ -114,6 +114,7 @@ RSpec.describe Effort, type: :model do
   describe "callbacks" do
     describe "sets age based on birthdate" do
       subject { build(:effort, event: event, age: age, birthdate: birthdate) }
+
       let(:event) { events(:hardrock_2014) }
       let(:scheduled_start_time) { "2018-10-31 06:00:00" }
 
@@ -163,6 +164,7 @@ RSpec.describe Effort, type: :model do
     describe "sets performance data" do
       context "when touched" do
         subject { efforts(:hardrock_2014_finished_first) }
+
         before { subject.update_column(:overall_performance, nil) }
 
         it "sets overall performance attribute" do
@@ -175,6 +177,7 @@ RSpec.describe Effort, type: :model do
 
       context "when created" do
         subject { build(:effort) }
+
         it "sets overall performance attribute" do
           expect(subject.overall_performance).to be_nil
           subject.save
@@ -186,6 +189,7 @@ RSpec.describe Effort, type: :model do
 
     describe "manages effort_segments" do
       subject { efforts(:hardrock_2014_progress_sherman) }
+
       let!(:last_split_time) { subject.split_times.last }
 
       before { subject.set_effort_segments }
@@ -195,7 +199,6 @@ RSpec.describe Effort, type: :model do
           expect do
             create(:split_time, effort: subject, split: splits(:hardrock_cw_cunningham), absolute_time: last_split_time.absolute_time + 3.hours, bitkey: SubSplit::IN_BITKEY)
           end.to change { subject.effort_segments.count }.from(36).to(45)
-          
         end
       end
 
@@ -205,10 +208,6 @@ RSpec.describe Effort, type: :model do
             last_split_time.destroy
           end.to change { subject.effort_segments.count }.from(36).to(28)
         end
-      end
-
-      context "when course is changed" do
-
       end
     end
   end
@@ -221,7 +220,7 @@ RSpec.describe Effort, type: :model do
         let(:effort) { efforts(:sum_100k_un_started) }
 
         it "destroys the effort" do
-          expect { effort.destroy }.to change(Effort, :count).by(-1)
+          expect { effort.destroy }.to change(described_class, :count).by(-1)
         end
 
         it "destroys no effort_segments" do
@@ -234,7 +233,7 @@ RSpec.describe Effort, type: :model do
         let(:effort_segments_count) { effort.effort_segments.count }
 
         it "destroys the effort" do
-          expect { effort.destroy }.to change(Effort, :count).by(-1)
+          expect { effort.destroy }.to change(described_class, :count).by(-1)
         end
 
         it "destroys the effort_segments" do
@@ -246,11 +245,12 @@ RSpec.describe Effort, type: :model do
 
   describe "#current_age_approximate" do
     subject { build_stubbed(:effort, event: event, age: age) }
+
     let(:event) { build_stubbed(:event, scheduled_start_time: scheduled_start_time) }
 
     context "when age is not present" do
       let(:age) { nil }
-      let(:scheduled_start_time) { Time.current - 2.years }
+      let(:scheduled_start_time) { 2.years.ago }
 
       it "returns nil" do
         expect(subject.current_age_approximate).to be_nil
@@ -259,7 +259,7 @@ RSpec.describe Effort, type: :model do
 
     context "when age is present and the event is in the past" do
       let(:age) { 40 }
-      let(:scheduled_start_time) { Time.current - 2.years }
+      let(:scheduled_start_time) { 2.years.ago }
 
       it "calculates approximate age at the current time based on age at time of effort" do
         expect(subject.current_age_approximate).to eq(42)
@@ -268,7 +268,7 @@ RSpec.describe Effort, type: :model do
 
     context "when the event is in the future" do
       let(:age) { 40 }
-      let(:scheduled_start_time) { Time.current + 2.years }
+      let(:scheduled_start_time) { 2.years.from_now }
 
       it "functions properly" do
         expect(subject.current_age_approximate).to eq(38)
@@ -312,7 +312,7 @@ RSpec.describe Effort, type: :model do
       end
     end
 
-    context "if more than one exists" do
+    context "when more than one exists" do
       let(:effort) { efforts(:hardrock_2014_multiple_stops) }
       let(:expected) { split_times(:hardrock_2014_multiple_stops_grouse_out_1) }
 
@@ -330,7 +330,7 @@ RSpec.describe Effort, type: :model do
       end
     end
 
-    context "if no split_time exists with stopped_here: true" do
+    context "when no split_time exists with stopped_here: true" do
       let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
 
       it "returns nil" do
@@ -373,6 +373,7 @@ RSpec.describe Effort, type: :model do
 
   describe "#scheduled_start_offset=" do
     subject { build_stubbed(:effort, event: event) }
+
     let(:event) { build_stubbed(:event, scheduled_start_time: event_start_time) }
     before { subject.scheduled_start_offset = offset }
 
@@ -427,21 +428,22 @@ RSpec.describe Effort, type: :model do
 
   describe ".visible" do
     let(:concealed_event_group) { event_groups(:dirty_30) }
-    let(:visible_efforts) { Effort.joins(:event).where.not(events: { event_group_id: concealed_event_group.id }).first(5) }
-    let(:concealed_efforts) { Effort.joins(:event).where(events: { event_group_id: concealed_event_group.id }).first(5) }
+    let(:visible_efforts) { described_class.joins(:event).where.not(events: { event_group_id: concealed_event_group.id }).first(5) }
+    let(:concealed_efforts) { described_class.joins(:event).where(events: { event_group_id: concealed_event_group.id }).first(5) }
 
     before { concealed_event_group.update(concealed: true) }
 
     describe ".visible" do
       it "limits the subject scope to efforts whose event_group is visible" do
-        visible_efforts.each { |effort| expect(Effort.visible).to include(effort) }
-        concealed_efforts.each { |effort| expect(Effort.visible).not_to include(effort) }
+        visible_efforts.each { |effort| expect(described_class.visible).to include(effort) }
+        concealed_efforts.each { |effort| expect(described_class.visible).not_to include(effort) }
       end
     end
   end
 
   describe "#ordered_split_times" do
     subject { effort.ordered_split_times(lap_split) }
+
     let(:effort) { build_stubbed(:effort, split_times: split_times) }
     let(:splits) { build_stubbed_list(:split, 3) }
     let(:split_time_1) { build_stubbed(:split_time, lap: 1, split: splits.second, bitkey: in_bitkey) }
@@ -483,6 +485,7 @@ RSpec.describe Effort, type: :model do
 
   describe "#generate_new_topic_resource?" do
     subject(:effort) { efforts(:sum_100k_un_started) }
+
     before { effort.assign_attributes(scheduled_start_time: scheduled_start_time) }
 
     context "when the calculated start time is long ago" do
@@ -511,7 +514,7 @@ RSpec.describe Effort, type: :model do
 
     context "when the effort is finished" do
       let(:scheduled_start_time) { 12.hours.ago }
-      before { allow(effort).to receive(:finished?).and_return(true) }
+      before { effort.assign_attributes(finished: true) }
 
       it "returns false" do
         expect(effort.send(:generate_new_topic_resource?)).to eq(false)
@@ -521,6 +524,7 @@ RSpec.describe Effort, type: :model do
 
   describe "#trim_scheduled_start_time" do
     subject(:effort) { efforts(:sum_100k_un_started) }
+
     let(:scheduled_start_time) { nil }
 
     before do

@@ -1,5 +1,5 @@
 class EffortShowView < EffortWithLapSplitRows
-  delegate :event_name, :person, :start_time, :has_start_time?, :stopped?, to: :effort
+  delegate :event_name, :person, :start_time, :start_time?, :stopped?, to: :effort
   delegate :simple?, :multiple_sub_splits?, :multiple_laps?, :laps_unlimited?, :event_group, to: :event
 
   def next_problem_effort
@@ -15,7 +15,7 @@ class EffortShowView < EffortWithLapSplitRows
     ordered_split_times.present? && !finished? && !ordered_split_times.last.stopped_here?
   end
 
-  def has_removable_stop?
+  def removable_stop?
     stopped? && (!finished? || laps_unlimited? || times_exist_after_stop?)
   end
 

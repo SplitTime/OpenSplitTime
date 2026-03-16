@@ -1,7 +1,7 @@
 <%# locals: (presenter:) -%>
 
 <div id="<%= dom_id presenter, :start_stop_buttons %>" class="d-inline-flex">
-  <% unless presenter.has_start_time? %>
+  <% unless presenter.start_time? %>
     <%= link_to_start_effort(presenter.effort) %>
   <% end %>
   <% if presenter.needs_final_stop? %>
@@ -16,7 +16,7 @@
                     turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
                   }) { "Set stop" } %>
   <% end %>
-  <% if presenter.has_removable_stop? %>
+  <% if presenter.removable_stop? %>
     <%= button_to(stop_effort_path(presenter.effort),
                   params: { status: false },
                   method: :patch,

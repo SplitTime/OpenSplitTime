@@ -1,4 +1,4 @@
-<%# locals: (event:, split:, aid_station: -%>
+<%# locals: (event:, split:, aid_station: nil) %>
 
 <tr id="<%= dom_id(split, dom_id(event)) %>"
     class="align-middle <%= ' bg-light fst-italic fw-light' if aid_station.blank? %>"

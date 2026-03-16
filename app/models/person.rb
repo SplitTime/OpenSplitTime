@@ -28,17 +28,22 @@ class Person < ApplicationRecord
 
   attr_accessor :suggested_match
 
-  scope :with_age_and_effort_count, -> { from(select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group("people.id"), :people) }
+  scope :with_age_and_effort_count, lambda {
+    from(select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group("people.id"), :people)
+  }
   scope :standard_includes, -> { includes(:efforts).with_age_and_effort_count }
 
-  SQL = {age_and_effort_count: "people.*, COUNT(efforts.id) as effort_count, " +
-                               "ROUND(AVG((extract(epoch from(current_date - events.scheduled_start_time))/60/60/24/365.25) + efforts.age)) " +
-                               "as current_age_from_efforts"}.freeze
+  SQL = {
+    age_and_effort_count: "people.*, COUNT(efforts.id) as effort_count, " \
+                          "ROUND(AVG((extract(epoch from(current_date - events.scheduled_start_time))" \
+                          "/60/60/24/365.25) + efforts.age)) " \
+                          "as current_age_from_efforts"
+  }.freeze
 
-  validates_presence_of :first_name, :last_name, :gender
-  validates :email, allow_blank: true, length: {maximum: 105},
-                    format: {with: VALID_EMAIL_REGEX}
-  validates :phone, allow_blank: true, format: {with: VALID_PHONE_REGEX}
+  validates :first_name, :last_name, :gender, presence: true
+  validates :email, allow_blank: true, length: { maximum: 105 },
+                    format: { with: VALID_EMAIL_REGEX }
+  validates :phone, allow_blank: true, format: { with: VALID_PHONE_REGEX }
   validates :user_id, uniqueness: true, allow_blank: true
   validates_with BirthdateValidator
 
@@ -54,8 +59,8 @@ class Person < ApplicationRecord
     return none unless age_param
 
     ids = with_age_and_effort_count
-        .select { |person| person.current_age && ((person.current_age - age_param).abs < threshold) }
-        .map(&:id)
+          .select { |person| person.current_age && ((person.current_age - age_param).abs < threshold) }
+          .map(&:id)
     where(id: ids)
   end
 
@@ -68,8 +73,8 @@ class Person < ApplicationRecord
   end
 
   def slug_candidates
-    [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Date.today.to_s],
-     [:full_name, :state_and_country, Date.today.to_s, Time.current.strftime("%H:%M:%S")]]
+    [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Time.zone.today.to_s],
+     [:full_name, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]]
   end
 
   def should_generate_new_friendly_id?
@@ -77,7 +82,7 @@ class Person < ApplicationRecord
   end
 
   def current_age_approximate
-    Person.where(id: id).with_age_and_effort_count.first&.current_age_from_efforts
+    Person.where(id: id).with_age_and_effort_count.order(:id).first&.current_age_from_efforts
   end
 
   def unclaimed?

@@ -1,5 +1,5 @@
 class EffortAuditView < EffortWithLapSplitRows
-  delegate :event_name, :person, :start_time, :has_start_time?, :stopped?, to: :effort
+  delegate :event_name, :person, :start_time, :start_time?, :stopped?, to: :effort
   delegate :simple?, :multiple_sub_splits?, :laps_unlimited?, :event_group, to: :event
 
   def audit_rows
@@ -29,7 +29,7 @@ class EffortAuditView < EffortWithLapSplitRows
   private
 
   def raw_times
-    return [] unless effort.bib_number.present?
+    return [] if effort.bib_number.blank?
 
     @raw_times ||=
       begin
@@ -39,15 +39,15 @@ class EffortAuditView < EffortWithLapSplitRows
       end
   end
 
-  def matched?(rt, split_time)
-    rt.split_time_id && rt.split_time_id == split_time.id
+  def matched?(raw_time, split_time)
+    raw_time.split_time_id && raw_time.split_time_id == split_time.id
   end
 
-  def associated_but_unmatched?(rt, time_point)
-    rt.split_time_id.nil? && rt.time_point == time_point && !rt.disassociated_from_effort
+  def associated_but_unmatched?(raw_time, time_point)
+    raw_time.split_time_id.nil? && raw_time.time_point == time_point && !raw_time.disassociated_from_effort
   end
 
-  def disassociated?(rt, time_point)
-    rt.split_time_id.nil? && rt.time_point == time_point && rt.disassociated_from_effort
+  def disassociated?(raw_time, time_point)
+    raw_time.split_time_id.nil? && raw_time.time_point == time_point && raw_time.disassociated_from_effort
   end
 end

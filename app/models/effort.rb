@@ -1,5 +1,5 @@
 class Effort < ApplicationRecord
-  enum :data_status, [:bad, :questionable, :good] # nil = unknown, 0 = bad, 1 = questionable, 2 = good
+  enum :data_status, { :bad => 0, :questionable => 1, :good => 2 } # nil = unknown, 0 = bad, 1 = questionable, 2 = good
 
   # See app/concerns/data_status_methods for related scopes and methods
   VALID_STATUSES = [nil, data_statuses[:good]].freeze
@@ -26,7 +26,8 @@ class Effort < ApplicationRecord
   capitalize_attributes :first_name, :last_name, :city, :emergency_contact
   friendly_id :slug_candidates, use: [:slugged, :history]
   trim_time_attributes :scheduled_start_time
-  zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time, :assumed_start_time
+  zonable_attributes :actual_start_time, :scheduled_start_time, :event_start_time, :calculated_start_time,
+                     :assumed_start_time
   has_paper_trail
 
   belongs_to :event, counter_cache: true, touch: true
@@ -36,7 +37,7 @@ class Effort < ApplicationRecord
   # This is accomplished by the :dependent option on the has_many :split_times association.
   # Do not add a dependent: :destroy option to the has_many :effort_segments association
   # because it will cause postgres to throw an error when an effort is destroyed.
-  has_many :effort_segments
+  has_many :effort_segments, dependent: false
   has_many :split_times, dependent: :destroy, autosave: true
   has_many :notifications, dependent: :destroy
   has_one_attached :photo do |photo|
@@ -54,7 +55,7 @@ class Effort < ApplicationRecord
   delegate :event_group, :events_within_group, to: :event
   delegate :organization, :concealed?, to: :event_group
 
-  validates_presence_of :event, :first_name, :last_name, :gender
+  validates :first_name, :last_name, :gender, presence: true
   validates :email, allow_blank: true, length: { maximum: 105 }, format: { with: VALID_EMAIL_REGEX }
   validates :phone, allow_blank: true, format: { with: VALID_PHONE_REGEX }
   validates :emergency_phone, allow_blank: true, format: { with: VALID_PHONE_REGEX }
@@ -71,16 +72,26 @@ class Effort < ApplicationRecord
 
   pg_search_scope :search_bib, against: :bib_number, using: { tsearch: { any_word: true } }
   scope :bib_not_hardcoded, -> { where(bib_number_hardcoded: [false, nil]) }
-  scope :bib_number_among, -> (param) { param.present? ? search_bib(param) : all }
-  scope :on_course, -> (course) { includes(:event).where(events: { course_id: course.id }) }
+  scope :bib_number_among, ->(param) { param.present? ? search_bib(param) : all }
+  scope :on_course, ->(course) { includes(:event).where(events: { course_id: course.id }) }
   scope :unreconciled, -> { where(person_id: nil) }
   scope :finished, -> { where(finished: true) }
   scope :unfinished, -> { where(finished: [false, nil]) }
   scope :started, -> { where(started: true) }
   scope :unstarted, -> { where(started: [false, nil]) }
   scope :checked_in, -> { where(checked_in: true) }
-  scope :photo_assigned, -> { joins("join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id") }
-  scope :no_photo_assigned, -> { joins("left join active_storage_attachments asa on asa.record_type = 'Effort' and asa.name = 'photo' and asa.record_id = efforts.id").where("asa.id is null") }
+  scope :photo_assigned, lambda {
+    joins(
+      "join active_storage_attachments asa on asa.record_type = 'Effort' " \
+      "and asa.name = 'photo' and asa.record_id = efforts.id"
+    )
+  }
+  scope :no_photo_assigned, lambda {
+    joins(
+      "left join active_storage_attachments asa on asa.record_type = 'Effort' " \
+      "and asa.name = 'photo' and asa.record_id = efforts.id"
+    ).where(asa: { id: nil })
+  }
   scope :finish_info_subquery, -> { from(EffortQuery.finish_info_subquery(self)) }
   scope :ranked_order, -> { order(overall_performance: :desc, bib_number: :asc) }
   scope :ranking_subquery, -> { from(EffortQuery.ranking_subquery(self)) }
@@ -103,13 +114,18 @@ class Effort < ApplicationRecord
   end
 
   def slug_candidates
-    [[:event_name, :full_name], [:event_name, :full_name, :state_and_country], [:event_name, :full_name, :state_and_country, Date.today.to_s],
-     [:event_name, :full_name, :state_and_country, Date.today.to_s, Time.current.strftime("%H:%M:%S")]]
+    [
+      [:event_name, :full_name],
+      [:event_name, :full_name, :state_and_country],
+      [:event_name, :full_name, :state_and_country, Time.zone.today.to_s],
+      [:event_name, :full_name, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]
+    ]
   end
 
   def reject_split_time?(attributes)
     persisted = attributes[:id].present?
-    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :absolute_time_local, :absolute_time).values
+    time_values = attributes.slice(:time_from_start, :elapsed_time, :military_time, :absolute_time_local,
+                                   :absolute_time).values
     without_time = time_values.all?(&:blank?)
     blank_time = without_time && time_values.any? { |value| value == "" }
     attributes.merge!(_destroy: true) if persisted && blank_time
@@ -117,13 +133,18 @@ class Effort < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed? || event&.short_name_changed? || event_group&.name_changed?
+    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? ||
+      country_code_changed? || event&.short_name_changed? || event_group&.name_changed?
   end
 
   def actual_start_time
     return @actual_start_time if defined?(@actual_start_time)
 
-    @actual_start_time = attributes.has_key?("actual_start_time") ? attributes["actual_start_time"] : starting_split_time&.absolute_time
+    @actual_start_time = if attributes.key?("actual_start_time")
+                           attributes["actual_start_time"]
+                         else
+                           starting_split_time&.absolute_time
+                         end
   end
 
   def calculated_start_time
@@ -144,10 +165,10 @@ class Effort < ApplicationRecord
 
   def scheduled_start_offset
     @scheduled_start_offset ||=
-      begin
-        return attributes["scheduled_start_offset"] if attributes.has_key?("scheduled_start_offset")
-
-        (scheduled_start_time && event_start_time && scheduled_start_time - event_start_time) || 0
+      if attributes.key?("scheduled_start_offset")
+        attributes["scheduled_start_offset"]
+      else
+        (scheduled_start_time && event_start_time && (scheduled_start_time - event_start_time)) || 0
       end
   end
 
@@ -182,7 +203,7 @@ class Effort < ApplicationRecord
   end
 
   def start_split_id
-    return attributes["start_split_id"] if attributes.has_key?("start_split_id")
+    return attributes["start_split_id"] if attributes.key?("start_split_id")
 
     event.start_split.id
   end
@@ -200,7 +221,7 @@ class Effort < ApplicationRecord
     attributes["laps_started"] || last_reported_split_time&.lap || 0
   end
 
-  def has_start_time?
+  def start_time?
     split_times.find(&:start?).present?
   end
 
@@ -215,7 +236,7 @@ class Effort < ApplicationRecord
     when dropped?
       "DNF"
     when finished?
-      if attributes.has_key?("final_elapsed_seconds")
+      if attributes.key?("final_elapsed_seconds")
         return TimeConversion.seconds_to_hms(attributes["final_elapsed_seconds"])
       end
 
@@ -256,14 +277,14 @@ class Effort < ApplicationRecord
 
   # @return [Integer, nil]
   def overall_rank
-    return attributes["overall_rank"] if attributes.has_key?("overall_rank")
+    return attributes["overall_rank"] if attributes.key?("overall_rank")
 
     with_rank.attributes["overall_rank"]
   end
 
   # @return [Integer, nil]
   def gender_rank
-    return attributes["gender_rank"] if attributes.has_key?("gender_rank")
+    return attributes["gender_rank"] if attributes.key?("gender_rank")
 
     with_rank.attributes["gender_rank"]
   end
@@ -272,7 +293,7 @@ class Effort < ApplicationRecord
     return @current_age_approximate if defined?(@current_age_approximate)
     return unless age.present? && calculated_start_time.present?
 
-    @current_age_approximate ||= age && ((Time.current - calculated_start_time) / 1.year + age).round
+    @current_age_approximate ||= age && (((Time.current - calculated_start_time) / 1.year) + age).round
   end
 
   def unreconciled?
@@ -280,7 +301,7 @@ class Effort < ApplicationRecord
   end
 
   def with_rank
-    Effort.where(id: id).ranking_subquery.first
+    Effort.where(id: id).ranking_subquery.order(:id).first
   end
 
   def template_age
@@ -297,6 +318,7 @@ class Effort < ApplicationRecord
     # otherwise we risk getting duplicates when something changes
     result = EffortSegment.delete_for_effort(self)
     raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("DELETE")
+
     result = EffortSegment.set_for_effort(self)
     raise ::ActiveRecord::Rollback unless result.cmd_status.start_with?("INSERT")
   end
@@ -306,7 +328,7 @@ class Effort < ApplicationRecord
   # Uses a reverse sort in order to get the most recent stopped_here split_time
   # if more than one exists
   def stopped_split_time
-    ordered_split_times.reverse.find(&:stopped_here)
+    ordered_split_times.rfind(&:stopped_here)
   end
 
   private

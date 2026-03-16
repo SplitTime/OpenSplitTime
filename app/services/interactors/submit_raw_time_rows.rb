@@ -9,7 +9,8 @@ module Interactors
     def initialize(args)
       ArgsValidator.validate(params: args,
                              required: [:raw_time_rows, :event_group, :force_submit, :mark_as_reviewed],
-                             exclusive: [:raw_time_rows, :event_group, :force_submit, :mark_as_reviewed, :current_user_id],
+                             exclusive: [:raw_time_rows, :event_group, :force_submit, :mark_as_reviewed,
+                                         :current_user_id],
                              class: self.class)
       @raw_time_rows = args[:raw_time_rows]
       @event_group = args[:event_group]
@@ -27,8 +28,8 @@ module Interactors
         ActiveRecord::Base.transaction do
           append_effort(rtr) unless rtr.effort
           enrich_raw_time_row(rtr)
-          save_raw_times(rtr) unless rtr.errors.present?
-          upsert_split_times(rtr) unless rtr.errors.present?
+          save_raw_times(rtr) if rtr.errors.blank?
+          upsert_split_times(rtr) if rtr.errors.blank?
           if rtr.errors.present?
             problem_rows << rtr
             raise ActiveRecord::Rollback
@@ -42,7 +43,8 @@ module Interactors
 
     private
 
-    attr_reader :raw_time_rows, :event_group, :force_submit, :mark_as_reviewed, :current_user_id, :times_container, :problem_rows,
+    attr_reader :raw_time_rows, :event_group, :force_submit, :mark_as_reviewed,
+                :current_user_id, :times_container, :problem_rows,
                 :upserted_split_times, :errors
 
     def append_effort(rtr)
@@ -64,7 +66,7 @@ module Interactors
     end
 
     def save_raw_times(rtr)
-      rtr.raw_times.select!(&:has_time_data?) # Throw away empty raw_times
+      rtr.raw_times.select!(&:time_data?) # Throw away empty raw_times
       rtr.raw_times.each do |raw_time|
         raw_time.event_group_id = event_group.id
         raw_time.assign_attributes(reviewed_by: current_user_id, reviewed_at: Time.current) if mark_as_reviewed
@@ -73,7 +75,8 @@ module Interactors
     end
 
     def upsert_split_times(rtr)
-      upsert_response = Interactors::UpsertSplitTimesFromRawTimeRow.perform!(event_group: event_group, raw_time_row: rtr)
+      upsert_response = Interactors::UpsertSplitTimesFromRawTimeRow.perform!(event_group: event_group,
+                                                                             raw_time_row: rtr)
       upsert_response.resources[:upserted_split_times].each { |st| upserted_split_times << st }
     end
 
@@ -83,16 +86,18 @@ module Interactors
 
     def indexed_efforts
       @indexed_efforts ||= Effort.where(event: event_group.events, bib_number: bib_numbers)
-          .includes(event: :splits, split_times: :split).index_by(&:bib_number)
+                                 .includes(event: :splits, split_times: :split).index_by(&:bib_number)
     end
 
     def bib_numbers
       # Remove bib numbers that contain non-digits, then convert to integers
-      raw_time_rows.flat_map { |rtr| rtr.raw_times.map(&:bib_number) }.uniq.reject { |raw_bib| raw_bib =~ /\D/ }.map(&:to_i)
+      raw_time_rows.flat_map do |rtr|
+        rtr.raw_times.map(&:bib_number)
+      end.uniq.grep_v(/\D/).map(&:to_i)
     end
 
     def resources
-      {problem_rows: problem_rows, upserted_split_times: upserted_split_times}
+      { problem_rows: problem_rows, upserted_split_times: upserted_split_times }
     end
   end
 end

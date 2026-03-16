@@ -63,7 +63,7 @@ class EnrichRawTimeRow
     return unless raw_time_pair.any?(&:stopped_here)
 
     raw_time_pair.each { |raw_time| raw_time.stopped_here = false }
-    raw_time_pair.select(&:has_time_data?).last&.assign_attributes(stopped_here: true)
+    raw_time_pair.select(&:time_data?).last&.assign_attributes(stopped_here: true)
   end
 
   def add_attributes_and_verify
@@ -96,7 +96,7 @@ class EnrichRawTimeRow
     return @effort if defined?(@effort)
 
     @effort = raw_time_row.effort || Effort.where(event: event_group.events, bib_number: bib_number)
-        .includes(event: :splits, split_times: :split).first
+                                           .includes(event: :splits, split_times: :split).first
   end
 
   def event

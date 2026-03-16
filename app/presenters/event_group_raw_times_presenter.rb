@@ -46,19 +46,19 @@ class EventGroupRawTimesPresenter < BasePresenter
       limit: per_page,
       page: page
     )
-    
+
     # Preload associations for the paginated subset to avoid N+1 queries
     ActiveRecord::Associations::Preloader.new(
       records: @filtered_raw_times,
       associations: [:creator, :reviewer]
     ).call
-    
+
     @filtered_raw_times.each do |raw_time|
-      raw_time.effort = raw_time.has_effort_id? ? indexed_efforts[raw_time.effort_id] : nil
-      raw_time.event = raw_time.has_event_id? ? indexed_events[raw_time.event_id] : nil
-      raw_time.split = raw_time.has_split_id? ? indexed_splits[raw_time.split_id] : nil
+      raw_time.effort = raw_time.effort_id? ? indexed_efforts[raw_time.effort_id] : nil
+      raw_time.event = raw_time.event_id? ? indexed_events[raw_time.event_id] : nil
+      raw_time.split = raw_time.split_id? ? indexed_splits[raw_time.split_id] : nil
     end
-    
+
     @filtered_raw_times
   end
 
@@ -80,6 +80,10 @@ class EventGroupRawTimesPresenter < BasePresenter
 
   def method_missing(method)
     event_group.send(method)
+  end
+
+  def respond_to_missing?(method, include_private = false)
+    event_group.respond_to?(method, include_private) || super
   end
 
   private

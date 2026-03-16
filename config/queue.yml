@@ -5,14 +5,15 @@ default: &default
   workers:
     # High priority: default queue for most jobs
     - queues:
-        - solid_default
-        - solid_mailers
+        - default
+        - mailers
       threads: 3
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
     # Lower priority: storage operations (analysis, purge)
     - queues:
-        - solid_storage
+        - storage
+        - solid_queue_recurring
       threads: 1
       processes: 1
       polling_interval: 1

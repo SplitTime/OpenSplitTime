@@ -85,7 +85,6 @@ Rails.application.configure do
 
   # Use Solid Queue for Active Job
   config.active_job.queue_adapter = :solid_queue
-  config.active_job.queue_name_prefix = "solid"
 
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.

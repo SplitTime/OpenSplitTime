@@ -15,9 +15,9 @@ production:
     schedule: every hour at minute 12
   sweep_orphaned_blobs:
     class: SweepOrphanedBlobsJob
-    queue: solid_default
+    queue: default
     schedule: at 8am every day
   sweep_subscriptions:
     class: SweepSubscriptionsJob
-    queue: solid_default
+    queue: default
     schedule: every month on the 1st at 7am

@@ -122,9 +122,9 @@ jobs:
           - name: unit and rack
             rspec_args: --tag ~js
           - name: browser1
-            rspec_args: --tag js spec/system/event_group_construction spec/system/*_spec.rb
+            rspec_args: --tag js spec/system/event_group_construction spec/system/devise spec/system/*_spec.rb
           - name: browser2
-            rspec_args: --tag js --exclude-pattern "spec/system/event_group_construction/**/*_spec.rb" --exclude-pattern "spec/system/*_spec.rb"
+            rspec_args: --tag js --exclude-pattern "spec/system/event_group_construction/**/*_spec.rb" --exclude-pattern "spec/system/devise/**/*_spec.rb" --exclude-pattern "spec/system/*_spec.rb"
     services:
       postgres:
         image: postgres:17

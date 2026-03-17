@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Visit the course group best efforts page", js: true do
+RSpec.describe "Visit the course group best efforts page", :js do
   let(:course_group) { course_groups(:both_directions) }
   let(:course_group_events) { [events(:hardrock_2014), events(:hardrock_2015), events(:hardrock_2016)] }
   let(:organization) { course_group.organization }
@@ -18,8 +18,14 @@ RSpec.describe "Visit the course group best efforts page", js: true do
     organization.stewards << steward
   end
 
-  before(:all) { EffortSegment.set_all }
+  # rubocop:disable RSpec/BeforeAfterAll
+  before(:all) do
+    setup_fixtures
+    EffortSegment.set_all
+  end
+
   after(:all) { EffortSegment.delete_all }
+  # rubocop:enable RSpec/BeforeAfterAll
 
   scenario "Admin visits the page" do
     login_as admin, scope: :user
@@ -71,7 +77,7 @@ RSpec.describe "Visit the course group best efforts page", js: true do
   end
 
   def scroll_to_bottom_of_page
-    execute_script('window.scrollTo(0, document.body.scrollHeight)')
+    execute_script("window.scrollTo(0, document.body.scrollHeight)")
   end
 
   def verify_public_content_present

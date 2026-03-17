@@ -1,11 +1,17 @@
 require "rails_helper"
 
-RSpec.describe "Visit the cutoff analysis page", js: true do
+RSpec.describe "Visit the cutoff analysis page", :js do
   let(:course) { courses(:hardrock_ccw) }
   let(:first_split_name) { course.splits.intermediate.first.base_name }
 
-  before(:all) { EffortSegment.set_all }
+  # rubocop:disable RSpec/BeforeAfterAll
+  before(:all) do
+    setup_fixtures
+    EffortSegment.set_all
+  end
+
   after(:all) { EffortSegment.delete_all }
+  # rubocop:enable RSpec/BeforeAfterAll
 
   scenario "Visitor visits the page with existing data" do
     visit_page

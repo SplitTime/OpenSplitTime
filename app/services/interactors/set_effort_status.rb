@@ -8,10 +8,9 @@ module Interactors
     end
 
     def initialize(effort, ordered_split_times: nil, lap_splits: nil, times_container: nil)
-      raise ArgumentError, "set_effort_status must include effort" unless effort
-      raise ArgumentError, "effort must be an Effort" unless effort.is_a?(Effort)
-
       @effort = effort
+      validate_setup
+
       @ordered_split_times = ordered_split_times || effort.ordered_split_times.reject(&:destroyed?)
       @lap_splits = lap_splits || effort.lap_splits
       @times_container = times_container || SegmentTimesContainer.new(calc_model: :stats)
@@ -108,6 +107,11 @@ module Interactors
 
     def unconfirmed_split_times
       @unconfirmed_split_times ||= ordered_split_times.reject(&:confirmed?)
+    end
+
+    def validate_setup
+      raise ArgumentError, "set_effort_status must include effort" unless effort
+      raise ArgumentError, "effort must be an Effort" unless effort.is_a?(Effort)
     end
   end
 end

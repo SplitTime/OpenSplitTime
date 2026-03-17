@@ -8,11 +8,10 @@ module Interactors
     end
 
     def initialize(event, new_start_time:)
-      raise ArgumentError, "shift_event_start_time must include event" unless event
-      raise ArgumentError, "event must be an Event" unless event.is_a?(Event)
-      raise ArgumentError, "shift_event_start_time must include new_start_time" unless new_start_time
-
       @event = event
+      @non_localized_new_start_time = new_start_time
+      validate_setup
+
       @new_start_time = new_start_time.in_time_zone(event.home_time_zone)
       @old_start_time = event.scheduled_start_time_local
       @current_user = User.current
@@ -33,6 +32,8 @@ module Interactors
 
     private
 
+    attr_reader :event, :non_localized_new_start_time, :new_start_time, :old_start_time, :current_user, :errors
+
     def update_event
       event.update!(scheduled_start_time: new_start_time)
     rescue ActiveRecord::ActiveRecordError => e
@@ -50,8 +51,6 @@ module Interactors
     rescue ActiveRecord::ActiveRecordError => e
       errors << active_record_error(e)
     end
-
-    attr_reader :event, :new_start_time, :old_start_time, :current_user, :errors
 
     def effort_query
       EffortQuery.shift_event_scheduled_times(event, shift_seconds)
@@ -83,6 +82,12 @@ module Interactors
           "to #{flexible_format(new_start_time, old_start_time)}. " \
           "All related scheduled start times and split times were shifted #{shift_direction} by the same amount."
       end
+    end
+
+    def validate_setup
+      raise ArgumentError, "shift_event_start_time must include event" unless event
+      raise ArgumentError, "event must be an Event" unless event.is_a?(Event)
+      raise ArgumentError, "shift_event_start_time must include new_start_time" unless non_localized_new_start_time
     end
   end
 end

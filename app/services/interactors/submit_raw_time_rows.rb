@@ -13,11 +13,6 @@ module Interactors
     end
 
     def initialize(raw_time_rows:, event_group:, force_submit:, mark_as_reviewed:, current_user_id: nil)
-      raise ArgumentError, "submit_raw_time_rows must include raw_time_rows" unless raw_time_rows
-      raise ArgumentError, "submit_raw_time_rows must include event_group" unless event_group
-      raise ArgumentError, "submit_raw_time_rows must include force_submit" if force_submit.nil?
-      raise ArgumentError, "submit_raw_time_rows must include mark_as_reviewed" if mark_as_reviewed.nil?
-
       @raw_time_rows = raw_time_rows
       @event_group = event_group
       @force_submit = force_submit
@@ -27,6 +22,7 @@ module Interactors
       @problem_rows = []
       @upserted_split_times = []
       @errors = []
+      validate_setup
     end
 
     def perform!
@@ -104,6 +100,13 @@ module Interactors
 
     def resources
       { problem_rows: problem_rows, upserted_split_times: upserted_split_times }
+    end
+
+    def validate_setup
+      raise ArgumentError, "submit_raw_time_rows must include raw_time_rows" unless raw_time_rows
+      raise ArgumentError, "submit_raw_time_rows must include event_group" unless event_group
+      raise ArgumentError, "submit_raw_time_rows must include force_submit" if force_submit.nil?
+      raise ArgumentError, "submit_raw_time_rows must include mark_as_reviewed" if mark_as_reviewed.nil?
     end
   end
 end

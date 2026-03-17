@@ -5,11 +5,8 @@ module Interactors
     end
 
     def initialize(effort, stop_status: nil, split_time_id: nil)
-      raise ArgumentError, "set_effort_stop must include effort" unless effort
-      raise ArgumentError, "effort must be an Effort" unless effort.is_a?(Effort)
-
       @effort = effort
-      @stop_status = stop_status.nil? ? true : stop_status
+      @stop_status = stop_status.nil? || stop_status
       @split_time_id = split_time_id
       validate_setup
     end
@@ -41,6 +38,8 @@ module Interactors
     end
 
     def validate_setup
+      raise ArgumentError, "set_effort_stop must include effort" unless effort
+      raise ArgumentError, "effort must be an Effort" unless effort.is_a?(Effort)
       return unless split_time_id && !found_split_time
 
       raise ArgumentError, "split_time_id #{split_time_id} does not exist for #{effort}"

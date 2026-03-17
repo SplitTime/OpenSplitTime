@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
   include BitkeyDefinitions
 
-  subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: event_group, raw_time_row: raw_time_row, times_container: times_container) }
+  subject { described_class.new(event_group: event_group, raw_time_row: raw_time_row, times_container: times_container) }
+
   let(:response) { subject.perform! }
 
   let(:event_group) { create(:event_group, available_live: true) }
@@ -11,10 +12,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
   let(:start_time) { event.scheduled_start_time }
 
-  let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
   let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10_000, stopped_here: false) }
-  let!(:split_time_3) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11_000, stopped_here: false) }
-  let!(:split_time_4) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: start_time + 20_000, stopped_here: false) }
 
   let(:effort) { create(:effort, :with_bib_number, event: event) }
   let(:event) { create(:event, course: course, event_group: event_group, scheduled_start_time_local: "2018-02-10 06:00:00") }
@@ -43,6 +41,9 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
 
   before do
     event.splits << splits
+    create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time, stopped_here: false)
+    create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11_000, stopped_here: false)
+    create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: out_bitkey, absolute_time: start_time + 20_000, stopped_here: false)
     allow(Interactors::SetEffortStatus).to receive(:perform).and_return(Interactors::Response.new([], "", {}))
   end
 
@@ -61,7 +62,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
     end
 
     context "when no event_group is provided" do
-      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: nil, raw_time_row: raw_time_row) }
+      subject { described_class.new(event_group: nil, raw_time_row: raw_time_row) }
 
       it "raises an error" do
         expect { subject }.to raise_error(ArgumentError, /must include event_group/)
@@ -69,7 +70,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
     end
 
     context "when no raw_times argument is provided" do
-      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: event_group, raw_time_row: nil) }
+      subject { described_class.new(event_group: event_group, raw_time_row: nil) }
 
       it "raises an error" do
         expect { subject }.to raise_error(ArgumentError, /must include raw_time_row/)
@@ -93,7 +94,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
         subject_split_times = SplitTime.last(4)
         expect(subject_split_times.map(&:absolute_time)).to match_array([0, 10_000, 11_000, 20_000].map { |e| start_time + e })
 
-        expect { response }.to change { SplitTime.count }.by(0)
+        expect { response }.to change(SplitTime, :count).by(0)
         expect(response).to be_successful
 
         subject_split_times.each(&:reload)
@@ -120,14 +121,14 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
       it "updates existing split_times for occupied time_points and creates new split_times for unoccupied time_points" do
         subject_split_times = SplitTime.last(4)
         expect(subject_split_times.map(&:absolute_time)).to match_array([0, 10_000, 11_000, 20_000].map { |e| start_time + e })
-        expect(subject_split_times.map(&:pacer)).to match_array([nil, nil, nil, nil])
+        expect(subject_split_times.map(&:pacer)).to contain_exactly(nil, nil, nil, nil)
 
-        expect { response }.to change { SplitTime.count }.by(1)
+        expect { response }.to change(SplitTime, :count).by(1)
         expect(response).to be_successful
 
         subject_split_times = SplitTime.last(5)
         expect(subject_split_times.map(&:absolute_time)).to match_array([0, 10_000, 11_000, 25_000, 26_000].map { |e| start_time + e })
-        expect(subject_split_times.map(&:pacer)).to match_array([nil, nil, nil, true, true])
+        expect(subject_split_times.map(&:pacer)).to contain_exactly(nil, nil, nil, true, true)
       end
     end
 
@@ -142,7 +143,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
       end
 
       it "ignores the raw_time without a new_split_time and still upserts the valid split_time" do
-        expect { response }.to change { SplitTime.count }.by(0)
+        expect { response }.to change(SplitTime, :count).by(0)
         expect(response).to be_successful
 
         split_time_2.reload

@@ -18,7 +18,11 @@ RSpec.describe "Visit the course group best efforts page", js: true do
     organization.stewards << steward
   end
 
-  before(:all) { EffortSegment.set_all }
+  before(:all) do
+    setup_fixtures
+    EffortSegment.set_all
+  end
+
   after(:all) { EffortSegment.delete_all }
 
   scenario "Admin visits the page" do

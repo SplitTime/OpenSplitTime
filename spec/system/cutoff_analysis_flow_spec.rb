@@ -4,7 +4,11 @@ RSpec.describe "Visit the cutoff analysis page", js: true do
   let(:course) { courses(:hardrock_ccw) }
   let(:first_split_name) { course.splits.intermediate.first.base_name }
 
-  before(:all) { EffortSegment.set_all }
+  before(:all) do
+    setup_fixtures
+    EffortSegment.set_all
+  end
+
   after(:all) { EffortSegment.delete_all }
 
   scenario "Visitor visits the page with existing data" do

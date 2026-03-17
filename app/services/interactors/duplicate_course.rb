@@ -3,15 +3,17 @@ module Interactors
     include ::ActionView::Helpers::TextHelper
     include ::Interactors::Errors
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(course:, new_name:, organization: nil)
+      new(course: course, new_name: new_name, organization: organization).perform!
     end
 
-    def initialize(args)
-      ::ArgsValidator.validate(params: args, required: [:course, :new_name], exclusive: [:course, :new_name, :organization], class: self.class)
-      @course = args[:course]
-      @new_name = args[:new_name]
-      @organization = args[:organization]
+    def initialize(course:, new_name:, organization: nil)
+      raise ArgumentError, "duplicate_course must include course" unless course
+      raise ArgumentError, "duplicate_course must include new_name" unless new_name
+
+      @course = course
+      @new_name = new_name
+      @organization = organization
       @errors = []
     end
 
@@ -22,7 +24,7 @@ module Interactors
 
       errors << resource_error_object(course) unless new_course.save
 
-      ::Interactors::Response.new(errors, message, {course: new_course})
+      ::Interactors::Response.new(errors, message, { course: new_course })
     end
 
     private

@@ -42,19 +42,19 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
       end
     end
 
-    context "when no event_group argument is provided" do
-      subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: nil, raw_times: raw_times) }
+    context "when event_group argument is missing" do
+      subject { Interactors::MatchRawTimesToSplitTimes.new(raw_times: raw_times) }
 
-      it "raises an error" do
-        expect { subject }.to raise_error(/must include event_group/)
+      it "raises an ArgumentError" do
+        expect { subject }.to raise_error(ArgumentError, /missing keyword: :?event_group/)
       end
     end
 
-    context "when no raw_times argument is provided" do
-      subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: event_group, raw_times: nil) }
+    context "when raw_times argument is missing" do
+      subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: event_group) }
 
-      it "raises an error" do
-        expect { subject }.to raise_error(/must include raw_times/)
+      it "raises an ArgumentError" do
+        expect { subject }.to raise_error(ArgumentError, /missing keyword: :?raw_times/)
       end
     end
   end

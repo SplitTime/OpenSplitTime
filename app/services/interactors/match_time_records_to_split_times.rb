@@ -2,24 +2,23 @@ module Interactors
   class MatchTimeRecordsToSplitTimes
     include Interactors::Errors
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(time_records:, split_times:, tolerance: 1.minute)
+      new(time_records: time_records, split_times: split_times, tolerance: tolerance).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args,
-                             required: [:time_records, :split_times],
-                             exclusive: [:time_records, :split_times, :tolerance],
-                             class: self.class)
-      @time_records = args[:time_records]
-      @split_times = args[:split_times]
-      @tolerance = args[:tolerance] || 1.minute
+    def initialize(time_records:, split_times:, tolerance: 1.minute)
+      raise ArgumentError, "match_time_records_to_split_times must include time_records" unless time_records
+      raise ArgumentError, "match_time_records_to_split_times must include split_times" unless split_times
+
+      @time_records = time_records
+      @split_times = split_times
+      @tolerance = tolerance
       @errors = []
-      @resources = {matched: [], unmatched: []}
+      @resources = { matched: [], unmatched: [] }
     end
 
     def perform!
-      time_records.each { |time_record| match_time_record_to_split_time(time_record) } unless errors.present?
+      time_records.each { |time_record| match_time_record_to_split_time(time_record) } if errors.blank?
       Interactors::Response.new(errors, message, resources)
     end
 
@@ -56,8 +55,19 @@ module Interactors
     end
 
     def time_matches(split_time, time_record)
-      (time_record.absolute_time && (split_time.absolute_time - time_record.absolute_time).abs <= tolerance) ||
-        (time_record.entered_time && (Time.parse(split_time.military_time) - Time.parse(time_record.entered_time)).abs <= tolerance)
+      absolute_time_matches(split_time, time_record) || entered_time_matches(split_time, time_record)
+    end
+
+    def absolute_time_matches(split_time, time_record)
+      time_record.absolute_time && (split_time.absolute_time - time_record.absolute_time).abs <= tolerance
+    end
+
+    def entered_time_matches(split_time, time_record)
+      return false unless time_record.entered_time
+
+      split_parsed = Time.zone.parse(split_time.military_time)
+      record_parsed = Time.zone.parse(time_record.entered_time)
+      (split_parsed - record_parsed).abs <= tolerance
     end
 
     def matched

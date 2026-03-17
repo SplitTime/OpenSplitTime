@@ -1,19 +1,17 @@
 class FindExpectedLap
   include TimePointMethods
 
-  def self.perform(args)
-    new(args).perform
+  def self.perform(effort:, subject_attribute:, subject_value:, split_id:, bitkey:)
+    new(effort: effort, subject_attribute: subject_attribute, subject_value: subject_value, split_id: split_id,
+        bitkey: bitkey).perform
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:effort, :subject_attribute, :subject_value, :split_id, :bitkey],
-                           exclusive: [:effort, :subject_attribute, :subject_value, :split_id, :bitkey])
-    @effort = args[:effort]
-    @subject_attribute = args[:subject_attribute]
-    @subject_value = args[:subject_value]
-    @split_id = args[:split_id]
-    @bitkey = args[:bitkey]
+  def initialize(effort:, subject_attribute:, subject_value:, split_id:, bitkey:)
+    @effort = effort
+    @subject_attribute = subject_attribute
+    @subject_value = subject_value
+    @split_id = split_id
+    @bitkey = bitkey
   end
 
   def perform
@@ -37,7 +35,7 @@ class FindExpectedLap
   end
 
   def time_fits_missing?(lap)
-    return if indexed_location_times[lap]
+    return false if indexed_location_times[lap]
 
     previous_time = previous_value(lap)
     next_time = next_value(lap)
@@ -45,11 +43,13 @@ class FindExpectedLap
   end
 
   def previous_value(lap)
-    SplitTimeFinder.prior(time_point: subject_time_point(lap), effort: effort, lap_splits: lap_splits)&.send(subject_attribute) || start_value
+    SplitTimeFinder.prior(time_point: subject_time_point(lap), effort: effort,
+                          lap_splits: lap_splits)&.send(subject_attribute) || start_value
   end
 
   def next_value(lap)
-    SplitTimeFinder.next(time_point: subject_time_point(lap), effort: effort, lap_splits: lap_splits)&.send(subject_attribute)
+    SplitTimeFinder.next(time_point: subject_time_point(lap), effort: effort,
+                         lap_splits: lap_splits)&.send(subject_attribute)
   end
 
   def subject_time_point(lap)

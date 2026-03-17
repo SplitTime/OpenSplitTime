@@ -2,14 +2,13 @@
 # raw_time_row.event should be loaded with :splits
 
 class VerifyRawTimeRow
-  def self.perform(raw_time_row, options = {})
-    new(raw_time_row, options).perform
+  def self.perform(raw_time_row, times_container: nil)
+    new(raw_time_row, times_container: times_container).perform
   end
 
-  def initialize(raw_time_row, options = {})
-    ArgsValidator.validate(subject: raw_time_row, params: options, exclusive: [:times_container], class: self.class)
+  def initialize(raw_time_row, times_container: nil)
     @raw_time_row = raw_time_row
-    @times_container = options[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+    @times_container = times_container || SegmentTimesContainer.new(calc_model: :stats)
     validate_setup
   end
 
@@ -45,7 +44,8 @@ class VerifyRawTimeRow
   def set_data_status
     return if new_split_times.none?(&:time_from_start)
 
-    Interactors::SetEffortStatus.perform(effort, ordered_split_times: ordered_split_times, lap_splits: effort_lap_splits, times_container: times_container)
+    Interactors::SetEffortStatus.perform(effort, ordered_split_times: ordered_split_times,
+                                                 lap_splits: effort_lap_splits, times_container: times_container)
     raw_times.select(&:new_split_time).each do |raw_time|
       raw_time.data_status = raw_time.new_split_time.data_status
     end
@@ -61,7 +61,8 @@ class VerifyRawTimeRow
     effort_time_points.map { |time_point| indexed_split_times[time_point] }.compact
   end
 
-  def new_split_times # Do not memoize
+  # Do not memoize
+  def new_split_times
     raw_times.map(&:new_split_time).compact
   end
 
@@ -82,21 +83,23 @@ class VerifyRawTimeRow
   def validate_setup
     raw_time_row.errors ||= []
 
-    errors << "missing raw times" unless raw_times.present?
-    errors << "missing effort" unless effort.present?
-    errors << "missing event" unless event.present?
+    errors << "missing raw times" if raw_times.blank?
+    errors << "missing effort" if effort.blank?
+    errors << "missing event" if event.blank?
 
-    if errors.empty?
-      if raw_times_bib_numbers.uniq.many? || raw_times_bib_numbers.first.to_i != effort.bib_number
-        errors << "mismatched bib numbers"
-      end
-      errors << "missing lap attribute" unless raw_times_laps.all?
-      errors << "mismatched laps" if raw_times_laps.uniq.many?
-      errors << "lap exceeds event limit" if event.maximum_laps && raw_times_laps.first.present? && raw_times_laps.first > event.maximum_laps
-      errors << "mismatched split names" if raw_times_split_names.uniq.many?
-      errors << "invalid split name" unless event_split_names.include?(raw_times_split_names.first.parameterize)
-      errors << "duplicate sub-split kinds" unless raw_times.map(&:bitkey) == raw_times.map(&:bitkey).uniq
+    return unless errors.empty?
+
+    if raw_times_bib_numbers.uniq.many? || raw_times_bib_numbers.first.to_i != effort.bib_number
+      errors << "mismatched bib numbers"
     end
+    errors << "missing lap attribute" unless raw_times_laps.all?
+    errors << "mismatched laps" if raw_times_laps.uniq.many?
+    if event.maximum_laps && raw_times_laps.first.present? && raw_times_laps.first > event.maximum_laps
+      errors << "lap exceeds event limit"
+    end
+    errors << "mismatched split names" if raw_times_split_names.uniq.many?
+    errors << "invalid split name" unless event_split_names.include?(raw_times_split_names.first.parameterize)
+    errors << "duplicate sub-split kinds" unless raw_times.map(&:bitkey) == raw_times.map(&:bitkey).uniq
   end
 
   def event_split_names

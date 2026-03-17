@@ -1,16 +1,12 @@
 class TimeRecordRowConverter
-  def self.convert(args)
-    new(args).convert
+  def self.convert(event:, time_records:, times_container: nil)
+    new(event: event, time_records: time_records, times_container: times_container).convert
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:event, :time_records],
-                           exclusive: [:event, :time_records, :times_container],
-                           class: self.class)
-    @event = args[:event]
-    @time_records = args[:time_records]
-    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+  def initialize(event:, time_records:, times_container: nil)
+    @event = event
+    @time_records = time_records
+    @times_container = times_container || SegmentTimesContainer.new(calc_model: :stats)
     validate_setup
   end
 
@@ -19,7 +15,7 @@ class TimeRecordRowConverter
   end
 
   def transformed_rows
-    effort_data_objects.map { |effort_data| effort_data.response_row }
+    effort_data_objects.map(&:response_row)
   end
 
   def effort_data_objects
@@ -39,16 +35,16 @@ class TimeRecordRowConverter
 
   def time_rows
     paired_time_records.map do |left_time_record, right_time_record|
-      {split_id: left_time_record&.split_id || right_time_record&.split_id,
-       bib_number: left_time_record&.bib_number || right_time_record&.bib_number,
-       raw_time_id_in: left_time_record.is_a?(RawTime) ? left_time_record.id : nil,
-       raw_time_id_out: right_time_record.is_a?(RawTime) ? right_time_record.id : nil,
-       time_in: left_time_record&.military_time(home_time_zone),
-       time_out: right_time_record&.military_time(home_time_zone),
-       pacer_in: left_time_record&.with_pacer,
-       pacer_out: right_time_record&.with_pacer,
-       dropped_here: left_time_record&.stopped_here || right_time_record&.stopped_here,
-       remarks: [left_time_record&.remarks, right_time_record&.remarks].compact.join(" / ")}
+      { split_id: left_time_record&.split_id || right_time_record&.split_id,
+        bib_number: left_time_record&.bib_number || right_time_record&.bib_number,
+        raw_time_id_in: left_time_record.is_a?(RawTime) ? left_time_record.id : nil,
+        raw_time_id_out: right_time_record.is_a?(RawTime) ? right_time_record.id : nil,
+        time_in: left_time_record&.military_time(home_time_zone),
+        time_out: right_time_record&.military_time(home_time_zone),
+        pacer_in: left_time_record&.with_pacer,
+        pacer_out: right_time_record&.with_pacer,
+        dropped_here: left_time_record&.stopped_here || right_time_record&.stopped_here,
+        remarks: [left_time_record&.remarks, right_time_record&.remarks].compact.join(" / ") }
     end
   end
 

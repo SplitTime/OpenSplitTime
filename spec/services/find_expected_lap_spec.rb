@@ -40,48 +40,12 @@ RSpec.describe FindExpectedLap do
     let(:subject_value) { "07:00:00" }
     let(:split) { start_split }
 
-    it "initializes with effort, subject_attribute, subject_value, split_id, and bitkey in an args hash" do
+    it "initializes with effort, subject_attribute, subject_value, split_id, and bitkey as keyword arguments" do
       expect { subject }.not_to raise_error
     end
 
-    context "if no effort is given" do
-      let(:effort) { nil }
-
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include effort/)
-      end
-    end
-
-    context "if no subject_attribute is given" do
-      let(:subject_attribute) { nil }
-
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include subject_attribute/)
-      end
-    end
-
-    context "if no subject_value is given" do
-      let(:subject_value) { nil }
-
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include subject_value/)
-      end
-    end
-
-    context "if no split_id is given" do
-      let(:split_id) { nil }
-
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include split_id/)
-      end
-    end
-
-    context "if no bitkey is given" do
-      let(:bitkey) { nil }
-
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include bitkey/)
-      end
+    it "raises an ArgumentError if required keyword arguments are missing" do
+      expect { FindExpectedLap.new }.to raise_error(ArgumentError, /missing keyword/)
     end
   end
 

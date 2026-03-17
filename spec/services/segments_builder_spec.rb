@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe SegmentsBuilder do
-  subject(:builder) { SegmentsBuilder.new(time_points: time_points, splits: splits) }
+  subject(:builder) { described_class.new(time_points: time_points, splits: splits) }
+
   let(:event) { events(:rufa_2017_24h) }
   let(:time_points) { event.required_time_points }
   let(:lap_splits) { event.required_lap_splits }
@@ -10,21 +11,21 @@ RSpec.describe SegmentsBuilder do
 
   describe "#initialize" do
     it "initializes with a set of time_points in an args hash" do
-      expect { SegmentsBuilder.new(time_points: time_points) }.not_to raise_error
+      expect { described_class.new(time_points: time_points) }.not_to raise_error
     end
 
-    it "raises an error if initialized without lap_splits" do
-      expect { SegmentsBuilder.new(random_param: 123) }.to raise_error(/must include time_points/)
+    it "raises an error if initialized without time_points" do
+      expect { described_class.new(random_param: 123) }.to raise_error(ArgumentError, /missing keyword.*time_points/)
     end
 
-    it "raises an error if initialized with any argument other than lap_splits" do
-      expect { SegmentsBuilder.new(time_points: time_points, random_param: 123) }
-          .to raise_error(/may not include random_param/)
+    it "raises an error if initialized with any argument other than time_points and splits" do
+      expect { described_class.new(time_points: time_points, random_param: 123) }
+        .to raise_error(ArgumentError, /unknown keyword.*random_param/)
     end
   end
 
   describe "#segments" do
-    context "if no time_points are provided" do
+    context "when no time_points are provided" do
       let(:time_points) { [] }
 
       it "returns an empty array" do
@@ -43,7 +44,7 @@ RSpec.describe SegmentsBuilder do
       end
 
       it "returns segments having end time_points equal to all provided time_points but the first" do
-        expect(builder.segments.map(&:end_point)).to eq(time_points[1..-1])
+        expect(builder.segments.map(&:end_point)).to eq(time_points[1..])
       end
     end
 
@@ -60,7 +61,7 @@ RSpec.describe SegmentsBuilder do
   end
 
   describe "#segments_with_zero_start" do
-    context "if no time_points are provided" do
+    context "when no time_points are provided" do
       let(:time_points) { [] }
 
       it "returns an empty array" do

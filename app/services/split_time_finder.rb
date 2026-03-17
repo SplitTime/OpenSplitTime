@@ -1,27 +1,30 @@
 class SplitTimeFinder
-  def self.prior(args)
-    new(args).prior
+  def self.prior(time_point:, effort: nil, lap_splits: nil, split_times: nil, valid: nil)
+    new(time_point: time_point, effort: effort, lap_splits: lap_splits, split_times: split_times, valid: valid).prior
   end
 
-  def self.guaranteed_prior(args)
-    new(args).guaranteed_prior
+  def self.guaranteed_prior(time_point:, effort: nil, lap_splits: nil, split_times: nil, valid: nil)
+    new(time_point: time_point, effort: effort, lap_splits: lap_splits, split_times: split_times,
+        valid: valid).guaranteed_prior
   end
 
-  def self.next(args)
-    new(args).next
+  def self.next(time_point:, effort: nil, lap_splits: nil, split_times: nil, valid: nil)
+    new(time_point: time_point, effort: effort, lap_splits: lap_splits, split_times: split_times, valid: valid).next
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: :time_point,
-                           required_alternatives: [:effort, [:lap_splits, :split_times]],
-                           exclusive: [:time_point, :effort, :lap_splits, :split_times, :valid],
-                           class: self.class)
-    @time_point = args[:time_point]
-    @effort = args[:effort]
-    @lap_splits = args[:lap_splits] || effort.event.lap_splits_through(time_point.lap)
-    @split_times = args[:split_times] || effort.ordered_split_times
-    @valid = args[:valid].nil? ? true : args[:valid]
+  def initialize(time_point:, effort: nil, lap_splits: nil, split_times: nil, valid: nil)
+    raise ArgumentError, "split_time_finder must include time_point" unless time_point
+
+    # Validate required_alternatives: must have either effort OR (lap_splits AND split_times)
+    unless effort || (lap_splits && split_times)
+      raise ArgumentError, "split_time_finder must include either effort or both lap_splits and split_times"
+    end
+
+    @time_point = time_point
+    @effort = effort
+    @lap_splits = lap_splits || effort.event.lap_splits_through(time_point.lap)
+    @split_times = split_times || effort.ordered_split_times
+    @valid = valid.nil? || valid
     validate_setup
   end
 

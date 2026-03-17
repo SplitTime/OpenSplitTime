@@ -100,20 +100,15 @@ jobs:
           yarn install --pure-lockfile
 
       - name: Compile assets
-        env:
-          RAILS_ENV: test
         run: |
           yarn build
           yarn build:css
-          bundle exec rake assets:precompile
 
       - name: Upload compiled assets
         uses: actions/upload-artifact@v5
         with:
           name: compiled-assets
-          path: |
-            public/packs
-            public/assets
+          path: app/assets/builds
           retention-days: 1
 
   tests:
@@ -173,7 +168,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: compiled-assets
-          path: public
+          path: app/assets/builds
 
       - name: Setup test database
         env:

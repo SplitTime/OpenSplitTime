@@ -173,7 +173,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: compiled-assets
-          path: .
+          path: public
 
       - name: Setup test database
         env:

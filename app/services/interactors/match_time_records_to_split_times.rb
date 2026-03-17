@@ -12,7 +12,7 @@ module Interactors
 
       @time_records = time_records
       @split_times = split_times
-      @tolerance = tolerance
+      @tolerance = tolerance || 1.minute
       @errors = []
       @resources = { matched: [], unmatched: [] }
     end
@@ -59,7 +59,7 @@ module Interactors
     end
 
     def absolute_time_matches(split_time, time_record)
-      time_record.absolute_time && (split_time.absolute_time - time_record.absolute_time).abs <= tolerance
+      time_record.absolute_time && split_time.absolute_time && (split_time.absolute_time - time_record.absolute_time).abs <= tolerance
     end
 
     def entered_time_matches(split_time, time_record)

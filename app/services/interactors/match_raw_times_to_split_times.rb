@@ -12,7 +12,7 @@ module Interactors
 
       @event_group = event_group
       @raw_times = raw_times
-      @tolerance = tolerance
+      @tolerance = tolerance || 1.minute
       @errors = []
       validate_setup
     end

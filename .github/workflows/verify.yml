@@ -71,8 +71,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
   tests:
-    name: Tests
+    name: Tests (${{ matrix.name }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: unit and rack
+            rspec_args: --tag ~js
+          - name: browser
+            rspec_args: --tag js
     services:
       postgres:
         image: postgres:17
@@ -149,10 +157,10 @@ jobs:
           CI: true
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bin/rspec
+        run: bin/rspec ${{ matrix.rspec_args }}
 
       - name: Save capybara screenshots as artifact
-        if: failure()
+        if: failure() && matrix.name == 'browser'
         uses: actions/upload-artifact@v5
         with:
           name: capybara-failure-screenshots

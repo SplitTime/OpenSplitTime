@@ -21,9 +21,9 @@ module Interactors
       if errors.present?
         Interactors::Response.new(errors, "Raw times could not be matched. ", {})
       else
-        args = { time_records: loaded_raw_times, split_times: split_times }
-        args[:tolerance] = tolerance if tolerance
-        Interactors::MatchTimeRecordsToSplitTimes.perform!(**args)
+        Interactors::MatchTimeRecordsToSplitTimes.perform!(time_records: loaded_raw_times, 
+                                                            split_times: split_times, 
+                                                            tolerance: tolerance)
       end
     end
 

@@ -8,11 +8,10 @@ module Interactors
     end
 
     def initialize(efforts, times_container: nil, calc_model: nil)
-      raise ArgumentError, "update_efforts_status must include efforts" unless efforts
-
       @efforts = Array.wrap(efforts)
       @times_container = times_container || SegmentTimesContainer.new(calc_model: calc_model || :stats)
       @errors = []
+      validate_setup
     end
 
     def perform!
@@ -57,6 +56,10 @@ module Interactors
       else
         "Could not update status for the provided efforts. "
       end
+    end
+
+    def validate_setup
+      raise ArgumentError, "update_efforts_status must include efforts" if efforts.empty?
     end
   end
 end

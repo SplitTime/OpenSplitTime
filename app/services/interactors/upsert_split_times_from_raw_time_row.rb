@@ -16,9 +16,6 @@ module Interactors
     end
 
     def initialize(event_group:, raw_time_row:, times_container: nil)
-      raise ArgumentError, "upsert_split_times_from_raw_time_row must include event_group" unless event_group
-      raise ArgumentError, "upsert_split_times_from_raw_time_row must include raw_time_row" unless raw_time_row
-
       @event_group = event_group
       @raw_time_row = raw_time_row
       @times_container = times_container || SegmentTimesContainer.new(calc_model: :stats)
@@ -88,6 +85,9 @@ module Interactors
     end
 
     def validate_setup
+      raise ArgumentError, "upsert_split_times_from_raw_time_row must include event_group" unless event_group
+      raise ArgumentError, "upsert_split_times_from_raw_time_row must include raw_time_row" unless raw_time_row
+
       errors << raw_time_mismatch_error unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
       errors << missing_effort_error unless raw_time_row.effort
       # Allow raw_times without new_split_times (e.g., "Out" raw_time for "In"-only splits)

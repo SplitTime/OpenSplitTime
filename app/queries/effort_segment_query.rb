@@ -55,7 +55,13 @@ class EffortSegmentQuery < BaseQuery
 
       insert
       into effort_segments
-              (select * from sub_split_segments)
+              (course_id, begin_split_id, begin_bitkey, end_split_id, end_bitkey,
+               effort_id, lap, begin_time, end_time, elapsed_seconds,
+               begin_split_kind, end_split_kind)
+              (select course_id, begin_split_id, begin_bitkey, end_split_id, end_bitkey,
+                      effort_id, lap, begin_time, end_time, elapsed_seconds::integer,
+                      begin_split_kind, end_split_kind
+               from sub_split_segments)
       on conflict (begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap) do update
           set begin_time      = EXCLUDED.begin_time,
               end_time        = EXCLUDED.end_time,

@@ -60,5 +60,68 @@ RSpec.describe Middleware::RejectInvalidUtf8 do
         expect(status).to eq(400)
       end
     end
+
+    context "with null bytes in query string (URL encoded)" do
+      let(:env) do
+        {
+          "PATH_INFO" => "/event_groups",
+          "QUERY_STRING" => "search=st%00%00%00",
+          "REMOTE_ADDR" => "192.168.1.1"
+        }
+      end
+
+      it "returns 400 Bad Request" do
+        status, headers, body = middleware.call(env)
+        expect(status).to eq(400)
+        expect(headers["Content-Type"]).to eq("text/plain")
+        expect(body).to eq(["Bad Request: Null bytes not allowed in query parameters"])
+      end
+
+      it "does not pass the request through to the app" do
+        expect(app).not_to receive(:call)
+        middleware.call(env)
+      end
+    end
+
+    context "with null bytes in query string (literal)" do
+      let(:env) do
+        {
+          "PATH_INFO" => "/event_groups",
+          "QUERY_STRING" => "search=test\x00value",
+          "REMOTE_ADDR" => "192.168.1.1"
+        }
+      end
+
+      it "returns 400 Bad Request" do
+        status, _headers, _body = middleware.call(env)
+        expect(status).to eq(400)
+      end
+    end
+
+    context "with valid query string (no null bytes)" do
+      let(:env) do
+        {
+          "PATH_INFO" => "/event_groups",
+          "QUERY_STRING" => "search=test+value&filter=active",
+          "REMOTE_ADDR" => "192.168.1.1"
+        }
+      end
+
+      it "passes the request through to the app" do
+        status, _headers, body = middleware.call(env)
+        expect(status).to eq(200)
+        expect(body).to eq(["OK"])
+      end
+    end
+
+    context "with no query string" do
+      let(:env) { { "PATH_INFO" => "/event_groups", "REMOTE_ADDR" => "192.168.1.1" } }
+
+      it "passes the request through to the app" do
+        status, _headers, body = middleware.call(env)
+        expect(status).to eq(200)
+        expect(body).to eq(["OK"])
+      end
+    end
   end
 end

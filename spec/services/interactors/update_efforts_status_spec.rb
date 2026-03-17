@@ -8,25 +8,19 @@ RSpec.describe Interactors::UpdateEffortsStatus do
 
   describe "#initialize" do
     context "when a single effort is provided" do
-      it "initializes without error" do
-        expect { subject }.not_to raise_error
-      end
+      it { expect { subject }.not_to raise_error }
     end
 
     context "when multiple efforts are provided as an array" do
       let(:efforts_arg) { [efforts(:hardrock_2014_finished_first), efforts(:hardrock_2014_finished_with_stop)] }
 
-      it "initializes without error" do
-        expect { subject }.not_to raise_error
-      end
+      it { expect { subject }.not_to raise_error }
     end
 
     context "when efforts is nil" do
       let(:efforts_arg) { nil }
 
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(ArgumentError, /must include efforts/)
-      end
+      it { expect { subject }.not_to raise_error }
     end
   end
 

@@ -18,13 +18,13 @@ jobs:
           bundler-cache: true
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 24
 
       - name: JS package cache
         id: cache-npm
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -70,12 +70,59 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-  tests:
-    name: Tests
+  setup:
+    name: Build and prepare assets
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 24
+
+      - name: JS package cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install packages
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Compile assets
+        run: |
+          yarn build
+          yarn build:css
+
+      - name: Cache compiled assets
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            public/packs
+            public/assets
+          key: compiled-assets-${{ github.sha }}
+
+  tests:
+    name: Tests (${{ matrix.test-group }})
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test-group: [unit, system]
     services:
       postgres:
-        image: postgres:17
+        image: postgres:latest
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -93,7 +140,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
@@ -106,36 +153,25 @@ jobs:
           sudo apt-get install -y libvips-dev
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 24
 
       - name: JS package cache
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: npm list
-
-      - name: Install packages
-        run: |
-          yarn install --pure-lockfile
-
-      - name: Compile assets
-        run: |
-          yarn build
-          yarn build:css
-
-      - name: Check PostgreSQL version
-        run: psql -h localhost -p ${{ job.services.postgres.ports[5432] }} -U postgres -c 'SELECT version();'
-        env:
-          PGPASSWORD: postgres
+      - name: Restore compiled assets
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            public/packs
+            public/assets
+          key: compiled-assets-${{ github.sha }}
 
       - name: Setup test database
         env:
@@ -145,17 +181,27 @@ jobs:
         run: |
           bin/rails db:setup
 
-      - name: Run tests
+      - name: Run unit tests
+        if: matrix.test-group == 'unit'
         env:
           RAILS_ENV: test
           CI: true
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bin/rspec
+        run: bin/rspec --exclude-pattern "spec/system/**/*_spec.rb"
+
+      - name: Run system tests
+        if: matrix.test-group == 'system'
+        env:
+          RAILS_ENV: test
+          CI: true
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: bin/rspec spec/system
 
       - name: Save capybara screenshots as artifact
-        if: failure()
+        if: failure() && matrix.test-group == 'system'
         uses: actions/upload-artifact@v4
         with:
-          name: capybara-failure-screenshots
+          name: capybara-failure-screenshots-${{ matrix.test-group }}
           path: tmp/capybara/*.png

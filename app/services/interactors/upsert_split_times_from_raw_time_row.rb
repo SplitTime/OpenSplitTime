@@ -7,27 +7,28 @@
 module Interactors
   class UpsertSplitTimesFromRawTimeRow
     include Interactors::Errors
-    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey absolute_time stopped_here pacer remarks].freeze
 
-    def self.perform!(args)
-      new(args).perform!
+    ASSIGNABLE_ATTRIBUTES = %w[effort_id lap split split_id sub_split_bitkey absolute_time stopped_here pacer
+                               remarks].freeze
+
+    def self.perform!(event_group:, raw_time_row:, times_container: nil)
+      new(event_group: event_group, raw_time_row: raw_time_row, times_container: times_container).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args,
-                             required: [:event_group, :raw_time_row],
-                             exclusive: [:event_group, :raw_time_row, :times_container],
-                             class: self.class)
-      @event_group = args[:event_group]
-      @raw_time_row = args[:raw_time_row]
-      @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+    def initialize(event_group:, raw_time_row:, times_container: nil)
+      raise ArgumentError, "upsert_split_times_from_raw_time_row must include event_group" unless event_group
+      raise ArgumentError, "upsert_split_times_from_raw_time_row must include raw_time_row" unless raw_time_row
+
+      @event_group = event_group
+      @raw_time_row = raw_time_row
+      @times_container = times_container || SegmentTimesContainer.new(calc_model: :stats)
       @upserted_split_times = []
       @errors = []
       validate_setup
     end
 
     def perform!
-      unless errors.present?
+      if errors.blank?
         ActiveRecord::Base.transaction do
           valid_raw_times.each { |raw_time| create_and_update_resources(raw_time) }
           update_effort(effort, upserted_split_times)
@@ -40,7 +41,7 @@ module Interactors
 
       raw_time_row.errors ||= []
       raw_time_row.errors += errors
-      Interactors::Response.new(errors, "", {upserted_split_times: upserted_split_times})
+      Interactors::Response.new(errors, "", { upserted_split_times: upserted_split_times })
     end
 
     private
@@ -56,7 +57,9 @@ module Interactors
 
     def create_and_update_resources(raw_time)
       new_split_time = raw_time.new_split_time
-      upsert_split_time = effort.split_times.find { |st| st.time_point == new_split_time.time_point } || effort.split_times.new
+      upsert_split_time = effort.split_times.find do |st|
+        st.time_point == new_split_time.time_point
+      end || effort.split_times.new
       upsert_split_time.assign_attributes(new_split_time.attributes.slice(*ASSIGNABLE_ATTRIBUTES))
 
       if upsert_split_time.save
@@ -89,9 +92,9 @@ module Interactors
       errors << missing_effort_error unless raw_time_row.effort
       # Allow raw_times without new_split_times (e.g., "Out" raw_time for "In"-only splits)
       # but error if NONE of the raw_times have new_split_times
-      if raw_times.present? && raw_times.none?(&:new_split_time)
-        errors << missing_new_split_time_error(raw_times.first)
-      end
+      return unless raw_times.present? && raw_times.none?(&:new_split_time)
+
+      errors << missing_new_split_time_error(raw_times.first)
     end
   end
 end

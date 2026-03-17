@@ -61,18 +61,18 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
     end
 
     context "when no event_group is provided" do
-      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: nil, raw_times: raw_times) }
+      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: nil, raw_time_row: raw_time_row) }
 
       it "raises an error" do
-        expect { subject }.to raise_error(/must include event_group/)
+        expect { subject }.to raise_error(ArgumentError, /must include event_group/)
       end
     end
 
     context "when no raw_times argument is provided" do
-      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: event_group, raw_times: nil) }
+      subject { Interactors::UpsertSplitTimesFromRawTimeRow.new(event_group: event_group, raw_time_row: nil) }
 
       it "raises an error" do
-        expect { subject }.to raise_error(/must include raw_time_row/)
+        expect { subject }.to raise_error(ArgumentError, /must include raw_time_row/)
       end
     end
   end

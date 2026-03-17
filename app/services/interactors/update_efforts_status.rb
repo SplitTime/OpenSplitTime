@@ -3,14 +3,13 @@ module Interactors
     include Interactors::Errors
     include ActionView::Helpers::TextHelper
 
-    def self.perform!(efforts, options = {})
-      new(efforts, options).perform!
+    def self.perform!(efforts, **)
+      new(efforts, **).perform!
     end
 
-    def initialize(efforts, options = {})
-      ArgsValidator.validate(subject: efforts, params: options, exclusive: [:times_container, :calc_model], class: self)
-      @efforts = efforts && Array.wrap(efforts)
-      @times_container = options[:times_container] || SegmentTimesContainer.new(calc_model: options[:calc_model] || :stats)
+    def initialize(efforts, times_container: nil, calc_model: nil)
+      @efforts = Array.wrap(efforts)
+      @times_container = times_container || SegmentTimesContainer.new(calc_model: calc_model || :stats)
       @errors = []
     end
 
@@ -32,11 +31,11 @@ module Interactors
     end
 
     def changed_efforts
-      changed_resources.select { |resource| resource.is_a?(Effort) }
+      changed_resources.grep(Effort)
     end
 
     def changed_split_times
-      changed_resources.select { |resource| resource.is_a?(SplitTime) }
+      changed_resources.grep(SplitTime)
     end
 
     def status_responses
@@ -48,7 +47,10 @@ module Interactors
         return "Everything up to date." unless changed_efforts.present? || changed_split_times.present?
 
         updated_efforts_string = changed_efforts.present? ? pluralize(changed_efforts.size, "effort") : nil
-        updated_split_times_string = changed_split_times.present? ? pluralize(changed_split_times.size, "split time") : nil
+        updated_split_times_string = if changed_split_times.present?
+                                       pluralize(changed_split_times.size,
+                                                 "split time")
+                                     end
         "Updated status for #{[updated_efforts_string, updated_split_times_string].compact.join(' and ')}. "
       else
         "Could not update status for the provided efforts. "

@@ -1,35 +1,6 @@
 <%# Pagy navigation partial for Madmin views %>
+<%# Using the same pattern as other Madmin views %>
 <div class="pagination">
-  <% if pagy.respond_to?(:series_nav) %>
-    <%# Use pagy's built-in series_nav helper if available %>
-    <%== pagy.series_nav if pagy.last > 1 %>
-    <%== pagy.info_tag %>
-  <% else %>
-    <%# Fallback to basic pagination %>
-    <nav class="pagy-nav">
-      <% if pagy.prev %>
-        <%= link_to "&lsaquo; Prev".html_safe, url_for(page: pagy.prev), class: "page-link" %>
-      <% else %>
-        <span class="page-link disabled">&lsaquo; Prev</span>
-      <% end %>
-
-      <% (1..pagy.pages).each do |page| %>
-        <% if page == pagy.page %>
-          <span class="page-link active"><%= page %></span>
-        <% else %>
-          <%= link_to page, url_for(page: page), class: "page-link" %>
-        <% end %>
-      <% end %>
-
-      <% if pagy.next %>
-        <%= link_to "Next &rsaquo;".html_safe, url_for(page: pagy.next), class: "page-link" %>
-      <% else %>
-        <span class="page-link disabled">Next &rsaquo;</span>
-      <% end %>
-    </nav>
-
-    <div class="pagy-info">
-      Showing <%= pagy.from %> to <%= pagy.to %> of <%= pagy.count %> entries
-    </div>
-  <% end %>
+  <%== pagy.series_nav if pagy.last > 1 %>
+  <%== pagy.info_tag %>
 </div>

@@ -2,21 +2,27 @@ module Interactors
   class SubmitRawTimeRows
     include Interactors::Errors
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(raw_time_rows:, event_group:, force_submit:, mark_as_reviewed:, current_user_id: nil)
+      new(
+        raw_time_rows: raw_time_rows,
+        event_group: event_group,
+        force_submit: force_submit,
+        mark_as_reviewed: mark_as_reviewed,
+        current_user_id: current_user_id
+      ).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args,
-                             required: [:raw_time_rows, :event_group, :force_submit, :mark_as_reviewed],
-                             exclusive: [:raw_time_rows, :event_group, :force_submit, :mark_as_reviewed,
-                                         :current_user_id],
-                             class: self.class)
-      @raw_time_rows = args[:raw_time_rows]
-      @event_group = args[:event_group]
-      @force_submit = args[:force_submit]
-      @mark_as_reviewed = args[:mark_as_reviewed]
-      @current_user_id = args[:current_user_id]
+    def initialize(raw_time_rows:, event_group:, force_submit:, mark_as_reviewed:, current_user_id: nil)
+      raise ArgumentError, "submit_raw_time_rows must include raw_time_rows" unless raw_time_rows
+      raise ArgumentError, "submit_raw_time_rows must include event_group" unless event_group
+      raise ArgumentError, "submit_raw_time_rows must include force_submit" if force_submit.nil?
+      raise ArgumentError, "submit_raw_time_rows must include mark_as_reviewed" if mark_as_reviewed.nil?
+
+      @raw_time_rows = raw_time_rows
+      @event_group = event_group
+      @force_submit = force_submit
+      @mark_as_reviewed = mark_as_reviewed
+      @current_user_id = current_user_id
       @times_container = SegmentTimesContainer.new(calc_model: :stats)
       @problem_rows = []
       @upserted_split_times = []

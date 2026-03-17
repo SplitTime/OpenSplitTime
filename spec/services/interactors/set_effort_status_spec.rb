@@ -19,7 +19,7 @@ RSpec.describe Interactors::SetEffortStatus do
       let(:effort) { nil }
 
       it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include a subject/)
+        expect { subject }.to raise_error(ArgumentError, /must include effort/)
       end
     end
   end

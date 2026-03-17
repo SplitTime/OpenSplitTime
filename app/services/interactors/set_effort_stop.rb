@@ -1,14 +1,16 @@
 module Interactors
   class SetEffortStop
-    def self.perform(effort, options = {})
-      new(effort, options).perform
+    def self.perform(effort, **)
+      new(effort, **).perform
     end
 
-    def initialize(effort, options = {})
-      ArgsValidator.validate(subject: effort, subject_class: Effort, params: options, exclusive: [:stop_status, :split_time_id])
+    def initialize(effort, stop_status: nil, split_time_id: nil)
+      raise ArgumentError, "set_effort_stop must include effort" unless effort
+      raise ArgumentError, "effort must be an Effort" unless effort.is_a?(Effort)
+
       @effort = effort
-      @stop_status = options[:stop_status].nil? ? true : options[:stop_status]
-      @split_time_id = options[:split_time_id]
+      @stop_status = stop_status.nil? ? true : stop_status
+      @split_time_id = split_time_id
       validate_setup
     end
 
@@ -39,9 +41,9 @@ module Interactors
     end
 
     def validate_setup
-      if split_time_id && !found_split_time
-        raise ArgumentError, "split_time_id #{split_time_id} does not exist for #{effort}"
-      end
+      return unless split_time_id && !found_split_time
+
+      raise ArgumentError, "split_time_id #{split_time_id} does not exist for #{effort}"
     end
   end
 end

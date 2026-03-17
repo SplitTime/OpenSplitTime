@@ -3,26 +3,24 @@ module Interactors
     include Interactors::Errors
     include TimeFormats
 
-    def self.perform!(event, args)
-      new(event, args).perform!
+    def self.perform!(event, new_start_time:)
+      new(event, new_start_time: new_start_time).perform!
     end
 
-    def initialize(event, args)
-      ArgsValidator.validate(subject: event,
-                             subject_class: Event,
-                             params: args,
-                             required: [:new_start_time],
-                             exclusive: [:new_start_time],
-                             class: self.class)
+    def initialize(event, new_start_time:)
+      raise ArgumentError, "shift_event_start_time must include event" unless event
+      raise ArgumentError, "event must be an Event" unless event.is_a?(Event)
+      raise ArgumentError, "shift_event_start_time must include new_start_time" unless new_start_time
+
       @event = event
-      @new_start_time = args[:new_start_time].in_time_zone(event.home_time_zone)
+      @new_start_time = new_start_time.in_time_zone(event.home_time_zone)
       @old_start_time = event.scheduled_start_time_local
       @current_user = User.current
       @errors = []
     end
 
     def perform!
-      unless errors.present? || shift_seconds == 0
+      unless errors.present? || shift_seconds.zero?
         ActiveRecord::Base.transaction do
           update_event
           update_efforts
@@ -73,12 +71,16 @@ module Interactors
 
     def response_message
       if errors.present?
-        "The start time for #{event.name} could not be shifted from #{flexible_format(old_start_time, new_start_time)} to #{flexible_format(new_start_time, old_start_time)}. "
-      elsif shift_seconds == 0
-        "The new start time for #{event.name} was #{flexible_format(new_start_time, old_start_time)}, unchanged from the old start time. "
+        "The start time for #{event.name} could not be shifted " \
+          "from #{flexible_format(old_start_time, new_start_time)} " \
+          "to #{flexible_format(new_start_time, old_start_time)}. "
+      elsif shift_seconds.zero?
+        "The new start time for #{event.name} was #{flexible_format(new_start_time, old_start_time)}, " \
+          "unchanged from the old start time. "
       else
-        "The start time for #{event.name} was shifted #{shift_direction} " +
-          "from #{flexible_format(old_start_time, new_start_time)} to #{flexible_format(new_start_time, old_start_time)}. " +
+        "The start time for #{event.name} was shifted #{shift_direction} " \
+          "from #{flexible_format(old_start_time, new_start_time)} " \
+          "to #{flexible_format(new_start_time, old_start_time)}. " \
           "All related scheduled start times and split times were shifted #{shift_direction} by the same amount."
       end
     end

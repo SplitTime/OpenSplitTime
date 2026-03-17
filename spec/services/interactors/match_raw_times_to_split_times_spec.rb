@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe Interactors::MatchRawTimesToSplitTimes do
   include BitkeyDefinitions
 
-  subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: event_group, raw_times: raw_times, tolerance: tolerance) }
+  subject { described_class.new(event_group: event_group, raw_times: raw_times, tolerance: tolerance) }
+
   let(:tolerance) { nil }
   let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0) }
   let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 60.minutes) }
@@ -43,7 +44,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
     end
 
     context "when event_group argument is missing" do
-      subject { Interactors::MatchRawTimesToSplitTimes.new(raw_times: raw_times) }
+      subject { described_class.new(raw_times: raw_times) }
 
       it "raises an ArgumentError" do
         expect { subject }.to raise_error(ArgumentError, /missing keyword: :?event_group/)
@@ -51,7 +52,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
     end
 
     context "when raw_times argument is missing" do
-      subject { Interactors::MatchRawTimesToSplitTimes.new(event_group: event_group) }
+      subject { described_class.new(event_group: event_group) }
 
       it "raises an ArgumentError" do
         expect { subject }.to raise_error(ArgumentError, /missing keyword: :?raw_times/)

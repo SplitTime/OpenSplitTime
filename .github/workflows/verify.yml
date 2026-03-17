@@ -100,17 +100,21 @@ jobs:
           yarn install --pure-lockfile
 
       - name: Compile assets
+        env:
+          RAILS_ENV: test
         run: |
           yarn build
           yarn build:css
+          bundle exec rake assets:precompile
 
-      - name: Cache compiled assets
-        uses: actions/cache/save@v3
+      - name: Upload compiled assets
+        uses: actions/upload-artifact@v4
         with:
+          name: compiled-assets
           path: |
             public/packs
             public/assets
-          key: compiled-assets-${{ github.sha }}
+          retention-days: 1
 
   tests:
     name: Tests (${{ matrix.test-group }})
@@ -165,13 +169,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Restore compiled assets
-        uses: actions/cache/restore@v3
+      - name: Download compiled assets
+        uses: actions/download-artifact@v4
         with:
-          path: |
-            public/packs
-            public/assets
-          key: compiled-assets-${{ github.sha }}
+          name: compiled-assets
+          path: .
 
       - name: Setup test database
         env:

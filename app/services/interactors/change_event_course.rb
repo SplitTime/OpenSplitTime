@@ -2,15 +2,16 @@ module Interactors
   class ChangeEventCourse
     include Interactors::Errors
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(event:, new_course:)
+      new(event: event, new_course: new_course).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args, required: [:event, :new_course], exclusive: [:event, :new_course],
-                             class: self.class)
-      @event = args[:event]
-      @new_course = args[:new_course]
+    def initialize(event:, new_course:)
+      raise ArgumentError, "change_event_course must include event" unless event
+      raise ArgumentError, "change_event_course must include new_course" unless new_course
+
+      @event = event
+      @new_course = new_course
       @old_course = event.course
       @split_times = event.split_times
       @existing_splits = event.splits

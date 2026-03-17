@@ -2,15 +2,16 @@ module Interactors
   class ChangeEffortEvent
     include Interactors::Errors
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(effort:, new_event:)
+      new(effort: effort, new_event: new_event).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args, required: [:effort, :new_event], exclusive: [:effort, :new_event],
-                             class: self.class)
-      @effort = args[:effort]
-      @new_event = args[:new_event]
+    def initialize(effort:, new_event:)
+      raise ArgumentError, "change_effort_event must include effort" unless effort
+      raise ArgumentError, "change_effort_event must include new_event" unless new_event
+
+      @effort = effort
+      @new_event = new_event
       @old_event ||= effort.event
       @split_times ||= effort.ordered_split_times
       @existing_splits = old_event.splits

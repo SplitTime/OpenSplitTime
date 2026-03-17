@@ -2,15 +2,17 @@ module Interactors
   class MatchRawTimesToSplitTimes
     include Interactors::Errors
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(event_group:, raw_times:, tolerance: 1.minute)
+      new(event_group: event_group, raw_times: raw_times, tolerance: tolerance).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args, required: [:event_group, :raw_times], exclusive: [:event_group, :raw_times, :tolerance], class: self.class)
-      @event_group = args[:event_group]
-      @raw_times = args[:raw_times]
-      @tolerance = args[:tolerance] || 1.minute
+    def initialize(event_group:, raw_times:, tolerance: 1.minute)
+      raise ArgumentError, "match_raw_times_to_split_times must include event_group" unless event_group
+      raise ArgumentError, "match_raw_times_to_split_times must include raw_times" unless raw_times
+
+      @event_group = event_group
+      @raw_times = raw_times
+      @tolerance = tolerance || 1.minute
       @errors = []
       validate_setup
     end
@@ -19,7 +21,11 @@ module Interactors
       if errors.present?
         Interactors::Response.new(errors, "Raw times could not be matched. ", {})
       else
-        Interactors::MatchTimeRecordsToSplitTimes.perform!(time_records: loaded_raw_times, split_times: split_times, tolerance: tolerance)
+        Interactors::MatchTimeRecordsToSplitTimes.perform!(
+          time_records: loaded_raw_times,
+          split_times: split_times,
+          tolerance: tolerance,
+        )
       end
     end
 

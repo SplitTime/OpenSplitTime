@@ -3,11 +3,12 @@ require "rails_helper"
 RSpec.describe Interactors::SetEffortStop do
   include BitkeyDefinitions
 
-  subject { Interactors::SetEffortStop.new(effort, stop_status: stop_status, split_time_id: split_time_id) }
+  subject { described_class.new(effort, stop_status: stop_status, split_time_id: split_time_id) }
+
   let(:stop_status) { nil }
   let(:split_time_id) { nil }
 
-  let(:split_time_1) { build_stubbed(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time + 0, stopped_here: false) }
+  let(:split_time_1) { build_stubbed(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, absolute_time: start_time, stopped_here: false) }
   let(:split_time_2) { build_stubbed(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, absolute_time: start_time + 10_000, stopped_here: false) }
   let(:split_time_3) { build_stubbed(:split_time, effort: effort, lap: 1, split: split_2, bitkey: out_bitkey, absolute_time: start_time + 11_000, stopped_here: false) }
   let(:split_time_4) { build_stubbed(:split_time, effort: effort, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: start_time + 20_000, stopped_here: false) }
@@ -37,7 +38,7 @@ RSpec.describe Interactors::SetEffortStop do
       let(:effort) { nil }
 
       it "raises an error" do
-        expect { subject }.to raise_error(/arguments must include a subject/)
+        expect { subject }.to raise_error(ArgumentError, /must include effort/)
       end
     end
 
@@ -110,7 +111,7 @@ RSpec.describe Interactors::SetEffortStop do
       end
     end
 
-    context "for a multi-lap event where stop_status is true" do
+    context "when the event is multi-lap and stop_status is true" do
       let(:event) { build_stubbed(:event, course: course, laps_required: 2) }
       let(:split_time_4) { build_stubbed(:split_time, effort: effort, lap: 1, split: split_3, bitkey: in_bitkey, absolute_time: start_time + 20_000, stopped_here: true) }
       let(:split_times) { [split_time_1, split_time_2, split_time_3, split_time_4, split_time_5, split_time_6, split_time_7] }

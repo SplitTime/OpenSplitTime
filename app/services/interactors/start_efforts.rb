@@ -3,24 +3,22 @@ module Interactors
     include Interactors::Errors
     include ActionView::Helpers::TextHelper
 
-    def self.perform!(args)
-      new(args).perform!
+    def self.perform!(efforts:, start_time: nil)
+      new(efforts: efforts, start_time: start_time).perform!
     end
 
-    def initialize(args)
-      ArgsValidator.validate(params: args,
-                             required: [:efforts],
-                             exclusive: [:efforts, :start_time],
-                             class: self.class)
-      @efforts = args[:efforts]
-      @start_time = args[:start_time]
+    def initialize(efforts:, start_time: nil)
+      raise ArgumentError, "start_efforts must include efforts" unless efforts
+
+      @efforts = efforts
+      @start_time = start_time
       @errors = []
       @saved_split_times = []
       validate_setup
     end
 
     def perform!
-      unless errors.present?
+      if errors.blank?
         SplitTime.transaction do
           efforts.each(&method(:start_effort))
           raise ActiveRecord::Rollback if errors.present?
@@ -69,8 +67,20 @@ module Interactors
     end
 
     def response_message
-      started_time = converted_start_time ? I18n.l(converted_start_time, format: :datetime_input) : "the scheduled start #{pluralize(saved_split_times.size, 'time')}"
-      errors.present? ? "No efforts were started" : "Started #{pluralize(saved_split_times.size, 'effort')} at #{started_time}"
+      started_time = if converted_start_time
+                       I18n.l(converted_start_time,
+                              format: :datetime_input)
+                     else
+                       "the scheduled start #{pluralize(
+                         saved_split_times.size, 'time'
+                       )}"
+                     end
+      if errors.present?
+        "No efforts were started"
+      else
+        "Started #{pluralize(saved_split_times.size,
+                             'effort')} at #{started_time}"
+      end
     end
 
     def validate_setup
@@ -82,8 +92,8 @@ module Interactors
       errors << multiple_event_groups_error(event_group_ids) if event_group_ids.uniq.many?
       errors << invalid_start_time_error(start_time) if invalid_start_time?
       errors << invalid_start_time_error(start_time || "nil") unless converted_start_time ||
-        efforts.all?(&:scheduled_start_time?) ||
-        efforts.all?(&:event)
+                                                                     efforts.all?(&:scheduled_start_time?) ||
+                                                                     efforts.all?(&:event)
     end
 
     def event_group_ids

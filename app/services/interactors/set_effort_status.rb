@@ -3,17 +3,17 @@ module Interactors
     # This class expects to be given an effort loaded with split_times: :splits, or in the alternative, it expects
     # :ordered_split_times and :lap_splits to be provided in tne options hash.
 
-    def self.perform(effort, options = {})
-      new(effort, options).perform
+    def self.perform(effort, **)
+      new(effort, **).perform
     end
 
-    def initialize(effort, options = {})
-      ArgsValidator.validate(subject: effort, subject_class: Effort, params: options,
-                             exclusive: [:ordered_split_times, :lap_splits, :times_container], class: self)
+    def initialize(effort, ordered_split_times: nil, lap_splits: nil, times_container: nil)
       @effort = effort
-      @ordered_split_times = options[:ordered_split_times] || effort.ordered_split_times.reject(&:destroyed?)
-      @lap_splits = options[:lap_splits] || effort.lap_splits
-      @times_container = options[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+      validate_setup
+
+      @ordered_split_times = ordered_split_times || effort.ordered_split_times.reject(&:destroyed?)
+      @lap_splits = lap_splits || effort.lap_splits
+      @times_container = times_container || SegmentTimesContainer.new(calc_model: :stats)
     end
 
     def perform
@@ -40,7 +40,10 @@ module Interactors
     end
 
     def set_effort_status
-      worst_split_time_status = ordered_split_times.map(&:data_status_numeric).push(Effort.data_statuses[:good]).compact.min
+      worst_split_time_status = ordered_split_times.map(&:data_status_numeric)
+                                                   .push(Effort.data_statuses[:good])
+                                                   .compact
+                                                   .min
       effort_status = times_without_start_time? ? ::Effort.data_statuses[:bad] : ::Effort.data_statuses[:good]
       effort.data_status = [worst_split_time_status, effort_status].min
     end
@@ -104,6 +107,11 @@ module Interactors
 
     def unconfirmed_split_times
       @unconfirmed_split_times ||= ordered_split_times.reject(&:confirmed?)
+    end
+
+    def validate_setup
+      raise ArgumentError, "set_effort_status must include effort" unless effort
+      raise ArgumentError, "effort must be an Effort" unless effort.is_a?(Effort)
     end
   end
 end

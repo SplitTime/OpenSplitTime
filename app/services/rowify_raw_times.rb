@@ -2,17 +2,13 @@
 # raw_times must include effort_ids (e.g., by using RawTime.with_relation_ids)
 
 class RowifyRawTimes
-  def self.build(args)
-    new(args).build
+  def self.build(event_group:, raw_times:)
+    new(event_group: event_group, raw_times: raw_times).build
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:event_group, :raw_times],
-                           exclusive: [:event_group, :raw_times],
-                           class: self.class)
-    @event_group = args[:event_group]
-    @raw_times = args[:raw_times]
+  def initialize(event_group:, raw_times:)
+    @event_group = event_group
+    @raw_times = raw_times
     validate_setup
   end
 
@@ -83,8 +79,8 @@ class RowifyRawTimes
   end
 
   def validate_setup
-    unless raw_times.all? { |rt| rt.event_group_id == event_group.id }
-      raise ArgumentError, "All raw_times must match the provided event_group"
-    end
+    return if raw_times.all? { |rt| rt.event_group_id == event_group.id }
+
+    raise ArgumentError, "All raw_times must match the provided event_group"
   end
 end

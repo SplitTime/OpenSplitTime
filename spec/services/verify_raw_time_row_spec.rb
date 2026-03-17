@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe VerifyRawTimeRow do
-  subject { VerifyRawTimeRow.new(raw_time_row, times_container: times_container) }
+  subject { described_class.new(raw_time_row, times_container: times_container) }
+
   let(:raw_time_row) { RawTimeRow.new(raw_times, effort, event) }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :terrain) }
 
@@ -15,7 +16,7 @@ RSpec.describe VerifyRawTimeRow do
   let(:splits) { [start_split, cunningham_split, maggie_split] }
   let(:expected_lap_splits) { event.required_lap_splits }
 
-  let(:split_time_1) { build_stubbed(:split_time, split: start_split, bitkey: 1, absolute_time: start_time + 0) }
+  let(:split_time_1) { build_stubbed(:split_time, split: start_split, bitkey: 1, absolute_time: start_time) }
   let(:split_time_2) { build_stubbed(:split_time, split: cunningham_split, bitkey: 1, absolute_time: start_time + 7200) }
   let(:split_time_3) { build_stubbed(:split_time, split: cunningham_split, bitkey: 64, absolute_time: start_time + 7300) }
   let(:split_time_4) { build_stubbed(:split_time, split: maggie_split, bitkey: 1, absolute_time: start_time + 15_000) }

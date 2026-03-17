@@ -4,18 +4,14 @@
 # and verifying the raw_time_row
 
 class EnrichRawTimeRow
-  def self.perform(args)
-    new(args).perform
+  def self.perform(event_group:, raw_time_row:, times_container: nil)
+    new(event_group: event_group, raw_time_row: raw_time_row, times_container: times_container).perform
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:event_group, :raw_time_row],
-                           exclusive: [:event_group, :raw_time_row, :times_container],
-                           class: self.class)
-    @event_group = args[:event_group]
-    @raw_time_row = args[:raw_time_row]
-    @times_container = args[:times_container] || SegmentTimesContainer.new(calc_model: :stats)
+  def initialize(event_group:, raw_time_row:, times_container: nil)
+    @event_group = event_group
+    @raw_time_row = raw_time_row
+    @times_container = times_container || SegmentTimesContainer.new(calc_model: :stats)
     @errors = []
   end
 

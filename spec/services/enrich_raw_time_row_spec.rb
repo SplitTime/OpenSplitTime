@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe EnrichRawTimeRow do
-  subject { EnrichRawTimeRow.new(event_group: event_group, raw_time_row: request_row, times_container: times_container) }
+  subject { described_class.new(event_group: event_group, raw_time_row: request_row, times_container: times_container) }
+
   let(:request_row) { RawTimeRow.new(request_raw_times) }
   let(:request_raw_times) { [raw_time_1, raw_time_2].compact }
   let(:times_container) { SegmentTimesContainer.new(calc_model: :stats) }
@@ -20,7 +21,7 @@ RSpec.describe EnrichRawTimeRow do
     let(:bib_number) { effort.bib_number.to_s }
     let(:base_name) { split.base_name }
 
-    context "for a single-lap event group" do
+    context "with a single-lap event group" do
       let(:event) { events(:hardrock_2015) }
       let(:split) { course.splits.find_by(base_name: "Cunningham") }
 
@@ -154,7 +155,7 @@ RSpec.describe EnrichRawTimeRow do
       end
     end
 
-    context "for a multi-lap event group" do
+    context "with a multi-lap event group" do
       let(:event) { events(:rufa_2017_24h) }
       let(:split) { course.splits.find_by(base_name: "Finish") }
 

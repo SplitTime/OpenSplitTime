@@ -30,8 +30,8 @@ class AidStationDetail < LiveEventFramework
     @event = args[:event]
     @parameterized_split_name = args[:parameterized_split_name].in?(parameterized_split_names) ? args[:parameterized_split_name] : parameterized_split_names.last
     @params = args[:params]
-    @post_initialize ||= AidStationRow.new(aid_station: aid_station, event_framework: self,
-                                           split_times: split_times_here)
+    @aid_station_row ||= AidStationRow.new(aid_station: aid_station, event_framework: self,
+                                          split_times: split_times_here)
   end
 
   def effort_data

@@ -1,9 +1,7 @@
 class EffortProgressSummary < EffortProgressRow
   def post_initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:effort, :event_framework],
-                           exclusive: [:effort, :event_framework],
-                           class: self.class)
+    raise ArgumentError, "effort_progress_summary must include effort" unless args[:effort]
+    raise ArgumentError, "effort_progress_summary must include event_framework" unless args[:event_framework]
   end
 
   def seconds_past_due

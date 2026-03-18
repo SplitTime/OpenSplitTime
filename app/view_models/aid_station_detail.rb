@@ -11,30 +11,62 @@ class AidStationDetail < LiveEventFramework
   IN_BITKEY = SubSplit::IN_BITKEY
   OUT_BITKEY = SubSplit::OUT_BITKEY
   UNIVERSAL_ATTRIBUTES = [:effort_slug, :bib_number, :full_name, :bio_historic].freeze
-  VIEW_ATTRIBUTES = {expected: {default_sort_field: :expected_here_info, default_sort_order: :asc, custom_attributes: [:last_reported_info, :due_next_info, :expected_here_info]},
-                     stopped_here: {default_sort_field: :stopped_here_info, default_sort_order: :asc, custom_attributes: [:state_and_country, :prior_to_here_info, :stopped_here_info]},
-                     dropped_here: {default_sort_field: :dropped_here_info, default_sort_order: :asc, custom_attributes: [:state_and_country, :prior_to_here_info, :dropped_here_info]},
-                     missed: {default_sort_field: :after_here_info, default_sort_order: :asc, custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info, :after_here_info]},
-                     in_aid: {default_sort_field: :recorded_here_info, default_sort_order: :asc, custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info]},
-                     recorded_here: {default_sort_field: :recorded_here_info, default_sort_order: :desc, custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info, :after_here_info]}}
-      .with_indifferent_access
+  VIEW_ATTRIBUTES = {
+    expected: {
+      default_sort_field: :expected_here_info,
+      default_sort_order: :asc,
+      custom_attributes: [:last_reported_info, :due_next_info, :expected_here_info],
+    },
+    stopped_here: {
+      default_sort_field: :stopped_here_info,
+      default_sort_order: :asc,
+      custom_attributes: [:state_and_country, :prior_to_here_info, :stopped_here_info],
+    },
+    dropped_here: {
+      default_sort_field: :dropped_here_info,
+      default_sort_order: :asc,
+      custom_attributes: [:state_and_country, :prior_to_here_info, :dropped_here_info],
+    },
+    missed: {
+      default_sort_field: :after_here_info,
+      default_sort_order: :asc,
+      custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info, :after_here_info],
+    },
+    in_aid: {
+      default_sort_field: :recorded_here_info,
+      default_sort_order: :asc,
+      custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info],
+    },
+    recorded_here: {
+      default_sort_field: :recorded_here_info,
+      default_sort_order: :desc,
+      custom_attributes: [:state_and_country, :prior_to_here_info, :recorded_here_info, :after_here_info],
+    },
+  }.with_indifferent_access.freeze
 
   def post_initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:event],
-                           exclusive: [:event, :parameterized_split_name, :params, :times_container],
-                           class: self.class)
+    raise ArgumentError, "aid_station_detail must include event" unless args[:event]
+
     @event = args[:event]
-    @parameterized_split_name = args[:parameterized_split_name].in?(parameterized_split_names) ? args[:parameterized_split_name] : parameterized_split_names.last
+    @parameterized_split_name = if args[:parameterized_split_name].in?(parameterized_split_names)
+                                  args[:parameterized_split_name]
+                                else
+                                  parameterized_split_names.last
+                                end
     @params = args[:params]
-    @aid_station_row ||= AidStationRow.new(aid_station: aid_station, event_framework: self, split_times: split_times_here)
+    @aid_station_row = AidStationRow.new(
+      aid_station: aid_station,
+      event_framework: self,
+      split_times: split_times_here,
+    )
   end
 
   def effort_data
     return @effort_data if defined?(@effort_data)
 
-    rows = category_effort_rows[display_style].sort_by { |row| row.send(sort_field(display_style)) }
-        .map { |row| row.extract_attributes(*extractable_attributes(display_style)) }
+    rows = category_effort_rows[display_style]
+           .sort_by { |row| row.send(sort_field(display_style)) }
+           .map { |row| row.extract_attributes(*extractable_attributes(display_style)) }
     @effort_data = (sort_order(display_style) == :desc ? rows.reverse : rows)
   end
 
@@ -63,8 +95,9 @@ class AidStationDetail < LiveEventFramework
   def category_effort_rows
     @category_effort_rows ||=
       AID_EFFORT_CATEGORIES
-          .map { |category| [category, rows_from_lap_keys(aid_station_row.category_effort_lap_keys[category])] }
-          .to_h.with_indifferent_access
+      .index_with do |category|
+        rows_from_lap_keys(aid_station_row.category_effort_lap_keys[category])
+      end.with_indifferent_access
   end
 
   def extractable_attributes(display_style)
@@ -89,12 +122,20 @@ class AidStationDetail < LiveEventFramework
 
   def event_split_times
     @event_split_times ||= event.split_times.ordered
-        .select("effort_id, lap, split_id, sub_split_bitkey, absolute_time, split_times.data_status, event_groups.home_time_zone")
-        .joins(effort: {event: :event_group})
+                                .select(<<~SQL.squish)
+                                  effort_id,
+                                  lap,
+                                  split_id,
+                                  sub_split_bitkey,
+                                  absolute_time,
+                                  split_times.data_status,
+                                  event_groups.home_time_zone
+                                SQL
+                                .joins(effort: { event: :event_group })
   end
 
   def split_times_here
-    return {} unless split.present?
+    return {} if split.blank?
 
     @split_times_here ||= split_times_by_split[split.id]
   end

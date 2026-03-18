@@ -2,7 +2,7 @@ class AidStationsDisplay < LiveEventFramework
   delegate :course, :organization, :home_time_zone, to: :event
 
   def post_initialize(args)
-    ArgsValidator.validate(params: args, required: :event, exclusive: [:event, :times_container], class: self.class)
+    raise ArgumentError, "aid_stations_display must include event" unless args[:event]
   end
 
   def aid_station_rows
@@ -22,8 +22,8 @@ class AidStationsDisplay < LiveEventFramework
 
   def grouped_split_times
     @grouped_split_times ||= event.split_times
-        .select(:effort_id, :lap, :split_id, :sub_split_bitkey)
-        .group_by(&:split_id)
+                                  .select(:effort_id, :lap, :split_id, :sub_split_bitkey)
+                                  .group_by(&:split_id)
   end
 
   def aid_stations

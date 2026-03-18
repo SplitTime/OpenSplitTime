@@ -89,20 +89,20 @@ RSpec.describe Segment, type: :model do
     it "initializes when given a begin_point and end_point in an args hash" do
       begin_point = LapSplit.new(lap_1, aid_1).time_point_in
       end_point = LapSplit.new(lap_1, aid_1).time_point_out
-      expect { Segment.new(begin_point: begin_point, end_point: end_point) }
-          .not_to raise_error
+      expect { described_class.new(begin_point: begin_point, end_point: end_point) }
+        .not_to raise_error
     end
 
     it "raises an error if missing begin_point" do
       end_point = LapSplit.new(lap_1, aid_1).time_point_out
-      expect { Segment.new(end_point: end_point) }
-          .to raise_error(/must include one of begin_point and end_point or begin_sub_split and end_sub_split/)
+      expect { described_class.new(end_point: end_point) }
+        .to raise_error(ArgumentError, /missing keyword/)
     end
 
     it "raises an error if missing end_point" do
       begin_point = LapSplit.new(lap_1, aid_1).time_point_in
-      expect { Segment.new(begin_point: begin_point) }
-          .to raise_error(/must include one of begin_point and end_point or begin_sub_split and end_sub_split/)
+      expect { described_class.new(begin_point: begin_point) }
+        .to raise_error(ArgumentError, /missing keyword/)
     end
 
     it "raises an error when splits on the same lap are out of order" do
@@ -360,9 +360,7 @@ RSpec.describe Segment, type: :model do
 
   def validate_attribute(attribute, segment, expected)
     course = build_stubbed(:course)
-    allow(course).to receive(:distance).and_return(finish.distance_from_start)
-    allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
-    allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
+    allow(course).to receive_messages(distance: finish.distance_from_start, vert_gain: finish.vert_gain_from_start, vert_loss: finish.vert_loss_from_start)
     allow(segment.end_lap_split).to receive(:course).and_return(course)
     allow(segment.begin_lap_split).to receive(:course).and_return(course)
     expect(segment.send(attribute)).to eq(expected)

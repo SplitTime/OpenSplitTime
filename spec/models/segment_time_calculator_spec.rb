@@ -38,28 +38,28 @@ RSpec.describe SegmentTimeCalculator do
 
   describe "#initialize" do
     it "initializes with an args hash that contains only a calc_model and a segment" do
-      expect { SegmentTimeCalculator.new(segment: lap_1_zero_start, calc_model: :terrain) }
-          .not_to raise_error
+      expect { described_class.new(segment: lap_1_zero_start, calc_model: :terrain) }
+        .not_to raise_error
     end
 
     it "raises an ArgumentError if initialized without a calc_model" do
-      expect { SegmentTimeCalculator.new(segment: lap_1_zero_start) }
-          .to raise_error(/must include calc_model/)
+      expect { described_class.new(segment: lap_1_zero_start) }
+        .to raise_error(ArgumentError, /missing keyword/)
     end
 
     it "raises an ArgumentError if initialized without a segment" do
-      expect { SegmentTimeCalculator.new(calc_model: :terrain) }
-          .to raise_error(/must include segment/)
+      expect { described_class.new(calc_model: :terrain) }
+        .to raise_error(ArgumentError, /missing keyword/)
     end
 
     it "raises an ArgumentError if initialized with calc_model: :focused but without effort_ids" do
-      expect { SegmentTimeCalculator.new(segment: lap_1_zero_start, calc_model: :focused) }
-          .to raise_error(/cannot be initialized/)
+      expect { described_class.new(segment: lap_1_zero_start, calc_model: :focused) }
+        .to raise_error(/cannot be initialized/)
     end
 
     it "raises an ArgumentError if initialized with an unrecognized calc_model" do
-      expect { SegmentTimeCalculator.new(segment: lap_1_zero_start, calc_model: :random) }
-          .to raise_error(/calc_model random is not recognized/)
+      expect { described_class.new(segment: lap_1_zero_start, calc_model: :random) }
+        .to raise_error(/calc_model random is not recognized/)
     end
   end
 
@@ -69,7 +69,7 @@ RSpec.describe SegmentTimeCalculator do
 
     it "calculates a segment time in seconds using the specified calc_model" do
       segment = lap_1_start_to_lap_1_aid_1
-      expected = 10_000 * distance_factor + 1000 * vert_gain_factor
+      expected = (10_000 * distance_factor) + (1000 * vert_gain_factor)
       validate_typical_time_terrain(segment, expected)
     end
 
@@ -87,33 +87,31 @@ RSpec.describe SegmentTimeCalculator do
 
     it "returns typical time between splits for a segment that begins and ends with different intermediate splits" do
       segment = lap_1_aid_2_to_lap_1_aid_3
-      expected = 20_000 * distance_factor + 2000 * vert_gain_factor
+      expected = (20_000 * distance_factor) + (2000 * vert_gain_factor)
       validate_typical_time_terrain(segment, expected)
     end
 
     it "returns typical time between splits for a segment made up of a complete lap" do
       segment = lap_1_start_to_lap_1_finish
-      expected = 70_000 * distance_factor + 7_000 * vert_gain_factor
+      expected = (70_000 * distance_factor) + (7_000 * vert_gain_factor)
       validate_typical_time_terrain(segment, expected)
     end
 
     it "returns typical time between splits for a segment that spans different laps" do
       segment = lap_1_start_to_lap_2_aid_1
-      expected = 80_000 * distance_factor + 8000 * vert_gain_factor
+      expected = (80_000 * distance_factor) + (8000 * vert_gain_factor)
       validate_typical_time_terrain(segment, expected)
     end
 
     it "returns typical time between splits for a segment made up of multiple complete laps" do
       segment = lap_1_start_to_lap_3_finish
-      expected = 210_000 * distance_factor + 21_000 * vert_gain_factor
+      expected = (210_000 * distance_factor) + (21_000 * vert_gain_factor)
       validate_typical_time_terrain(segment, expected)
     end
 
     def validate_typical_time_terrain(segment, expected)
       course = build_stubbed(:course)
-      allow(course).to receive(:distance).and_return(finish.distance_from_start)
-      allow(course).to receive(:vert_gain).and_return(finish.vert_gain_from_start)
-      allow(course).to receive(:vert_loss).and_return(finish.vert_loss_from_start)
+      allow(course).to receive_messages(distance: finish.distance_from_start, vert_gain: finish.vert_gain_from_start, vert_loss: finish.vert_loss_from_start)
       allow(segment.end_lap_split).to receive(:course).and_return(course)
       allow(segment.begin_lap_split).to receive(:course).and_return(course)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :terrain)
@@ -148,7 +146,7 @@ RSpec.describe SegmentTimeCalculator do
 
     def typical_time_stats(segment, time_result, count_result)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :stats)
-      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return({"effort_count" => count_result, "average" => time_result}.with_indifferent_access)
+      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return({ "effort_count" => count_result, "average" => time_result }.with_indifferent_access)
       calculator.typical_time
     end
   end
@@ -192,7 +190,7 @@ RSpec.describe SegmentTimeCalculator do
 
     def typical_time_focused(segment, time_result, count_result, effort_ids)
       calculator = SegmentTimeCalculator.new(segment: segment, calc_model: :focused, effort_ids: effort_ids)
-      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return({"effort_count" => count_result, "average" => time_result}.with_indifferent_access)
+      allow(SplitTimeQuery).to receive(:typical_segment_time).and_return({ "effort_count" => count_result, "average" => time_result }.with_indifferent_access)
       calculator.typical_time
     end
   end

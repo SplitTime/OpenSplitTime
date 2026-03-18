@@ -1,13 +1,10 @@
 class ProjectedEffort
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:event, :start_time, :baseline_split_time, :projected_time_points],
-                           exclusive: [:event, :start_time, :baseline_split_time, :projected_time_points],
-                           class: self)
-    @event = args[:event]
-    @start_time = args[:start_time]
-    @baseline_split_time = args[:baseline_split_time]
-    @projected_time_points = args[:projected_time_points]
+  def initialize(event:, start_time:, baseline_split_time:, projected_time_points:)
+    @event = event
+    @start_time = start_time
+    @baseline_split_time = baseline_split_time
+    @projected_time_points = projected_time_points
+    validate_setup
   end
 
   def ordered_split_times
@@ -54,6 +51,13 @@ class ProjectedEffort
   end
 
   def add_to_baseline(seconds)
-    seconds && baseline_time + seconds
+    seconds && (baseline_time + seconds)
+  end
+
+  def validate_setup
+    raise ArgumentError, "projected_effort must include event" unless event
+    raise ArgumentError, "projected_effort must include start_time" unless start_time
+    raise ArgumentError, "projected_effort must include baseline_split_time" unless baseline_split_time
+    raise ArgumentError, "projected_effort must include projected_time_points" unless projected_time_points
   end
 end

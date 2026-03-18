@@ -1,9 +1,11 @@
 class EffortProgressAidDetail < EffortProgressRow
   def post_initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:effort, :event_framework, :lap, :effort_split_times, :times_container],
-                           exclusive: [:effort, :event_framework, :lap, :effort_split_times, :times_container],
-                           class: self.class)
+    raise ArgumentError, "effort_progress_aid_detail must include effort" unless args[:effort]
+    raise ArgumentError, "effort_progress_aid_detail must include event_framework" unless args[:event_framework]
+    raise ArgumentError, "effort_progress_aid_detail must include lap" unless args[:lap]
+    raise ArgumentError, "effort_progress_aid_detail must include effort_split_times" unless args[:effort_split_times]
+    raise ArgumentError, "effort_progress_aid_detail must include times_container" unless args[:times_container]
+
     @lap = args[:lap]
     @effort_split_times = args[:effort_split_times]
     @times_container = args[:times_container]

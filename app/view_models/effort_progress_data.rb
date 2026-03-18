@@ -3,21 +3,20 @@ class EffortProgressData
 
   delegate :topic_resource_key, to: :effort
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:effort, :split_times],
-                           exclusive: [:effort, :split_times],
-                           class: self.class)
-    @effort = args[:effort]
-    @split_times = args[:split_times]
+  def initialize(effort:, split_times:)
+    raise ArgumentError, "effort_progress_data must include effort" unless effort
+    raise ArgumentError, "effort_progress_data must include split_times" unless split_times
+
+    @effort = effort
+    @split_times = split_times
   end
 
   def effort_data
-    @effort_data ||= {full_name: full_name,
-                      event_name: event_name,
-                      split_times_data: split_times_data,
-                      effort_id: effort.id,
-                      effort_slug: effort.slug}
+    @effort_data ||= { full_name: full_name,
+                       event_name: event_name,
+                       split_times_data: split_times_data,
+                       effort_id: effort.id,
+                       effort_slug: effort.slug }
   end
 
   private
@@ -26,12 +25,12 @@ class EffortProgressData
 
   def split_times_data
     split_times.sort_by(&:absolute_time).map do |split_time|
-      {split_name: split_name(split_time),
-       split_distance: split_distance(split_time),
-       absolute_time_local: I18n.localize(split_time.absolute_time_local, format: :day_and_ampm),
-       elapsed_time: TimeConversion.seconds_to_hms(split_time.time_from_start.to_i),
-       pacer: split_time.pacer,
-       stopped_here: split_time.stopped_here}
+      { split_name: split_name(split_time),
+        split_distance: split_distance(split_time),
+        absolute_time_local: I18n.l(split_time.absolute_time_local, format: :day_and_ampm),
+        elapsed_time: TimeConversion.seconds_to_hms(split_time.time_from_start.to_i),
+        pacer: split_time.pacer,
+        stopped_here: split_time.stopped_here }
     end
   end
 

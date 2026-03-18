@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.describe AidStationsDisplay do
-  let(:event) { events(:rufa_2017_24h) }
+  subject { described_class.new(event: event) }
 
-  subject { AidStationsDisplay.new(event: event) }
+  let(:event) { events(:rufa_2017_24h) }
 
   describe "#initialize" do
     context "with an event" do
@@ -12,26 +12,31 @@ RSpec.describe AidStationsDisplay do
       end
     end
 
-    context "if no event is given" do
+    context "when no event is given" do
+      let(:event) { nil }
       it "raises an ArgumentError" do
-        expect { AidStationsDisplay.new(event: nil) }.to raise_error(ArgumentError, /must include event/)
+        expect { subject }.to raise_error(ArgumentError, /must include event/)
       end
     end
   end
 
   describe "#aid_station_rows" do
+    let(:result) { subject.aid_station_rows }
+
     it "returns an array of AidStationRow objects" do
-      expect(subject.aid_station_rows).to all(be_a(AidStationRow))
+      expect(result).to all(be_a(AidStationRow))
     end
 
     it "returns one row per aid station" do
-      expect(subject.aid_station_rows.size).to eq(event.aid_stations.count)
+      expect(result.count).to eq(event.aid_stations.count)
     end
   end
 
   describe "#start_time" do
+    let(:result) { subject.start_time }
+
     it "returns the event scheduled start time local" do
-      expect(subject.start_time).to eq(event.scheduled_start_time_local)
+      expect(result).to eq(event.scheduled_start_time_local)
     end
   end
 

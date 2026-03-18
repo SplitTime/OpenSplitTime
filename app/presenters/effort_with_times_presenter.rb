@@ -1,16 +1,16 @@
 class EffortWithTimesPresenter < EffortWithLapSplitRows
-  DEFAULT_DISPLAY_STYLE = "military_time"
-  VALID_DISPLAY_STYLES = %w(military_time elapsed_time absolute_time_local).freeze
+  DEFAULT_DISPLAY_STYLE = "military_time".freeze
+  VALID_DISPLAY_STYLES = %w[military_time elapsed_time absolute_time_local].freeze
   INPUTMASK_TYPES_BY_DISPLAY_STYLE = {
-      military_time: "military",
-      elapsed_time: "elapsed",
-      absolute_time_local: "datetime_us",
-  }
+    military_time: "military",
+    elapsed_time: "elapsed",
+    absolute_time_local: "datetime_us",
+  }.freeze
 
   def post_initialize(effort, args)
-    ArgsValidator.validate(subject: effort, params: args, required: [:params], exclusive: [:params], class: self.class)
     @effort = effort
     @params = args[:params] || {}
+    validate_setup
   end
 
   def autofocus_for_time_point?(time_point)
@@ -47,7 +47,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
     if suppress_form?
       "Elapsed times cannot be calculated. No start time is present."
     elsif elapsed_times?
-      "All times are elapsed since #{I18n.localize(actual_start_time_local, format: :full_day_military_and_zone)}"
+      "All times are elapsed since #{I18n.l(actual_start_time_local, format: :full_day_military_and_zone)}"
     else
       "All times are in #{home_time_zone}"
     end
@@ -73,7 +73,7 @@ class EffortWithTimesPresenter < EffortWithLapSplitRows
     field_value = field_value(time_point)
     return nil unless field_value
 
-    I18n.localize(field_value, format: :datetime_input)
+    I18n.l(field_value, format: :datetime_input)
   end
 
   def field_value(time_point)

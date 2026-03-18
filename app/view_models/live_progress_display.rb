@@ -2,10 +2,8 @@ class LiveProgressDisplay < LiveEventFramework
   attr_reader :times_container, :past_due_threshold
 
   def post_initialize(args)
-    ArgsValidator.validate(params: args, required: :event,
-                           exclusive: [:event, :past_due_threshold, :times_container],
-                           class: self.class)
     @past_due_threshold = args[:past_due_threshold].presence.try(:to_i) || 30
+    validate_setup
   end
 
   def past_due_progress_rows
@@ -22,5 +20,9 @@ class LiveProgressDisplay < LiveEventFramework
     @progress_rows ||= event_efforts.select(&:in_progress?).map do |effort|
       EffortProgressSummary.new(effort: effort, event_framework: self)
     end
+  end
+
+  def validate_setup
+    raise ArgumentError, "live_progress_display must include event" unless event
   end
 end

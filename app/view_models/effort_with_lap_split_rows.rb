@@ -5,8 +5,9 @@ class EffortWithLapSplitRows
     post_initialize(effort, options)
   end
 
-  def post_initialize(effort, options)
-    ArgsValidator.validate(subject: effort, params: options, class: self.class)
+  def post_initialize(effort, _options)
+    @effort = effort
+    validate_setup
     load_effort(effort)
   end
 
@@ -66,10 +67,14 @@ class EffortWithLapSplitRows
     effort.send(method)
   end
 
+  def respond_to_missing?(method, include_private = false)
+    effort.respond_to?(method, include_private) || super
+  end
+
   private
 
   def difference(first_time, last_time)
-    last_time && first_time && last_time - first_time
+    last_time && first_time && (last_time - first_time)
   end
 
   def rows_from_lap_splits(lap_splits, indexed_times, in_times_only: false)
@@ -90,7 +95,7 @@ class EffortWithLapSplitRows
 
   def prior_split_time(lap_split)
     prior_time_points = time_points.elements_before(lap_split.time_point_in).to_set
-    ordered_split_times.reverse.find { |st| prior_time_points.include?(st.time_point) }
+    ordered_split_times.rfind { |st| prior_time_points.include?(st.time_point) }
   end
 
   def ordered_split_times
@@ -121,11 +126,13 @@ class EffortWithLapSplitRows
     ordered_split_times.last&.lap || 1
   end
 
-  private
-
   def load_effort(effort)
     temp_effort = Effort.where(id: effort).ranking_subquery.includes(split_times: :split).first
     AssignSegmentTimes.perform(temp_effort.ordered_split_times, :absolute_time)
     @effort = temp_effort
+  end
+
+  def validate_setup
+    raise ArgumentError, "effort_with_lap_split_rows must include effort" unless effort
   end
 end

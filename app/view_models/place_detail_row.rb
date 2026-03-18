@@ -8,18 +8,15 @@ class PlaceDetailRow
   # split_times should be an array having size == lap_split.time_points.size,
   # with nil values where no corresponding split_time exists
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:lap_split, :split_times],
-                           exclusive: [:lap_split, :split_times, :previous_lap_split, :show_laps,
-                                       :effort_name, :effort_ids_by_category],
-                           class: self.class)
-    @lap_split = args[:lap_split]
-    @split_times = args[:split_times] || []
-    @previous_lap_split = args[:previous_lap_split]
-    @show_laps = args[:show_laps]
-    @effort_name = args[:effort_name]
-    @effort_ids_by_category = args[:effort_ids_by_category]
+  def initialize(lap_split:, split_times: [], previous_lap_split: nil, show_laps: nil,
+                 effort_name: nil, effort_ids_by_category: nil)
+    @lap_split = lap_split
+    @split_times = split_times
+    @previous_lap_split = previous_lap_split
+    @show_laps = show_laps
+    @effort_name = effort_name
+    @effort_ids_by_category = effort_ids_by_category
+    validate_setup
   end
 
   def name
@@ -27,14 +24,15 @@ class PlaceDetailRow
   end
 
   def absolute_times_local
-    split_times.map { |st| st.absolute_time_local if st }
+    split_times.map { |st| st&.absolute_time_local }
   end
 
   def end_time_point
     split_times.last&.time_point
   end
 
-  def encountered_ids # Preserve duplicates to ensure accurate frequency testing
+  # Preserve duplicates to ensure accurate frequency testing
+  def encountered_ids
     (passed_segment_ids + passed_by_segment_ids + together_in_aid_ids)
   end
 
@@ -42,9 +40,7 @@ class PlaceDetailRow
     define_method("#{category}_ids") do
       effort_ids_by_category[category]
     end
-  end
 
-  CATEGORIES.each do |category|
     define_method("#{category}_table_title") do
       table_titles_by_category[category]
     end
@@ -59,14 +55,16 @@ class PlaceDetailRow
   end
 
   def table_titles_by_category
-    {passed_segment: "#{effort_name} passed #{persons(passed_segment_ids.size)} between" +
-      " #{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
-     passed_in_aid: "#{effort_name} passed #{persons(passed_in_aid_ids.size)} in aid at #{split_base_name(lap_split)}",
-     passed_by_segment: "#{effort_name} was passed by #{persons(passed_by_segment_ids.size)} between " +
-       "#{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
-     passed_by_in_aid: "#{effort_name} was passed by #{persons(passed_by_in_aid_ids.size)} while in aid at " +
-       split_base_name(lap_split).to_s,
-     together_in_aid: "#{effort_name} was in #{split_base_name(lap_split)} with #{persons(together_in_aid_ids.size)}"}
+    {
+      passed_segment: "#{effort_name} passed #{persons(passed_segment_ids.size)} between " \
+                      "#{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
+      passed_in_aid: "#{effort_name} passed #{persons(passed_in_aid_ids.size)} in aid at #{split_base_name(lap_split)}",
+      passed_by_segment: "#{effort_name} was passed by #{persons(passed_by_segment_ids.size)} between " \
+                         "#{split_base_name(previous_lap_split)} and #{split_base_name(lap_split)}",
+      passed_by_in_aid: "#{effort_name} was passed by #{persons(passed_by_in_aid_ids.size)} while in aid at " +
+        split_base_name(lap_split).to_s,
+      together_in_aid: "#{effort_name} was in #{split_base_name(lap_split)} with #{persons(together_in_aid_ids.size)}"
+    }
   end
 
   def show_laps?
@@ -83,5 +81,10 @@ class PlaceDetailRow
 
   def name_with_lap
     lap_split.name
+  end
+
+  def validate_setup
+    raise ArgumentError, "place_detail_row must include lap_split" unless lap_split
+    raise ArgumentError, "place_detail_row must include split_times" unless split_times
   end
 end

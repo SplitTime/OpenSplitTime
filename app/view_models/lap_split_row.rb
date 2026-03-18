@@ -9,16 +9,12 @@ class LapSplitRow
   # split_times should be an array having size == lap_split.time_points.size,
   # with nil values where no corresponding split_time exists
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:lap_split, :split_times],
-                           exclusive: [:lap_split, :split_times, :show_laps, :in_times_only, :not_in_event],
-                           class: self.class)
-    @lap_split = args[:lap_split]
-    @split_times = args[:split_times]
-    @show_laps = args[:show_laps]
-    @in_times_only = args[:in_times_only]
-    @not_in_event = args[:not_in_event]
+  def initialize(lap_split:, split_times:, show_laps: nil, in_times_only: nil, not_in_event: nil)
+    @lap_split = lap_split
+    @split_times = split_times
+    @show_laps = show_laps
+    @in_times_only = in_times_only
+    @not_in_event = not_in_event
     validate_setup
   end
 
@@ -27,7 +23,8 @@ class LapSplitRow
   end
 
   def time_cluster
-    @time_cluster ||= TimeCluster.new(split_times_data: visible_split_times, finish: finish?, show_indicator_for_stop: show_indicator_for_stop?)
+    @time_cluster ||= TimeCluster.new(split_times_data: visible_split_times, finish: finish?,
+                                      show_indicator_for_stop: show_indicator_for_stop?)
   end
 
   def split_id
@@ -71,8 +68,12 @@ class LapSplitRow
   end
 
   def validate_setup
-    unless split_times.size == split.bitkeys.size
-      raise ArgumentError, "split_time objects must be provided for each sub_split (fill with an empty object if needed)"
-    end
+    raise ArgumentError, "lap_split_row must include lap_split" unless lap_split
+    raise ArgumentError, "lap_split_row must include split_times" unless split_times
+
+    return if split_times.size == split.bitkeys.size
+
+    raise ArgumentError,
+          "split_time objects must be provided for each sub_split (fill with an empty object if needed)"
   end
 end

@@ -1,9 +1,11 @@
+require "rails_helper"
 require "support/bitkey_definitions"
 
 RSpec.describe LapSplitRow, type: :model do
   include BitkeyDefinitions
 
-  subject(:lap_split_row) { LapSplitRow.new(lap_split: lap_split, split_times: split_times, show_laps: show_laps) }
+  subject(:lap_split_row) { described_class.new(lap_split: lap_split, split_times: split_times, show_laps: show_laps) }
+
   let(:show_laps) { false }
 
   let(:course) { Course.new(name: "Test Course 100") }
@@ -66,15 +68,6 @@ RSpec.describe LapSplitRow, type: :model do
 
   describe "#initialize" do
     context "when initialized with a lap_split and valid split_times for a split with in and out sub_splits" do
-      let(:lap_split) { lap_1_split_2 }
-      let(:split_times) { [split_time_data_2, split_time_data_3] }
-
-      it "does not raise an error" do
-        expect { subject }.not_to raise_error
-      end
-    end
-
-    context "when initialized with a lap_split and valid split_time_data objects for a split with in and out sub_splits" do
       let(:lap_split) { lap_1_split_2 }
       let(:split_times) { [split_time_data_2, split_time_data_3] }
 
@@ -345,7 +338,7 @@ RSpec.describe LapSplitRow, type: :model do
     let(:lap_split) { lap_2_split_2 }
     let(:split_times) { [split_time_data_2, split_time_data_3] }
 
-    context "if :show_laps is not provided" do
+    context "when show_laps is not provided" do
       let(:show_laps) { false }
 
       it "returns the split name" do
@@ -353,7 +346,7 @@ RSpec.describe LapSplitRow, type: :model do
       end
     end
 
-    context "if :show_laps is provided" do
+    context "when show_laps is provided" do
       let(:show_laps) { true }
 
       it "returns the split name with lap" do

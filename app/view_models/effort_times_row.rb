@@ -2,23 +2,23 @@ class EffortTimesRow
   include TimeFormats
   include Rankable
 
-  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code, :country_code, :flexible_geolocation].freeze
+  EXPORT_ATTRIBUTES = [:overall_rank, :gender_rank, :bib_number, :first_name, :last_name, :gender, :age, :state_code,
+                       :country_code, :flexible_geolocation].freeze
 
   attr_reader :effort, :display_style
 
-  delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city, :state_code, :country_code, :data_status,
-           :bad?, :questionable?, :good?, :confirmed?, :segment_time, :overall_rank, :gender_rank, :scheduled_start_offset,
-           :beyond_start?, :started?, :in_progress?, :stopped?, :dropped?, :finished?, :bio_historic, :flexible_geolocation, to: :effort
+  delegate :id, :first_name, :last_name, :full_name, :gender, :bib_number, :age, :city,
+           :state_code, :country_code, :data_status, :bad?, :questionable?, :good?, :confirmed?,
+           :segment_time, :overall_rank, :gender_rank, :scheduled_start_offset, :beyond_start?,
+           :started?, :in_progress?, :stopped?, :dropped?, :finished?, :bio_historic,
+           :flexible_geolocation, to: :effort
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:effort, :lap_splits, :split_times],
-                           exclusive: [:effort, :lap_splits, :split_times, :display_style],
-                           class: self.class)
-    @effort = args[:effort]
-    @lap_splits = args[:lap_splits]
-    @split_times = args[:split_times]
-    @display_style = args[:display_style]
+  def initialize(effort:, lap_splits:, split_times:, display_style: nil)
+    @effort = effort
+    @lap_splits = lap_splits
+    @split_times = split_times
+    @display_style = display_style
+    validate_setup
   end
 
   def total_time_in_aid
@@ -128,5 +128,11 @@ class EffortTimesRow
 
   def multiple_laps?
     effort.laps_required != 1
+  end
+
+  def validate_setup
+    raise ArgumentError, "effort_times_row must include effort" unless effort
+    raise ArgumentError, "effort_times_row must include lap_splits" unless lap_splits
+    raise ArgumentError, "effort_times_row must include split_times" unless split_times
   end
 end

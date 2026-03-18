@@ -1,5 +1,6 @@
 class AidStationRow
   include ActionView::Helpers::TextHelper
+
   attr_reader :aid_station
 
   delegate :course, :organization, to: :event
@@ -11,19 +12,16 @@ class AidStationRow
   IN_BITKEY = SubSplit::IN_BITKEY
   OUT_BITKEY = SubSplit::OUT_BITKEY
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: :aid_station,
-                           exclusive: [:aid_station, :event_framework, :split_times],
-                           class: self.class)
-    @aid_station = args[:aid_station]
-    @event_framework = args[:event_framework]
-    @split_times = args[:split_times] || []
+  def initialize(aid_station:, event_framework: nil, split_times: [])
+    @aid_station = aid_station
+    @event_framework = event_framework
+    @split_times = split_times
+    validate_setup
   end
 
   def category_effort_lap_keys
     @category_effort_lap_keys ||=
-      AID_EFFORT_CATEGORIES.map { |category| [category, method("row_#{category}_lap_keys").call] }.to_h
+      AID_EFFORT_CATEGORIES.index_with { |category| method("row_#{category}_lap_keys").call }
   end
 
   def category_sizes
@@ -32,7 +30,7 @@ class AidStationRow
 
   def category_table_titles
     @category_table_titles ||=
-      category_sizes.map { |category, count| [category, table_title(category, count)] }.to_h
+      category_sizes.to_h { |category, count| [category, table_title(category, count)] }
   end
 
   def split_name
@@ -67,17 +65,17 @@ class AidStationRow
   def row_stopped_here_lap_keys
     @row_stopped_here_lap_keys ||=
       efforts_stopped.select { |effort| effort.stopped_split_id == split_id }
-          .map { |effort| EffortLapKey.new(effort.id, effort.stopped_lap) }
+                     .map { |effort| EffortLapKey.new(effort.id, effort.stopped_lap) }
   end
 
   def row_dropped_here_lap_keys
     @row_dropped_here_lap_keys ||=
       efforts_dropped.select { |effort| effort.stopped_split_id == split_id }
-          .map { |effort| EffortLapKey.new(effort.id, effort.stopped_lap) }
+                     .map { |effort| EffortLapKey.new(effort.id, effort.stopped_lap) }
   end
 
   def row_missed_lap_keys
-    @row_recorded_later_lap_keys ||= efforts_started.flat_map { |effort| effort_lap_keys_missed(effort) }
+    @row_missed_lap_keys ||= efforts_started.flat_map { |effort| effort_lap_keys_missed(effort) }
   end
 
   def row_in_aid_lap_keys
@@ -92,18 +90,21 @@ class AidStationRow
     efforts_in_progress.flat_map { |effort| effort_lap_key_expected(effort) }
   end
 
-  def effort_lap_key_expected(effort) # Returns a single [effort_lap_key] or []
-    lap_split_keys.elements_after(latest_lap_split_key(effort))
-        .select { |lap_split_key| (lap_split_key.lap == latest_lap_split_key(effort).lap) && (lap_split_key.split_id == split_id) }
-        .map { |lap_split_key| EffortLapKey.new(effort.id, lap_split_key.lap) }
+  # Returns a single [effort_lap_key] or []
+  def effort_lap_key_expected(effort)
+    matching_keys = lap_split_keys.elements_after(latest_lap_split_key(effort)).select do |lap_split_key|
+      lap_split_key.lap == latest_lap_split_key(effort).lap && lap_split_key.split_id == split_id
+    end
+
+    matching_keys.map { |lap_split_key| EffortLapKey.new(effort.id, lap_split_key.lap) }
   end
 
   def effort_lap_keys_missed(effort)
     time_points_recorded = Set.new(time_points_recorded(effort))
     time_points_required(effort)
-        .reject { |time_point| time_points_recorded.include?(time_point) }
-        .map { |time_point| EffortLapKey.new(effort.id, time_point.lap) }
-        .uniq
+      .reject { |time_point| time_points_recorded.include?(time_point) }
+      .map { |time_point| EffortLapKey.new(effort.id, time_point.lap) }
+      .uniq
   end
 
   def time_points_recorded(effort)
@@ -112,7 +113,7 @@ class AidStationRow
 
   def time_points_required(effort)
     time_points.elements_before(latest_time_point(effort))
-        .select { |time_point| time_point.split_id == split_id }
+               .select { |time_point| time_point.split_id == split_id }
   end
 
   def latest_lap_split_key(effort)
@@ -150,5 +151,9 @@ class AidStationRow
     else
       "#{'was'.pluralize(count)} #{category.to_s.humanize(capitalize: false)}"
     end
+  end
+
+  def validate_setup
+    raise ArgumentError, "aid_station_row must include aid_station" unless aid_station
   end
 end

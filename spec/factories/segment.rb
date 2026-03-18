@@ -11,14 +11,14 @@ FactoryBot.define do
       order_control { true }
     end
 
-    initialize_with { new(args) }
+    initialize_with { new(**args) }
 
     args do
-      {begin_point: TimePoint.new(begin_lap, begin_split.id, SubSplit.bitkey(begin_in_out.to_s)),
-       end_point: TimePoint.new(end_lap, end_split.id, SubSplit.bitkey(end_in_out.to_s)),
-       begin_lap_split: LapSplit.new(begin_lap, begin_split),
-       end_lap_split: LapSplit.new(end_lap, end_split),
-       order_control: order_control}
+      { begin_point: TimePoint.new(begin_lap, begin_split.id, SubSplit.bitkey(begin_in_out.to_s)),
+        end_point: TimePoint.new(end_lap, end_split.id, SubSplit.bitkey(end_in_out.to_s)),
+        begin_lap_split: LapSplit.new(begin_lap, begin_split),
+        end_lap_split: LapSplit.new(end_lap, end_split),
+        order_control: order_control }
     end
   end
 end

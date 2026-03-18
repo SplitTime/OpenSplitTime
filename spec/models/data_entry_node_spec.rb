@@ -1,19 +1,19 @@
+require "rails_helper"
 require "support/concerns/locatable"
 
 RSpec.describe DataEntryNode do
-  it_behaves_like "locatable"
-
-  subject { DataEntryNode.new(attributes) }
+  subject { described_class.new(**attributes) }
 
   let(:attributes) do
-    {split_name: "Split Name",
-     parameterized_split_name: "split-name",
-     sub_split_kind: "in",
-     label: "label",
-     latitude: 40,
-     longitude: -105,
-     min_distance_from_start: 0}
+    { split_name: "Split Name",
+      parameterized_split_name: "split-name",
+      sub_split_kind: "in",
+      label: "label",
+      latitude: 40,
+      longitude: -105,
+      min_distance_from_start: 0 }
   end
+  it_behaves_like "locatable"
 
   describe "#to_h" do
     it "returns all attributes in a Hash" do

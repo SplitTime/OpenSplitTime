@@ -4,21 +4,12 @@ class Segment
   delegate :course, to: :begin_split
   delegate :events, :earliest_event_date, :most_recent_event_date, to: :end_split
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required_alternatives: [[:begin_point, :end_point], [:begin_sub_split, :end_sub_split]],
-                           exclusive: [:begin_point, :end_point, :begin_sub_split, :end_sub_split,
-                                       :begin_split, :end_split, :order_control, :begin_lap_split, :end_lap_split],
-                           deprecated: {begin_sub_split: :begin_point, end_sub_split: :end_point,
-                                        begin_split: :begin_lap_split, end_split: :end_lap_split},
-                           class: self.class)
-    @begin_point = args[:begin_point] || assumed_time_point(args[:begin_sub_split])
-    @end_point = args[:end_point] || assumed_time_point(args[:end_sub_split])
-    @arg_begin_split = args[:begin_split]
-    @arg_end_split = args[:end_split]
-    @arg_begin_lap_split = args[:begin_lap_split]
-    @arg_end_lap_split = args[:end_lap_split]
-    @order_control = args[:order_control].nil? ? true : args[:order_control]
+  def initialize(begin_point:, end_point:, begin_lap_split: nil, end_lap_split: nil, order_control: true)
+    @begin_point = begin_point
+    @end_point = end_point
+    @arg_begin_lap_split = begin_lap_split
+    @arg_end_lap_split = end_lap_split
+    @order_control = order_control
     validate_setup
   end
 
@@ -61,7 +52,7 @@ class Segment
   end
 
   def splits
-    @splits ||= [arg_begin_split, arg_end_split].compact.presence || Split.find(split_ids).to_a
+    @splits ||= Split.find(split_ids).to_a
   end
 
   def begin_lap
@@ -87,12 +78,10 @@ class Segment
       "Time in #{begin_split.base_name} Lap #{begin_lap}"
     elsif zero_segment?
       "#{begin_split.name(begin_bitkey)} Lap #{begin_lap}"
+    elsif begin_lap == end_lap
+      "#{begin_split.base_name} to #{end_split.base_name} Lap #{begin_lap}"
     else
-      if begin_lap == end_lap
-        "#{begin_split.base_name} to #{end_split.base_name} Lap #{begin_lap}"
-      else
-        "#{begin_split.base_name} Lap #{begin_lap} to #{end_split.base_name} Lap #{end_lap}"
-      end
+      "#{begin_split.base_name} Lap #{begin_lap} to #{end_split.base_name} Lap #{end_lap}"
     end
   end
 
@@ -143,21 +132,14 @@ class Segment
   def special_limits_type
     if zero_start?
       :zero_start
-    elsif in_aid?
-      :in_aid
-    elsif between_laps?
+    elsif in_aid? || between_laps?
       :in_aid
     end
   end
 
   private
 
-  attr_reader :arg_begin_split, :arg_end_split, :arg_begin_lap_split, :arg_end_lap_split, :order_control
-
-  def assumed_time_point(sub_split)
-    assumed_lap = 1
-    TimePoint.new(assumed_lap, sub_split.split_id, sub_split.bitkey)
-  end
+  attr_reader :arg_begin_lap_split, :arg_end_lap_split, :order_control
 
   def discovered_lap_split(time_point)
     LapSplit.new(time_point.lap, splits.find { |split| split.id == time_point.split_id })
@@ -175,62 +157,46 @@ class Segment
     begin_point == end_point
   end
 
-  def validate_setup
-    if splits_inconsistent?
-      raise ArgumentError,
-            "Segment splits must be on same course"
-    end
-    if lap_splits_inconsistent?
-      raise ArgumentError,
-            "Segment lap_splits must be on same course"
-    end
-    if order_control && in_aid_bitkeys_reversed?
-      raise ArgumentError,
-            "Segment bitkeys within the same split are out of order; " +
-            "begin_split: #{begin_split.name(begin_bitkey)} Lap #{begin_lap}, " +
-            "end_split: #{end_split.name(end_bitkey)} Lap #{end_lap}"
-    end
-    if order_control && splits_reversed_on_lap?
-      raise ArgumentError,
-            "Segment splits on the same lap are out of order; " +
-            "begin_split: #{begin_split.name(begin_bitkey)} Lap #{begin_lap}, " +
-            "end_split: #{end_split.name(end_bitkey)} Lap #{end_lap}"
-    end
-    if order_control && laps_reversed?
-      raise ArgumentError,
-            "Segment laps are out of order; " +
-            "begin_split: #{begin_split.name(begin_bitkey)} Lap #{begin_lap}, " +
-            "end_split: #{end_split.name(end_bitkey)} Lap #{end_lap}"
-    end
-    if arg_begin_split && (arg_begin_split.id != begin_id)
-      raise ArgumentError,
-            "Segment begin_point (id #{begin_id}) does not reconcile with begin split (id #{begin_split.id})"
-    end
-    if arg_end_split && (arg_end_split.id != end_id)
-      raise ArgumentError,
-            "Segment begin_point (id #{end_id}) does not reconcile with begin split (id #{end_split.id})"
-    end
-  end
-
-  def splits_inconsistent?
-    arg_begin_split && arg_end_split && (arg_begin_split.course_id != arg_end_split.course_id)
-  end
-
-  def lap_splits_inconsistent?
-    arg_begin_lap_split && arg_end_lap_split && (arg_begin_lap_split.course_id != arg_end_lap_split.course_id)
-  end
-
   def in_aid_bitkeys_reversed?
     in_aid? && (begin_bitkey > end_bitkey)
   end
 
   def splits_reversed_on_lap?
     (begin_lap == end_lap) &&
-      ((arg_begin_split && arg_end_split) || (arg_begin_lap_split && arg_end_lap_split)) &&
+      arg_begin_lap_split && arg_end_lap_split &&
       (begin_split.distance_from_start > end_split.distance_from_start)
   end
 
   def laps_reversed?
     begin_lap > end_lap
+  end
+
+  def lap_splits_inconsistent?
+    arg_begin_lap_split && arg_end_lap_split && (arg_begin_lap_split.course_id != arg_end_lap_split.course_id)
+  end
+
+  def validate_setup
+    if lap_splits_inconsistent?
+      raise ArgumentError,
+            "Segment lap_splits must be on same course"
+    end
+    if order_control && in_aid_bitkeys_reversed?
+      raise ArgumentError,
+            "Segment bitkeys within the same split are out of order; " \
+            "begin_split: #{begin_split.name(begin_bitkey)} Lap #{begin_lap}, " \
+            "end_split: #{end_split.name(end_bitkey)} Lap #{end_lap}"
+    end
+    if order_control && splits_reversed_on_lap?
+      raise ArgumentError,
+            "Segment splits on the same lap are out of order; " \
+            "begin_split: #{begin_split.name(begin_bitkey)} Lap #{begin_lap}, " \
+            "end_split: #{end_split.name(end_bitkey)} Lap #{end_lap}"
+    end
+    return unless order_control && laps_reversed?
+
+    raise ArgumentError,
+          "Segment laps are out of order; " \
+          "begin_split: #{begin_split.name(begin_bitkey)} Lap #{begin_lap}, " \
+          "end_split: #{end_split.name(end_bitkey)} Lap #{end_lap}"
   end
 end

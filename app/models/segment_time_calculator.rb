@@ -1,20 +1,17 @@
 class SegmentTimeCalculator
   DISTANCE_FACTOR = 0.6 # Multiply distance in meters by this factor to approximate normal travel time on foot
-  UP_VERT_GAIN_FACTOR = 4.0 # Multiply positive vert_gain in meters by this factor to approximate normal travel time on foot
+  # Multiply positive vert_gain in meters by this factor to approximate normal travel time on foot
+  UP_VERT_GAIN_FACTOR = 4.0
   STATS_CALC_THRESHOLD = 4
 
-  def self.typical_time(args)
-    new(args).typical_time
+  def self.typical_time(segment:, calc_model:, effort_ids: nil)
+    new(segment: segment, calc_model: calc_model, effort_ids: effort_ids).typical_time
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:segment, :calc_model],
-                           exclusive: [:segment, :effort_ids, :calc_model],
-                           class: self.class)
-    @segment = args[:segment]
-    @effort_ids = args[:effort_ids]
-    @calc_model = args[:calc_model]
+  def initialize(segment:, calc_model:, effort_ids: nil)
+    @segment = segment
+    @effort_ids = effort_ids
+    @calc_model = calc_model
     validate_setup
   end
 
@@ -47,10 +44,11 @@ class SegmentTimeCalculator
 
   def validate_setup
     if calc_model == :focused && effort_ids.nil?
-      raise ArgumentError, "SegmentTimeCalculator cannot be initialized with calc_model: :focused unless effort_ids are provided"
+      raise ArgumentError,
+            "SegmentTimeCalculator cannot be initialized with calc_model: :focused unless effort_ids are provided"
     end
-    if calc_model && SegmentTimesContainer::VALID_CALC_MODELS.exclude?(calc_model)
-      raise ArgumentError, "calc_model #{calc_model} is not recognized"
-    end
+    return unless calc_model && SegmentTimesContainer::VALID_CALC_MODELS.exclude?(calc_model)
+
+    raise ArgumentError, "calc_model #{calc_model} is not recognized"
   end
 end

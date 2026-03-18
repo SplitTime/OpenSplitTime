@@ -1,14 +1,11 @@
 class TimeCluster
   attr_reader :split_times_data
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:split_times_data, :finish],
-                           exclusive: [:split_times_data, :finish, :show_indicator_for_stop],
-                           class: self.class)
-    @split_times_data = args[:split_times_data]
-    @finish = args[:finish]
-    @show_indicator_for_stop = args[:show_indicator_for_stop] || false
+  def initialize(split_times_data:, finish:, show_indicator_for_stop: false)
+    @split_times_data = split_times_data
+    @finish = finish
+    @show_indicator_for_stop = show_indicator_for_stop
+    validate_setup
   end
 
   def finish?
@@ -79,5 +76,10 @@ class TimeCluster
 
   def compacted_segment_times
     @compacted_segment_times ||= split_times_data.map(&:segment_time).compact
+  end
+
+  def validate_setup
+    raise ArgumentError, "time_cluster must include split_times_data" unless split_times_data
+    raise ArgumentError, "time_cluster must include finish" if @finish.nil?
   end
 end

@@ -8,19 +8,16 @@ class EffortAnalysisRow
   # split_times should be an array having size == split.sub_splits.size,
   # with nil values where no corresponding split_time exists
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:lap_split, :split_times, :typical_split_times, :start_time],
-                           exclusive: [:lap_split, :split_times, :typical_split_times, :start_time, :show_laps,
-                                       :prior_lap_split, :prior_split_time],
-                           class: self.class)
-    @lap_split = args[:lap_split]
-    @split_times = args[:split_times]
-    @typical_split_times = args[:typical_split_times]
-    @prior_lap_split = args[:prior_lap_split]
-    @prior_split_time = args[:prior_split_time]
-    @start_time = args[:start_time]
-    @show_laps = args[:show_laps]
+  def initialize(lap_split:, split_times:, typical_split_times:, start_time:,
+                 show_laps: nil, prior_lap_split: nil, prior_split_time: nil)
+    @lap_split = lap_split
+    @split_times = split_times
+    @typical_split_times = typical_split_times
+    @prior_lap_split = prior_lap_split
+    @prior_split_time = prior_split_time
+    @start_time = start_time
+    @show_laps = show_laps
+    validate_setup
   end
 
   def name
@@ -44,7 +41,7 @@ class EffortAnalysisRow
   end
 
   def combined_time
-    segment_time && segment_time + (time_in_aid || 0)
+    segment_time && (segment_time + (time_in_aid || 0))
   end
 
   def segment_time_typical
@@ -56,7 +53,7 @@ class EffortAnalysisRow
   end
 
   def combined_time_typical
-    segment_time_typical && segment_time_typical + (time_in_aid_typical || 0)
+    segment_time_typical && (segment_time_typical + (time_in_aid_typical || 0))
   end
 
   def segment_time_over_under(round_to: 1.second)
@@ -112,5 +109,12 @@ class EffortAnalysisRow
 
   def name_with_lap
     lap_split.base_name
+  end
+
+  def validate_setup
+    raise ArgumentError, "effort_analysis_row must include lap_split" unless lap_split
+    raise ArgumentError, "effort_analysis_row must include split_times" unless split_times
+    raise ArgumentError, "effort_analysis_row must include typical_split_times" unless typical_split_times
+    raise ArgumentError, "effort_analysis_row must include start_time" unless start_time
   end
 end

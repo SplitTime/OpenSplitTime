@@ -44,7 +44,8 @@ class IntendedTimeCalculator
 
   private
 
-  attr_reader :raw_military_time, :military_time, :effort, :time_point, :lap_splits, :prior_valid_split_time, :expected_time_from_prior
+  attr_reader :raw_military_time, :effort, :time_point, :lap_splits, :prior_valid_split_time,
+              :expected_time_from_prior
 
   def military_time
     @military_time ||= raw_military_time.gsub(/[^\d:]/, "")

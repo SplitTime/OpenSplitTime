@@ -2,9 +2,10 @@ require "rails_helper"
 
 RSpec.describe TimePredictor do
   subject do
-    TimePredictor.new(segment: segment, effort: effort, lap_splits: lap_splits,
-                      completed_split_time: completed_split_time)
+    described_class.new(segment: segment, effort: effort, lap_splits: lap_splits,
+                        completed_split_time: completed_split_time)
   end
+
   let(:segment) { build(:segment) }
   let(:lap_splits) { event.required_lap_splits }
   let(:completed_split_time) { subject_split_times.last }
@@ -84,26 +85,22 @@ RSpec.describe TimePredictor do
     context "when no segment is given" do
       let(:segment) { nil }
 
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include segment/)
-      end
+      it { expect { subject }.to raise_error(/must include segment/) }
     end
 
     context "when no effort is given" do
       let(:effort) { nil }
       let(:subject_split_times) { [] }
 
-      it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include effort/)
-      end
+      it { expect { subject }.to raise_error(/must include effort/) }
     end
   end
 
   describe "#segment_time" do
-    context "for a partially completed effort" do
+    context "with a partially completed effort" do
       let(:completed_split_time) { subject_split_times.first(5).last }
 
-      context "for a zero start segment" do
+      context "with a zero start segment" do
         let(:segment) { zero_start }
 
         it "predicts zero time" do
@@ -111,7 +108,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a zero intermediate segment" do
+      context "with a zero intermediate segment" do
         let(:segment) { aid_1_in_to_aid_1_in }
 
         it "predicts zero time" do
@@ -119,7 +116,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a segment in aid" do
+      context "with a segment in aid" do
         let(:segment) { in_aid_2 }
 
         it "predicts 0 seconds" do
@@ -127,7 +124,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for the segment beginning with start and ending with the completed split time" do
+      context "with the segment beginning at start and ending at the completed split time" do
         let(:segment) { start_to_completed }
 
         it "predicts the actual segment time" do
@@ -135,7 +132,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a segment beginning with start and ending before the completed split time" do
+      context "with a segment beginning at start and ending before the completed split time" do
         let(:segment) { start_to_aid_1 }
 
         it "predicts the correct segment time taking pace factor into account" do
@@ -144,7 +141,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a segment beginning with start and ending after the completed split time" do
+      context "with a segment beginning at start and ending after the completed split time" do
         let(:segment) { start_to_aid_2 }
 
         it "predicts the correct segment time" do
@@ -152,7 +149,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a segment starting before the completed split time and ending at the completed split time" do
+      context "with a segment starting before the completed split time and ending at the completed split time" do
         let(:segment) { aid_1_to_aid_2_inclusive }
 
         it "predicts the correct segment time" do
@@ -160,7 +157,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a segment starting at the completed split time and ending after the completed split time" do
+      context "with a segment starting at the completed split time and ending after the completed split time" do
         let(:segment) { aid_2_to_aid_5 }
 
         it "predicts the correct segment time" do
@@ -168,7 +165,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a segment starting before the completed split time and ending after the completed split time" do
+      context "with a segment starting before the completed split time and ending after the completed split time" do
         let(:segment) { aid_1_to_aid_5 }
 
         it "predicts the correct segment time" do
@@ -176,7 +173,7 @@ RSpec.describe TimePredictor do
         end
       end
 
-      context "for a segment containing the entire course" do
+      context "with a segment containing the entire course" do
         let(:segment) { start_to_finish }
 
         it "predicts the correct segment time" do
@@ -185,10 +182,10 @@ RSpec.describe TimePredictor do
       end
     end
 
-    context "for an unstarted effort" do
+    context "with an unstarted effort" do
       let(:completed_split_time) { subject_split_times.first }
 
-      context "for a zero segment" do
+      context "with a zero segment" do
         let(:segment) { zero_start }
 
         it "predicts zero time" do
@@ -203,48 +200,45 @@ RSpec.describe TimePredictor do
     let(:completed_segment) { start_to_completed }
     let(:limit_factors) { DataStatus::LIMIT_FACTORS }
     let(:typical_time_in_aid) { DataStatus::TYPICAL_TIME_IN_AID }
-    let(:typical_time) { segment.distance * distance_factor + segment.vert_gain * vert_gain_factor }
+    let(:typical_time) { (segment.distance * distance_factor) + (segment.vert_gain * vert_gain_factor) }
     let(:course) { event.course }
 
-    context "for a zero segment" do
+    context "with a zero segment" do
       let(:segment) { zero_start }
 
       it "sends to DataStatus a limits hash containing all zeros" do
-        expected = {low_bad: 0, low_questionable: 0, high_questionable: 0, high_bad: 0}
+        expected = { low_bad: 0, low_questionable: 0, high_questionable: 0, high_bad: 0 }
         verify_data_status(segment, expected)
       end
     end
 
-    context "for an in_aid segment" do
+    context "with an in_aid segment" do
       let(:segment) { in_aid_2 }
       let(:typical_time) { typical_time_in_aid }
 
       it "sends to DataStatus a limits hash containing zeros for low limits and pace-adjusted times for high limits" do
         expected = [:low_bad, :low_questionable, :high_questionable, :high_bad]
-            .map { |limit| [limit, (typical_time * limit_factors[:in_aid][limit] * imputed_pace).to_i] }
-            .to_h
+                   .index_with { |limit| (typical_time * limit_factors[:in_aid][limit] * imputed_pace).to_i }
         verify_data_status(segment, expected)
       end
     end
 
-    context "for an inter-split segment" do
+    context "with an inter-split segment" do
       let(:segment) { start_to_aid_2 }
 
       it "sends to DataStatus a limits hash containing pace-adjusted times for all limits" do
         expected = [:low_bad, :low_questionable, :high_questionable, :high_bad]
-            .map { |limit| [limit, (typical_time * limit_factors[:terrain][limit] * imputed_pace).to_i] }
-            .to_h
+                   .index_with { |limit| (typical_time * limit_factors[:terrain][limit] * imputed_pace).to_i }
         verify_data_status(segment, expected)
       end
     end
 
-    context "for a segment covering the entire course" do
+    context "with a segment covering the entire course" do
       let(:segment) { start_to_finish }
 
       it "sends to DataStatus a limits hash containing pace-adjusted times for all limits" do
         expected = [:low_bad, :low_questionable, :high_questionable, :high_bad]
-            .map { |limit| [limit, (typical_time * limit_factors[:terrain][limit] * imputed_pace).to_i] }
-            .to_h
+                   .index_with { |limit| (typical_time * limit_factors[:terrain][limit] * imputed_pace).to_i }
         verify_data_status(segment, expected)
       end
     end
@@ -261,7 +255,7 @@ RSpec.describe TimePredictor do
     end
 
     def imputed_pace
-      completed_typical_time = completed_segment.distance * distance_factor + completed_segment.vert_gain * vert_gain_factor
+      completed_typical_time = (completed_segment.distance * distance_factor) + (completed_segment.vert_gain * vert_gain_factor)
       completed_split_time.time_from_start / completed_typical_time
     end
   end

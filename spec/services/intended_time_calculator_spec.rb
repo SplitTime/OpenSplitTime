@@ -2,11 +2,12 @@ require "rails_helper"
 
 RSpec.describe IntendedTimeCalculator do
   subject do
-    IntendedTimeCalculator.new(effort: effort,
-                               military_time: military_time,
-                               time_point: time_point,
-                               prior_valid_split_time: prior_valid_split_time)
+    described_class.new(effort: effort,
+                        military_time: military_time,
+                        time_point: time_point,
+                        prior_valid_split_time: prior_valid_split_time)
   end
+
   let(:event) { effort.event }
   let(:home_time_zone) { event.home_time_zone }
   let(:start_time) { event.scheduled_start_time }
@@ -54,7 +55,7 @@ RSpec.describe IntendedTimeCalculator do
   describe "#absolute_time_local" do
     let(:expected_time) { expected_time_string.in_time_zone(home_time_zone) }
 
-    context "if military_time provided is blank" do
+    context "when military_time provided is blank" do
       let(:effort) { efforts(:hardrock_2014_not_started) }
       let(:military_time) { "" }
       let(:time_point) { event.required_time_points.second }
@@ -64,10 +65,10 @@ RSpec.describe IntendedTimeCalculator do
       end
     end
 
-    context "for an effort that has not yet started" do
+    context "when the effort has not yet started" do
       let(:effort) { efforts(:hardrock_2014_not_started) }
 
-      context "for a same-day time" do
+      context "with a same-day time" do
         let(:time_point) { event.required_time_points.second }
         let(:military_time) { "9:30:45" }
         let(:expected_time_string) { "2014-07-11 09:30:45" }
@@ -77,7 +78,7 @@ RSpec.describe IntendedTimeCalculator do
         end
       end
 
-      context "for a time extending into the next day" do
+      context "with a time extending into the next day" do
         let(:time_point) { event.required_time_points[7] } # Sherman In
         let(:military_time) { "10:30:45" }
         let(:expected_time_string) { "2014-07-12 10:30:45" }
@@ -87,7 +88,7 @@ RSpec.describe IntendedTimeCalculator do
         end
       end
 
-      context "for a multi-day time" do
+      context "with a multi-day time" do
         let(:time_point) { event.required_time_points.last } # Finish
         let(:military_time) { "02:30:45" }
         let(:expected_time_string) { "2014-07-13 02:30:45" }
@@ -98,10 +99,10 @@ RSpec.describe IntendedTimeCalculator do
       end
     end
 
-    context "for an effort partially underway" do
+    context "when the effort is partially underway" do
       let(:effort) { efforts(:hardrock_2016_progress_sherman) }
 
-      context "for a shorter segment and a same-day time" do
+      context "with a shorter segment and a same-day time" do
         let(:prior_valid_split_time) { effort.ordered_split_times[2] } # Telluride Out
         let(:time_point) { time_points[3] } # Ouray In
         let(:military_time) { "18:00:00" }
@@ -112,7 +113,7 @@ RSpec.describe IntendedTimeCalculator do
         end
       end
 
-      context "for a shorter segment with a time that rolls into the next morning" do
+      context "with a shorter segment and a time that rolls into the next morning" do
         let(:prior_valid_split_time) { effort.ordered_split_times[6] } # Grouse Out
         let(:time_point) { time_points[7] } # Sherman In
         let(:military_time) { "1:00:00" }
@@ -123,7 +124,7 @@ RSpec.describe IntendedTimeCalculator do
         end
       end
 
-      context "for a long segment with a time well into the next day" do
+      context "with a long segment and a time well into the next day" do
         let(:prior_valid_split_time) { effort.ordered_split_times[2] } # Telluride Out
         let(:time_point) { time_points[9] } # Cunningham In
         let(:military_time) { "15:00:00" }
@@ -194,7 +195,7 @@ RSpec.describe IntendedTimeCalculator do
       end
     end
 
-    context "if military time is greater than 24 hours" do
+    context "when military time is greater than 24 hours" do
       let(:military_time) { "25:30:45" }
 
       it "raises a RangeError" do
@@ -204,11 +205,11 @@ RSpec.describe IntendedTimeCalculator do
         prior_valid_split_time = SplitTime.new
 
         expect do
-          IntendedTimeCalculator.new(effort: effort,
-                                     military_time: military_time,
-                                     time_point: time_point,
-                                     expected_time_from_prior: expected_time_from_prior,
-                                     prior_valid_split_time: prior_valid_split_time)
+          described_class.new(effort: effort,
+                              military_time: military_time,
+                              time_point: time_point,
+                              expected_time_from_prior: expected_time_from_prior,
+                              prior_valid_split_time: prior_valid_split_time)
         end
             .to raise_error(/improperly formatted/)
       end

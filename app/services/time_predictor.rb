@@ -1,27 +1,34 @@
 class TimePredictor
-  def self.segment_time(args)
-    new(args).segment_time
+  def self.segment_time(segment:, effort:, lap_splits: nil, completed_split_time: nil,
+                        calc_model: nil, similar_effort_ids: nil, times_container: nil)
+    new(
+      segment: segment,
+      effort: effort,
+      lap_splits: lap_splits,
+      completed_split_time: completed_split_time,
+      calc_model: calc_model,
+      similar_effort_ids: similar_effort_ids,
+      times_container: times_container
+    ).segment_time
   end
 
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: [:segment, :effort],
-                           exclusive: [:segment, :effort, :lap_splits, :completed_split_time,
-                                       :calc_model, :similar_effort_ids, :times_container],
-                           class: self.class)
-    @segment = args[:segment]
-    @effort = args[:effort]
-    @lap_splits = args[:lap_splits] || effort.lap_splits
-    @completed_split_time = args[:completed_split_time] || last_valid_split_time || mock_start_split_time
-    @similar_effort_ids = args[:similar_effort_ids]
-    @times_container = args[:times_container] ||
+  def initialize(segment:, effort:, lap_splits: nil, completed_split_time: nil,
+                 calc_model: nil, similar_effort_ids: nil, times_container: nil)
+    @segment = segment
+    @effort = effort
+    pre_validate_setup
+
+    @lap_splits = lap_splits || effort&.lap_splits
+    @similar_effort_ids = similar_effort_ids
+    @times_container = times_container ||
                        SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
-    @calc_model = args[:calc_model] || times_container.calc_model || :terrain
+    @calc_model = calc_model || @times_container.calc_model || :terrain
+    @completed_split_time = completed_split_time || last_valid_split_time || mock_start_split_time
     validate_setup
   end
 
   def segment_time
-    uncorrected_segment_time && uncorrected_segment_time * pace_factor
+    uncorrected_segment_time && (uncorrected_segment_time * pace_factor)
   end
 
   def data_status(seconds)
@@ -50,7 +57,7 @@ class TimePredictor
 
   def actual_completed_time
     completed_split_time.absolute_time && effort.actual_start_time &&
-      completed_split_time.absolute_time - effort.actual_start_time
+      (completed_split_time.absolute_time - effort.actual_start_time)
   end
 
   def typical_completed_time
@@ -80,6 +87,11 @@ class TimePredictor
 
   def mock_start_split_time
     SplitTime.new(time_point: start_lap_split.time_point_in, time_from_start: 0)
+  end
+
+  def pre_validate_setup
+    raise ArgumentError, "time_predictor must include segment" unless segment
+    raise ArgumentError, "time_predictor must include effort" unless effort
   end
 
   def validate_setup

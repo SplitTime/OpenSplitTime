@@ -1,18 +1,17 @@
 module Results
   class Compute
-    def self.perform(args)
-      new(args).perform
+    def self.perform(efforts:, template:)
+      new(efforts: efforts, template: template).perform
     end
 
     attr_reader :used_efforts
 
-    def initialize(args)
-      ArgsValidator.validate(params: args, required: [:efforts, :template], exclusive: [:efforts, :template], class: self)
-
+    def initialize(efforts:, template:)
       # efforts must be pre-sorted in the desired order
-      @efforts = args[:efforts]
-      @template = args[:template]
+      @efforts = efforts
+      @template = template
       @used_efforts = Set.new
+      validate_setup
     end
 
     def perform
@@ -61,6 +60,11 @@ module Results
 
     def strict?
       aggregation_method == :strict
+    end
+
+    def validate_setup
+      raise ArgumentError, "Results::Compute must include efforts" unless efforts
+      raise ArgumentError, "Results::Compute must include template" unless template
     end
   end
 end

@@ -1,20 +1,17 @@
 class SegmentsBuilder
-  def self.segments(args)
-    new(args).segments
+  def self.segments(time_points:, splits: nil)
+    new(time_points: time_points, splits: splits).segments
   end
 
-  def self.segments_with_zero_start(args)
-    new(args).segments_with_zero_start
+  def self.segments_with_zero_start(time_points:, splits: nil)
+    new(time_points: time_points, splits: splits).segments_with_zero_start
   end
 
   # If splits are not provided, the resulting segments will be "thin" (without lap_splits)
-  def initialize(args)
-    ArgsValidator.validate(params: args,
-                           required: :time_points,
-                           exclusive: [:time_points, :splits],
-                           class: self.class)
-    @time_points = args[:time_points]
-    @splits = args[:splits] || []
+  def initialize(time_points:, splits: nil)
+    @time_points = time_points
+    @splits = Array.wrap(splits)
+    validate_setup
   end
 
   def segments
@@ -56,5 +53,9 @@ class SegmentsBuilder
                 end_point: start_time_point,
                 begin_lap_split: start_lap_split,
                 end_lap_split: start_lap_split)
+  end
+
+  def validate_setup
+    raise ArgumentError, "segments_builder must include time_points" unless time_points
   end
 end

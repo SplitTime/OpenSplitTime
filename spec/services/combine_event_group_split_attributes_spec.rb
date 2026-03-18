@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe CombineEventGroupSplitAttributes do
   describe ".perform" do
-    subject { CombineEventGroupSplitAttributes.perform(event_group, pair_by_location: pair_by_location, node_attributes: node_attributes) }
+    subject { described_class.perform(event_group, pair_by_location: pair_by_location, node_attributes: node_attributes) }
+
     let(:pair_by_location) { false }
     let(:node_attributes) { [:sub_split_kind, :label, :parameterized_split_name, :split_name] }
 

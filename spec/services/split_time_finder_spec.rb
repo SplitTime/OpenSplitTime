@@ -2,9 +2,10 @@ require "rails_helper"
 
 RSpec.describe SplitTimeFinder do
   subject do
-    SplitTimeFinder.new(effort: effort, time_point: time_point, lap_splits: lap_splits,
+    described_class.new(effort: effort, time_point: time_point, lap_splits: lap_splits,
                         split_times: subject_split_times, valid: valid)
   end
+
   let(:event) { events(:rufa_2017_24h) }
   let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
   let(:time_points) { event.time_points_through(laps_required) }
@@ -28,7 +29,7 @@ RSpec.describe SplitTimeFinder do
       let(:subject_split_times) { [] }
 
       it "raises an ArgumentError" do
-        expect { subject }.to raise_error(/must include one of effort or lap_splits/)
+        expect { subject }.to raise_error(ArgumentError, /must include either effort or both lap_splits and split_times/)
       end
     end
 

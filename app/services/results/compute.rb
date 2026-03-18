@@ -7,13 +7,11 @@ module Results
     attr_reader :used_efforts
 
     def initialize(efforts:, template:)
-      raise ArgumentError, "Results::Compute must include efforts" unless efforts
-      raise ArgumentError, "Results::Compute must include template" unless template
-
       # efforts must be pre-sorted in the desired order
       @efforts = efforts
       @template = template
       @used_efforts = Set.new
+      validate_setup
     end
 
     def perform
@@ -62,6 +60,11 @@ module Results
 
     def strict?
       aggregation_method == :strict
+    end
+
+    def validate_setup
+      raise ArgumentError, "Results::Compute must include efforts" unless efforts
+      raise ArgumentError, "Results::Compute must include template" unless template
     end
   end
 end

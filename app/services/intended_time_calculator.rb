@@ -14,13 +14,11 @@ class IntendedTimeCalculator
 
   def initialize(military_time:, effort:, time_point:, prior_valid_split_time: nil,
                  expected_time_from_prior: nil, lap_splits: nil, split_times: nil)
-    raise ArgumentError, "intended_time_calculator must include military_time" unless military_time
-    raise ArgumentError, "intended_time_calculator must include effort" unless effort
-    raise ArgumentError, "intended_time_calculator must include time_point" unless time_point
-
-    @military_time = military_time.gsub(/[^\d:]/, "")
+    @raw_military_time = military_time
     @effort = effort
     @time_point = time_point
+    validate_setup
+
     @lap_splits = lap_splits || effort.event.lap_splits_through(time_point.lap)
     @prior_valid_split_time = prior_valid_split_time ||
                               SplitTimeFinder.guaranteed_prior(effort: effort,
@@ -32,7 +30,6 @@ class IntendedTimeCalculator
                                                            effort: effort,
                                                            lap_splits: @lap_splits,
                                                            completed_split_time: @prior_valid_split_time)
-    validate_setup
   end
 
   def absolute_time_local
@@ -47,7 +44,11 @@ class IntendedTimeCalculator
 
   private
 
-  attr_reader :military_time, :effort, :time_point, :lap_splits, :prior_valid_split_time, :expected_time_from_prior
+  attr_reader :raw_military_time, :military_time, :effort, :time_point, :lap_splits, :prior_valid_split_time, :expected_time_from_prior
+
+  def military_time
+    @military_time ||= raw_military_time.gsub(/[^\d:]/, "")
+  end
 
   def preliminary_day_and_time
     expected_day_and_time && (earliest_day_and_time + days_from_earliest)
@@ -102,6 +103,10 @@ class IntendedTimeCalculator
   end
 
   def validate_setup
+    raise ArgumentError, "intended_time_calculator must include military_time" unless raw_military_time
+    raise ArgumentError, "intended_time_calculator must include effort" unless effort
+    raise ArgumentError, "intended_time_calculator must include time_point" unless time_point
+
     unless military_time.is_a?(String)
       raise ArgumentError, "military time must be provided as a string; got #{military_time} (#{military_time.class})"
     end

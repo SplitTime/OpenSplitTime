@@ -47,9 +47,7 @@ RSpec.describe Results::Compute do
     let(:women_40s) { results_categories(:female_40_to_49_2) }
 
     before do
-      efforts.each do |effort|
-        allow(effort).to receive(:points=)
-      end
+      efforts.each { |effort| allow(effort).to receive(:points=) }
     end
 
     context "when aggregation_method is set to strict" do

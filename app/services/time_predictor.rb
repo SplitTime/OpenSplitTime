@@ -14,12 +14,11 @@ class TimePredictor
 
   def initialize(segment:, effort:, lap_splits: nil, completed_split_time: nil,
                  calc_model: nil, similar_effort_ids: nil, times_container: nil)
-    raise ArgumentError, "time_predictor must include segment" unless segment
-    raise ArgumentError, "time_predictor must include effort" unless effort
-
     @segment = segment
     @effort = effort
-    @lap_splits = lap_splits || effort.lap_splits
+    pre_validate_setup
+
+    @lap_splits = lap_splits || effort&.lap_splits
     @similar_effort_ids = similar_effort_ids
     @times_container = times_container ||
                        SegmentTimesContainer.new(calc_model: calc_model, effort_ids: similar_effort_ids)
@@ -88,6 +87,11 @@ class TimePredictor
 
   def mock_start_split_time
     SplitTime.new(time_point: start_lap_split.time_point_in, time_from_start: 0)
+  end
+
+  def pre_validate_setup
+    raise ArgumentError, "time_predictor must include segment" unless segment
+    raise ArgumentError, "time_predictor must include effort" unless effort
   end
 
   def validate_setup

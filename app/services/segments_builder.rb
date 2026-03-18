@@ -9,10 +9,9 @@ class SegmentsBuilder
 
   # If splits are not provided, the resulting segments will be "thin" (without lap_splits)
   def initialize(time_points:, splits: nil)
-    raise ArgumentError, "segments_builder must include time_points" unless time_points
-
     @time_points = time_points
-    @splits = splits || []
+    @splits = Array.wrap(splits)
+    validate_setup
   end
 
   def segments
@@ -54,5 +53,9 @@ class SegmentsBuilder
                 end_point: start_time_point,
                 begin_lap_split: start_lap_split,
                 end_lap_split: start_lap_split)
+  end
+
+  def validate_setup
+    raise ArgumentError, "segments_builder must include time_points" unless time_points
   end
 end

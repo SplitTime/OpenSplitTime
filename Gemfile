@@ -60,6 +60,7 @@ gem "sendgrid-ruby"
 gem "shortener"
 gem "sitemap_generator"
 gem "smarter_csv", require: false
+gem "solid_cable"
 gem "solid_queue"
 gem "sprockets-rails"
 gem "statistics", "~> 1.0"

@@ -1,14 +1,12 @@
 development:
-  adapter: redis
-  url: <%= OstConfig.redis_url %>
-  channel_prefix: open_split_time_development
+  adapter: solid_cable
+  polling_interval: 0.1.seconds
+  message_retention: 1.day
 
 test:
-  adapter: async
+  adapter: test
 
 production:
-  adapter: redis
-  url: <%= OstConfig.redis_url %>
-  channel_prefix: open_split_time_production
-  ssl_params:
-    verify_mode: <%= OpenSSL::SSL::VERIFY_NONE %>
+  adapter: solid_cable
+  polling_interval: 0.1.seconds
+  message_retention: 1.day

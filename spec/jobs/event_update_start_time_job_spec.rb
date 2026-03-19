@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe EventUpdateStartTimeJob do
   include ActiveJob::TestHelper
 
-  subject(:job) { described_class.perform_later(event, options) }
+  subject(:job) { described_class.perform_later(event, **options) }
 
   let(:event) { events(:ramble) }
   let(:options) { { new_start_time: "2017-10-01 08:00:00", current_user: users(:admin_user) } }
@@ -22,5 +22,13 @@ RSpec.describe EventUpdateStartTimeJob do
     allow(Interactors::ShiftEventStartTime).to receive(:perform!).with(event, { new_start_time: "2017-10-01 08:00:00" }).and_return(result)
     perform_enqueued_jobs { job }
     expect(Interactors::ShiftEventStartTime).to have_received(:perform!).with(event, { new_start_time: "2017-10-01 08:00:00" })
+  end
+
+  describe "validation" do
+    context "when event is not an Event" do
+      it "raises ArgumentError" do
+        expect { described_class.new.perform("not an event", **options) }.to raise_error(ArgumentError, "event must be an Event")
+      end
+    end
   end
 end

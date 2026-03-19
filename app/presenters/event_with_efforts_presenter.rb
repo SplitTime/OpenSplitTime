@@ -1,26 +1,23 @@
 class EventWithEffortsPresenter < BasePresenter
   include PagyPresenter
 
-  DEFAULT_ORDER_CRITERIA = { overall_rank: :asc, bib_number: :asc }
+  DEFAULT_ORDER_CRITERIA = { overall_rank: :asc, bib_number: :asc }.freeze
 
   attr_reader :event
 
   delegate :course_groups, to: :course
   delegate :id, :name, :course, :course_id, :simple?, :beacon_url, :home_time_zone, :finish_split,
            :start_split, :multiple_laps?, :to_param, :created_by, :new_record?, :event_group,
-           :ordered_events_within_group, :scheduled_start_time_local, :efforts_count, :notice_text, :notice_text?, to: :event
+           :ordered_events_within_group, :scheduled_start_time_local, :efforts_count,
+           :notice_text, :notice_text?, to: :event
   delegate :available_live, :available_live?, :concealed, :concealed?, :organization, :monitor_pacers?,
            :multiple_events?, to: :event_group
 
-  def initialize(args)
-    @event = args[:event]
-    @params = args[:params] || {}
-    @current_user = args[:current_user]
-    post_initialize(args)
-  end
-
-  def post_initialize(args)
-    ArgsValidator.validate(params: args, required: [:event, :params], exclusive: [:event, :params, :current_user], class: self.class)
+  def initialize(event:, params:, current_user: nil)
+    @event = event
+    @params = params
+    @current_user = current_user
+    validate_setup
   end
 
   def ranked_effort_rows
@@ -34,8 +31,8 @@ class EventWithEffortsPresenter < BasePresenter
     return @filtered_ranked_efforts if defined?(@filtered_ranked_efforts)
 
     scope = ranked_efforts
-      .where(filter_hash)
-      .search(search_text)
+            .where(filter_hash)
+            .search(search_text)
 
     @pagy, @filtered_ranked_efforts = pagy_from_scope(scope, limit: per_page, page: page)
     @filtered_ranked_efforts
@@ -92,5 +89,9 @@ class EventWithEffortsPresenter < BasePresenter
 
   def person_ids
     @person_ids ||= filtered_ranked_efforts.map(&:person_id).compact
+  end
+
+  def validate_setup
+    raise ArgumentError, "event_with_efforts_presenter must include event" unless event
   end
 end

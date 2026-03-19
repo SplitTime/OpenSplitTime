@@ -3,9 +3,9 @@ class EffortWithTimesRowPresenter < EffortWithLapSplitRows
 
   delegate :id, :event, :event_name, :split_times, :to_param, to: :effort
 
-  def post_initialize(effort, args)
-    ArgsValidator.validate(subject: effort, params: args, class: self.class)
+  def post_initialize(effort, _args)
     @effort = effort
+    validate_setup
   end
 
   def effort_times_row
@@ -36,6 +36,6 @@ class EffortWithTimesRowPresenter < EffortWithLapSplitRows
   end
 
   def event_presenter
-    @event_presenter ||= EventSpreadDisplay.new(event: event, params: {display_style: "all"})
+    @event_presenter ||= EventSpreadDisplay.new(event: event, params: { display_style: "all" })
   end
 end

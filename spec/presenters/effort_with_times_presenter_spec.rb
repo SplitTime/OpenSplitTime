@@ -1,23 +1,24 @@
 require "rails_helper"
 
 RSpec.describe EffortWithTimesPresenter do
-  subject { EffortWithTimesPresenter.new(effort, params: params) }
+  subject { described_class.new(effort, params: params) }
+
   let(:effort) { build_stubbed(:effort) }
   let(:params) { ActionController::Parameters.new(params_hash) }
   let(:params_hash) { {} }
 
   describe "#initialize" do
-    context "given an effort and params object" do
+    context "when given an effort and params object" do
       it "initializes" do
         expect { subject }.not_to raise_error
       end
     end
 
-    context "if effort argument is not given" do
+    context "without an effort argument" do
       let(:effort) { nil }
 
       it "raises an error" do
-        expect { subject }.to raise_error(/must include a subject/)
+        expect { subject }.to raise_error(ArgumentError, /must include effort/)
       end
     end
   end
@@ -55,7 +56,7 @@ RSpec.describe EffortWithTimesPresenter do
 
   describe "#table_header" do
     context "when params[:display_style] == military_time" do
-      let(:params_hash) { {display_style: "military_time"} }
+      let(:params_hash) { { display_style: "military_time" } }
 
       it "returns a header indicating military times" do
         expect(subject.table_header).to eq("Military Times")
@@ -63,7 +64,7 @@ RSpec.describe EffortWithTimesPresenter do
     end
 
     context "when params[:display_style] == elapsed_time" do
-      let(:params_hash) { {display_style: "elapsed_time"} }
+      let(:params_hash) { { display_style: "elapsed_time" } }
 
       it "returns a header indicating elapsed times" do
         expect(subject.table_header).to eq("Elapsed Times")
@@ -73,7 +74,7 @@ RSpec.describe EffortWithTimesPresenter do
 
   describe "#working_field" do
     context "when params[:display_style] == elapsed_time" do
-      let(:params_hash) { {display_style: "military_time"} }
+      let(:params_hash) { { display_style: "military_time" } }
 
       it "returns :military_time" do
         expect(subject.working_field).to eq(:military_time)
@@ -81,7 +82,7 @@ RSpec.describe EffortWithTimesPresenter do
     end
 
     context "when params[:display_style] != military_time" do
-      let(:params_hash) { {display_style: ""} }
+      let(:params_hash) { { display_style: "" } }
 
       it "returns :military_time" do
         expect(subject.working_field).to eq(:military_time)

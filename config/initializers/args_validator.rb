@@ -1,6 +1,0 @@
-# Set ArgsValidator.console_notifications = true to provide detailed class and parameter
-# information when objects are instantiated from classes that call ArgsValidator
-
-Rails.application.config.to_prepare do
-  ArgsValidator.console_notifications = false
-end

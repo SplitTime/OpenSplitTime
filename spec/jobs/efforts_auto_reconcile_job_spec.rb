@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe EffortsAutoReconcileJob do
   include ActiveJob::TestHelper
 
-  subject(:job) { described_class.perform_later(event, options) }
+  subject(:job) { described_class.perform_later(event, **options) }
 
   let(:event) { events(:ramble) }
   let(:options) { { current_user: users(:admin_user) } }

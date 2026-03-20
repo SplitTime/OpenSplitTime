@@ -97,14 +97,6 @@ module OstConfig
     3.days
   end
 
-  def self.redis_url
-    if Rails.env.production? && base_uri == "ost-stage.herokuapp.com"
-      ENV.fetch("REDIS_TLS_URL", nil) || ENV.fetch("REDIS_URL", nil)
-    else
-      ENV.fetch("REDIS_URL", "redis://localhost:6379/1")
-    end
-  end
-
   def self.scout_apm_key
     Rails.application.credentials.dig(:scout, :agent_key)
   end

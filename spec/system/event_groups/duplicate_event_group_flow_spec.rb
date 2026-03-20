@@ -2,6 +2,9 @@ require "rails_helper"
 
 RSpec.describe "create a duplicate event group using the duplicate event group page", type: :system do
   let(:user) { users(:third_user) }
+  let(:event_group) { event_groups(:sum) }
+  let(:organization) { event_group.organization }
+  let(:new_date) { "2019-02-28" }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
@@ -10,10 +13,6 @@ RSpec.describe "create a duplicate event group using the duplicate event group p
     organization.update(created_by: owner.id)
     organization.stewards << steward
   end
-
-  let(:event_group) { event_groups(:sum) }
-  let(:organization) { event_group.organization }
-  let(:new_date) { "2019-02-28" }
 
   context "when event start times have the same date as UTC date" do
     scenario "The user is a steward of the organization" do
@@ -91,7 +90,7 @@ RSpec.describe "create a duplicate event group using the duplicate event group p
     expect do
       click_button "Duplicate Event Group"
       page.find("h1", text: "SUM New")
-    end.to change { EventGroup.count }.by(1).and change { Event.count }.by(2)
+    end.to change(EventGroup, :count).by(1).and change(Event, :count).by(2)
 
     new_event_group = EventGroup.last
     expect(page).to have_current_path(setup_event_group_path(new_event_group))

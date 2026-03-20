@@ -5,12 +5,6 @@ RSpec.describe "Visit the event_groups index" do
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
-
-  before do
-    organization.update(created_by: owner.id)
-    organization.stewards << steward
-  end
-
   let(:concealed_event_group) { event_groups(:rufa_2017) }
   let(:concealed_event_1) { concealed_event_group.events.first }
   let(:concealed_event_2) { concealed_event_group.events.second }
@@ -19,7 +13,11 @@ RSpec.describe "Visit the event_groups index" do
   let(:visible_event_2) { visible_event_group.events.second }
   let(:organization) { concealed_event_group.organization }
 
-  before { concealed_event_group.update(concealed: true) }
+  before do
+    organization.update(created_by: owner.id)
+    organization.stewards << steward
+    concealed_event_group.update(concealed: true)
+  end
 
   scenario "The user is a visitor" do
     visit event_groups_path

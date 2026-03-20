@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "visit the duplicate event group page", type: :system, js: true do
+RSpec.describe "visit the duplicate event group page", :js, type: :system do
   let(:user) { users(:third_user) }
   let(:event_group) { event_groups(:sum) }
 

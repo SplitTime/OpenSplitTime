@@ -12,10 +12,10 @@ RSpec.describe "visit an event group stats_page" do
     organization.stewards << steward
   end
 
-  context "The event group has notifications and subscriptions" do
+  context "when the event group has notifications and subscriptions" do
     let(:event_group) { event_groups(:rufa_2017) }
     let(:total_notifications_count) { Notification.where(effort: event_group.efforts).map(&:follower_ids).flatten.size }
-    let(:total_notified_entrants_count) { event_group.efforts.joins(:notifications).where.not(notifications: {follower_ids: []}).group(:effort_id).count.keys.size }
+    let(:total_notified_entrants_count) { event_group.efforts.joins(:notifications).where.not(notifications: { follower_ids: [] }).group(:effort_id).count.keys.size }
     let(:total_subscriptions_count) { Subscription.where(subscribable_type: "Effort", subscribable_id: efforts).count }
 
     scenario "The user is an admin" do
@@ -40,7 +40,7 @@ RSpec.describe "visit an event group stats_page" do
     end
   end
 
-  context "The event group has no subscriptions or notifications" do
+  context "when the event group has no subscriptions or notifications" do
     let(:event_group) { event_groups(:sum) }
 
     scenario "The user is the owner of the organization" do

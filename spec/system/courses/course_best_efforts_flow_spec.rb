@@ -9,8 +9,14 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   let(:effort_1) { event.efforts.ranking_subquery.first }
   let(:other_efforts) { event.efforts.where.not(id: effort_1.id) }
 
-  before { EffortSegment.set_all }
-  after { EffortSegment.delete_all }
+  # rubocop:disable RSpec/BeforeAfterAll
+  before(:all) do
+    setup_fixtures
+    EffortSegment.set_all
+  end
+
+  after(:all) { EffortSegment.delete_all }
+  # rubocop:enable RSpec/BeforeAfterAll
 
   scenario "Visitor visits the page and searches for a name" do
     visit_page

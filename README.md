@@ -52,13 +52,13 @@ Getting Started
 **Rails, Gems, Databases**
 
 1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
-2. Install Postgres and Redis
+2. Install Postgres
 
 > ### Using Homebrew on MacOS
-> `$ brew install postgres redis`
+> `$ brew install postgres`
 
 > ### Using Debian/Ubuntu
->  - `$ sudo apt install postgresql libpq-dev redis-server`
+>  - `$ sudo apt install postgresql libpq-dev`
 >  - Setup your user (same as login) `$ sudo -u postgres createuser --interactive`
 
 3. `$ bundle install`
@@ -77,7 +77,7 @@ After ensuring you're using the right version of Node.js (with `node --version`)
 
 **Database**
 
-1. Start your local DB `$ brew services restart postgres && brew services restart redis` or run the Postgres App
+1. Start your local DB `$ brew services restart postgres` or run the Postgres App
 2. `$ rails db:setup` to create the database
 3. `$ rails db:from_fixtures` to load seed data from test fixtures files
 4. `$ rails s` to start the server

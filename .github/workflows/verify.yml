@@ -119,15 +119,46 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: unit, rack, and lotteries
+          - name: unit and rack
             rspec_args: --tag ~js
-            rspec_extra: --tag js spec/system/lotteries
           - name: browser1
-            rspec_args: --tag js spec/system/event_group_construction spec/system/devise spec/system/effort_show
+            rspec_args: >-
+              --tag js
+              spec/system/event_group_construction
+              spec/system/devise
+              spec/system/lotteries
           - name: browser2
-            rspec_args: --tag js spec/system/course_groups spec/system/effort_audit spec/system/effort_edit_split_times spec/system/event_group_roster spec/system/imports spec/system/organization spec/system/raw_times spec/system/results spec/system/subscriptions spec/system/user_settings
+            rspec_args: >-
+              --tag js
+              spec/system/course_groups
+              spec/system/effort_audit
+              spec/system/effort_edit_split_times
+              spec/system/effort_show
+              spec/system/event_group_roster
+              spec/system/imports
+              spec/system/organization
+              spec/system/raw_times
+              spec/system/results
+              spec/system/subscriptions
+              spec/system/user_settings
+
           - name: browser3
-            rspec_args: --tag js --exclude-pattern "spec/system/event_group_construction/**/*_spec.rb" --exclude-pattern "spec/system/devise/**/*_spec.rb" --exclude-pattern "spec/system/effort_show/**/*_spec.rb" --exclude-pattern "spec/system/course_groups/**/*_spec.rb" --exclude-pattern "spec/system/effort_audit/**/*_spec.rb" --exclude-pattern "spec/system/effort_edit_split_times/**/*_spec.rb" --exclude-pattern "spec/system/event_group_roster/**/*_spec.rb" --exclude-pattern "spec/system/imports/**/*_spec.rb" --exclude-pattern "spec/system/lotteries/**/*_spec.rb" --exclude-pattern "spec/system/organization/**/*_spec.rb" --exclude-pattern "spec/system/raw_times/**/*_spec.rb" --exclude-pattern "spec/system/results/**/*_spec.rb" --exclude-pattern "spec/system/subscriptions/**/*_spec.rb" --exclude-pattern "spec/system/user_settings/**/*_spec.rb"
+            rspec_args: >-
+              --tag js
+              --exclude-pattern "spec/system/event_group_construction/**/*_spec.rb"
+              --exclude-pattern "spec/system/devise/**/*_spec.rb"
+              --exclude-pattern "spec/system/lotteries/**/*_spec.rb"
+              --exclude-pattern "spec/system/course_groups/**/*_spec.rb"
+              --exclude-pattern "spec/system/effort_audit/**/*_spec.rb"
+              --exclude-pattern "spec/system/effort_edit_split_times/**/*_spec.rb"
+              --exclude-pattern "spec/system/effort_show/**/*_spec.rb"
+              --exclude-pattern "spec/system/event_group_roster/**/*_spec.rb"
+              --exclude-pattern "spec/system/imports/**/*_spec.rb"
+              --exclude-pattern "spec/system/organization/**/*_spec.rb"
+              --exclude-pattern "spec/system/raw_times/**/*_spec.rb"
+              --exclude-pattern "spec/system/results/**/*_spec.rb"
+              --exclude-pattern "spec/system/subscriptions/**/*_spec.rb"
+              --exclude-pattern "spec/system/user_settings/**/*_spec.rb"
     services:
       postgres:
         image: postgres:17
@@ -179,9 +210,7 @@ jobs:
           CI: true
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: |
-          bin/rspec ${{ matrix.rspec_args }}
-          if [ -n "${{ matrix.rspec_extra }}" ]; then bin/rspec ${{ matrix.rspec_extra }}; fi
+        run: bin/rspec ${{ matrix.rspec_args }}
 
       - name: Save capybara screenshots as artifact
         if: failure() && contains(matrix.name, 'browser')

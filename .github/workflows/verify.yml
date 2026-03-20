@@ -124,36 +124,39 @@ jobs:
           - name: browser1
             rspec_args: >-
               --tag js
-              spec/system/event_group_construction
               spec/system/devise
+              spec/system/event_group_construction
               spec/system/lotteries
           - name: browser2
             rspec_args: >-
               --tag js
               spec/system/course_groups
+              spec/system/courses
               spec/system/effort_audit
               spec/system/effort_edit_split_times
               spec/system/effort_show
               spec/system/event_group_roster
+              spec/system/event_groups
               spec/system/imports
               spec/system/organization
               spec/system/raw_times
               spec/system/results
               spec/system/subscriptions
               spec/system/user_settings
-
           - name: browser3
             rspec_args: >-
               --tag js
-              --exclude-pattern "spec/system/event_group_construction/**/*_spec.rb"
-              --exclude-pattern "spec/system/devise/**/*_spec.rb"
-              --exclude-pattern "spec/system/lotteries/**/*_spec.rb"
               --exclude-pattern "spec/system/course_groups/**/*_spec.rb"
+              --exclude-pattern "spec/system/courses/**/*_spec.rb"
+              --exclude-pattern "spec/system/devise/**/*_spec.rb"
               --exclude-pattern "spec/system/effort_audit/**/*_spec.rb"
               --exclude-pattern "spec/system/effort_edit_split_times/**/*_spec.rb"
               --exclude-pattern "spec/system/effort_show/**/*_spec.rb"
+              --exclude-pattern "spec/system/event_group_construction/**/*_spec.rb"
               --exclude-pattern "spec/system/event_group_roster/**/*_spec.rb"
+              --exclude-pattern "spec/system/event_groups/**/*_spec.rb"
               --exclude-pattern "spec/system/imports/**/*_spec.rb"
+              --exclude-pattern "spec/system/lotteries/**/*_spec.rb"
               --exclude-pattern "spec/system/organization/**/*_spec.rb"
               --exclude-pattern "spec/system/raw_times/**/*_spec.rb"
               --exclude-pattern "spec/system/results/**/*_spec.rb"

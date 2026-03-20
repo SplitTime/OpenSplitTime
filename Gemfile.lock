@@ -528,7 +528,6 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
-    redis (4.8.1)
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
@@ -754,7 +753,6 @@ DEPENDENCIES
   rails (~> 8.1.0)
   rails-erd
   rails_real_favicon (>= 0.1.0)
-  redis (~> 4.0)
   rspec
   rspec-rails (>= 4.0.2)
   rubocop

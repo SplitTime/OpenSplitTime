@@ -25,10 +25,6 @@ Rails.application.routes.draw do
     mount MissionControl::Jobs::Engine, at: "/jobs"
   end
 
-  authenticate :user, ->(u) { u.admin? } do
-    mount Coverband::Reporters::Web.new, at: "/coverage", as: :coverage
-  end
-
   namespace :docs do
     root to: "visitors#contents"
     get "contents", to: "visitors#contents"

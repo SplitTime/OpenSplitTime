@@ -66,7 +66,7 @@ jobs:
           fi
 
           # Run rubocop on changed files (pass them as arguments)
-          echo "$EXISTING_FILES" | xargs bundle exec rubocop
+          echo "$EXISTING_FILES" | xargs bundle exec rubocop --force-exclusion
         env:
           GH_TOKEN: ${{ github.token }}
 

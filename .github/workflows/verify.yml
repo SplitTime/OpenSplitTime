@@ -115,6 +115,27 @@ jobs:
     name: Tests (${{ matrix.name }})
     needs: build-assets
     runs-on: ubuntu-latest
+    env:
+      # spec/system subdirectories explicitly assigned to browser1 runner
+      BROWSER1_DIRS: >-
+        devise
+        event_group_construction
+      # spec/system subdirectories explicitly assigned to browser2 runner
+      # browser3 catches all other js specs including root-level js specs
+      BROWSER2_DIRS: >-
+        course_groups
+        courses
+        effort_audit
+        effort_edit_split_times
+        effort_show
+        event_group_roster
+        event_groups
+        imports
+        organization
+        raw_times
+        results
+        subscriptions
+        user_settings
     strategy:
       fail-fast: false
       matrix:
@@ -122,9 +143,8 @@ jobs:
           - name: unit and rack
             rspec_args: --tag ~js
           - name: browser1
-            rspec_args: --tag js spec/system/event_group_construction spec/system/devise spec/system/*_spec.rb
           - name: browser2
-            rspec_args: --tag js --exclude-pattern "spec/system/event_group_construction/**/*_spec.rb" --exclude-pattern "spec/system/devise/**/*_spec.rb" --exclude-pattern "spec/system/*_spec.rb"
+          - name: browser3
     services:
       postgres:
         image: postgres:17
@@ -180,7 +200,24 @@ jobs:
           CI: true
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-        run: bin/rspec ${{ matrix.rspec_args }}
+        run: |
+          case "${{ matrix.name }}" in
+            browser1)
+              INCLUDE=$(echo "$BROWSER1_DIRS" | tr -s ' ' '\n' | sed 's|.*|spec/system/&|' | tr '\n' ' ')
+              bin/rspec --tag js $INCLUDE
+              ;;
+            browser2)
+              INCLUDE=$(echo "$BROWSER2_DIRS" | tr -s ' ' '\n' | sed 's|.*|spec/system/&|' | tr '\n' ' ')
+              bin/rspec --tag js $INCLUDE
+              ;;
+            browser3)
+              EXCLUDE=$(echo "$BROWSER1_DIRS $BROWSER2_DIRS" | tr -s ' ' '\n' | sed 's|.*|spec/system/&/**/*_spec.rb|' | tr '\n' ',' | sed 's/,$//')
+              bin/rspec --tag js --exclude-pattern "$EXCLUDE"
+              ;;
+            *)
+              bin/rspec ${{ matrix.rspec_args }}
+              ;;
+          esac
 
       - name: Save capybara screenshots as artifact
         if: failure() && contains(matrix.name, 'browser')

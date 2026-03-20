@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "search the event group index", type: :system, js: true do
+RSpec.describe "search the event group index", :js, type: :system do
   let(:user) { users(:third_user) }
   let(:admin) { users(:admin_user) }
 

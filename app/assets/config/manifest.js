@@ -3,3 +3,5 @@
 //= link_tree ../images
 //= link favicon/browserconfig.xml
 //= link madmin_manifest
+//= link favicon/site.webmanifest
+//= link favicon/browserconfig.xml

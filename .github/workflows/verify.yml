@@ -106,7 +106,7 @@ jobs:
           yarn build:css
 
       - name: Upload assets
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: built-assets
           path: app/assets/builds/
@@ -172,7 +172,7 @@ jobs:
         run: sudo apt-get install -y --no-install-recommends libvips42
 
       - name: Download assets
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: built-assets
           path: app/assets/builds/
@@ -217,7 +217,7 @@ jobs:
 
       - name: Save capybara screenshots as artifact
         if: failure() && contains(matrix.name, 'browser')
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: capybara-failure-screenshots-${{ matrix.name }}
           path: tmp/capybara/*.png

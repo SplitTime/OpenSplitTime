@@ -1,0 +1,20 @@
+# Site settings
+title: OpenSplitTime Documentation
+description: Documentation for OpenSplitTime, the free, open-source ultrarunning event management system
+url: "" # Production URL will be set during deployment
+baseurl: "" # Subpath if needed
+
+# Build settings
+markdown: kramdown
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor/

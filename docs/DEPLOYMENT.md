@@ -4,7 +4,7 @@ This document describes how the OpenSplitTime documentation is deployed to GitHu
 
 ## Overview
 
-The documentation site is automatically deployed to GitHub Pages using GitHub Actions whenever changes are pushed to the `master` branch.
+The documentation site is automatically deployed to GitHub Pages using GitHub Actions whenever changes are pushed to the `master` branch. The site is available at [https://docs.opensplittime.org](https://docs.opensplittime.org).
 
 ## Deployment Configuration
 
@@ -32,22 +32,17 @@ The workflow is defined in `.github/workflows/deploy-docs.yml` and:
 Production settings in `docs/_config.yml`:
 
 ```yaml
-url: "https://splittime.github.io"
-baseurl: "/OpenSplitTime"
+url: "https://docs.opensplittime.org"
+baseurl: ""
 ```
 
-These settings ensure proper URL generation for assets and links in the deployed site.
+### Custom Domain
 
-## Enabling GitHub Pages
+The site uses the custom domain `docs.opensplittime.org`. This is configured via:
 
-To enable GitHub Pages for this repository (one-time setup):
-
-1. Go to repository **Settings** → **Pages**
-2. Under "Build and deployment":
-   - Source: **GitHub Actions**
-3. Save settings
-
-The next push to `master` will trigger the first deployment.
+1. **DNS**: A CNAME record pointing `docs.opensplittime.org` to `splittime.github.io`
+2. **GitHub Pages**: Custom domain set in repository Settings → Pages with HTTPS enforced
+3. **Jekyll**: `url` and `baseurl` set in `_config.yml` as shown above
 
 ## Monitoring Deployments
 
@@ -56,37 +51,6 @@ View deployment status:
 - Check "Deploy Jekyll Documentation to GitHub Pages" workflow runs
 
 Deployment typically completes in 1-2 minutes.
-
-## Custom Domain Setup (Optional)
-
-To use a custom domain like `docs.opensplittime.org`:
-
-### 1. DNS Configuration
-
-Add a CNAME record in your DNS provider:
-
-```
-Type: CNAME
-Name: docs
-Value: splittime.github.io
-```
-
-### 2. GitHub Pages Configuration
-
-1. Go to **Settings** → **Pages**
-2. Enter custom domain: `docs.opensplittime.org`
-3. Check "Enforce HTTPS"
-
-### 3. Update Jekyll Configuration
-
-Update `docs/_config.yml`:
-
-```yaml
-url: "https://docs.opensplittime.org"
-baseurl: ""
-```
-
-Commit and push changes. GitHub will verify the domain and issue an SSL certificate.
 
 ## Testing Before Deployment
 
@@ -99,14 +63,6 @@ bundle exec jekyll serve
 # Visit http://localhost:4000
 ```
 
-Build for production locally:
-
-```bash
-cd docs
-JEKYLL_ENV=production bundle exec jekyll build --baseurl "/OpenSplitTime"
-# Check docs/_site/
-```
-
 ## Troubleshooting
 
 ### Deployment Failed
@@ -117,9 +73,9 @@ JEKYLL_ENV=production bundle exec jekyll build --baseurl "/OpenSplitTime"
 
 ### 404 Errors on Deployed Site
 
-1. Check `baseurl` in `_config.yml` matches repository name
-2. Verify links use `{{ site.baseurl }}` or `relative_url` filter
-3. Check GitHub Pages is enabled in repository settings
+1. Verify links use `relative_url` filter or relative paths
+2. Check GitHub Pages is enabled in repository settings
+3. Ensure the custom domain DNS is configured correctly
 
 ### Changes Not Appearing
 

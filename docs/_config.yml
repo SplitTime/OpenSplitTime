@@ -1,8 +1,8 @@
 # Site settings
 title: OpenSplitTime Documentation
 description: Documentation for OpenSplitTime, the free, open-source ultrarunning event management system
-url: "https://splittime.github.io" # Production URL
-baseurl: "/OpenSplitTime" # Subpath for GitHub Pages
+url: "docs.opensplittime.org" # Production URL
+baseurl: "" # Subpath not needed; github.io figures it out
 
 # Build settings
 markdown: kramdown

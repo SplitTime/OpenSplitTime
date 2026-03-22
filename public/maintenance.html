@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trail Work in Progress | OpenSplitTime</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f5f4f0;
+      --surface:   #ffffff;
+      --navy:      #2c3e50;
+      --navy-dim:  #1a252f;
+      --blue:      #3A9DD1;
+      --blue-dim:  #2a7dab;
+      --blue-pale: #e8f4fb;
+      --amber:     #c8892a;
+      --amber-pale:#fdf6e8;
+      --text:      #1e2a2a;
+      --muted:     #7a8c95;
+      --line:      rgba(58,157,209,0.2);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      overflow: hidden;
+    }
+
+    /* ── TOPOGRAPHIC BACKGROUND ── */
+    .topo {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      opacity: 0.10;
+    }
+    .topo svg { width: 100%; height: 100%; }
+
+    /* ── GRAIN OVERLAY ── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .page {
+      position: relative;
+      z-index: 2;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--line);
+      animation: fadeDown 0.6s ease both;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: block;
+    }
+    .logo-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .logo-text span { color: var(--blue); }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding: 2rem 0;
+    }
+
+    @media (max-width: 767.98px) {
+      html, body { overflow: auto; }
+      .page { height: auto; min-height: 100vh; }
+      main { grid-template-columns: 1fr; gap: 2rem; }
+      .trail-panel { order: 1; }
+    }
+
+    /* ── LEFT: TEXT ── */
+    .text-panel { animation: fadeUp 0.7s 0.15s ease both; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--amber-pale);
+      border: 1px solid rgba(200,137,42,0.3);
+      border-radius: 2px;
+      padding: 0.3rem 0.75rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 1.5rem;
+    }
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+
+    .headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 7.5vw, 6rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+    }
+    .headline .accent { color: var(--blue); }
+
+    .subheadline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .description {
+      font-size: 0.975rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(30,42,42,0.6);
+      max-width: 38ch;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── SPLIT DATA ROW ── */
+    .split-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      padding: 1rem 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .split-cell { flex: 1; }
+    .split-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+    .split-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .split-value.blue  { color: var(--blue); }
+    .split-value.amber { color: var(--amber); }
+
+    /* ── BUTTONS ── */
+    .actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--blue-dim);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(58,157,209,0.3);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--navy);
+      border: 1px solid rgba(44,62,80,0.25);
+    }
+    .btn-ghost:hover {
+      border-color: rgba(44,62,80,0.5);
+      background: rgba(44,62,80,0.05);
+      transform: translateY(-2px);
+    }
+
+    /* ── RIGHT: TRAIL WORK PANEL ── */
+    .trail-panel {
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .chart-container {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid rgba(44,62,80,0.1);
+      border-radius: 4px;
+      padding: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(44,62,80,0.07);
+    }
+    .chart-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,137,42,0.03) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+    }
+    .chart-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .chart-subtitle {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-top: 0.15rem;
+    }
+    .work-tag {
+      background: var(--amber-pale);
+      border: 1px solid rgba(200,137,42,0.3);
+      color: var(--amber);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+    }
+
+    /* ── TRAIL MAP SVG ── */
+    .trail-map-wrap {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .trail-map-wrap svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Crew working animation */
+    .worker {
+      animation: dig 1.1s ease-in-out infinite;
+      transform-origin: 50% 90%;
+    }
+    .worker-2 {
+      animation: dig 1.1s ease-in-out infinite 0.55s;
+      transform-origin: 50% 90%;
+    }
+    @keyframes dig {
+      0%, 100% { transform: rotate(-12deg); }
+      50%       { transform: rotate(10deg); }
+    }
+
+    /* Closed section crosshatch */
+    .closed-section {
+      animation: closedPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes closedPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.6; }
+    }
+
+    /* ── WORK ITEMS LIST ── */
+    .work-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 1rem;
+    }
+    .work-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(44,62,80,0.05);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .work-item:last-child { border-bottom: none; }
+    .work-status {
+      width: 18px; height: 18px;
+      border-radius: 2px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+    .work-status.done {
+      background: var(--blue-pale);
+      color: var(--blue);
+    }
+    .work-status.active {
+      background: var(--amber-pale);
+      color: var(--amber);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    .work-status.todo {
+      background: rgba(44,62,80,0.06);
+      color: var(--muted);
+    }
+    .work-desc { flex: 1; }
+    .work-desc.muted { color: var(--muted); font-weight: 400; }
+    .work-eta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .work-eta.active { color: var(--amber); }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      padding: 0.75rem;
+      background: rgba(44,62,80,0.03);
+      border: 1px solid rgba(44,62,80,0.07);
+      border-radius: 2px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .progress-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .progress-pct {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--blue);
+      font-weight: 700;
+    }
+    .progress-track {
+      height: 5px;
+      background: rgba(44,62,80,0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 62%;
+      background: linear-gradient(90deg, var(--blue-dim), var(--blue));
+      border-radius: 99px;
+      animation: progressPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes progressPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.75; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1rem 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      animation: fadeUp 0.6s 0.5s ease both;
+    }
+    .footer-left {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.25; }
+    }
+    @keyframes pathDraw {
+      from { stroke-dashoffset: 600; }
+      to   { stroke-dashoffset: 0; }
+    }
+
+    .trail-done {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: pathDraw 1.8s 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Topographic lines background -->
+<div class="topo">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <style>.topo-line { fill: none; stroke: #3A9DD1; stroke-width: 1; }</style>
+    </defs>
+    <ellipse class="topo-line" cx="1050" cy="500" rx="520" ry="320"/>
+    <ellipse class="topo-line" cx="1060" cy="490" rx="440" ry="260"/>
+    <ellipse class="topo-line" cx="1070" cy="480" rx="360" ry="200"/>
+    <ellipse class="topo-line" cx="1080" cy="470" rx="280" ry="145"/>
+    <ellipse class="topo-line" cx="1090" cy="460" rx="200" ry="95"/>
+    <ellipse class="topo-line" cx="1100" cy="452" rx="130" ry="58"/>
+    <ellipse class="topo-line" cx="1110" cy="446" rx="72" ry="30"/>
+    <ellipse class="topo-line" cx="250" cy="700" rx="380" ry="220" opacity="0.6"/>
+    <ellipse class="topo-line" cx="260" cy="690" rx="300" ry="165" opacity="0.6"/>
+    <ellipse class="topo-line" cx="270" cy="682" rx="220" ry="115" opacity="0.6"/>
+    <ellipse class="topo-line" cx="280" cy="675" rx="145" ry="72" opacity="0.6"/>
+    <ellipse class="topo-line" cx="290" cy="670" rx="80" ry="38" opacity="0.6"/>
+  </svg>
+</div>
+
+<div class="grain"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <img class="logo-mark" src="data:image/png;base64,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" alt="OpenSplitTime logo" />
+    <div class="logo-text">Open<span>Split</span>Time</div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- LEFT: Text -->
+    <div class="text-panel">
+      <div class="badge">Scheduled Maintenance</div>
+
+      <div class="headline">
+        Trail<br><span class="accent">Work</span><br>Ahead
+      </div>
+      <div class="subheadline">Course Temporarily Closed</div>
+
+      <p class="description">
+        We're doing some work to make OpenSplitTime better. The site will be back up soon — check back in a little while.
+      </p>
+
+      <div class="split-row">
+        <div class="split-cell">
+          <div class="split-label">Status</div>
+          <div class="split-value amber">In Progress</div>
+        </div>
+        <div class="split-cell">
+          <div class="split-label">Course</div>
+          <div class="split-value blue">Closed</div>
+        </div>
+        <div class="split-cell">
+          <div class="split-label">Reopens</div>
+          <div class="split-value">Soon ↗</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="javascript:window.location.reload()">
+          ↻ Check Again
+        </a>
+        <a class="btn btn-ghost" href="/cdn-cgi/l/email-protection#761b17041d361906131805061a1f02021f1b1358190411">
+          Contact Us
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: Trail work panel -->
+    <div class="trail-panel">
+      <div class="chart-container">
+
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Trail Crew · Work Order</div>
+            <div class="chart-subtitle">Mystery Course 100M</div>
+          </div>
+          <div class="work-tag">⚒ ACTIVE</div>
+        </div>
+
+        <!-- Trail map illustration -->
+        <div class="trail-map-wrap">
+          <svg viewBox="0 0 520 155" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(200,137,42,0.25)" stroke-width="2"/>
+              </pattern>
+              <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L6,3 Z" fill="#3A9DD1" />
+              </marker>
+            </defs>
+
+            <!-- Background -->
+            <rect width="520" height="155" fill="rgba(44,62,80,0.03)" rx="2"/>
+
+            <!-- Trail bed (full ghost path) -->
+            <path d="M20,100 C60,100 70,55 110,45 C150,35 165,65 200,72 C230,78 245,78 270,72 C295,65 310,42 345,38 C375,34 390,60 415,75 C440,90 455,88 500,85"
+              fill="none" stroke="rgba(44,62,80,0.1)" stroke-width="10" stroke-linecap="round"/>
+
+            <!-- Completed trail segments -->
+            <path class="trail-done"
+              d="M20,100 C60,100 70,55 110,45 C150,35 165,65 200,72 C230,78 245,78 270,72"
+              fill="none" stroke="#3A9DD1" stroke-width="4" stroke-linecap="round"/>
+
+            <!-- Closed / work zone segment -->
+            <path d="M270,72 C295,65 310,42 345,38 C375,34 390,60 415,75"
+              fill="none" stroke="url(#hatch)" stroke-width="12" stroke-linecap="round" class="closed-section"/>
+            <path d="M270,72 C295,65 310,42 345,38 C375,34 390,60 415,75"
+              fill="none" stroke="rgba(200,137,42,0.5)" stroke-width="3" stroke-linecap="round"
+              stroke-dasharray="6 5" class="closed-section"/>
+
+            <!-- Future trail segment -->
+            <path d="M415,75 C440,90 455,88 500,85"
+              fill="none" stroke="rgba(44,62,80,0.15)" stroke-width="4" stroke-linecap="round"
+              stroke-dasharray="5 4"/>
+
+            <!-- Closure markers -->
+            <line x1="270" y1="60" x2="270" y2="84" stroke="#c8892a" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="263" y1="67" x2="277" y2="77" stroke="#c8892a" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="277" y1="67" x2="263" y2="77" stroke="#c8892a" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="415" y1="63" x2="415" y2="87" stroke="#c8892a" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="408" y1="70" x2="422" y2="80" stroke="#c8892a" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="422" y1="70" x2="408" y2="80" stroke="#c8892a" stroke-width="2.5" stroke-linecap="round"/>
+
+            <!-- Aid station dots -->
+            <circle cx="20"  cy="100" r="4" fill="white" stroke="#2c3e50" stroke-width="1.5"/>
+            <circle cx="110" cy="45"  r="4" fill="white" stroke="#2c3e50" stroke-width="1.5"/>
+            <circle cx="200" cy="72"  r="4" fill="white" stroke="#2c3e50" stroke-width="1.5"/>
+            <circle cx="345" cy="38"  r="4" fill="white" stroke="#c8892a" stroke-width="1.5" class="closed-section"/>
+            <circle cx="500" cy="85"  r="4" fill="white" stroke="rgba(44,62,80,0.2)" stroke-width="1.5"/>
+
+            <!-- Worker figures at work zone -->
+            <g class="worker" style="transform-box:fill-box;">
+              <!-- Body -->
+              <rect x="316" y="20" width="5" height="10" rx="1" fill="#c8892a"/>
+              <!-- Head -->
+              <circle cx="318.5" cy="18" r="3.5" fill="#c8892a"/>
+              <!-- Hard hat -->
+              <rect x="315" y="13" width="8" height="3" rx="1.5" fill="#f4c430"/>
+              <!-- Shovel -->
+              <line x1="323" y1="22" x2="330" y2="35" stroke="#2c3e50" stroke-width="1.5" stroke-linecap="round"/>
+              <ellipse cx="330" cy="36" rx="3" ry="2" fill="#2c3e50"/>
+            </g>
+            <g class="worker-2" style="transform-box:fill-box;">
+              <!-- Body -->
+              <rect x="332" y="22" width="5" height="10" rx="1" fill="#c8892a"/>
+              <!-- Head -->
+              <circle cx="334.5" cy="20" r="3.5" fill="#c8892a"/>
+              <!-- Hard hat -->
+              <rect x="331" y="15" width="8" height="3" rx="1.5" fill="#f4c430"/>
+              <!-- Shovel -->
+              <line x1="329" y1="25" x2="322" y2="38" stroke="#2c3e50" stroke-width="1.5" stroke-linecap="round"/>
+              <ellipse cx="322" cy="39" rx="3" ry="2" fill="#2c3e50"/>
+            </g>
+
+            <!-- Labels -->
+            <text x="20"  y="115" font-family="Barlow Condensed" font-size="8" fill="#7a8c95" font-weight="700" text-anchor="middle">START</text>
+            <text x="110" y="60"  font-family="Barlow Condensed" font-size="8" fill="#7a8c95" text-anchor="middle">20M</text>
+            <text x="200" y="87"  font-family="Barlow Condensed" font-size="8" fill="#7a8c95" text-anchor="middle">40M</text>
+            <text x="345" y="53"  font-family="Barlow Condensed" font-size="8" fill="#c8892a" font-weight="700" text-anchor="middle">CLOSED</text>
+            <text x="500" y="100" font-family="Barlow Condensed" font-size="8" fill="#7a8c95" font-weight="700" text-anchor="middle">FINISH</text>
+
+            <!-- Direction arrow -->
+            <line x1="230" y1="74" x2="258" y2="73" stroke="#3A9DD1" stroke-width="1.5" marker-end="url(#arrow)" stroke-linecap="round"/>
+
+            <!-- Legend -->
+            <line x1="20" y1="140" x2="40" y2="140" stroke="#3A9DD1" stroke-width="3" stroke-linecap="round"/>
+            <text x="44" y="144" font-family="Barlow Condensed" font-size="8" fill="#7a8c95">Open</text>
+            <line x1="90" y1="140" x2="110" y2="140" stroke="#c8892a" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 3"/>
+            <text x="114" y="144" font-family="Barlow Condensed" font-size="8" fill="#7a8c95">Work zone</text>
+            <line x1="185" y1="140" x2="205" y2="140" stroke="rgba(44,62,80,0.2)" stroke-width="3" stroke-linecap="round" stroke-dasharray="4 3"/>
+            <text x="209" y="144" font-family="Barlow Condensed" font-size="8" fill="#7a8c95">Upcoming</text>
+          </svg>
+        </div>
+
+        <!-- Work items -->
+        <div class="work-list">
+          <div class="work-item">
+            <div class="work-status done">✓</div>
+            <div class="work-desc">Clear avalanche runout</div>
+            <div class="work-eta">Done</div>
+          </div>
+          <div class="work-item">
+            <div class="work-status done">✓</div>
+            <div class="work-desc">Build new switchbacks</div>
+            <div class="work-eta">Done</div>
+          </div>
+          <div class="work-item">
+            <div class="work-status active">▶</div>
+            <div class="work-desc">Harden exposed surfaces</div>
+            <div class="work-eta active">In progress</div>
+          </div>
+          <div class="work-item">
+            <div class="work-status todo">○</div>
+            <div class="work-desc muted">Install signage &amp; reopen</div>
+            <div class="work-eta">Soon</div>
+        </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress-wrap">
+          <div class="progress-header">
+            <div class="progress-label">Overall Progress</div>
+            <div class="progress-pct">62%</div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">© OpenSplitTime Company</div>
+  </footer>
+</div>
+</body>
+</html>

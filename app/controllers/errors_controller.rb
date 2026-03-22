@@ -1,4 +1,6 @@
 class ErrorsController < ApplicationController
+  layout false
+
   def not_found
     respond_to do |format|
       format.html { render status: :not_found }

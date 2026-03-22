@@ -3,24 +3,27 @@ layout: default
 title: Home
 ---
 
-# Welcome to OpenSplitTime Documentation
+# OpenSplitTime Documentation
 
-OpenSplitTime is a free, open-source ultrarunning event management system.
-
-## Getting Started
-
-This documentation will help you:
-
-- Understand how to use OpenSplitTime as an event participant
-- Learn how to organize and manage ultrarunning events
-- Contribute to the OpenSplitTime project
+OpenSplitTime is a free and easy service to organize and analyze your timed event data.
 
 ## Documentation Sections
 
-(Content will be added during Phase 2 migration)
+### [Getting Started](getting-started/)
+The basics of creating your event and understanding terms used on the site.
 
-## About OpenSplitTime
+### [Managing an Event](management/)
+Checking in, starting, monitoring, and closing down your event.
 
-OpenSplitTime is built with Ruby on Rails and maintained by the ultrarunning community.
+### [OST Remote](ost-remote/)
+Full documentation for OST Remote, the easiest way to enter live time entries.
 
-Visit the main application at [opensplittime.org](https://opensplittime.org).
+### [The OpenSplitTime API](api/)
+How to use the OpenSplitTime API.
+
+### [User Information](user-info/)
+Navigating OpenSplitTime as a User.
+
+## Getting Help
+
+If you have any questions, please [contact us](mailto:mark@opensplittime.org) and we will do our best to help.

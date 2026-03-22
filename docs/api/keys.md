@@ -1,6 +1,7 @@
 ---
-layout: default
 title: API Key Management
+parent: The OpenSplitTime API
+nav_order: 2
 ---
 
 # API Key Management

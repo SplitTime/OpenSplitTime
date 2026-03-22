@@ -1,6 +1,7 @@
 ---
-layout: default
 title: Lotteries
+parent: User Information
+nav_order: 1
 ---
 
 # Lotteries

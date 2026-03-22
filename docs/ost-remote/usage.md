@@ -1,6 +1,7 @@
 ---
-layout: default
 title: Using OST Remote
+parent: OST Remote
+nav_order: 2
 ---
 
 # Using OST Remote

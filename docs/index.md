@@ -1,6 +1,7 @@
 ---
-layout: default
 title: Home
+layout: home
+nav_exclude: true
 ---
 
 # OpenSplitTime Documentation

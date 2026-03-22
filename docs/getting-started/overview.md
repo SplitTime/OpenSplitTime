@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Overview - Getting Started
+title: Overview
+parent: Getting Started
+nav_order: 1
 ---
 
 # Getting Started: Overview

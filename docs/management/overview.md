@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Overview - Managing an Event
+title: Overview
+parent: Managing an Event
+nav_order: 1
 ---
 
 # Managing an Event: Overview

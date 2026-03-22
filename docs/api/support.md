@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Support - API
+title: Support
+parent: The OpenSplitTime API
+nav_order: 5
 ---
 
 # API Support

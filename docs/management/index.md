@@ -1,6 +1,7 @@
 ---
-layout: default
 title: Managing an Event
+has_children: true
+nav_order: 2
 ---
 
 # Managing an Event

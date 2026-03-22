@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Preparing for Your Event - Managing an Event
+title: Preparing for Your Event
+parent: Managing an Event
+nav_order: 2
 ---
 
 # Preparing for Your Event

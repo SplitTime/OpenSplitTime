@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Support - Managing an Event
+title: Support
+parent: Managing an Event
+nav_order: 7
 ---
 
 # Support

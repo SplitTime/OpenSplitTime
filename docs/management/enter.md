@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Entering Times - Managing an Event
+title: Entering Times
+parent: Managing an Event
+nav_order: 4
 ---
 
 # Entering Times

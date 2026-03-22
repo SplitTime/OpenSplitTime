@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Support - Getting Started
+title: Support
+parent: Getting Started
+nav_order: 4
 ---
 
 # Getting Support

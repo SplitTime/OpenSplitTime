@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Terminology - Getting Started
+title: Terminology
+parent: Getting Started
+nav_order: 2
 ---
 
 # Getting Started: Terminology

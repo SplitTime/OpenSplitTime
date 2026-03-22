@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Setup - OST Remote
+title: Setup
+parent: OST Remote
+nav_order: 1
 ---
 
 # OST Remote Setup

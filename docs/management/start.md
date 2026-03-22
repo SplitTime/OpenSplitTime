@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Checking In and Starting - Managing an Event
+title: Checking In and Starting
+parent: Managing an Event
+nav_order: 3
 ---
 
 # Checking In and Starting Entrants

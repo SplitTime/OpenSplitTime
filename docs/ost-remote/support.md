@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Support - OST Remote
+title: Support
+parent: OST Remote
+nav_order: 4
 ---
 
 # OST Remote Support

@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Setting Up Your First Event - Getting Started
+title: Setting Up Your First Event
+parent: Getting Started
+nav_order: 3
 ---
 
 # Setting Up Your First Event

@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Monitoring Entrants - Managing an Event
+title: Monitoring Entrants
+parent: Managing an Event
+nav_order: 5
 ---
 
 # Monitoring Entrants

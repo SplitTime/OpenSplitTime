@@ -1,6 +1,7 @@
 ---
-layout: default
 title: Querying the API
+parent: The OpenSplitTime API
+nav_order: 3
 ---
 
 # Querying the API

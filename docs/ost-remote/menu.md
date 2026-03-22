@@ -1,6 +1,7 @@
 ---
-layout: default
-title: Menu Guide - OST Remote
+title: Menu Guide
+parent: OST Remote
+nav_order: 3
 ---
 
 # OST Remote Menu Guide

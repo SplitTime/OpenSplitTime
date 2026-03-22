@@ -1,11 +1,40 @@
 # Site settings
 title: OpenSplitTime Documentation
 description: Documentation for OpenSplitTime, the free, open-source ultrarunning event management system
-url: "docs.opensplittime.org" # Production URL
-baseurl: "" # Subpath not needed; github.io figures it out
+url: "https://docs.opensplittime.org"
+baseurl: ""
+
+# Theme
+theme: just-the-docs
+color_scheme: opensplittime
+
+# Search
+search_enabled: true
+search.button: true
+
+# Navigation
+nav_external_links:
+  - title: OpenSplitTime Home
+    url: https://www.opensplittime.org
+  - title: GitHub
+    url: https://github.com/SplitTime/OpenSplitTime
+
+# Footer
+footer_content: "&copy; 2026 OpenSplitTime | <a href=\"https://github.com/SplitTime/OpenSplitTime\">GitHub</a> | <a href=\"mailto:mark@opensplittime.org\">Contact</a>"
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
 
 # Build settings
 markdown: kramdown
+sass:
+  quiet_deps: true
+  silence_deprecations:
+    - import
 
 # Plugins
 plugins:
@@ -17,4 +46,5 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - DEPLOYMENT.md
   - vendor/

@@ -1,6 +1,7 @@
 ---
-layout: default
 title: API Credentials
+parent: The OpenSplitTime API
+nav_order: 1
 ---
 
 # API Credentials

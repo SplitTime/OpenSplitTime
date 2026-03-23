@@ -19,22 +19,21 @@ thought. Trust us! The form follows the function.
 
 ## Organizations, Courses, and Events
 
-**Organization:** This is the basic administrative unit in
-OpenSplitTime, like Hardrock 100. Each Event Group, Event Series,
-and Course belongs to an Organization. This is the way you (as the
+**Organization:** This is the basic administrative unit in OpenSplitTime, like Hardrock Hundred Endurance Run. 
+Each Event Group, Event Series, and Course belongs to an Organization. This is the way you (as the
 Organization creator) can create and modify your own Events and invite trusted Stewards to help.
 
 **Course:** The physical course on which your event is run, ridden, flown, or climbed, like Hardrock Clockwise.
 
-**Split:** A point on a course at which times are recorded,
-like Kroger Aid Station. A Split may include optional elevation, latitude, and longitude data.
+**Split:** A point on a course at which times are recorded, like Kroger Aid Station. 
+A Split may include optional elevation, latitude, and longitude data.
 
 **Event Group:** A group of events happening on or about the same time, like 2019 RUFA. Some
 Event Groups will have just one Event, like a 100 miler that has no shorter course alternative. Others will have
 multiple Events, like a 30K, 50K, and 100K that are run on the same day.
 
-**Event:** A single running of a race, ride, stage, or other...you
-know, event. An example would be the 2026 RUFA (24 hours)
+**Event:** A single running of a race, ride, stage, or other...you know, event. 
+An example would be the 2026 RUFA (24 hours)
 
 **Person:** A person who has been entered in at least one Event, like Kilian Jornet.
 
@@ -47,15 +46,15 @@ Raw Times are viewable by Organization personnel and stewards, but **not by the 
 Any number of Raw Times may exist for an entrant at a particular point on the Course. 
 This allows multiple devices or methods to be used to input Raw Times.
 
-**Split Time:** A
-**publicly viewable** time at which an Entrant is deemed to have been recorded at a given Split. When
-Raw Time records are available, Split Times will ideally represent the best possible interpretation of the complete
+**Split Time:** A **publicly viewable** time at which an Entrant is deemed to have been recorded at a given Split. When
+Raw Time records are available, we want Split Times to represent the best possible interpretation of the complete
 Raw Time record. Only one Split Time may exist for an entrant at a particular point on the Course.
 
 ## Creating Raw Times
 
-Raw Times are created using the Live Entry screen in opensplittime.org, or via [OST Remote](../ost-remote/),
-the easy-to-use iOS client app for live time recording, or by [posting time data to the OpenSplitTime API](../api/queries.html#posting-raw-times).
+Raw Times are created via [OST Remote](../ost-remote/), the easy-to-use iOS client app for live time recording,
+by using the Live Entry screen in opensplittime.org, or by 
+[posting time data to the OpenSplitTime API](../api/queries.html#posting-raw-times).
 
 ## Creating Split Times
 

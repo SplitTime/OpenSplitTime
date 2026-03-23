@@ -6,12 +6,4 @@ nav_order: 5
 
 # User Information
 
-Navigating OpenSplitTime as a User.
-
-## Sections
-
-- [Lotteries](lotteries.html)
-
-## Overview
-
 Information for participants and users of OpenSplitTime.

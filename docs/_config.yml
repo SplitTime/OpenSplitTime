@@ -16,8 +16,6 @@ search.button: true
 nav_external_links:
   - title: OpenSplitTime Home
     url: https://www.opensplittime.org
-  - title: GitHub
-    url: https://github.com/SplitTime/OpenSplitTime
 
 # Footer
 footer_content: "&copy; 2026 OpenSplitTime | <a href=\"https://github.com/SplitTime/OpenSplitTime\">GitHub</a> | <a href=\"mailto:mark@opensplittime.org\">Contact</a>"

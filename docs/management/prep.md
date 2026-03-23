@@ -1,6 +1,6 @@
 ---
 title: Preparation
-parent: Event Management
+parent: Managing an Event
 nav_order: 1
 ---
 
@@ -13,7 +13,7 @@ groups are viewable only by the Organization Owner and its designated Stewards.
 
 Each Event Group is either "available live" or not "available live." When an Event Group is available live, it is
 ready to accept Raw Times entered from the Live Entry screen (**Live > Time Entry**) or
-from [OST Remote](https://www.opensplittime.org).
+from [OST Remote](../ost-remote/).
 
 ## Going Public (or Private)
 
@@ -28,7 +28,7 @@ Private**).
 
 ## Enabling and Disabling Live Entry
 
-**When you create a new Event Group is it not available live**. This allows you time to get
+**When you create a new Event Group it is not available live**. This allows you time to get
 everything set up before it becomes visible to users of OST Remote. An Event Group will not be enabled for live
 entry until you make it so.
 
@@ -49,12 +49,12 @@ Follow**), copy the link, and send it to your contact list.
 
 **Note that the Follow page, like the rest of your event pages, will not be visible to the general public
 until you have made your Event Group public.** Make sure to
-[make your event public](https://www.opensplittime.org) before sending any links
+make your event public before sending any links
 intended for public use.
 
 ## Obtaining Timing Equipment
 
-If you plan to record times using [OST Remote](https://www.opensplittime.org), you will need to gather enough
+If you plan to record times using [OST Remote](../ost-remote/), you will need to gather enough
 iOS devices (iPhones and iPads) for use at the various stations that will be recording times. When determining
 the number of devices you need, **remember to account for any stations that will need two devices**,
 for example, if you will be recording times both in and out of the station and the course is arranged such that
@@ -86,9 +86,9 @@ prefer to buy used devices from a reputable used equipment supplier. As of 2023,
 condition should cost around $50 for a Gen 2, $80 for a Gen 3, or $120 for a Gen 4** in the US.
 
 We have had good luck buying devices from
-[Swappa](https://www.opensplittime.org),
-[Gazelle](https://www.opensplittime.org), and
-[eBay](https://www.opensplittime.org).
+[Swappa](https://swappa.com),
+[Gazelle](https://www.gazelle.com), and
+[eBay](https://www.ebay.com).
 
 ## Protecting Your Devices
 
@@ -169,7 +169,7 @@ passwords between events to discourage unauthorized use.
 
 For training purposes, your crews will need to have access to an Event Group. Follow these steps:
 
-1. Create an Event Group using the usual [Construction process](https://www.opensplittime.org).
+1. Create an Event Group using the usual Construction process.
 **Note: Do not make your mock Event Group public!** (It will be confusing to the public if you do.)
 
 1. Make your mock Event Group available live (**Admin > Construction > Group Actions > Enable Live**). Remember that
@@ -192,7 +192,7 @@ steps:
 Steward passwords secret, simply log in to OST Remote and provide devices to your crews. The password will not
 have to be re-entered unless an operator logs out and attempts to change the password when logging back in.
 
-1. Direct your timing crews to the [OST Remote Documentation](https://www.opensplittime.org), and ask them to
+1. Direct your timing crews to the [OST Remote Documentation](../ost-remote/), and ask them to
 read it carefully and test OST Remote. Encourage them to enter and sync times. Nothing will be visible to the
 public so long as the Event Group remains private.
 

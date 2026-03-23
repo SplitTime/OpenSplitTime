@@ -15,5 +15,3 @@ Navigating OpenSplitTime as a User.
 ## Overview
 
 Information for participants and users of OpenSplitTime.
-
-*(Content to be migrated)*

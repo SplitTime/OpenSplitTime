@@ -1,6 +1,6 @@
 ---
 title: Queries
-parent: API
+parent: The OpenSplitTime API
 nav_order: 2
 ---
 
@@ -9,7 +9,7 @@ nav_order: 2
 ## Querying the API
 
 The OpenSplitTime API follows the JSON API standard, described in detail
-at [jsonapi.org](https://www.opensplittime.org). You can query for a collection of
+at [jsonapi.org](https://jsonapi.org). You can query for a collection of
 records using the pluralized model name, and if you have an individual record id, you can query for an individual
 record.
 
@@ -102,7 +102,7 @@ included in your response. Smaller, targeted requests will naturally be faster. 
 query instead of an index query when you know the id of the record for which you are querying.
 
 The OpenSplitTime API also supports the filter and fields limiters per
-the [JSON API standard](https://www.opensplittime.org). Please be judicious in your use,
+the [JSON API standard](https://jsonapi.org). Please be judicious in your use,
 and **limit the records and fields you request to data that is needed for your project**. This will
 reduce the load on the OpenSplitTime servers and result in faster response times for your project.
 

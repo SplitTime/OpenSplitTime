@@ -89,7 +89,7 @@ If a participant comes into the aid station and immediately tells you he or she 
 enter the bib number, then tap "Stopped Here," then tap the blue submit button.
 
 If you have already recorded a time for a participant, and you later learn that he or she will not
-continue,**do not re-enter the bib number from the Live Entry screen.** Instead, use the Review/Sync
+continue, **do not re-enter the bib number from the Live Entry screen.** Instead, use the Review/Sync
 screen to edit the entry you already have for that bib number.
 
 ## Monitoring Pacers
@@ -110,7 +110,7 @@ at race headquarters or by anyone following the event online.
 
 This is both a blessing and a curse. On the upside, it allows you to review your data and make sure it is
 accurate before sending it to the OpenSplitTime server for processing. On the downside, it means you will need to
-think about reviewing and syncronizing your data early and often.
+think about reviewing and synchronizing your data early and often.
 
 At the bottom of the Review/Sync screen is a green Sync button. If any entries are not synced, you will see a
 red badge indicating how many unsynced times there are. Verify that the unsynced entries are correct, then tap

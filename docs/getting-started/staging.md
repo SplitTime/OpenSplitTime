@@ -10,12 +10,12 @@ nav_order: 2
 
 If you are starting from scratch, you've come to the right page. If you are working with an Organization that has
 existing Events, it is probably easier
-to
-or
+to [duplicate an event group](#duplicating-an-existing-event-group)
+or [create it from within the Organization](#creating-a-new-event-with-an-existing-organization).
 
-1. .
+1. [Sign up](https://www.opensplittime.org/users/sign_up) for an account (or log in to your existing account).
 
-2. Create a .
+2. Create a new Organization.
 
 3. Create a new Event Group.
 
@@ -54,7 +54,7 @@ Entrants.
 1. Make any changes as necessary. For example, if the start time for your 100K was 6:00 last year but you've moved
 it to 5:30 this year, you can click Admin > Construction, and then click the pencil to edit your event.
 
-1. Now  and you are ready to go.
+1. Now [import your Entrants](#formatting-your-entrant-data-for-import) and you are ready to go.
 
 ## Creating a new Event with an existing Organization
 
@@ -69,7 +69,7 @@ the fields provided.
 
 1. Add your Entrants' information manually or import it.
 
-1. Use OST Live or import existing time data. Please  if you
+1. Use OST Live or import existing time data. Please [contact us](mailto:mark@opensplittime.org) if you
 need help with importing time data.
 
 ## Formatting your Split data for import
@@ -124,5 +124,5 @@ yourself.
 In addition, any Organization, Course, or Event Group that you create will remain private until you decide to make
 it public.
 
-We are here to help! If you run into a snag, please  and we'll
+We are here to help! If you run into a snag, please [contact us](mailto:mark@opensplittime.org) and we'll
 get right back to you.

@@ -1,6 +1,6 @@
 ---
 title: Starting
-parent: Event Management
+parent: Managing an Event
 nav_order: 2
 ---
 
@@ -21,7 +21,7 @@ To start an Event, you will follow these steps:
 ## Checked In Status
 
 Each Entrant is either "checked in" or "not checked in." Entrants who are checked in can be started using the
-[Start Entrants](https://www.opensplittime.org) process.
+[Start Entrants](#starting-entrants-in-bulk) process.
 
 **Entrants that are not checked in will not be started using the normal Start Entrants process.**
 
@@ -51,7 +51,7 @@ As each runner arrives, find the runner's name in the Roster and click/tap "Chec
 change from white to green indicating the check-in was successful. **Make sure the runner is checked in to
 OST before handing the bib to the runner.** If a runner receives a bib without being checked in to OST,
 that runner will not be started when
-you [start efforts](https://www.opensplittime.org).
+you [start efforts](#starting-entrants-in-bulk).
 
 ## Changing Entrant Information
 
@@ -121,7 +121,7 @@ Make sure to timely start your Entrants so that stations using OST Remote will h
 
 The Roster view includes a green button that will initially indicate that there is
 **Nothing to Start**. Remember that each Entrant has a "scheduled start time", as discussed on the
-[Starting Overview](https://www.opensplittime.org) page. An Entrant becomes eligible
+[Starting Overview](#starting-overview) page. An Entrant becomes eligible
 to start when the following are true:
 
 1. The Entrant has checked in

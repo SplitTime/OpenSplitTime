@@ -19,5 +19,3 @@ How to use the OpenSplitTime API to integrate with your applications and service
 ## API Overview
 
 The OpenSplitTime API allows you to programmatically access event data, submit times, and integrate OpenSplitTime with other services.
-
-*(Detailed content to be migrated)*

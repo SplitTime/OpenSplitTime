@@ -59,10 +59,10 @@ An Event is just that--a single event run on a single Course, with one or more E
 event. If you have groups running different Courses (even if they are happening at the same time), you'll need to
 have an Event for each Course, and those Events would belong to a single Event Group.
 
-For example, [Quad Rock 50 (2018)](https://www.opensplittime.org) and
-[Quad Rock 25 (2018)](https://www.opensplittime.org) are two separate Events belonging to a single
+For example, Quad Rock 50 (2025) and
+Quad Rock 25 (2025) are two separate Events belonging to a single
 Event
-Group, [Quad Rock 2018](https://www.opensplittime.org), even though both are run at the
+Group, Quad Rock 2025, even though both are run at the
 same time and even though the 25-mile Course covers the same territory as the 50-mile Course.
 
 ## People
@@ -83,7 +83,7 @@ and we use the term Effort to refer to the Entrant and all of his or her related
 ## Raw Times
 
 Raw Times are the permanent timing log created as an Event Group is taking place. As time data are captured by
-volunteers using [OST Remote](https://www.opensplittime.org) or manually entered using the Live Entry view, they are recorded first as Raw Times.
+volunteers using [OST Remote](../ost-remote/) or manually entered using the Live Entry view, they are recorded first as Raw Times.
 
 Raw Time data is captured in the form it comes in, warts and all. Human error is intentionally preserved to ensure
 a
@@ -94,8 +94,7 @@ determine whether the 10:30 entry or the 10:45 entry was correct. And the incorr
 might match with another runner whose bib was misread by the volunteer.
 
 Raw Time data is not intended for public view; it is a behind-the-scenes record. Our best interpretation of the
-Raw Time record is presented to the public in the form
-of [Split Times](https://www.opensplittime.org).
+Raw Time record is presented to the public in the form of Split Times.
 
 ## Split Times
 
@@ -103,6 +102,5 @@ Split Times are the publicly viewable time data for Entrants at Splits along the
 might have thousands of Split Times in a single Event. OpenSplitTime checks Split Time data as it is entered,
 submitted, and imported, and uses statistical analysis to flag any times that appear bad or questionable.
 
-Split Times should not be confused with
-[Raw Times](https://www.opensplittime.org), which are the original, often
+Split Times should not be confused with Raw Times, which are the original, often
 messy, behind-the-scenes log of all recorded times, whether correct or incorrect.

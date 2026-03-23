@@ -1,12 +1,10 @@
 ---
 title: API Keys
-parent: API
+parent: The OpenSplitTime API
 nav_order: 1
 ---
 
 # API Keys
-
-## API Keys
 
 Once you have an account, you will need to pass your credentials to the OpenSplitTime API authorization
 endpoint to receive an API Key. Get an API Key by making a POST request to /api/v1/auth
@@ -35,8 +33,7 @@ in a safe way in your client application.
 
 ## API Key Lifespan
 
-For additional security, **the API Key issued to you will expire
-after **. If you need to use the
+For additional security, **the API Key issued to you will expire after 3 days**. If you need to use the
 API for a longer period, you will need to obtain a new API Key.
 
 For reference, when you obtain an API Key,

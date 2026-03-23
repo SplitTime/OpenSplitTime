@@ -1,6 +1,6 @@
 ---
 title: Winding Up
-parent: Event Management
+parent: Managing an Event
 nav_order: 5
 ---
 
@@ -9,7 +9,7 @@ nav_order: 5
 ## Setting Stops
 
 At the conclusion of your Event, you may have Entrants still showing as "in progress" even though you
-know these Entrants are no longer on the course. This occur if Entrants drop and leave the Course without
+know these Entrants are no longer on the course. This occurs if Entrants drop and leave the Course without
 notifying timing crews. It may also occur if timing crews are not accurately reporting stopped Entrants.
 
 To set stops for all Entrants in an Event at the last point for which times were recorded, use the Establish

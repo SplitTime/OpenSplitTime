@@ -10,7 +10,7 @@ nav_order: 1
 
 OST Remote is an easy-to-use app that allows volunteers to record bib numbers and times at aid stations or
 other points along a course. OST Remote runs on iOS devices (iPhone and iPad) and is available free in the
-[App Store.](https://www.opensplittime.org)
+[App Store](https://itunes.apple.com/us/app/ost-remote/id1253815009?mt=8).
 
 OST Remote requires an iPhone or iPad running iOS 9 or later.
 
@@ -52,6 +52,5 @@ connection, downloading event data could take several seconds to complete.
 Once the information is downloaded, you will see the Live Entry screen.
 
 After completing this step, OST Remote has all the information it needs for you to enter times whether or
-not you have an internet connection.** If your aid station has no internet service, you will need to
-complete these two steps while you still have a data connection, before you travel to your aid station.
-**
+not you have an internet connection. **If your aid station has no internet service, you will need to
+complete these two steps while you still have a data connection, before you travel to your aid station.**

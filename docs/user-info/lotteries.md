@@ -16,18 +16,14 @@ upload a completed form.
 
 If you have been accepted or waitlisted, and you need to download a service form, here are the steps:
 
-1. If you already have an OpenSplitTime account,
-
-.
+1. If you already have an OpenSplitTime account, **log in to OpenSplitTime**.
 
 The email address you use for your OpenSplitTime User account will need to be the same as the email address you used to sign up for the event.
 
 1. If you do not already have an OpenSplitTime account, or if you have an OpenSplitTime account under a different email address, you will
-need to
+need to **sign up for OpenSplitTime**.
 
-.
-
-1. Click on the  link in the navigation
+1. Click on the **My Stuff** link in the navigation
 bar at the top of the page.
 
 1. Under the "Manage Service" card, click the appropriate link. This will take you to your Manage Service page.
@@ -51,9 +47,7 @@ here are the steps to upload the completed form:
 good to go. In either case, the format must be pdf, jpeg, or png, and the file size must be less than 5 MB. PDF
 is preferred because of the smaller file size.
 
-1.
-
-using the same account you used to download the form.
+1. **Log in to OpenSplitTime** using the same account you used to download the form.
 
 1. Navigate to your Manage Service page as described above, and find the card with the heading that says, "Upload Completed Service Form".
 

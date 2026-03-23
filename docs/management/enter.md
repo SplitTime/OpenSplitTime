@@ -1,6 +1,6 @@
 ---
 title: Entering Times
-parent: Event Management
+parent: Managing an Event
 nav_order: 3
 ---
 
@@ -12,8 +12,8 @@ The Live Entry screen is the primary place to manually enter time data. It also 
 entries that have been flagged by OpenSplitTime as faulty, meaning that they require human review before being
 posted for public view.
 
-**You will need to [Enable Live Entry](https://www.opensplittime.org/docs/management?page=1&topic=prep)
-** in order to access the Live Entry page.
+**You will need to [Enable Live Entry](prep.html#enabling-and-disabling-live-entry)**
+in order to access the Live Entry page.
 
 You can reach the Live Entry page by selecting **Live > Time Entry** from the main menu.
 
@@ -129,7 +129,7 @@ Click **Pull Times** to bring in a batch of time entries for review. Times are p
 
 Once you have pulled a batch of times, review them and determine whether they should be submitted as-is, edited
 to fix problems, or discarded. Review and analysis are covered in
-the [Reviewing Raw Times](https://www.opensplittime.org) section.
+the [Reviewing Raw Times](#reviewing-raw-times) section.
 
 ## Direct Edit
 
@@ -186,7 +186,7 @@ Raw Time records exist for the Entrant.
 Note: This is a powerful and blunt instrument. **It will delete all of the Entrant's Split Times**
 and attempt to rebuild them from the available Raw Times. **If you do not have a complete Raw Time record,
 you will lose data.** If there are no Raw Times (for example, if all of the Entrant's times were entered
-using the [Direct Edit](https://www.opensplittime.org) method), you will erase all
+using the [Direct Edit](#direct-edit) method), you will erase all
 of the Entrant's Split Times and you will have to re-enter them from some other source.
 
 ## Reviewing Raw Times
@@ -198,7 +198,7 @@ problem entries.
 From the Live Entry screen, if time entries are waiting for review, you will see an alert in the upper right
 corner to that effect. In addition, the blue "Pull Times" button will show a badge indicating how many time
 entries are available for review. Pull the time entries as described in
-the [Live Entry](https://www.opensplittime.org) section.
+the [Live Entry](#pulling-times-for-review) section.
 
 ## The Review Procedure
 
@@ -297,7 +297,7 @@ trash can** icon corresponding with the bad Split Time. Deleting a Split Time ca
 OpenSplitTime provides tools for analyzing and fixing problem Efforts. This section discusses how to use the
 Effort screen and the Effort Analysis screen to decipher and fix many problem Efforts.
 
-As described in [Problem Efforts](https://www.opensplittime.org), you should
+As described in [Problem Efforts](monitor.html#the-problem-efforts-view), you should
 check the Problems Report screen (**Admin > Problems**) regularly. Problems should be monitored and
 corrected during the Event as time permits. Problems can be fixed after the event has concluded as well.
 
@@ -402,15 +402,15 @@ You can gain additional insight into a problem Effort using the **Raw Times List
 tools give you deep insight into what data is faulty and how it can be improved.
 
 A full explanation of the Raw Times List screen is found on the
-**[Monitoring / Raw Times List](https://www.opensplittime.org)**
+[Monitoring / Raw Times List](monitor.html#the-raw-times-list-view)
 page.
 
 A full explanation of the Raw Times Splits screen is found on the
-**[Monitoring / Raw Times Split](https://www.opensplittime.org)**
+[Monitoring / Raw Times Splits](monitor.html#the-raw-times-splits-view)
 page.
 
 A full explanation of the Effort Audit screen is found on the
-**[Entering and Editing / Effort Audit](https://www.opensplittime.org)**
+[Entering and Editing / Effort Audit](#the-effort-audit-screen)
 page.
 
 For various reasons, valid Raw Times may be not be automatically saved as Split Times. The following scenarios
@@ -517,5 +517,5 @@ Split Time will change to match the Raw Time you clicked.
 
 The Effort Audit screen shows times **for a single entrant at all aid stations**. To see all raw
 times for a **single aid station for all entrants** in a similar format, visit the
-[Raw Times Splits Screen](https://www.opensplittime.org), which can be reached by
+[Raw Times Splits Screen](monitor.html#the-raw-times-splits-view), which can be reached by
 clicking any split name in the Effort Audit screen.

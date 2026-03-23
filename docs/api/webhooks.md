@@ -1,6 +1,6 @@
 ---
 title: Webhooks
-parent: API
+parent: The OpenSplitTime API
 nav_order: 3
 ---
 

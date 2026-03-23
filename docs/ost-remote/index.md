@@ -18,5 +18,3 @@ Full documentation for OST Remote, the easiest way to enter live time entries.
 ## What is OST Remote?
 
 OST Remote is the iOS client app for live time recording at OpenSplitTime events. It makes it easy for volunteers at aid stations to record participant times using iPhones and iPads.
-
-*(Detailed content to be migrated)*

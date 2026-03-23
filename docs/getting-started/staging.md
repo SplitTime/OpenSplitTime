@@ -9,9 +9,8 @@ nav_order: 2
 ## Creating or importing your first event
 
 If you are starting from scratch, you've come to the right page. If you are working with an Organization that has
-existing Events, it is probably easier
-to [duplicate an event group](#duplicating-an-existing-event-group)
-or [create it from within the Organization](#creating-a-new-event-with-an-existing-organization).
+a prior-year Event like the one you are creating, it will be easier to [duplicate an event group](#duplicating-an-existing-event-group).
+Otherwise, [create it from within the Organization](#creating-a-new-event-with-an-existing-organization).
 
 1. [Sign up](https://www.opensplittime.org/users/sign_up) for an account (or log in to your existing account).
 
@@ -124,5 +123,4 @@ yourself.
 In addition, any Organization, Course, or Event Group that you create will remain private until you decide to make
 it public.
 
-We are here to help! If you run into a snag, please [contact us](mailto:mark@opensplittime.org) and we'll
-get right back to you.
+We are here to help! If you run into a snag, please [contact us](mailto:mark@opensplittime.org) and we'll get right back to you.

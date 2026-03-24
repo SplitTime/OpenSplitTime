@@ -1,0 +1,14 @@
+default: &default
+  store_options:
+    max_size: <%= 256.megabytes %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
+  store_options:
+    max_size: <%= 1.gigabyte %>

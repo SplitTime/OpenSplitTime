@@ -9,7 +9,9 @@ common: &defaults
   # log_level: Verboseness of logs.
   # - Default: 'info'
   # - Valid Options: debug, info, warn, error
-  # log_level: debug
+  log_level: info
+  logs_monitor: true
+  logs_ingest_key: <%= ::OstConfig.scout_apm_logs_ingest_key %>
 
   # use_prepend: Use the newer `prepend` instrumentation method. In some cases, gems
   #              that use `alias_method` can conflict with gems that use `prepend`.
@@ -26,7 +28,7 @@ common: &defaults
 
   # name: Application name in APM Web UI
   # - Default: the application names comes from the Rails or Sinatra class name
-  # name:
+   name: <%= ::OstConfig.scout_apm_app_name %>
 
   # monitor: Enable Scout APM or not
   # - Default: none
@@ -44,10 +46,14 @@ production:
 development:
   <<: *defaults
   monitor: false
+  logs_monitor: false
+  errors_enabled: false
 
 test:
   <<: *defaults
   monitor: false
+  logs_monitor: false
+  errors_enabled: false
 
 staging:
   <<: *defaults

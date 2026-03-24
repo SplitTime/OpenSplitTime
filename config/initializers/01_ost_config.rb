@@ -97,8 +97,20 @@ module OstConfig
     3.days
   end
 
+  def self.scout_apm_app_name
+    if credentials_env == "production"
+      "OpenSplitTime"
+    elsif credentials_env == "staging"
+      "ost-staging"
+    end
+  end
+
   def self.scout_apm_key
     Rails.application.credentials.dig(:scout, :agent_key)
+  end
+
+  def self.scout_apm_logs_ingest_key
+    Rails.application.credentials.dig(:scout, :logs_ingest_key)
   end
 
   def self.scout_apm_sample_rate

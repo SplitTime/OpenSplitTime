@@ -16,6 +16,7 @@ RSpec.describe "User forgot password" do
     click_button "Send me reset password instructions"
 
     expect(page).to have_content I18n.t("devise.passwords.send_instructions")
+    expect(page).to have_current_path(root_path)
   end
 
   scenario "sign up" do

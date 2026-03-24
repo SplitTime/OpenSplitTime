@@ -101,6 +101,10 @@ module OstConfig
     Rails.application.credentials.dig(:scout, :agent_key)
   end
 
+  def self.scout_apm_logs_ingest_key
+    Rails.application.credentials.dig(:scout, :logs_ingest_key)
+  end
+
   def self.scout_apm_sample_rate
     ENV.fetch("SCOUT_APM_SAMPLE_RATE", nil)&.to_f || 1.0
   end

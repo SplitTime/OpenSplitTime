@@ -28,7 +28,7 @@ common: &defaults
 
   # name: Application name in APM Web UI
   # - Default: the application names comes from the Rails or Sinatra class name
-  # name:
+   name: <%= ::OstConfig.scout_apm_app_name %>
 
   # monitor: Enable Scout APM or not
   # - Default: none
@@ -42,7 +42,6 @@ common: &defaults
 
 production:
   <<: *defaults
-  name: "OpenSplitTime"
 
 development:
   <<: *defaults
@@ -58,4 +57,3 @@ test:
 
 staging:
   <<: *defaults
-  name: "ost-staging"

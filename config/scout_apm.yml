@@ -42,7 +42,7 @@ common: &defaults
 
 production:
   <<: *defaults
-  name: "opensplittime"
+  name: "OpenSplitTime"
 
 development:
   <<: *defaults

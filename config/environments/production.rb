@@ -80,8 +80,8 @@ Rails.application.configure do
   # information to avoid inadvertent exposure of personally identifiable information (PII).
   config.log_level = OstConfig.credentials_env == "staging" ? :debug : :info
 
-  # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  # Use Solid Cache for caching.
+  config.cache_store = :solid_cache_store
 
   # Use Solid Queue for Active Job
   config.active_job.queue_adapter = :solid_queue
@@ -122,12 +122,6 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  if ENV["MEMCACHEDCLOUD_SERVERS"]
-    config.cache_store = :mem_cache_store, ENV["MEMCACHEDCLOUD_SERVERS"].split(","),
-                         { username: ENV.fetch("MEMCACHEDCLOUD_USERNAME", nil),
-                           password: ENV.fetch("MEMCACHEDCLOUD_PASSWORD", nil) }
-  end
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [

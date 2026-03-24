@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
   authenticate :user, ->(u) { u.admin? } do
     mount MissionControl::Jobs::Engine, at: "/jobs"
+    mount SolidCacheDashboard::Engine, at: "/solid_cache_dashboard"
   end
 
   namespace :docs do

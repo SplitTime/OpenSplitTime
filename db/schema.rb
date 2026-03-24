@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_24_162035) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_24_200408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -140,7 +140,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_162035) do
     t.integer "lap"
     t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey", "effort_id", "lap"], name: "index_effort_segments_on_unique_attributes", unique: true
     t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey"], name: "index_effort_segments_on_sub_splits"
-    t.index ["begin_split_id", "end_split_id", "elapsed_seconds"], name: "index_effort_segments_on_splits_and_elapsed"
     t.index ["course_id", "begin_split_kind", "end_split_kind"], name: "index_effort_segments_by_course_id_and_split_kind"
     t.index ["course_id"], name: "index_effort_segments_on_course_id"
     t.index ["effort_id"], name: "index_effort_segments_on_effort_id"
@@ -662,6 +661,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_162035) do
     t.index ["channel"], name: "index_solid_cable_messages_on_channel"
     t.index ["channel_hash"], name: "index_solid_cable_messages_on_channel_hash"
     t.index ["created_at"], name: "index_solid_cable_messages_on_created_at"
+  end
+
+  create_table "solid_cache_dashboard_events", force: :cascade do |t|
+    t.integer "byte_size"
+    t.datetime "created_at", null: false
+    t.float "duration"
+    t.string "event_type", null: false
+    t.bigint "key_hash", null: false
+    t.string "key_string"
+    t.index ["created_at"], name: "index_solid_cache_dashboard_events_on_created_at"
+    t.index ["event_type"], name: "index_solid_cache_dashboard_events_on_event_type"
+    t.index ["key_hash"], name: "index_solid_cache_dashboard_events_on_key_hash"
   end
 
   create_table "solid_cache_entries", force: :cascade do |t|

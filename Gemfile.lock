@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/wilson-is-a-robot/solid_cache_dashboard.git
-  revision: 1a301af53d2255ead118ad5728734df5d0b356ea
+  revision: 847bfcc8d419b776fd5f9e32a23ac93ea32e35bd
   branch: wilson/pagy-compatibility
   specs:
     solid_cache_dashboard (0.2.0)

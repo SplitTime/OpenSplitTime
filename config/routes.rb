@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get "getting_started", to: redirect("docs/getting_started")
   get "management", to: redirect("docs/management")
   get "ost_remote", to: redirect("docs/ost_remote")
+  get "race_result", to: redirect("docs/race_result")
   get "carmen/subregion_options"
   get "strong_confirm", to: "strong_confirm#show"
 
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
     get "getting_started", to: "visitors#getting_started"
     get "management", to: "visitors#management"
     get "ost_remote", to: "visitors#ost_remote"
+    get "race_result", to: "visitors#race_result"
     get "api", to: "visitors#api"
     get "user_info", to: "visitors#user_info"
   end

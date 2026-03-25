@@ -1,0 +1,112 @@
+<div class="card">
+  <h4 class="card-header">RaceResult Webhook Configuration</h4>
+  <div class="card-body">
+    <p>Follow these steps to connect a RaceResult event to OpenSplitTime.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">1. Open the target event</h4>
+  <div class="card-body">
+    <p>In RaceResult, open the event you wish to connect to OpenSplitTime.</p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">2. Set the event name</h4>
+  <div class="card-body">
+    <p>
+      In the left panel, go to <code>Basic Settings</code> -> <code>Event Settings</code>.
+      Change the <code>Name</code> field to the full event name shown in OpenSplitTime,
+      for example <code>2023 Testrock</code>.
+    </p>
+    <%= image_tag "docs/race_result/race_result_doc_1.png",
+              alt: "RaceResult Event Name",
+              class: "img-fluid" %>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">3. Configure timing points</h4>
+  <div class="card-body">
+    <p>
+      In the left panel, go to <code>Timing</code> -> <code>Settings</code> -> <code>Timing Points</code>
+      and configure the Timing Points so the names match exactly with aid station names in OpenSplitTime.
+    </p>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">4. Connect and map decoders</h4>
+  <div class="card-body">
+    <p>
+      Connect your RaceResult decoders to the RaceResult platform and map each decoder to the
+      corresponding <code>Timing Points</code>. You can map decoders at
+      <code>Timing</code> -> <code>Chip Timing</code> -> <code>Systems</code>.
+      Make sure each decoder is actively logging by pressing the green triangle.
+    </p>
+    <%= image_tag "docs/race_result/race_result_doc_2.png",
+              alt: "RaceResult Event Name",
+              class: "img-fluid" %>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">5. Create an exporter</h4>
+  <div class="card-body">
+    <p>
+      In the left panel, go to <code>Timing</code> -> <code>Settings</code> -> <code>Exporters + Tracking</code>.
+      Add a new <code>Exporter</code> with the following settings:
+    </p>
+    <ul>
+      <li><code>Name</code>: OST Webhook</li>
+      <li><code>TimingPoint/Split</code>: &lt;All Timing Points&gt;</li>
+      <li><code>Filter</code>: Leave as blank</li>
+      <li><code>Destination</code>: HTTP(S) Post, then fill the next field with the following endpoint URL.<code>https://staging.opensplittime.org/webhooks/raceresult</code>
+      </li>
+      <li><code>Export Data</code>: Custom, then fill the next field with
+        <code>[RD_RecordJSON] &amp; ";" &amp; [Event.Name]</code>
+      </li>
+      <li><code>LineEnd</code>: CRLF</li>
+    </ul>
+    <p>
+        A sample configuration is shown below. Make sure to replace the URL and exported data with the
+        values specified above.
+    </p>
+    <%= image_tag "docs/race_result/race_result_doc_3.png",
+              alt: "RaceResult Event Name",
+              class: "img-fluid" %>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">6. Activate the exporter</h4>
+  <div class="card-body">
+    <p>
+      In the left panel, go to <code>Timing</code> -> <code>Chip Timing</code> -> <code>Chip Timing</code>.
+      Under the <code>Exporters + Tracking</code> section, locate the exporter created in the previous
+      step and activate it by pressing the green triangle button.
+    </p>
+    <%= image_tag "docs/race_result/race_result_doc_4.png",
+              alt: "RaceResult Event Name",
+              class: "img-fluid" %>
+  </div>
+</div>
+<br/>
+
+<div class="card">
+  <h4 class="card-header">7. Confirm live delivery</h4>
+  <div class="card-body">
+    <p>
+      RaceResult should now be connected to the OST backend and send data to the server
+      every time there is an update.
+    </p>
+  </div>
+</div>
+<br/>

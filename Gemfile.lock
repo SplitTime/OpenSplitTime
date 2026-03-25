@@ -1,14 +1,3 @@
-GIT
-  remote: https://github.com/wilson-is-a-robot/solid_cache_dashboard.git
-  revision: 847bfcc8d419b776fd5f9e32a23ac93ea32e35bd
-  branch: wilson/pagy-compatibility
-  specs:
-    solid_cache_dashboard (0.2.0)
-      chartkick (>= 5.0)
-      groupdate (>= 6.5)
-      pagy (>= 6.0)
-      solid_cache (>= 0.2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -690,6 +679,11 @@ GEM
       activejob (>= 7.2)
       activerecord (>= 7.2)
       railties (>= 7.2)
+    solid_cache_dashboard (0.2.0)
+      chartkick (>= 5.0)
+      groupdate (>= 6.5)
+      pagy (>= 6.0)
+      solid_cache (>= 0.2.0)
     solid_queue (1.4.0)
       activejob (>= 7.1)
       activerecord (>= 7.1)
@@ -843,7 +837,7 @@ DEPENDENCIES
   smarter_csv
   solid_cable
   solid_cache
-  solid_cache_dashboard!
+  solid_cache_dashboard
   solid_queue
   spring
   spring-commands-rspec

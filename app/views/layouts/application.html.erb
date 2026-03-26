@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= content_for?(:title) ? yield(:title) : "OpenSplitTime" %></title>
   <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "OpenSplitTime" %>">
+  <%= tag.meta(name: "robots", content: yield(:robots_meta)) if content_for?(:robots_meta) %>
   <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
   <%= render "layouts/google_maps_api_js" %>

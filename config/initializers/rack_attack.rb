@@ -1,6 +1,10 @@
 module Rack
   class Attack
-    # Throttle all requests by IP (20 requests per minute)
-    throttle("requests by IP", limit: 20, period: 60, &:ip)
+    THROTTLED_COUNTRIES = %w[CN SG].freeze
+
+    # Throttle requests by IP for traffic from high-abuse countries (60 requests per minute)
+    throttle("requests by IP", limit: 60, period: 60) do |req|
+      req.ip if THROTTLED_COUNTRIES.include?(req.env["HTTP_CF_IPCOUNTRY"])
+    end
   end
 end

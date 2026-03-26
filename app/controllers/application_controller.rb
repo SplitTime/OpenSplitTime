@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
   def process_action(*args)
     super
-  rescue ::ActionDispatch::Http::MimeNegotiation::InvalidType => e
+  rescue ::ActionDispatch::Http::MimeNegotiation::InvalidType
     head :not_acceptable
   end
 
@@ -124,7 +124,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_current_url_options
-    ::ActiveStorage::Current.url_options = { host: OstConfig.full_uri } if Rails.env.development? || Rails.env.test?
+    ::ActiveStorage::Current.url_options = { host: OstConfig.full_uri } if Rails.env.local?
   end
 
   def set_current_user
@@ -148,7 +148,9 @@ class ApplicationController < ActionController::Base
   end
 
   def sample_requests_for_scout_apm
-    ::ScoutApm::Transaction.ignore! if rand > ::OstConfig.scout_apm_sample_rate
+    return unless request.user_agent.to_s.match?(BOT_USER_AGENT_REGEX) || rand > ::OstConfig.scout_apm_sample_rate
+
+    ::ScoutApm::Transaction.ignore!
   end
 
   def jsonapi_error_object(record)
@@ -162,22 +164,21 @@ class ApplicationController < ActionController::Base
     child_records = record.send(child_record_model)
     human_child_model_name = child_record_model.to_s.humanize(capitalize: false)
     { title: "#{klass} could not be #{past_tense[action_name]}",
-      detail: { messages: ["A #{klass} can be deleted only if it has no associated #{human_child_model_name}. " +
-                             "This #{klass} has #{child_records.size} associated #{human_child_model_name}, including " +
-                             child_records.first(20).map(&:to_s).join(", ").to_s] } }
+      detail: { messages: ["A #{klass} can be deleted only if it has no associated #{human_child_model_name}. " \
+                           "This #{klass} has #{child_records.size} associated #{human_child_model_name}, including " \
+                           "#{child_records.first(20).join(', ')}"] } }
   end
 
   def redirect_numeric_to_friendly(resource, id_param)
-    if request.request_method_symbol == :get && resource.friendly_id != id_param
-      redirect_to request.params.merge(id: resource.friendly_id), status: 301
-    end
+    return unless request.request_method_symbol == :get && resource.friendly_id != id_param
+
+    redirect_to request.params.merge(id: resource.friendly_id), status: :moved_permanently
   end
 
   def skip_session_for_bots
     ua = request.user_agent.to_s
     request.session_options[:skip] = true if ua.match?(BOT_USER_AGENT_REGEX)
   end
-
 
   # This should really be a helper method
   def past_tense

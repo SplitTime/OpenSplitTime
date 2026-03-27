@@ -62,7 +62,7 @@ gem "sitemap_generator"
 gem "smarter_csv", require: false
 gem "solid_cable"
 gem "solid_cache"
-gem "solid_cache_dashboard", github: "wilson-is-a-robot/solid_cache_dashboard", branch: "wilson/pagy-compatibility"
+gem "solid_cache_dashboard", github: "afomera/solid_cache_dashboard", branch: "main"
 gem "solid_queue"
 gem "sprockets-rails"
 gem "statistics", "~> 1.0"

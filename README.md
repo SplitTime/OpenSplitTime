@@ -157,21 +157,7 @@ OpenSplitTime is now capable of updating alongside with RaceResult. This section
 ### 1. Prerequisites
 
 1. RaceResult admin access for the event.
-2. OpenSplitTime deployment access for the target environment (`staging` or `production`).
-3. Correct base URL for each environment.
-
-Use this endpoint format:
-
-```
-https://<your-ost-host>/webhooks/raceresult
-```
-
-Examples:
-
-```
-https://ost-stage.herokuapp.com/webhooks/raceresult
-https://0.0.0.0:1234/webhooks/raceresult
-```
+2. OpenSplitTime deployment access for the target environment.
 
 ### 2. RaceResult webhook configuration
 
@@ -183,7 +169,7 @@ https://0.0.0.0:1234/webhooks/raceresult
     - `Name`: OST Webhook
     - `TimingPoint/Split`: \<All Timing Points\>
     - `Filter`: Leave as blank
-    - `Destination`: HTTP(S) Post, and fill the next field with your endpoint url. For example: `https://ost-stage.herokuapp.com/webhooks/raceresult`
+    - `Destination`: HTTP(S) Post, and fill the next field with the following URL: `https://opensplittime.org/webhooks/raceresult`
     - `Export Data`: Custom, and fill the next field with `[RD_RecordJSON] & ";" & [Event.Name]`
     - `LineEnd`: CRLF
  6. **Activate the exporter**: In the left panel, go to `Timing` -> `Chip Timing` -> `Chip Timing`. Under the `Exporters + Tracking` section, locate the exporter created in the previous step and activate it by pressing the green triangle button.
@@ -193,8 +179,6 @@ https://0.0.0.0:1234/webhooks/raceresult
 
 - CSRF is skipped for this endpoint to allow third-party POSTs.
 - There is currently no token or signature verification for `POST /webhooks/raceresult`.
-- Restrict access at the infrastructure layer if needed (WAF, IP allowlist, reverse proxy rules).
-- Use HTTPS endpoints in staging and production.
 
 Support
 -------------------------

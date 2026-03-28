@@ -35,7 +35,7 @@ In the left panel, go to `Timing` → `Settings` → `Exporters + Tracking`. Add
 - **Name**: OST Webhook
 - **TimingPoint/Split**: <All Timing Points>
 - **Filter**: Leave as blank
-- **Destination**: HTTP(S) Post, then fill the next field with the following endpoint URL: `https://staging.opensplittime.org/webhooks/raceresult`
+- **Destination**: HTTP(S) Post, then fill the next field with the following endpoint URL: `https://opensplittime.org/webhooks/raceresult`
 - **Export Data**: Custom, then fill the next field with `[RD_RecordJSON] & ";" & [Event.Name]`
 - **LineEnd**: CRLF
 

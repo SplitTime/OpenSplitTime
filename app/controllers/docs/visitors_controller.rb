@@ -15,10 +15,6 @@ class Docs::VisitorsController < ApplicationController
     render_using_presenter(Docs::OstRemotePresenter)
   end
 
-  def race_result
-    render_using_presenter(Docs::RaceResultPresenter)
-  end
-
   def api
     render_using_presenter(Docs::ApiPresenter)
   end

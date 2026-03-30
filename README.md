@@ -19,6 +19,20 @@ This application requires:
 
 Learn more about [Installing Rails](https://gorails.com/setup/osx/10.12-sierra).
 
+Documentation
+-------------
+
+Full documentation for OpenSplitTime is available at [docs.opensplittime.org](https://docs.opensplittime.org).
+
+The documentation includes:
+- Getting started guides for race directors
+- Event management workflows
+- API documentation
+- OST Remote setup instructions
+- User information and FAQs
+
+For developers wanting to contribute to the documentation, see the [docs README](docs/README.md).
+
 Getting Started
 ---------------
 ### Setup Local Environment

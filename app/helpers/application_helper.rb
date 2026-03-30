@@ -54,6 +54,15 @@ module ApplicationHelper
     pluralize(number_with_delimiter(count), singular, plural)
   end
 
+  def docs_url(path = nil)
+    base_url = OstConfig.docs_base_url
+    return base_url if path.blank?
+
+    # Ensure base_url ends with / for proper joining
+    base_url = base_url.end_with?("/") ? base_url : "#{base_url}/"
+    URI.join(base_url, path.to_s).to_s
+  end
+
   # Devise helpers
 
   def resource_name

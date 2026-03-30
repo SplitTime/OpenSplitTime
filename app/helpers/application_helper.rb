@@ -56,8 +56,6 @@ module ApplicationHelper
 
   def docs_url(path = nil)
     base_url = OstConfig.docs_base_url
-    return base_url if path.blank?
-
     URI.join(base_url, path.to_s).to_s
   end
 

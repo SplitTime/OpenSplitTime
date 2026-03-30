@@ -168,4 +168,74 @@ RSpec.describe ApplicationHelper do
       expect(helper.latlon_format(44.4, -20.5)).to eq("44.4°N / 20.5°W")
     end
   end
+
+  describe "#docs_url" do
+    context "when in development environment" do
+      before do
+        allow(Rails.env).to receive(:development?).and_return(true)
+        allow(ENV).to receive(:fetch).with("DOCS_BASE_URL").and_call_original
+      end
+
+      it "returns localhost:4000 when no path is provided" do
+        expect(helper.docs_url).to eq("http://localhost:4000")
+      end
+
+      it "returns localhost:4000 when path is nil" do
+        expect(helper.docs_url(nil)).to eq("http://localhost:4000")
+      end
+
+      it "returns localhost:4000 when path is empty string" do
+        expect(helper.docs_url("")).to eq("http://localhost:4000")
+      end
+
+      it "appends path to localhost:4000" do
+        expect(helper.docs_url("api/")).to eq("http://localhost:4000/api/")
+      end
+
+      it "handles paths with leading slash" do
+        expect(helper.docs_url("/api/")).to eq("http://localhost:4000/api/")
+      end
+
+      it "handles paths with fragments" do
+        expect(helper.docs_url("api/#webhooks")).to eq("http://localhost:4000/api/#webhooks")
+      end
+
+      it "handles complex paths" do
+        expect(helper.docs_url("getting-started/")).to eq("http://localhost:4000/getting-started/")
+      end
+    end
+
+    context "when in production environment" do
+      before do
+        allow(Rails.env).to receive(:development?).and_return(false)
+        allow(ENV).to receive(:fetch).with("DOCS_BASE_URL").and_call_original
+      end
+
+      it "returns docs.opensplittime.org when no path is provided" do
+        expect(helper.docs_url).to eq("https://docs.opensplittime.org")
+      end
+
+      it "appends path to docs.opensplittime.org" do
+        expect(helper.docs_url("api/")).to eq("https://docs.opensplittime.org/api/")
+      end
+
+      it "handles paths with fragments" do
+        expect(helper.docs_url("api/#webhooks")).to eq("https://docs.opensplittime.org/api/#webhooks")
+      end
+    end
+
+    context "with custom DOCS_BASE_URL environment variable" do
+      before do
+        allow(ENV).to receive(:fetch).with("DOCS_BASE_URL").and_return("http://localhost:4001")
+      end
+
+      it "uses the custom URL when no path is provided" do
+        expect(helper.docs_url).to eq("http://localhost:4001")
+      end
+
+      it "appends path to custom URL" do
+        expect(helper.docs_url("api/")).to eq("http://localhost:4001/api/")
+      end
+    end
+  end
 end

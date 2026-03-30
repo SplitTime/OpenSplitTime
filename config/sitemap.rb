@@ -8,7 +8,8 @@ SitemapGenerator::Sitemap.create do
   add people_path
   add about_path
   add donations_path
-  add docs_contents_path
+  # Add documentation site (external)
+  add "https://docs.opensplittime.org"
 
   Organization.visible.find_each do |organization|
     add organization_path(organization), lastmod: organization.updated_at

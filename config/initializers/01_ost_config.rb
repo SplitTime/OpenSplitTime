@@ -128,4 +128,10 @@ module OstConfig
   def self.shortened_uri
     ENV.fetch("SHORTENED_URI", base_uri)
   end
+
+  def self.docs_base_url
+    ENV.fetch("DOCS_BASE_URL") do
+      Rails.env.development? ? "http://localhost:4000" : "https://docs.opensplittime.org"
+    end
+  end
 end

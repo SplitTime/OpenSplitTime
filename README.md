@@ -31,7 +31,7 @@ The documentation includes:
 - OST Remote setup instructions
 - User information and FAQs
 
-For developers wanting to contribute to the documentation, see the [docs README](docs/README.md).
+For developers wanting to run the documentation site locally or contribute to the documentation, see the [docs README](docs/README.md).
 
 Getting Started
 ---------------

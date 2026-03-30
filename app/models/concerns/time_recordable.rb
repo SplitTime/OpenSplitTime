@@ -50,6 +50,8 @@ module TimeRecordable
   def source_text
     if source.start_with?("ost-remote")
       "OSTR (#{source.last(4)})"
+    elsif source.start_with?("ost-remote-entry-2")
+      "OSTR2 (#{source.last(4)})"
     elsif source.start_with?("ost-live-entry")
       "Live Entry (#{created_by})"
     else

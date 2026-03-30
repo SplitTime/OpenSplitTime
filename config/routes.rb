@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get "bitcoin_donations", to: "visitors#bitcoin_donations"
   get "donation_cancel", to: "visitors#donation_cancel"
   get "donation_thank_you", to: "visitors#donation_thank_you"
-  get "documentation", to: redirect("docs/contents")
+  get "documentation", to: redirect("https://docs.opensplittime.org", status: 301)
   get "getting_started", to: redirect("docs/getting_started")
   get "management", to: redirect("docs/management")
   get "ost_remote", to: redirect("docs/ost_remote")
@@ -26,14 +26,15 @@ Rails.application.routes.draw do
     mount SolidCacheDashboard::Engine, at: "/solid_cache_dashboard"
   end
 
+  # Redirect old visitor docs to new Jekyll docs site
   namespace :docs do
-    root to: "visitors#contents"
-    get "contents", to: "visitors#contents"
-    get "getting_started", to: "visitors#getting_started"
-    get "management", to: "visitors#management"
-    get "ost_remote", to: "visitors#ost_remote"
-    get "api", to: "visitors#api"
-    get "user_info", to: "visitors#user_info"
+    root to: redirect("https://docs.opensplittime.org", status: 301)
+    get "contents", to: redirect("https://docs.opensplittime.org", status: 301)
+    get "getting_started", to: redirect("https://docs.opensplittime.org/getting-started/", status: 301)
+    get "management", to: redirect("https://docs.opensplittime.org/management/", status: 301)
+    get "ost_remote", to: redirect("https://docs.opensplittime.org/ost-remote/", status: 301)
+    get "api", to: redirect("https://docs.opensplittime.org/api/", status: 301)
+    get "user_info", to: redirect("https://docs.opensplittime.org/user-info/", status: 301)
   end
 
   scope :my_stuff, controller: :my_stuff, as: :my_stuff do

@@ -14,7 +14,7 @@ In RaceResult, open the event you wish to connect to OpenSplitTime.
 
 ## 2. Set the event name
 
-In the left panel, go to `Basic Settings` → `Event Settings`. Change the `Name` field to the full event name shown in OpenSplitTime, for example `2023 Testrock`.
+In the left panel, go to `Basic Settings` → `Event Settings`. Change the `Name` field to the full event group name shown in OpenSplitTime, for example `2023 Testrock`.
 
 ![RaceResult Event Name](../assets/images/docs/race_result/race_result_doc_1.png)
 

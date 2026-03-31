@@ -140,46 +140,6 @@ navigate to the OpenSplitTime directory and type:
 $ bin/dev
 ```
 
-
-RaceResult Webhook Setup
-------------------------
-
-OpenSplitTime is now capable of updating alongside with RaceResult. This section describes how to set up the connection between RaceResult and OpenSplitTime.
-
-### Current behavior in OpenSplitTime
-
-- Endpoint path: `POST /webhooks/raceresult`
-- Controller: `app/controllers/webhooks/raceresult_controller.rb`
-- Route: `config/routes.rb`
-- The endpoint accepts JSON, extracts selected fields, and returns normalized JSON.
-- The endpoint currently does not persist webhook payloads to the database.
-
-### 1. Prerequisites
-
-1. RaceResult admin access for the event.
-2. OpenSplitTime deployment access for the target environment.
-
-### 2. RaceResult webhook configuration
-
- 1. **Open the target event**: In RaceResult, open the event you wish to connect to OpenSplitTime.
- 2. **Set the event name**: In the left panel, go to `Basic Settings` -> `Event Settings`. Change the `Name` field to the full event name shown in OpenSplitTime, for example `2023 Testrock`.
- 3. **Configure timing points**: In the left panel, go to `Timing` -> `Settings` -> `Timing Points` and configure the Timing Points so the names match exactly with aid station names in OpenSplitTime.
- 4. **Connect and map decoders**: Connect your RaceResult decoders to the RaceResult platform and map each decoder to the corresponding `Timing Points`. You can map decoders at `Timing` -> `Chip Timing` -> `Systems`. Make sure each decoder is actively logging by pressing the green triangle.
- 5. **Create an exporter**: In the left panel, go to `Timing` -> `Settings` -> `Exporters + Tracking`. Add a new `Exporter` with the following settings:
-    - `Name`: OST Webhook
-    - `TimingPoint/Split`: \<All Timing Points\>
-    - `Filter`: Leave as blank
-    - `Destination`: HTTP(S) Post, and fill the next field with the following URL: `https://opensplittime.org/webhooks/raceresult`
-    - `Export Data`: Custom, and fill the next field with `[RD_RecordJSON] & ";" & [Event.Name]`
-    - `LineEnd`: CRLF
- 6. **Activate the exporter**: In the left panel, go to `Timing` -> `Chip Timing` -> `Chip Timing`. Under the `Exporters + Tracking` section, locate the exporter created in the previous step and activate it by pressing the green triangle button.
-  7. **Confirm live delivery**: RaceResult should now be connected to the OST backend and send data to the server every time there is an update.
-
-### 3. Authentication and security notes
-
-- CSRF is skipped for this endpoint to allow third-party POSTs.
-- There is currently no token or signature verification for `POST /webhooks/raceresult`.
-
 Support
 -------------------------
 

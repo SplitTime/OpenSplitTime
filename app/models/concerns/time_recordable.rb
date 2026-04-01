@@ -8,9 +8,9 @@ module TimeRecordable
   end
 
   def absolute_or_entered_time
-    if absolute_time.blank? && entered_time.blank?
-      errors.add(:base, "Either absolute_time or entered_time must be present")
-    end
+    return unless absolute_time.blank? && entered_time.blank?
+
+    errors.add(:base, "Either absolute_time or entered_time must be present")
   end
 
   def creator_full_name
@@ -50,6 +50,8 @@ module TimeRecordable
   def source_text
     if source.start_with?("ost-remote")
       "OSTR (#{source.last(4)})"
+    elsif source.start_with?("ost-remote-2")
+      "OSTR2 (#{source.last(4)})"
     elsif source.start_with?("ost-live-entry")
       "Live Entry (#{created_by})"
     else

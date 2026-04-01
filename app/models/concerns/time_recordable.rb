@@ -8,9 +8,9 @@ module TimeRecordable
   end
 
   def absolute_or_entered_time
-    if absolute_time.blank? && entered_time.blank?
-      errors.add(:base, "Either absolute_time or entered_time must be present")
-    end
+    return unless absolute_time.blank? && entered_time.blank?
+
+    errors.add(:base, "Either absolute_time or entered_time must be present")
   end
 
   def creator_full_name

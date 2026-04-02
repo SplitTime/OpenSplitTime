@@ -22,11 +22,13 @@ class EffortProgressRow
   end
 
   def due_next_info
+    return effort_split_data(nil, nil) unless due_next_split_time
+
     effort_split_data(due_next_split_time.lap, due_next_split_time)
   end
 
   def extract_attributes(*attributes)
-    attributes.map { |attribute| [attribute, send(attribute)] }.to_h
+    attributes.index_with { |attribute| send(attribute) }
   end
 
   private
@@ -41,6 +43,8 @@ class EffortProgressRow
   end
 
   def due_next_split_time
+    return nil unless due_next_time_point
+
     SplitTime.new(effort: effort, time_point: due_next_time_point, absolute_time: next_absolute_time)
   end
 
@@ -53,6 +57,8 @@ class EffortProgressRow
   end
 
   def predicted_segment_time(segment)
+    return nil unless segment
+
     if segment.end_point.out_sub_split?
       nil
     else
@@ -65,6 +71,8 @@ class EffortProgressRow
   end
 
   def upcoming_segment
+    return nil unless due_next_time_point
+
     Segment.new(begin_point: last_reported_time_point, end_point: due_next_time_point)
   end
 
@@ -98,6 +106,6 @@ class EffortProgressRow
   end
 
   def absolute_times_local(split_times)
-    split_times.map { |st| st.absolute_time_local if st }
+    split_times.map { |st| st&.absolute_time_local }
   end
 end

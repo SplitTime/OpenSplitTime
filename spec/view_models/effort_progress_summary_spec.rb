@@ -50,10 +50,21 @@ RSpec.describe EffortProgressSummary do
 
     describe "#seconds_past_due" do
       let(:result) { summary.seconds_past_due }
-      before { allow(summary).to receive(:minutes_past_due).and_return(10) }
 
-      it "returns minutes_past_due converted to seconds" do
-        expect(result).to eq(600)
+      context "when minutes_past_due is present" do
+        before { allow(summary).to receive(:minutes_past_due).and_return(10) }
+
+        it "returns minutes_past_due converted to seconds" do
+          expect(result).to eq(600)
+        end
+      end
+
+      context "when minutes_past_due is nil" do
+        before { allow(summary).to receive(:minutes_past_due).and_return(nil) }
+
+        it "returns nil" do
+          expect(result).to be_nil
+        end
       end
     end
 
@@ -79,10 +90,33 @@ RSpec.describe EffortProgressSummary do
       context "when minutes_past_due is nil" do
         before { allow(summary).to receive(:minutes_past_due).and_return(nil) }
 
-        it "returns nil" do
-          expect(result).to be_nil
+        it "returns false" do
+          expect(result).to be false
         end
       end
+    end
+  end
+
+  describe "when effort has reached the finish" do
+    let(:effort) { create(:effort) }
+    let(:event_framework) { LiveEventFramework.new(event: effort.event) }
+    let(:summary) { described_class.new(effort: effort, event_framework: event_framework) }
+
+    before do
+      # Simulate effort at finish with no more time points
+      allow(summary).to receive(:due_next_time_point).and_return(nil)
+    end
+
+    it "does not raise errors when calculating past_due?" do
+      expect { summary.past_due? }.not_to raise_error
+    end
+
+    it "returns false for past_due?" do
+      expect(summary.past_due?).to be false
+    end
+
+    it "returns nil for minutes_past_due" do
+      expect(summary.minutes_past_due).to be_nil
     end
   end
 end

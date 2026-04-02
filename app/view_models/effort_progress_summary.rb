@@ -5,6 +5,8 @@ class EffortProgressSummary < EffortProgressRow
   end
 
   def seconds_past_due
+    return nil unless minutes_past_due
+
     minutes_past_due * 1.minute
   end
 
@@ -13,7 +15,9 @@ class EffortProgressSummary < EffortProgressRow
   end
 
   def past_due?
-    minutes_past_due && (minutes_past_due >= past_due_threshold)
+    return false unless minutes_past_due
+
+    minutes_past_due >= past_due_threshold
   end
 
   delegate :past_due_threshold, to: :event_framework

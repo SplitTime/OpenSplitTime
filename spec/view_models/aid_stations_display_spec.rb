@@ -30,6 +30,19 @@ RSpec.describe AidStationsDisplay do
     it "returns one row per aid station" do
       expect(result.count).to eq(event.aid_stations.count)
     end
+
+    context "when an aid station has no associated split times" do
+      before do
+        # Remove all split times for one aid station
+        split_id = event.aid_stations.first.split_id
+        event.split_times.where(split_id: split_id).destroy_all
+      end
+
+      it "still returns AidStationRow objects without error" do
+        expect { result }.not_to raise_error
+        expect(result).to all(be_a(AidStationRow))
+      end
+    end
   end
 
   describe "#start_time" do

@@ -120,7 +120,7 @@ manager for Linux or Windows. You will also need to have Chrome installed on you
 
 **Continuous Integration**
 
-Heroku CI and Github Actions are both used to ensure tests are passing. The status of your branch will be indicated in github. 
+Github Actions is used to ensure tests are passing. The status of your branch will be indicated in github. 
 Please ensure your branch is passing before making a pull request.
 
 **Fontawesome 6**
@@ -144,6 +144,18 @@ If you need to add icons from another collection (such as "Light"), you will nee
 
 In addition, note that the new css file (`light.scss` in our example) will have an incorrect URL for the font files. You will need to edit the URL to
 match the URLs used in the other Fontawesome stylesheets.
+
+Hosting & Deployment
+-------------------------
+
+OpenSplitTime is hosted on [Digital Ocean](https://www.digitalocean.com/) and deployed via [Hatchbox](https://www.hatchbox.io/).
+
+| Environment | URL                                      |
+| ----------- | ---------------------------------------- |
+| Production  | https://www.opensplittime.org            |
+| Staging     | https://staging.opensplittime.org        |
+
+The infrastructure includes Digital Ocean droplets for web and worker processes, and a Digital Ocean managed PostgreSQL database. Deployments are managed through the Hatchbox dashboard.
 
 Starting the Server
 -------------------------

@@ -39,6 +39,7 @@ common: &defaults
     - ActiveRecord::RecordNotFound
     - ActionController::RoutingError
     - ActionController::InvalidAuthenticityToken
+    - ActionDispatch::Cookies::CookieOverflow
 
 production:
   <<: *defaults

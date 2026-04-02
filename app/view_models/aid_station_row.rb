@@ -12,10 +12,10 @@ class AidStationRow
   IN_BITKEY = SubSplit::IN_BITKEY
   OUT_BITKEY = SubSplit::OUT_BITKEY
 
-  def initialize(aid_station:, event_framework: nil, split_times: [])
+  def initialize(aid_station:, split_times:, event_framework: nil)
     @aid_station = aid_station
     @event_framework = event_framework
-    @split_times = split_times
+    @split_times = split_times || []
     validate_setup
   end
 

@@ -20,8 +20,8 @@ RSpec.describe AidStationRow do
       it { expect { subject }.to raise_error ArgumentError, /must include aid_station/ }
     end
 
-    context "when initialized with default split_times" do
-      let(:row) { described_class.new(aid_station: aid_station) }
+    context "when initialized with nil split_times" do
+      let(:split_times) { nil }
 
       it { expect { row }.not_to raise_error }
     end
@@ -40,26 +40,46 @@ RSpec.describe AidStationRow do
   end
 
   describe "#category_sizes" do
+    let(:result) { subject.category_sizes }
     let(:event_framework) { LiveEventFramework.new(event: event) }
     let(:split_times) { event.split_times.where(split: split) }
 
     it "returns a hash with category keys and integer values" do
-      result = subject.category_sizes
       expect(result).to be_a(Hash)
       expect(result.keys).to match_array(AidStationRow::AID_EFFORT_CATEGORIES)
       expect(result.values).to all be_a(Integer)
     end
+
+    context "when split_times is nil" do
+      let(:split_times) { nil }
+
+      it "returns a hash with category keys and integer values" do
+        expect(result).to be_a(Hash)
+        expect(result.keys).to match_array(AidStationRow::AID_EFFORT_CATEGORIES)
+        expect(result.values).to all be_a(Integer)
+      end
+    end
   end
 
   describe "#category_table_titles" do
+    let(:result) { subject.category_table_titles }
     let(:event_framework) { LiveEventFramework.new(event: event) }
     let(:split_times) { event.split_times.where(split: split) }
 
     it "returns a hash with category keys and string values" do
-      result = subject.category_table_titles
       expect(result).to be_a(Hash)
       expect(result.keys).to match_array(AidStationRow::AID_EFFORT_CATEGORIES)
       expect(result.values).to all be_a(String)
+    end
+
+    context "when split_times is nil" do
+      let(:split_times) { nil }
+
+      it "returns a hash with category keys and string values" do
+        expect(result).to be_a(Hash)
+        expect(result.keys).to match_array(AidStationRow::AID_EFFORT_CATEGORIES)
+        expect(result.values).to all be_a(String)
+      end
     end
   end
 end

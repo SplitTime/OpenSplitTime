@@ -10,7 +10,7 @@ class AidStationsDisplay < LiveEventFramework
       aid_stations.map do |aid_station|
         AidStationRow.new(aid_station: aid_station,
                           event_framework: self,
-                          split_times: grouped_split_times[aid_station.split_id] || [])
+                          split_times: grouped_split_times[aid_station.split_id])
       end
   end
 

@@ -21,7 +21,7 @@ module Interactors
         process_data
         build_raw_time
         save_raw_time
-        submit_raw_time
+        process_raw_time_async
 
         Interactors::Response.new(errors, "", [raw_time])
       rescue ParsingError => e
@@ -83,16 +83,8 @@ module Interactors
         raw_time.save!
       end
 
-      def submit_raw_time
-        raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: [raw_time])
-
-        Interactors::SubmitRawTimeRows.perform!(
-          raw_time_rows: raw_time_rows,
-          event_group: event_group,
-          force_submit: false,
-          mark_as_reviewed: false,
-          current_user_id: nil
-        )
+      def process_raw_time_async
+        ProcessImportedRawTimesJob.perform_later(event_group, [raw_time])
       end
     end
   end

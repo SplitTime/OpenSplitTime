@@ -29,8 +29,7 @@ RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
 
     context "when given valid data" do
       before do
-        allow(RowifyRawTimes).to receive(:build).and_return([])
-        allow(Interactors::SubmitRawTimeRows).to receive(:perform!)
+        allow(ProcessImportedRawTimesJob).to receive(:perform_later)
       end
 
       it "returns a successful response with a raw_time" do
@@ -54,11 +53,10 @@ RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
         expect(raw_time.source).to eq("raceresult_webhook")
       end
 
-      it "submits the raw time" do
+      it "enqueues a job to process the raw time" do
         result
 
-        expect(RowifyRawTimes).to have_received(:build)
-        expect(Interactors::SubmitRawTimeRows).to have_received(:perform!)
+        expect(ProcessImportedRawTimesJob).to have_received(:perform_later).with(event_group, [RawTime.last])
       end
 
       context "when the event group is identified by slug" do

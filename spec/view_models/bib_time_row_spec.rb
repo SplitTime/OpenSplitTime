@@ -1,12 +1,15 @@
+require "rails_helper"
+
 RSpec.describe BibTimeRow do
-  subject { BibTimeRow.new(query_result_row) }
+  subject { described_class.new(query_result_row) }
+
   let(:query_result_row) do
-    {"effort_id" => effort_id,
-     "first_name" => first_name,
-     "last_name" => last_name,
-     "bib_number" => bib_number,
-     "raw_times_attributes" => raw_times_attributes,
-     "split_times_attributes" => split_times_attributes}
+    { "effort_id" => effort_id,
+      "first_name" => first_name,
+      "last_name" => last_name,
+      "bib_number" => bib_number,
+      "raw_times_attributes" => raw_times_attributes,
+      "split_times_attributes" => split_times_attributes }
   end
   let(:effort_id) { 16_229 }
   let(:first_name) { "Tattie" }

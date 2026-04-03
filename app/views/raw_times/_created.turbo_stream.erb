@@ -10,3 +10,7 @@
                            monitor_pacers: event_group.monitor_pacers?,
                            home_time_zone: event_group.home_time_zone,
                          } %>
+
+<%= turbo_stream.replace :raw_times_count,
+                         partial: "event_groups/raw_times_count",
+                         locals: { raw_times_count: event_group.raw_times.count } %>

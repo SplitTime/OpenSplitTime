@@ -1,0 +1,11 @@
+<%# locals: (raw_times_count:, filtered_raw_times_count: nil) -%>
+
+<div id="raw_times_count" class="row">
+  <div class="col-xs-8">
+    <% if filtered_raw_times_count.nil? || filtered_raw_times_count == raw_times_count %>
+      <h4><%= raw_times_count %> raw times</h4>
+    <% else %>
+      <h4>Showing <%= filtered_raw_times_count %> of <%= raw_times_count %> raw times</h4>
+    <% end %>
+  </div>
+</div>

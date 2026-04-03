@@ -143,7 +143,8 @@ class RawTime < ApplicationRecord
   end
 
   def broadcast_raw_time_destroy
-    broadcast_remove_to event_group
+    broadcast_render_later_to event_group, partial: "raw_times/destroyed",
+                                           locals: { event_group: event_group, raw_time: self }
   end
 
   def create_sortable_bib_number

@@ -42,15 +42,11 @@
                } %>
     <br/>
   <% else %>
-    <div class="row">
-      <div class="col-xs-8">
-        <% if view_object.filtered_raw_times_unpaginated_count == view_object.raw_times_count %>
-          <h4><%= "#{view_object.raw_times_count} raw times" %></h4>
-        <% else %>
-          <h4><%= "Showing #{view_object.filtered_raw_times_unpaginated_count} of #{view_object.raw_times_count} raw times" %></h4>
-        <% end %>
-      </div>
-    </div>
+    <%= render partial: "event_groups/raw_times_count",
+               locals: {
+                 raw_times_count: view_object.raw_times_count,
+                 filtered_raw_times_count: view_object.filtered_raw_times_unpaginated_count,
+               } %>
   <% end %>
 
   <table class="table table-striped">

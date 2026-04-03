@@ -11,7 +11,7 @@ module Interactors
       end
 
       def initialize(raw)
-        @raw = raw
+        @raw = raw.encode("UTF-8")
         @errors = []
       end
 

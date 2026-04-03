@@ -68,6 +68,15 @@ RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
         end
       end
 
+      context "when the raw data has ASCII-8BIT encoding" do
+        let(:raw) { "#{json_data};#{event_group.name}".encode("ASCII-8BIT") }
+
+        it "processes successfully" do
+          expect(result.errors).to be_empty
+          expect(result.resources.size).to eq(1)
+        end
+      end
+
       context "when the event group is identified by slug" do
         let(:raw) { "#{json_data};#{event_group.slug}" }
 

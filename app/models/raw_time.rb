@@ -36,6 +36,7 @@ class RawTime < ApplicationRecord
 
   after_create_commit :broadcast_raw_time_create
   after_update_commit :broadcast_raw_time_update
+  after_destroy_commit :broadcast_raw_time_destroy
 
   validates :entered_time, :split_name, :bitkey, :bib_number, :source, presence: true
   validates :bib_number, length: { maximum: 6 },
@@ -139,6 +140,10 @@ class RawTime < ApplicationRecord
   def broadcast_raw_time_update
     broadcast_render_later_to event_group, partial: "raw_times/updated",
                                            locals: { event_group: event_group, raw_time: self }
+  end
+
+  def broadcast_raw_time_destroy
+    broadcast_remove_to event_group
   end
 
   def create_sortable_bib_number

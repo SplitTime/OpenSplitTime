@@ -14,6 +14,7 @@ class RawTimesController < ApplicationController
         format.turbo_stream do
           @audit_presenter = EffortAuditView.new(@effort) if @effort.present?
           @event_group = @raw_time.event_group
+          @raw_time = RawTime.where(id: @raw_time).with_relation_ids.first
         end
       end
     else

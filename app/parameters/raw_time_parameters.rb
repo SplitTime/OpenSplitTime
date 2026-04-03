@@ -28,6 +28,6 @@ class RawTimeParameters < BaseParameters
   end
 
   def self.enriched_query
-    permitted + [:split_id, :effort_id]
+    permitted + [:split_id, :effort_id, :lap]
   end
 end

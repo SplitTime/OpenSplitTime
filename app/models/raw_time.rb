@@ -23,6 +23,10 @@ class RawTime < ApplicationRecord
   attribute :lap, :integer
   attribute :split_time_exists, :boolean
 
+  def lap
+    super || split_time&.lap || entered_lap
+  end
+
   attr_accessor :new_split_time
   attr_writer :effort, :event, :split
 

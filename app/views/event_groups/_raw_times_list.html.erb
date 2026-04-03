@@ -65,6 +65,9 @@
       <% if view_object.multiple_sub_splits? %>
         <th class="text-center"><%= link_to_reversing_sort_heading("In/Out", "bitkey,sortable_bib_number", view_object.existing_sort) %></th>
       <% end %>
+      <% if view_object.multiple_laps? %>
+        <th class="text-center"><%= link_to_reversing_sort_heading("Lap", "lap,sortable_bib_number", view_object.existing_sort) %></th>
+      <% end %>
       <th><%= link_to_reversing_sort_heading("Time", :absolute_time, view_object.existing_sort) %></th>
       <% if view_object.monitor_pacers? %>
         <th class="text-center">Pacer</th>
@@ -87,6 +90,7 @@
                  locals: {
                    multiple_events: view_object.multiple_events?,
                    multiple_sub_splits: view_object.multiple_sub_splits?,
+                   multiple_laps: view_object.multiple_laps?,
                    monitor_pacers: view_object.monitor_pacers?,
                    home_time_zone: view_object.home_time_zone,
                  }

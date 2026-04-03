@@ -54,6 +54,10 @@ module TimeRecordable
       "OSTR2 (#{source.last(4)})"
     elsif source.start_with?("ost-live-entry")
       "Live Entry (#{created_by})"
+    elsif source == "raceresult-webhook"
+      "RRWH"
+    elsif source.start_with?("raceresult-webhook-")
+      "RRWH (#{source.last(4)})"
     else
       source
     end

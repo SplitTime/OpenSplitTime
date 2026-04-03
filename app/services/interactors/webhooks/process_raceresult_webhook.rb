@@ -74,9 +74,13 @@ module Interactors
           split_name: processed_attributes[:timing_point],
           entered_time: processed_attributes[:utc_time],
           bitkey: SubSplit::IN_BITKEY,
-          source: "raceresult_webhook",
+          source: source_from_device_id,
           created_by: nil
         )
+      end
+
+      def source_from_device_id
+        ["raceresult-webhook", processed_attributes[:device_id].presence].compact.join("-")
       end
 
       def save_raw_time

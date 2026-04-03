@@ -50,13 +50,22 @@ RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
         expect(raw_time.split_name).to eq("Aid 1")
         expect(raw_time.entered_time).to eq("2014-07-11T10:45:00Z")
         expect(raw_time.bitkey).to eq(SubSplit::IN_BITKEY)
-        expect(raw_time.source).to eq("raceresult_webhook")
+        expect(raw_time.source).to eq("raceresult-webhook-device_1")
       end
 
       it "enqueues a job to process the raw time" do
         result
 
         expect(ProcessImportedRawTimesJob).to have_received(:perform_later).with(event_group, [RawTime.last])
+      end
+
+      context "when DeviceID is missing" do
+        let(:device_id) { nil }
+
+        it "sets source to raceresult-webhook" do
+          result
+          expect(RawTime.last.source).to eq("raceresult-webhook")
+        end
       end
 
       context "when the event group is identified by slug" do

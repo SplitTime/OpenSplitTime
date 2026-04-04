@@ -1,5 +1,6 @@
 module TimeRecordable
   extend ActiveSupport::Concern
+  include SourceTextable
 
   included do
     scope :unreviewed, -> { where(reviewed_by: nil).where(split_time: nil) }
@@ -44,22 +45,6 @@ module TimeRecordable
       TimeConversion.absolute_to_hms(absolute_time.in_time_zone(zone))
     else
       TimeConversion.user_entered_to_military(entered_time)
-    end
-  end
-
-  def source_text
-    if source.start_with?("ost-remote")
-      "OSTR (#{source.last(4)})"
-    elsif source.start_with?("ost-remote-2")
-      "OSTR2 (#{source.last(4)})"
-    elsif source.start_with?("ost-live-entry")
-      "Live Entry (#{created_by})"
-    elsif source == "raceresult-webhook"
-      "RRWH"
-    elsif source.start_with?("raceresult-webhook-")
-      "RRWH (#{source.last(4)})"
-    else
-      source
     end
   end
 end

@@ -1,5 +1,5 @@
 BibTimeRow = Struct.new(:effort_id, :first_name, :last_name, :bib_number, :sortable_bib_number, :raw_times_attributes,
-                        :sortable_time, :split_times_attributes, :single_lap, keyword_init: true) do
+                        :sortable_time, :split_times_attributes, :single_lap, keyword_init: true) do # rubocop:disable Style/RedundantStructKeywordInit
   include Discrepancy
 
   def full_name
@@ -11,7 +11,8 @@ BibTimeRow = Struct.new(:effort_id, :first_name, :last_name, :bib_number, :sorta
   end
 
   def raw_times
-    @raw_times ||= JSON.parse(guaranteed_string(raw_times_attributes)).map { |row| RawTimeData.new(row) }
+    @raw_times ||= JSON.parse(guaranteed_string(raw_times_attributes))
+                       .map { |row| RawTimeData.new(**row.symbolize_keys) }
   end
 
   def split_times

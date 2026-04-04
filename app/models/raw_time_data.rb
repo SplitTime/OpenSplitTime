@@ -13,8 +13,7 @@ RawTimeData = Struct.new(
   :absolute_time_local_string,
   :source,
   :created_by,
-  :reviewed_by,
-  keyword_init: true # rubocop:disable Style/RedundantStructKeywordInit
+  :reviewed_by
 ) do
   include SourceTextable
 

@@ -1,5 +1,14 @@
-BibTimeRow = Struct.new(:effort_id, :first_name, :last_name, :bib_number, :sortable_bib_number, :raw_times_attributes,
-                        :sortable_time, :split_times_attributes, :single_lap, keyword_init: true) do # rubocop:disable Style/RedundantStructKeywordInit
+BibTimeRow = Struct.new(
+  :effort_id,
+  :first_name,
+  :last_name,
+  :bib_number,
+  :sortable_bib_number,
+  :raw_times_attributes,
+  :sortable_time,
+  :split_times_attributes,
+  :single_lap
+) do
   include Discrepancy
 
   def full_name

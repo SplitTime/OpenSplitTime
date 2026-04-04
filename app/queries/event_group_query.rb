@@ -1,7 +1,7 @@
 class EventGroupQuery < BaseQuery
   def self.not_expected_bibs(event_group_id, split_name)
     parameterized_split_name = split_name.parameterize
-    query = <<-SQL
+    query = <<~SQL.squish
       with relevant_events as (
                select id
                from events
@@ -9,7 +9,7 @@ class EventGroupQuery < BaseQuery
            ),
 
            distances as (
-               select event_id, 
+               select event_id,#{' '}
                       distance_from_start as subject_distance
                from events
                         inner join aid_stations on aid_stations.event_id = events.id
@@ -53,9 +53,9 @@ class EventGroupQuery < BaseQuery
     home_time_zone = event_group.home_time_zone
     time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
 
-    query = <<~SQL
+    query = <<~SQL.squish
       set timezone='#{time_zone}';
-  
+
       with raw_times_subquery as
         (select ef.id as effort_id, ef.first_name, ef.last_name, rt.bib_number, rt.sortable_bib_number,
                          json_agg(json_build_object('id', rt.id,
@@ -68,15 +68,15 @@ class EventGroupQuery < BaseQuery
         left join efforts ef on ef.event_id in (select id from events where events.event_group_id = #{event_group.id}) and ef.bib_number is not null and ef.bib_number = rt.matchable_bib_number
         where rt.event_group_id = #{event_group.id} and rt.parameterized_split_name = '#{parameterized_split_name}' and rt.bitkey = #{bitkey}
         group by ef.id, ef.first_name, ef.last_name, rt.bib_number, rt.sortable_bib_number),
-  
+
       split_times_subquery as
-        (select ef.id as effort_id, 
+        (select ef.id as effort_id,#{' '}
                 min(ev.laps_required) as min_laps_required,
                 max(ev.laps_required) as max_laps_required,
                 min(st.absolute_time at time zone 'UTC') as sortable_time,
-                json_agg(json_build_object('id', st.id, 
-                                           'lap', st.lap, 
-                                           'military_time', to_char((st.absolute_time at time zone 'UTC'), 'HH24:MI:SS')) 
+                json_agg(json_build_object('id', st.id,#{' '}
+                                           'lap', st.lap,#{' '}
+                                           'military_time', to_char((st.absolute_time at time zone 'UTC'), 'HH24:MI:SS'))#{' '}
                                   order by st.lap) as split_times_attributes
         from split_times st
           inner join efforts ef on ef.id = st.effort_id
@@ -86,32 +86,32 @@ class EventGroupQuery < BaseQuery
         group by ef.id),
 
         laps_subquery as
-          (select max(max_laps_required) as overall_max_laps, 
+          (select max(max_laps_required) as overall_max_laps,#{' '}
                   min(min_laps_required) as overall_min_laps
           from split_times_subquery)
-  
-      select rts.*, 
-             sts.sortable_time, 
-             sts.split_times_attributes, 
+
+      select rts.*,#{' '}
+             sts.sortable_time,#{' '}
+             sts.split_times_attributes,#{' '}
              case when ls.overall_max_laps = 1 and ls.overall_min_laps = 1 then true else false end as single_lap
       from raw_times_subquery rts
         left join split_times_subquery sts on rts.effort_id = sts.effort_id
         inner join laps_subquery ls on true
       order by #{order_sql}
     SQL
-    result = ActiveRecord::Base.connection.execute(query.squish).map { |row| BibTimeRow.new(row) }
+    result = ActiveRecord::Base.connection.execute(query.squish).map { |row| BibTimeRow.new(**row.symbolize_keys) }
     reset_database_timezone
     result
   end
 
   def self.set_concealed(event_group_id, boolean)
-    query = <<~SQL
+    query = <<~SQL.squish
       update event_groups
         set concealed = #{boolean}
         where id = #{event_group_id};
 
       with organization_subquery as
-        (select organizations.id, 
+        (select organizations.id,#{' '}
           case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from organizations
           inner join event_groups on event_groups.organization_id = organizations.id
@@ -120,20 +120,20 @@ class EventGroupQuery < BaseQuery
 
       update organizations
         set concealed = #{boolean}
-        where organizations.id in 
-          (select id 
-          from organization_subquery 
+        where organizations.id in#{' '}
+          (select id#{' '}
+          from organization_subquery#{' '}
           where should_be_concealed = #{boolean});
 
       with person_ids as
-        (select people.id 
+        (select people.id#{' '}
          from people
          left join efforts on efforts.person_id = people.id
          inner join events on events.id = efforts.event_id
          where events.event_group_id = #{event_group_id}),
-  
+
       people_subquery as
-        (select people.id, 
+        (select people.id,#{' '}
           case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from people
           left join efforts on efforts.person_id = people.id
@@ -144,9 +144,9 @@ class EventGroupQuery < BaseQuery
 
       update people
       set concealed = #{boolean}
-      where people.id in 
-        (select id 
-         from people_subquery 
+      where people.id in#{' '}
+        (select id#{' '}
+         from people_subquery#{' '}
          where should_be_concealed = #{boolean});
 
       with course_ids as
@@ -154,7 +154,7 @@ class EventGroupQuery < BaseQuery
          from courses
            left join events on events.course_id = courses.id
          where events.event_group_id = #{event_group_id}),
-       
+      #{' '}
       courses_subquery as
         (select courses.id,
           case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed

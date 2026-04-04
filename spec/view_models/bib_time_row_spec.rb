@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe BibTimeRow do
-  subject { described_class.new(query_result_row) }
+  subject { described_class.new(**query_result_row.symbolize_keys) }
 
   let(:query_result_row) do
     { "effort_id" => effort_id,

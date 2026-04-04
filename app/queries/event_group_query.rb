@@ -9,8 +9,7 @@ class EventGroupQuery < BaseQuery
            ),
 
            distances as (
-               select event_id,#{' '}
-                      distance_from_start as subject_distance
+               select event_id,                      distance_from_start as subject_distance
                from events
                         inner join aid_stations on aid_stations.event_id = events.id
                         inner join splits on splits.id = aid_stations.split_id
@@ -70,14 +69,10 @@ class EventGroupQuery < BaseQuery
         group by ef.id, ef.first_name, ef.last_name, rt.bib_number, rt.sortable_bib_number),
 
       split_times_subquery as
-        (select ef.id as effort_id,#{' '}
-                min(ev.laps_required) as min_laps_required,
+        (select ef.id as effort_id,                min(ev.laps_required) as min_laps_required,
                 max(ev.laps_required) as max_laps_required,
                 min(st.absolute_time at time zone 'UTC') as sortable_time,
-                json_agg(json_build_object('id', st.id,#{' '}
-                                           'lap', st.lap,#{' '}
-                                           'military_time', to_char((st.absolute_time at time zone 'UTC'), 'HH24:MI:SS'))#{' '}
-                                  order by st.lap) as split_times_attributes
+                json_agg(json_build_object('id', st.id,                                           'lap', st.lap,                                           'military_time', to_char((st.absolute_time at time zone 'UTC'), 'HH24:MI:SS'))                                  order by st.lap) as split_times_attributes
         from split_times st
           inner join efforts ef on ef.id = st.effort_id
           inner join events ev on ev.id = ef.event_id
@@ -86,14 +81,10 @@ class EventGroupQuery < BaseQuery
         group by ef.id),
 
         laps_subquery as
-          (select max(max_laps_required) as overall_max_laps,#{' '}
-                  min(min_laps_required) as overall_min_laps
+          (select max(max_laps_required) as overall_max_laps,                  min(min_laps_required) as overall_min_laps
           from split_times_subquery)
 
-      select rts.*,#{' '}
-             sts.sortable_time,#{' '}
-             sts.split_times_attributes,#{' '}
-             case when ls.overall_max_laps = 1 and ls.overall_min_laps = 1 then true else false end as single_lap
+      select rts.*,             sts.sortable_time,             sts.split_times_attributes,             case when ls.overall_max_laps = 1 and ls.overall_min_laps = 1 then true else false end as single_lap
       from raw_times_subquery rts
         left join split_times_subquery sts on rts.effort_id = sts.effort_id
         inner join laps_subquery ls on true
@@ -111,8 +102,7 @@ class EventGroupQuery < BaseQuery
         where id = #{event_group_id};
 
       with organization_subquery as
-        (select organizations.id,#{' '}
-          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
+        (select organizations.id,          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from organizations
           inner join event_groups on event_groups.organization_id = organizations.id
         where organizations.id in (select organization_id from event_groups where event_groups.id = #{event_group_id})
@@ -120,21 +110,16 @@ class EventGroupQuery < BaseQuery
 
       update organizations
         set concealed = #{boolean}
-        where organizations.id in#{' '}
-          (select id#{' '}
-          from organization_subquery#{' '}
-          where should_be_concealed = #{boolean});
+        where organizations.id in          (select id          from organization_subquery          where should_be_concealed = #{boolean});
 
       with person_ids as
-        (select people.id#{' '}
-         from people
+        (select people.id         from people
          left join efforts on efforts.person_id = people.id
          inner join events on events.id = efforts.event_id
          where events.event_group_id = #{event_group_id}),
 
       people_subquery as
-        (select people.id,#{' '}
-          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
+        (select people.id,          case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from people
           left join efforts on efforts.person_id = people.id
           inner join events on events.id = efforts.event_id
@@ -144,18 +129,14 @@ class EventGroupQuery < BaseQuery
 
       update people
       set concealed = #{boolean}
-      where people.id in#{' '}
-        (select id#{' '}
-         from people_subquery#{' '}
-         where should_be_concealed = #{boolean});
+      where people.id in        (select id         from people_subquery         where should_be_concealed = #{boolean});
 
       with course_ids as
         (select distinct courses.id
          from courses
            left join events on events.course_id = courses.id
          where events.event_group_id = #{event_group_id}),
-      #{' '}
-      courses_subquery as
+            courses_subquery as
         (select courses.id,
           case when count(case when event_groups.concealed then 1 end) = count(event_groups.id) then true else false end as should_be_concealed
         from courses

@@ -27,7 +27,7 @@
                   <%= link_to_strong_confirm "Delete all entrants", delete_all_efforts_event_group_path(presenter.event_group),
                                              class: "dropdown-item text-danger",
                                              message: "This action will permanently delete all entrants and split times from the #{presenter.event_group_name} event group.",
-                                             required_pattern: "DELETE ALL ENTRANTS" %>
+                                             required_pattern: "#{presenter.event_group_name.upcase} ENTRANTS" %>
                 </div>
               </div>
             <% end %>

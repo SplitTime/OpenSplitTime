@@ -15,6 +15,7 @@ module Interactors
     def perform!
       ActiveRecord::Base.transaction do
         delete_raw_times
+        delete_effort_segments
         delete_split_times
         touch_records
         raise ActiveRecord::Rollback if errors.present?
@@ -27,6 +28,7 @@ module Interactors
     private
 
     attr_reader :event_group, :response
+
     delegate :errors, to: :response, private: true
 
     def delete_raw_times
@@ -35,11 +37,20 @@ module Interactors
       errors << active_record_error(e)
     end
 
+    def delete_effort_segments
+      EffortSegment.where(effort_id: efforts).delete_all
+    rescue ActiveRecord::ActiveRecordError => e
+      errors << active_record_error(e)
+    end
+
     def delete_split_times
-      efforts = Effort.where(event_id: event_group.events)
       @split_time_count = SplitTime.where(effort_id: efforts).delete_all
     rescue ActiveRecord::ActiveRecordError => e
       errors << active_record_error(e)
+    end
+
+    def efforts
+      @efforts ||= Effort.where(event_id: event_group.events)
     end
 
     def touch_records

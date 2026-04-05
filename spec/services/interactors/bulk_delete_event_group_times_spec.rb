@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe Interactors::BulkDeleteEventGroupTimes do
   subject { described_class.new(event_group) }
+
   let(:event_group) { event_groups(:sum) }
 
   describe "#perform!" do
@@ -9,6 +10,13 @@ RSpec.describe Interactors::BulkDeleteEventGroupTimes do
       it "deletes all split times" do
         expect(event_group.split_times.count).to be_positive
         expect { subject.perform! }.to change { event_group.split_times.count }.from(anything).to(0)
+      end
+
+      it "deletes all effort segments for the event group's efforts" do
+        efforts = Effort.where(event_id: event_group.events)
+        efforts.each { |effort| EffortSegment.set_for_effort(effort) }
+        expect(EffortSegment.where(effort_id: efforts).count).to be_positive
+        expect { subject.perform! }.to change { EffortSegment.where(effort_id: efforts).count }.to(0)
       end
 
       it "deletes all raw times" do
@@ -36,11 +44,13 @@ RSpec.describe Interactors::BulkDeleteEventGroupTimes do
     end
 
     context "when an error occurs" do
+      # rubocop:disable RSpec/AnyInstance
       before { allow_any_instance_of(ActiveRecord::Relation).to receive(:delete_all).and_raise ActiveRecord::ActiveRecordError, "a thing happened" }
+      # rubocop:enable RSpec/AnyInstance
 
       it "does not delete split times or raw times" do
-        expect { subject.perform! }.to not_change { event_group.split_times.count }
-                                         .and not_change { event_group.raw_times.count }
+        expect { subject.perform! }.to(not_change { event_group.split_times.count }
+          .and(not_change { event_group.raw_times.count }))
       end
 
       it "returns a response with errors" do

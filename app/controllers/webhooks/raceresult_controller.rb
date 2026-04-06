@@ -4,7 +4,6 @@ module Webhooks
 
     def receive
       payload = JSON.parse(request.raw_post)
-      Rails.logger.info("RaceResult webhook received: #{payload}")
 
       @event_group = EventGroup.friendly.find(payload["event_group_name"])
       return head :unauthorized unless ActiveSupport::SecurityUtils.secure_compare(

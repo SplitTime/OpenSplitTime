@@ -38,12 +38,12 @@ en:
       group_is_private_detail: "Once your Events and Courses are ready and you have Entrants loaded, click the \"Go Public\" button to make your Event Group visible to the public."
 
       group_is_live_main: "Your Event Group is available for Live Entry"
-      group_is_live_detail: "You can now access the Live Entry view and use OST Remote to record times."
+      group_is_live_detail: "You can now access the Live Entry view and use OST Remote and RaceResult RFID integration to record times."
       group_is_not_live_main: "Your Event Group is not yet available for Live Entry"
       group_is_not_live_detail: "You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until you make it available by clicking the \"Enable Live Entry\" button."
 
       webhook_token_active_main: "RaceResult RFID webhook token is active"
-      webhook_token_active_detail: "Copy the URL and post body expression below into your RaceResult exporter configuration."
+      webhook_token_active_detail: "Copy the URL below into your RaceResult exporter configuration."
       webhook_token_inactive_main: "RaceResult RFID webhook is not configured"
       webhook_token_inactive_detail: "Click \"Set Token\" to generate a webhook token for receiving live RFID chip reads from RaceResult."
       reset_webhook_token_confirm: "This will invalidate the existing webhook token for %{event_group_name}. You will need to update the URL in your RaceResult exporter configuration. Are you sure?"

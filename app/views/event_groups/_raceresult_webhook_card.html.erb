@@ -12,8 +12,7 @@
         for a detailed explanation of how to set up this integration.</p>
       <% if presenter.webhook_token? %>
         <p class="text-muted"><%= t("event_groups.setup.webhook_token_active_detail") %></p>
-        <%= render "shared/copyable_field", label: "Webhook URL", value: webhooks_raceresult_url(token: presenter.webhook_token), field_id: "webhook_url" %>
-        <%= render "shared/copyable_field", label: "Post Body Expression", value: presenter.raceresult_post_body_expression, field_id: "webhook_post_body" %>
+        <%= render "shared/copyable_field", label: "Webhook URL", value: webhooks_raceresult_url(token: presenter.webhook_token, event_group_name: presenter.event_group.slug), field_id: "webhook_url" %>
       <% else %>
         <p class="text-muted mb-0"><%= t("event_groups.setup.webhook_token_inactive_detail") %></p>
       <% end %>

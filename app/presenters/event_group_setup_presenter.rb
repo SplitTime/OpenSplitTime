@@ -79,10 +79,6 @@ class EventGroupSetupPresenter < BasePresenter
     event_group.name
   end
 
-  def raceresult_post_body_expression
-    %("{""record"":" & [RD_RecordJSON] & ",""event_group_name"":""#{event_group.slug}""}")
-  end
-
   def event_group_names
     events.map(&:name).to_sentence(two_words_connector: " and ", last_word_connector: ", and ")
   end

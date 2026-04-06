@@ -5,19 +5,17 @@ module Interactors
 
       class ParsingError < StandardError; end
 
-      # The raw data is expected to be in the format: JSON_DATA;EVENT_GROUP_NAME
-      def self.call(raw)
-        new(raw).call
+      def self.call(event_group:, record:)
+        new(event_group: event_group, record: record).call
       end
 
-      def initialize(raw)
-        @raw = raw.encode("UTF-8")
+      def initialize(event_group:, record:)
+        @event_group = event_group
+        @raw_attributes = record
         @errors = []
       end
 
       def call
-        parse_raw
-        find_event_group
         process_data
         build_raw_time
         save_raw_time
@@ -31,35 +29,16 @@ module Interactors
 
       private
 
-      attr_reader :raw
-      attr_accessor :raw_attributes, :processed_attributes, :raw_time, :event_group_name, :event_group, :errors
-
-      def parse_raw
-        parts = raw.split(";")
-        raise ParsingError, "Invalid format: expected JSON;EVENT_GROUP_NAME" if parts.size != 2
-
-        raise ParsingError, "JSON data cannot be blank" if parts.first.blank?
-
-        self.raw_attributes = JSON.parse(parts.first) # Automatically raises JSON::ParserError if invalid
-
-        raise ParsingError, "JSON data cannot be empty" if raw_attributes.blank?
-
-        self.event_group_name = parts.last.to_s.strip
-        raise ParsingError, "Event group name cannot be blank" if event_group_name.blank?
-      end
-
-      def find_event_group
-        self.event_group = EventGroup.find_by(slug: event_group_name.parameterize)
-        raise ParsingError, "Event group not found: #{event_group_name}" unless event_group
-      end
+      attr_reader :event_group, :raw_attributes, :errors
+      attr_accessor :processed_attributes, :raw_time
 
       def process_data
         self.processed_attributes = {
-          bib: raw_attributes["Bib"],
-          utc_time: raw_attributes.dig("Passing", "UTCTime"),
-          device_id: raw_attributes.dig("Passing", "DeviceID"),
-          timing_point: raw_attributes["TimingPoint"],
-          id: raw_attributes["ID"]
+          bib: raw_attributes["bib"] || raw_attributes["Bib"],
+          utc_time: raw_attributes.dig("passing", "utc_time") || raw_attributes.dig("Passing", "UTCTime"),
+          device_id: raw_attributes.dig("passing", "device_id") || raw_attributes.dig("Passing", "DeviceID"),
+          timing_point: raw_attributes["timing_point"] || raw_attributes["TimingPoint"],
+          id: raw_attributes["id"] || raw_attributes["ID"]
         }
         raise ParsingError, "Missing required field: Bib" if processed_attributes[:bib].blank?
         raise ParsingError, "Missing required field: TimingPoint" if processed_attributes[:timing_point].blank?

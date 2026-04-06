@@ -2,11 +2,13 @@ require "rails_helper"
 
 RSpec.describe Webhooks::RaceresultController do
   describe "#receive" do
-    subject(:make_request) { post :receive, body: raw_payload }
+    subject(:make_request) { post :receive, params: { token: token, event_group_name: event_group_name, record: record }, as: :json }
 
-    let(:raw_payload) { "#{json_data};#{event_group_name}" }
+    let(:token) { event_group.webhook_token }
+    let(:event_group_name) { event_group.slug }
+    let(:event_group) { event_groups(:hardrock_2014) }
 
-    let(:json_data) do
+    let(:record) do
       {
         "Bib" => bib,
         "TimingPoint" => timing_point,
@@ -15,15 +17,16 @@ RSpec.describe Webhooks::RaceresultController do
           "UTCTime" => utc_time,
           "DeviceID" => device_id
         }
-      }.to_json
+      }
     end
 
-    let(:event_group_name) { "hardrock-2016" }
     let(:bib) { 69 }
     let(:timing_point) { "Start" }
     let(:id) { 162 }
     let(:utc_time) { "2026-03-01T13:46:42.611-06:00" }
     let(:device_id) { "D-55570" }
+
+    before { event_group.regenerate_webhook_token }
 
     context "when the request is valid" do
       before { allow(Interactors::Webhooks::ProcessRaceresultWebhook).to receive(:call).and_return(Interactors::Response.new([], "", [])) }
@@ -34,10 +37,11 @@ RSpec.describe Webhooks::RaceresultController do
         expect(response.status).to eq(201)
       end
 
-      it "passes raw payload to the interactor" do
+      it "passes record and event_group to the interactor" do
         make_request
 
-        expect(Interactors::Webhooks::ProcessRaceresultWebhook).to have_received(:call).with(raw_payload)
+        expect(Interactors::Webhooks::ProcessRaceresultWebhook).to have_received(:call)
+          .with(event_group: event_group, record: anything)
       end
     end
 
@@ -46,7 +50,6 @@ RSpec.describe Webhooks::RaceresultController do
 
       context "when the event is single-lap" do
         let(:event_group) { event_groups(:hardrock_2014) }
-        let(:event_group_name) { event_group.slug }
         let(:effort) { efforts(:hardrock_2014_progress_sherman) }
         let(:split) { splits(:hardrock_cw_cunningham) }
         let(:bib) { effort.bib_number }
@@ -72,7 +75,6 @@ RSpec.describe Webhooks::RaceresultController do
 
       context "when the event is multi-lap" do
         let(:event_group) { event_groups(:rufa_2017) }
-        let(:event_group_name) { event_group.slug }
         let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
         let(:split) { splits(:rufa_course_grandeur_peak) }
         let(:bib) { effort.bib_number }
@@ -93,36 +95,37 @@ RSpec.describe Webhooks::RaceresultController do
       end
     end
 
+    context "when the token is missing" do
+      let(:token) { nil }
+
+      it "returns a 401 response" do
+        make_request
+
+        expect(response.status).to eq(401)
+      end
+    end
+
+    context "when the token is invalid" do
+      let(:token) { "wrong-token" }
+
+      it "returns a 401 response" do
+        make_request
+
+        expect(response.status).to eq(401)
+      end
+    end
+
     context "when the event group is not found" do
       let(:event_group_name) { "nonexistent-event" }
+      let(:token) { "any-token" }
 
-      it "returns a 422 response" do
-        make_request
-
-        expect(response.status).to eq(422)
-      end
-
-      it "does not create a RawTime" do
-        expect { make_request }.not_to change(RawTime, :count)
+      it "raises ActiveRecord::RecordNotFound" do
+        expect { make_request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
-    context "when the request data is malformed" do
-      let(:raw_payload) { "not_valid_json;hardrock-2016" }
-
-      it "returns a 422 response" do
-        make_request
-
-        expect(response.status).to eq(422)
-      end
-
-      it "does not create a RawTime" do
-        expect { make_request }.not_to change(RawTime, :count)
-      end
-    end
-
-    context "when the request data is empty" do
-      let(:raw_payload) { "" }
+    context "when the record is missing" do
+      subject(:make_request) { post :receive, params: { token: token, event_group_name: event_group_name }, as: :json }
 
       it "returns a 400 response" do
         make_request

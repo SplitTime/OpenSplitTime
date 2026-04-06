@@ -21,13 +21,13 @@ In the left panel of RaceResult, go to **Timing** → **Settings** → **Exporte
 - **Name**: OST Webhook (or whatever name you prefer)
 - **TimingPoint/Split**: <All Timing Points>
 - **Filter**: Leave as blank
-- **Destination**: HTTP(S) Post, then copy the **Webhook URL** from the OpenSplitTime setup summary page into the next field. The URL will look something like this:
+- **Destination**: HTTP(S) Post, then copy the **Webhook URL** from the OpenSplitTime **Admin** → **Construction** → **Status** page into the next field. Do not use the example below — always copy your actual URL from OpenSplitTime, as it contains a unique token for your Event Group.
 
-  `https://opensplittime.org/webhooks/raceresult?token=abc123def456`
+  Example: `https://opensplittime.org/webhooks/raceresult?token=abc123def456`
 
-- **Export Data**: Custom, then copy the **Post Body Expression** from the OpenSplitTime setup summary page into the next field. The post body will look something like this:
+- **Export Data**: Custom, then copy the **Post Body Expression** from the same OpenSplitTime page into the next field. Do not use the example below — always copy your actual expression from OpenSplitTime, as it contains your Event Group's identifier.
 
-  `'{"record": ' & [RD_RecordJSON] & ', "event_group_name": "my-event-group"}'`
+  Example: `"{""record"":" & [RD_RecordJSON] & ",""event_group_name"":""my-event-group""}"`
 - **LineEnd**: CRLF
 
 ### A sample configuration is shown below:

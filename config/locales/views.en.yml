@@ -42,6 +42,12 @@ en:
       group_is_not_live_main: "Your Event Group is not yet available for Live Entry"
       group_is_not_live_detail: "You will not be able to use the Live Entry view or OST Remote to record times for this Event Group until you make it available by clicking the \"Enable Live Entry\" button."
 
+      webhook_token_active_main: "RaceResult webhook token is active"
+      webhook_token_active_detail: "Copy the URL and post body expression below into your RaceResult exporter configuration."
+      webhook_token_inactive_main: "RaceResult webhook is not configured"
+      webhook_token_inactive_detail: "Click \"Set Token\" to generate a webhook token for receiving live timing data from RaceResult."
+      reset_webhook_token_confirm: "This will invalidate the existing webhook token for %{event_group_name}. You will need to update the URL in your RaceResult exporter configuration. Are you sure?"
+
       gpx_is_attached: "A GPX file has been added for this course"
       gpx_is_not_attached: "Add a GPX file to see your course on the map below"
 

@@ -16,6 +16,9 @@ application.register("autoclick", AutoclickController)
 import CarmenController from "./carmen_controller"
 application.register("carmen", CarmenController)
 
+import ClipboardController from "./clipboard_controller"
+application.register("clipboard", ClipboardController)
+
 import ConfirmController from "./confirm_controller"
 application.register("confirm", ConfirmController)
 

@@ -1,0 +1,9 @@
+<%# locals: (label:, value:, field_id:) %>
+
+<label for="<%= field_id %>" class="form-label fw-bold"><%= label %></label>
+<div class="input-group mb-3" data-controller="clipboard">
+  <input type="text" id="<%= field_id %>" class="form-control" readonly
+         value="<%= value %>"
+         data-clipboard-target="source">
+  <button class="btn btn-outline-secondary" type="button" style="min-width: 5.5em" data-action="clipboard#copy" data-clipboard-target="button">Copy</button>
+</div>

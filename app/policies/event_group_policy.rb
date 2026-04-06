@@ -178,6 +178,10 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  def generate_webhook_token?
+    setup?
+  end
+
   def webhooks?
     user.present?
   end

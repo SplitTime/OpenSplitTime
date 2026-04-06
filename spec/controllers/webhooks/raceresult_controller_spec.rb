@@ -3,21 +3,18 @@ require "rails_helper"
 RSpec.describe Webhooks::RaceresultController do
   describe "#receive" do
     subject(:make_request) do
-      post :receive, params: { token: token }, body: raw_data
+      post :receive, params: { token: token, event_group_name: event_group_name }, body: raw_data
     end
 
     let(:raw_data) do
       {
-        record: {
-          Bib: bib,
-          TimingPoint: timing_point,
-          ID: id,
-          Passing: {
-            UTCTime: utc_time,
-            DeviceID: device_id
-          }
-        },
-        event_group_name: event_group_name
+        Bib: bib,
+        TimingPoint: timing_point,
+        ID: id,
+        Passing: {
+          UTCTime: utc_time,
+          DeviceID: device_id
+        }
       }.to_json
     end
 
@@ -130,12 +127,26 @@ RSpec.describe Webhooks::RaceresultController do
     end
 
     context "when the record is missing" do
-      let(:raw_data) { { event_group_name: event_group_name }.to_json }
+      let(:raw_data) { "{}" }
 
       it "returns a 400 response" do
         make_request
 
         expect(response.status).to eq(400)
+      end
+
+      it "does not create a RawTime" do
+        expect { make_request }.not_to change(RawTime, :count)
+      end
+    end
+
+    context "when the body is malformed JSON" do
+      let(:raw_data) { "not valid json{{{" }
+
+      it "returns a 422 response" do
+        make_request
+
+        expect(response.status).to eq(422)
       end
 
       it "does not create a RawTime" do

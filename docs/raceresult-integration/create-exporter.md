@@ -30,10 +30,10 @@ In the left panel of RaceResult, go to **Timing** → **Settings** → **Exporte
 
 ### A sample configuration is shown below:
 
-![RaceResult Exporter Configuration](../assets/images/docs/race_result/race_result_doc_3.png)
+![RaceResult Exporter Configuration](/assets/images/docs/race_result/race_result_doc_3.png)
 
 ## 3. Activate the exporter
 
 In the left panel, go to **Timing** → **Chip Timing** → **Chip Timing**. Under the **Exporters + Tracking** section, locate the exporter created in the previous step and activate it by pressing the green triangle button.
 
-![RaceResult Exporter Activation](../assets/images/docs/race_result/race_result_doc_4.png)
+![RaceResult Exporter Activation](/assets/images/docs/race_result/race_result_doc_4.png)

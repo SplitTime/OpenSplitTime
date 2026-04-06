@@ -59,5 +59,6 @@ namespace :madmin do
   resources :results_categories
   resources :raw_times
   resources :courses
+  get "dashboard/timeout", to: "dashboard#timeout"
   root to: "dashboard#show"
 end

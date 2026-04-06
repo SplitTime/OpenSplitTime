@@ -39,6 +39,22 @@ module EventGroupsHelper
               class: "btn btn-outline-success"
   end
 
+  def button_to_generate_webhook_token(view_object)
+    label = view_object.webhook_token? ? "Reset Token" : "Set Token"
+    confirm_data = if view_object.webhook_token?
+                     { turbo_confirm: t("event_groups.setup.reset_webhook_token_confirm",
+                                        event_group_name: view_object.event_group_name) }
+                   else
+                     {}
+                   end
+
+    button_to label,
+              generate_webhook_token_event_group_path(view_object.event_group),
+              method: :patch,
+              data: confirm_data,
+              class: "btn btn-outline-success"
+  end
+
   def link_to_reconcile_efforts(event_group)
     link_to "Reconcile",
             reconcile_event_group_path(event_group),

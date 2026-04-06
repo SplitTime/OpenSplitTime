@@ -153,6 +153,7 @@ Rails.application.routes.draw do
       patch :start_efforts
       patch :update_all_efforts
       patch :update_bibs
+      patch :generate_webhook_token
       patch :update_entrant_photos
       delete :delete_all_efforts
       delete :delete_all_times

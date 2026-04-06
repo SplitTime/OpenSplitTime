@@ -1,15 +1,16 @@
 class EventGroupsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
   before_action :set_event_group, except: [:index, :new, :create]
-  before_action :redirect_if_no_events, only: [:roster, :raw_times, :split_raw_times, :finish_line, :stats, :drop_list, :follow, :traffic]
+  before_action :redirect_if_no_events,
+                only: [:roster, :raw_times, :split_raw_times, :finish_line, :stats, :drop_list, :follow, :traffic]
   after_action :verify_authorized, except: [:index, :show, :new, :follow, :traffic, :drop_list, :efforts]
 
   # GET /event_groups
   def index
     scoped_event_groups = policy_scope(EventGroup)
-      .search(params[:search])
-      .by_group_start_time
-      .preload(:events)
+                          .search(params[:search])
+                          .by_group_start_time
+                          .preload(:events)
     @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, view_context)
     session[:return_to] = event_groups_path
 
@@ -40,6 +41,16 @@ class EventGroupsController < ApplicationController
     @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)
   end
 
+  # GET /organizations/1/event_groups/1/edit
+  def edit
+    organization = Organization.friendly.find(params[:organization_id])
+
+    event_group = organization.event_groups.friendly.find(params[:id])
+    authorize event_group
+
+    @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)
+  end
+
   # POST /organizations/1/event_groups
   def create
     @event_group = EventGroup.new(permitted_params)
@@ -51,16 +62,6 @@ class EventGroupsController < ApplicationController
       @presenter = ::EventGroupSetupPresenter.new(@event_group, view_context)
       render "new", status: :unprocessable_content
     end
-  end
-
-  # GET /organizations/1/event_groups/1/edit
-  def edit
-    organization = Organization.friendly.find(params[:organization_id])
-
-    event_group = organization.event_groups.friendly.find(params[:id])
-    authorize event_group
-
-    @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)
   end
 
   # PATCH /organizations/1/event_groups/1
@@ -115,9 +116,9 @@ class EventGroupsController < ApplicationController
   # GET /event_groups/1/efforts
   def efforts
     @efforts = policy_scope(@event_group.efforts)
-      .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-      .where(prepared_params[:filter])
-      .finish_info_subquery
+               .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
+               .where(prepared_params[:filter])
+               .finish_info_subquery
 
     render partial: "event_groups/finish_line_effort", locals: { efforts: @efforts }
   end
@@ -171,16 +172,17 @@ class EventGroupsController < ApplicationController
   def follow
     @presenter = EventGroupFollowPresenter.new(@event_group, view_context)
 
-    if @presenter.event_group_finished?
-      flash[:success] = "#{@presenter.name} is completed."
-      redirect_to event_group_path(@event_group)
-    end
+    return unless @presenter.event_group_finished?
+
+    flash[:success] = "#{@presenter.name} is completed."
+    redirect_to event_group_path(@event_group)
   end
 
   # GET /event_groups/1/traffic
   def traffic
     if params[:split_name]
-      redirect_to request.params.merge(split_name: nil, parameterized_split_name: params[:split_name]), status: 301
+      redirect_to request.params.merge(split_name: nil, parameterized_split_name: params[:split_name]),
+                  status: :moved_permanently
     else
       band_width = params[:band_width].present? ? params.delete(:band_width).to_i : nil
       event_group = EventGroup.where(id: @event_group).includes(events: :splits).references(events: :splits).first
@@ -193,6 +195,18 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     @presenter = EventGroupWebhooksPresenter.new(@event_group, view_context)
+  end
+
+  # PATCH /event_groups/1/generate_webhook_token
+  def generate_webhook_token
+    authorize @event_group
+
+    @event_group.regenerate_webhook_token
+
+    respond_to do |format|
+      format.html { redirect_to setup_summary_event_group_path(@event_group) }
+      format.turbo_stream { @presenter = EventGroupSetupPresenter.new(@event_group, view_context) }
+    end
   end
 
   # GET /event_groups/1/reconcile
@@ -389,7 +403,7 @@ class EventGroupsController < ApplicationController
   def update_all_efforts
     authorize @event_group
 
-    attributes = params.require(:efforts).permit(:checked_in).to_hash
+    attributes = params.expect(efforts: [:checked_in]).to_hash
     @event_group.efforts.update_all(attributes)
 
     redirect_to roster_event_group_path(@event_group)
@@ -423,7 +437,7 @@ class EventGroupsController < ApplicationController
       format.csv do
         csv_stream = render_to_string(partial: csv_template, formats: :csv)
         send_data(csv_stream, type: "text/csv",
-                  filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Date.today}.csv")
+                              filename: "#{@event_group.name}-#{split_name}-#{csv_template}-#{Time.zone.today}.csv")
       end
     end
   end
@@ -441,14 +455,14 @@ class EventGroupsController < ApplicationController
 
   def bib_assignment_hash(event_group_params)
     event_group_params.to_unsafe_h
-      .select { |key, _| key.include?("bib_for") }
-      .transform_keys { |key| key.delete("^0-9").to_i }
+                      .select { |key, _| key.include?("bib_for") }
+                      .transform_keys { |key| key.delete("^0-9").to_i }
   end
 
   def redirect_if_no_events
-    if @event_group.events.none?
-      redirect_to setup_event_group_path(@event_group), alert: "No events exist for this event group."
-    end
+    return unless @event_group.events.none?
+
+    redirect_to setup_event_group_path(@event_group), alert: "No events exist for this event group."
   end
 
   def set_event_group

@@ -1,0 +1,22 @@
+<%# locals: (presenter:) %>
+
+<div id="raceresult_webhook_card">
+  <div class="card mb-3">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <span class="h5 mb-0 fw-bold">Accept RaceResult Webhooks <span class="badge bg-primary">Beta</span></span>
+      <%= button_to_generate_webhook_token(presenter) %>
+    </div>
+    <div class="card-body">
+      <p>The information in this area can help you configure RaceResult (an external RFID chip timing system not affiliated with OpenSplitTime)
+        to send live timing data to <%= presenter.name %> via webhooks. Read the <%= link_to "full documentation", docs_url("raceresult-integration"), target: "_blank" %>
+        for a detailed explanation of how to set up RaceResult webhooks.</p>
+      <% if presenter.webhook_token? %>
+        <p class="text-muted"><%= t("event_groups.setup.webhook_token_active_detail") %></p>
+        <%= render "shared/copyable_field", label: "Webhook URL", value: webhooks_raceresult_url(token: presenter.webhook_token), field_id: "webhook_url" %>
+        <%= render "shared/copyable_field", label: "Post Body Expression", value: presenter.raceresult_post_body_expression, field_id: "webhook_post_body" %>
+      <% else %>
+        <p class="text-muted mb-0"><%= t("event_groups.setup.webhook_token_inactive_detail") %></p>
+      <% end %>
+    </div>
+  </div>
+</div>

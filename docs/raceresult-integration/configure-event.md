@@ -20,4 +20,4 @@ Connect your RaceResult decoders to the RaceResult platform and map each decoder
 
 Make sure each decoder is actively logging by pressing the green triangle.
 
-![RaceResult Decoder Mapping](../assets/images/docs/race_result/race_result_doc_2.png)
+![RaceResult Decoder Mapping](/assets/images/docs/race_result/race_result_doc_2.png)

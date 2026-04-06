@@ -43,7 +43,9 @@
     <% end %>
   </aside>
 
-  <aside class="col-12">
-    <%= render partial: "raceresult_webhook_card", locals: { presenter: presenter } %>
-  </aside>
+  <% if presenter.available_live? %>
+    <aside class="col-12">
+      <%= render partial: "raceresult_webhook_card", locals: { presenter: presenter } %>
+    </aside>
+  <% end %>
 </div>

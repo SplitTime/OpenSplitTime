@@ -77,7 +77,7 @@ entire course.
 Some holes may be caused by data that OpenSplitTime has determined is not correct. For example, if Bib #111 is
 recorded at Aid 2 at 12:30 and also recorded at Aid 3 at 12:10, OpenSplitTime will reject whichever of those times
 is submitted second. Faulty times need to be pulled into
-the [Live Entry](enter.html#pulling-times-for-review) screen for review by a human.
+the [Live Entry](enter/#pulling-times-for-review) screen for review by a human.
 
 ## The Progress Report View
 
@@ -94,7 +94,7 @@ If you see many Entrants listed as past due from a single station, **there is a 
 not reporting times**. Call the station to determine if they need to sync OST Remote. In most instances,
 the timing crew has simply forgotten to report or sync times. If they are unable to sync because of connectivity
 problems, consider taking a report of times manually and entering them using
-the [Live Entry](enter.html#live-entry) screen.
+the [Live Entry](enter/#live-entry) screen.
 
 If you see one or two Entrants from various stations listed, that is an indication that those Entrants may have
 been missed or their bib numbers incorrectly recorded. Or it may be an indication that the Entrants are taking
@@ -188,7 +188,7 @@ however, that **problems affecting final standings will need to be understood be
 presented**.
 
 You can fix problems by editing times, deleting times, or confirming times. More details are provided in the
-[Fixing Problems](enter.html#confirming-and-deleting-split-times) page.
+[Fixing Problems](enter/#confirming-and-deleting-split-times) page.
 
 ## The Raw Times List View
 
@@ -275,7 +275,7 @@ or otherwise solve problems in the final Event results, it is critical to have t
 
 Raw Times Splits shows Raw Times **for all entrants at a single aid station**. To see all raw times
 for a **single entrant at all aid stations** in a similar format, visit the
-[Effort Audit Screen](enter.html#the-effort-audit-screen), which can be reached by
+[Effort Audit Screen](enter/#the-effort-audit-screen), which can be reached by
 clicking any name in the Raw Times Splits list.
 
 ## The Finish Line View

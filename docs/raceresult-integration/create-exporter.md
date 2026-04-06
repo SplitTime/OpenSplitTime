@@ -19,7 +19,7 @@ In the **RaceResult RFID Integration** card, if a webhook token has not yet been
 In the left panel of RaceResult, go to **Timing** → **Settings** → **Exporters + Tracking**. Add a new **Exporter** with the following settings:
 
 - **Name**: OST Webhook (or whatever name you prefer)
-- **TimingPoint/Split**: <All Timing Points>
+- **TimingPoint/Split**: \<All Timing Points\>
 - **Filter**: Leave as blank
 - **Destination**: HTTP(S) Post, then copy the **Webhook URL** from the OpenSplitTime **Admin** → **Construction** → **Status** page into the next field. Do not use the example below — always copy your actual URL from OpenSplitTime, as it contains a unique token for your Event Group.
 

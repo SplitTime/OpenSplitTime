@@ -1,6 +1,6 @@
 ---
 title: Webhook Configuration
-parent: RaceResult Integration
+parent: RaceResult RFID Integration
 nav_order: 2
 ---
 
@@ -37,8 +37,13 @@ In the left panel of RaceResult, go to **Timing** → **Settings** → **Exporte
 - **Name**: OST Webhook (or whatever name you prefer)
 - **TimingPoint/Split**: <All Timing Points>
 - **Filter**: Leave as blank
-- **Destination**: HTTP(S) Post, then copy the **Webhook URL** from the OpenSplitTime setup summary page into the next field
-- **Export Data**: Custom, then copy the **Post Body Expression** from the OpenSplitTime setup summary page into the next field
+- **Destination**: HTTP(S) Post, then copy the **Webhook URL** from the OpenSplitTime setup summary page into the next field. The URL will look something like this:
+
+  `https://opensplittime.org/webhooks/raceresult?token=abc123def456`
+
+- **Export Data**: Custom, then copy the **Post Body Expression** from the OpenSplitTime setup summary page into the next field. The post body will look something like this:
+
+  `'{"record": ' & [RD_RecordJSON] & ', "event_group_name": "my-event-group"}'`
 - **LineEnd**: CRLF
 
 ### A sample configuration is shown below:

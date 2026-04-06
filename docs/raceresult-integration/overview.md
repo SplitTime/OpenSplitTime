@@ -16,6 +16,6 @@ For detailed information about RaceResult hardware and software, see the [RaceRe
 
 ## Steps Overview
 
-1. [**Configure the RaceResult Event**](configure-event/) — Set up timing points and connect RFID decoders in RaceResult.
-2. [**Create and Activate an Exporter**](create-exporter/) — Generate your OpenSplitTime webhook token, create an exporter in RaceResult, and activate it.
-3. [**Confirm Data is Flowing**](confirm-data-flow/) — Verify that RFID chip reads are arriving in both RaceResult and OpenSplitTime.
+1. [**Configure the RaceResult Event**](../configure-event/) — Set up timing points and connect RFID decoders in RaceResult.
+2. [**Create and Activate an Exporter**](../create-exporter/) — Generate your OpenSplitTime webhook token, create an exporter in RaceResult, and activate it.
+3. [**Confirm Data is Flowing**](../confirm-data-flow/) — Verify that RFID chip reads are arriving in both RaceResult and OpenSplitTime.

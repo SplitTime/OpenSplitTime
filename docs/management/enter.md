@@ -12,7 +12,7 @@ The Live Entry screen is the primary place to manually enter time data. It also 
 entries that have been flagged by OpenSplitTime as faulty, meaning that they require human review before being
 posted for public view.
 
-**You will need to [Enable Live Entry](prep/#enabling-and-disabling-live-entry)**
+**You will need to [Enable Live Entry](../prep/#enabling-and-disabling-live-entry)**
 in order to access the Live Entry page.
 
 You can reach the Live Entry page by selecting **Live > Time Entry** from the main menu.
@@ -297,7 +297,7 @@ trash can** icon corresponding with the bad Split Time. Deleting a Split Time ca
 OpenSplitTime provides tools for analyzing and fixing problem Efforts. This section discusses how to use the
 Effort screen and the Effort Analysis screen to decipher and fix many problem Efforts.
 
-As described in [Problem Efforts](monitor/#the-problem-efforts-view), you should
+As described in [Problem Efforts](../monitor/#the-problem-efforts-view), you should
 check the Problems Report screen (**Admin > Problems**) regularly. Problems should be monitored and
 corrected during the Event as time permits. Problems can be fixed after the event has concluded as well.
 
@@ -402,11 +402,11 @@ You can gain additional insight into a problem Effort using the **Raw Times List
 tools give you deep insight into what data is faulty and how it can be improved.
 
 A full explanation of the Raw Times List screen is found on the
-[Monitoring / Raw Times List](monitor/#the-raw-times-list-view)
+[Monitoring / Raw Times List](../monitor/#the-raw-times-list-view)
 page.
 
 A full explanation of the Raw Times Splits screen is found on the
-[Monitoring / Raw Times Splits](monitor/#the-raw-times-splits-view)
+[Monitoring / Raw Times Splits](../monitor/#the-raw-times-splits-view)
 page.
 
 A full explanation of the Effort Audit screen is found on the
@@ -517,5 +517,5 @@ Split Time will change to match the Raw Time you clicked.
 
 The Effort Audit screen shows times **for a single entrant at all aid stations**. To see all raw
 times for a **single aid station for all entrants** in a similar format, visit the
-[Raw Times Splits Screen](monitor/#the-raw-times-splits-view), which can be reached by
+[Raw Times Splits Screen](../monitor/#the-raw-times-splits-view), which can be reached by
 clicking any split name in the Effort Audit screen.

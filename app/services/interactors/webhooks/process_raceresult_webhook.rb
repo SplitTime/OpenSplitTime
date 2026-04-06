@@ -34,11 +34,11 @@ module Interactors
 
       def process_data
         self.processed_attributes = {
-          bib: raw_attributes["bib"] || raw_attributes["Bib"],
-          utc_time: raw_attributes.dig("passing", "utc_time") || raw_attributes.dig("Passing", "UTCTime"),
-          device_id: raw_attributes.dig("passing", "device_id") || raw_attributes.dig("Passing", "DeviceID"),
-          timing_point: raw_attributes["timing_point"] || raw_attributes["TimingPoint"],
-          id: raw_attributes["id"] || raw_attributes["ID"]
+          bib: raw_attributes["Bib"],
+          utc_time: raw_attributes.dig("Passing", "UTCTime"),
+          device_id: raw_attributes.dig("Passing", "DeviceID"),
+          timing_point: raw_attributes["TimingPoint"],
+          id: raw_attributes["ID"]
         }
         raise ParsingError, "Missing required field: Bib" if processed_attributes[:bib].blank?
         raise ParsingError, "Missing required field: TimingPoint" if processed_attributes[:timing_point].blank?

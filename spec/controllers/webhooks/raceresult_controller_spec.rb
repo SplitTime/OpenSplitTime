@@ -2,23 +2,28 @@ require "rails_helper"
 
 RSpec.describe Webhooks::RaceresultController do
   describe "#receive" do
-    subject(:make_request) { post :receive, params: { token: token, event_group_name: event_group_name, record: record }, as: :json }
+    subject(:make_request) do
+      post :receive, params: { token: token }, body: raw_data
+    end
+
+    let(:raw_data) do
+      {
+        record: {
+          Bib: bib,
+          TimingPoint: timing_point,
+          ID: id,
+          Passing: {
+            UTCTime: utc_time,
+            DeviceID: device_id
+          }
+        },
+        event_group_name: event_group_name
+      }.to_json
+    end
 
     let(:token) { event_group.webhook_token }
     let(:event_group_name) { event_group.slug }
     let(:event_group) { event_groups(:hardrock_2014) }
-
-    let(:record) do
-      {
-        "Bib" => bib,
-        "TimingPoint" => timing_point,
-        "ID" => id,
-        "Passing" => {
-          "UTCTime" => utc_time,
-          "DeviceID" => device_id
-        }
-      }
-    end
 
     let(:bib) { 69 }
     let(:timing_point) { "Start" }
@@ -125,7 +130,7 @@ RSpec.describe Webhooks::RaceresultController do
     end
 
     context "when the record is missing" do
-      subject(:make_request) { post :receive, params: { token: token, event_group_name: event_group_name }, as: :json }
+      let(:raw_data) { { event_group_name: event_group_name }.to_json }
 
       it "returns a 400 response" do
         make_request

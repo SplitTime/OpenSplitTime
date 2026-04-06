@@ -1,27 +1,36 @@
-class Live::EventGroupsController < Live::BaseController
-  before_action :set_event_group
-  before_action :authorize_event_group
+module Live
+  class EventGroupsController < Live::BaseController
+    before_action :set_event_group
+    before_action :authorize_event_group
+    before_action :redirect_if_no_events, only: [:live_entry]
 
-  # GET /live/event_groups/1/live_entry
-  def live_entry
-    @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-    verify_available_live(@event_group)
-  end
-
-  # GET /live/event_groups/1/trigger_raw_times_push
-  def trigger_raw_times_push
-    respond_to do |format|
-      format.turbo_stream
+    # GET /live/event_groups/1/live_entry
+    def live_entry
+      @presenter = EventGroupPresenter.new(@event_group, params, current_user)
+      verify_available_live(@event_group)
     end
-  end
 
-  private
+    # GET /live/event_groups/1/trigger_raw_times_push
+    def trigger_raw_times_push
+      respond_to do |format|
+        format.turbo_stream
+      end
+    end
 
-  def authorize_event_group
-    authorize @event_group
-  end
+    private
 
-  def set_event_group
-    @event_group = EventGroup.friendly.find(params[:id])
+    def authorize_event_group
+      authorize @event_group
+    end
+
+    def redirect_if_no_events
+      return unless @event_group.events.none?
+
+      redirect_to setup_event_group_path(@event_group), alert: "No events exist for this event group."
+    end
+
+    def set_event_group
+      @event_group = EventGroup.friendly.find(params[:id])
+    end
   end
 end

@@ -4,7 +4,7 @@ parent: RaceResult Integration
 nav_order: 1
 ---
 
-# RaceResult Integration Overview
+# RaceResult Integration Overview <span class="label">Beta</span>
 
 This guide will walk you through the steps to connect a RaceResult event to OpenSplitTime using RaceResult's webhook functionality. By following the instructions below, you can set up a live data feed from RaceResult to OpenSplitTime, allowing you to leverage OpenSplitTime's features while using RaceResult for timing and data management.
 

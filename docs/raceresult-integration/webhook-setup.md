@@ -4,7 +4,7 @@ parent: RaceResult Integration
 nav_order: 2
 ---
 
-# RaceResult Webhook Configuration
+# RaceResult Webhook Configuration <span class="label">Beta</span>
 
 Follow these steps to connect a RaceResult event to OpenSplitTime.
 

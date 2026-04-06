@@ -1,5 +1,5 @@
 class EventGroup < ApplicationRecord
-  enum :data_entry_grouping_strategy, [:ungrouped, :location_grouped], default: :location_grouped
+  enum :data_entry_grouping_strategy, { :ungrouped => 0, :location_grouped => 1 }, default: :location_grouped
 
   include UrlAccessible
   include TimeZonable
@@ -12,6 +12,8 @@ class EventGroup < ApplicationRecord
   include Partnerable
   include Connectable
   extend FriendlyId
+
+  has_secure_token :webhook_token
 
   strip_attributes collapse_spaces: true
   friendly_id :name, use: [:slugged, :history]
@@ -31,14 +33,14 @@ class EventGroup < ApplicationRecord
   after_save :conform_concealed_status
   after_save :touch_all_events
 
-  validates_presence_of :name, :organization, :home_time_zone
-  validates_uniqueness_of :name, case_sensitive: false
+  validates :name, :home_time_zone, presence: true
+  validates :name, uniqueness: { case_sensitive: false } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validate :home_time_zone_exists
   validates_with GroupedEventsValidator
 
   validates :entrant_photos,
-            content_type: { in: %w[image/png image/jpeg], message: "must be png or jpeg files"},
-            size: {less_than: 1.megabyte, message: "must be less than 1 MB"}
+            content_type: { in: %w[image/png image/jpeg], message: "must be png or jpeg files" },
+            size: { less_than: 1.megabyte, message: "must be less than 1 MB" }
 
   accepts_nested_attributes_for :events
 
@@ -49,15 +51,16 @@ class EventGroup < ApplicationRecord
   scope :with_policy_scope_attributes, -> { all }
   scope :by_group_start_time, lambda {
     left_joins(:events)
-        .select("event_groups.*, min(events.scheduled_start_time) as group_start_time")
-        .group(:id)
-        .order("group_start_time desc")
+      .select("event_groups.*, min(events.scheduled_start_time) as group_start_time")
+      .group(:id)
+      .order(group_start_time: :desc)
   }
 
   def self.search(search_param)
     return all if search_param.blank?
 
-    joins(:events).where("event_groups.name ILIKE ? OR events.short_name ILIKE ?", "%#{search_param}%", "%#{search_param}%")
+    joins(:events).where("event_groups.name ILIKE ? OR events.short_name ILIKE ?", "%#{search_param}%",
+                         "%#{search_param}%")
   end
 
   def efforts_count
@@ -77,7 +80,7 @@ class EventGroup < ApplicationRecord
   end
 
   def split_times
-    SplitTime.joins(:effort).where(efforts: {event_id: events})
+    SplitTime.joins(:effort).where(efforts: { event_id: events })
   end
 
   def organization_name
@@ -87,17 +90,17 @@ class EventGroup < ApplicationRecord
   private
 
   def conform_concealed_status
-    if saved_changes.keys.include?("concealed")
-      query = EventGroupQuery.set_concealed(id, concealed)
-      result = ActiveRecord::Base.connection.execute(query)
-      result.error_message.blank?
-    end
+    return unless saved_changes.keys.include?("concealed")
+
+    query = EventGroupQuery.set_concealed(id, concealed)
+    result = ActiveRecord::Base.connection.execute(query)
+    result.error_message.blank?
   end
 
   def home_time_zone_exists
-    unless time_zone_valid?(home_time_zone)
-      errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
-    end
+    return if time_zone_valid?(home_time_zone)
+
+    errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
   end
 
   def notify_admin

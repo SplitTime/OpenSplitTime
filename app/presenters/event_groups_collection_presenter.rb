@@ -5,7 +5,6 @@ class EventGroupsCollectionPresenter < BasePresenter
 
   def initialize(view_context)
     @view_context = view_context
-    @params = view_context.prepared_params
   end
 
   def event_groups
@@ -29,7 +28,7 @@ class EventGroupsCollectionPresenter < BasePresenter
 
   private
 
-  attr_reader :params, :view_context
+  attr_reader :view_context
 
   def event_groups_scope
     EventGroupPolicy::Scope.new(current_user, EventGroup)
@@ -44,5 +43,5 @@ class EventGroupsCollectionPresenter < BasePresenter
     @pagy
   end
 
-  delegate :current_user, :request, to: :view_context, private: true
+  delegate :current_user, :params, :request, to: :view_context, private: true
 end

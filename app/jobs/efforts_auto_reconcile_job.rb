@@ -8,6 +8,6 @@ class EffortsAutoReconcileJob < ApplicationJob
     set_current_user(options)
 
     report = EffortAutoReconciler.reconcile(event_group, options)
-    broadcast_flash(event_group, message: report)
+    broadcast_flash(event_group, message: report, action_url: reconcile_event_group_path(event_group))
   end
 end

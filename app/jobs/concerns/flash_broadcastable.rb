@@ -1,14 +1,22 @@
 module FlashBroadcastable
   extend ActiveSupport::Concern
 
+  included do
+    include Rails.application.routes.url_helpers
+  end
+
   private
 
-  def broadcast_flash(streamable, message:, level: :success)
+  def default_url_options
+    Rails.application.config.action_mailer.default_url_options || {}
+  end
+
+  def broadcast_flash(streamable, message:, level: :success, action_url: nil, action_text: "Refresh")
     Turbo::StreamsChannel.broadcast_replace_to(
       streamable,
       target: "flash",
-      partial: "layouts/flash",
-      locals: { flash: { level => message } }
+      partial: "layouts/broadcast_flash",
+      locals: { level: level, message: message, action_url: action_url, action_text: action_text }
     )
   end
 end

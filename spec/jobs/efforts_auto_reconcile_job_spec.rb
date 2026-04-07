@@ -26,8 +26,8 @@ RSpec.describe EffortsAutoReconcileJob do
     expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
       event_group,
       target: "flash",
-      partial: "layouts/flash",
-      locals: { flash: { success: anything } }
+      partial: "layouts/broadcast_flash",
+      locals: hash_including(level: :success, message: anything)
     )
     perform_enqueued_jobs { job }
   end

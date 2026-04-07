@@ -7,16 +7,17 @@ class EventGroupsController < ApplicationController
 
   # GET /event_groups
   def index
-    scoped_event_groups = policy_scope(EventGroup)
-                          .search(params[:search])
-                          .by_group_start_time
-                          .preload(:events)
-    @presenter = EventGroupsCollectionPresenter.new(scoped_event_groups, view_context)
+    event_groups = policy_scope(EventGroup)
+                   .search(prepared_params[:search])
+                   .by_group_start_time
+                   .preload(:events)
+
+    @presenter = EventGroupsCollectionPresenter.new(event_groups, view_context)
     session[:return_to] = event_groups_path
 
     respond_to do |format|
       format.html
-      format.turbo_stream
+      format.turbo_stream if prepared_params[:page].to_i > 1
     end
   end
 

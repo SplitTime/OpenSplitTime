@@ -3,10 +3,7 @@
 class EventGroupsCollectionPresenter < BasePresenter
   include PagyPresenter
 
-  attr_reader :event_groups
-
-  def initialize(event_groups_scope, view_context)
-    @event_groups_scope = event_groups_scope
+  def initialize(view_context)
     @view_context = view_context
     @params = view_context.prepared_params
   end
@@ -32,12 +29,20 @@ class EventGroupsCollectionPresenter < BasePresenter
 
   private
 
-  attr_reader :event_groups_scope, :params, :view_context
+  attr_reader :params, :view_context
+
+  def event_groups_scope
+    EventGroupPolicy::Scope.new(current_user, EventGroup)
+                           .viewable
+                           .search(prepared_params[:search])
+                           .by_group_start_time
+                           .preload(:events)
+  end
 
   def pagy
     event_groups
     @pagy
   end
 
-  delegate :current_user, :request, to: :view_context, private: true
+  delegate :current_user, :prepared_params, :request, to: :view_context, private: true
 end

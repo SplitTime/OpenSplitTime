@@ -7,12 +7,7 @@ class EventGroupsController < ApplicationController
 
   # GET /event_groups
   def index
-    event_groups = policy_scope(EventGroup)
-                   .search(prepared_params[:search])
-                   .by_group_start_time
-                   .preload(:events)
-
-    @presenter = EventGroupsCollectionPresenter.new(event_groups, view_context)
+    @presenter = EventGroupsCollectionPresenter.new(view_context)
     session[:return_to] = event_groups_path
 
     respond_to do |format|

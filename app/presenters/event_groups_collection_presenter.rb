@@ -34,7 +34,7 @@ class EventGroupsCollectionPresenter < BasePresenter
   def event_groups_scope
     EventGroupPolicy::Scope.new(current_user, EventGroup)
                            .viewable
-                           .search(prepared_params[:search])
+                           .search(search_text)
                            .by_group_start_time
                            .preload(:events)
   end
@@ -44,5 +44,5 @@ class EventGroupsCollectionPresenter < BasePresenter
     @pagy
   end
 
-  delegate :current_user, :prepared_params, :request, to: :view_context, private: true
+  delegate :current_user, :request, to: :view_context, private: true
 end

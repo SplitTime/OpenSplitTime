@@ -2,6 +2,7 @@
   <% "OpenSplitTime: Reconcile efforts - #{@presenter.name}" %>
 <% end %>
 
+<%= turbo_stream_from @presenter.event_group %>
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
 <%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Reconcile"] %>
 

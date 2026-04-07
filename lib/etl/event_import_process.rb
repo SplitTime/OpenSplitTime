@@ -29,7 +29,7 @@ module Etl
 
     def process_efforts
       efforts = grouped_records[Effort]
-      EffortsAutoReconcileJob.perform_later(event, current_user: User.current) if efforts.present?
+      EffortsAutoReconcileJob.perform_later(event.event_group, current_user: User.current) if efforts.present?
     end
 
     def process_split_times

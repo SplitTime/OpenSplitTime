@@ -8,10 +8,10 @@
       <div class="col">
         <div class="ost-title">
           <h1>
-            <strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon('eye-slash') : fa_icon('eye') %></strong>
+            <strong><%= @presenter.name %> <%= @presenter.concealed? ? fa_icon("eye-slash") : fa_icon("eye") %></strong>
           </h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item active">Stats</li>
@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- Navigation -->
-    <%= render 'events/view_buttons', view_object: @presenter %>
+    <%= render "events/view_buttons", view_object: @presenter %>
   </div>
 </header>
 
@@ -53,7 +53,7 @@
     </div>
   </div>
 
-  <br/>
+  <br>
 
   <div class="card">
     <h3 class="card-header"><strong>Achievements</strong></h3>
@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <br/>
+  <br>
 
   <div class="card">
     <h3 class="card-header"><strong>Subscriptions</strong></h3>
@@ -109,7 +109,7 @@
     </div>
   </div>
 
-  <br/>
+  <br>
 
   <div class="card">
     <h3 class="card-header"><strong>Notifications</strong></h3>

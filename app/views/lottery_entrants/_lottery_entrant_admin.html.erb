@@ -11,7 +11,7 @@
         </div>
         <div class="col text-end">
           <h4><span class="badge bg-secondary"><%= record.division_name %></span></h4>
-          <h6 class="fw-bold mb-4"><%= "#{pluralize(record.number_of_tickets, 'ticket')}" %></h6>
+          <h6 class="fw-bold mb-4"><%= pluralize(record.number_of_tickets, "ticket") %></h6>
           <%= link_to_entrant_edit(record) %>
           <%= link_to_entrant_delete(record) %>
         </div>

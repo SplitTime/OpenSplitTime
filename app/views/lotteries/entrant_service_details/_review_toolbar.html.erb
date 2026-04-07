@@ -18,8 +18,7 @@
                     class: "btn btn-outline-secondary",
                     data: {
                       turbo_frame: "form_modal",
-                    }
-        %>
+                    } %>
         <% if presenter.next_entrant_for_review.present? %>
           <%= link_to fa_icon("caret-right", text: "Next", right: true),
                       organization_lottery_entrant_service_detail_path(presenter.organization, presenter.lottery, presenter.next_entrant_for_review),

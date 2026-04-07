@@ -10,8 +10,8 @@
   <% else %>
     <strong>Closest peers:
       <%= safe_join(@presenter.peers.map { |effort| link_to effort.full_name, place_effort_path(effort) }, ", ".html_safe) %>
-    </strong><br/>
-    <hr/>
+    </strong><br>
+    <hr>
     <%= render "place_detail_rows", view_object: @presenter %>
   <% end %>
 </article>

@@ -12,7 +12,7 @@
         <% else %>
           <%= fa_icon("circle-xmark", type: :regular, text: "Credentials are missing", class: "text-danger") %>
         <% end %>
-        <br/>
+        <br>
         <% if connect_service_presenter.error_message.present? %>
           <%= fa_icon("circle-xmark", type: :regular, text: connect_service_presenter.error_message, class: "text-danger") %>
         <% elsif connect_service_presenter.all_credentials_present? %>

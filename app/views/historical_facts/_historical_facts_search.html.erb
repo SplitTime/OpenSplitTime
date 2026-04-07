@@ -6,6 +6,7 @@
                        presenter.search_text,
                        placeholder: "Name",
                        autofocus: true,
+                       autocomplete: "off",
                        class: "form-control search-box" %>
     <%= hidden_field_tag :kind, request.params[:kind] %>
     <%= button_tag(type: :submit, id: "historical-facts-search-submit", class: "btn btn-primary input-group-text") do %>

@@ -13,7 +13,7 @@
           <%= fa_icon("circle-xmark", type: :regular, text: t(".credentials_missing"), class: "text-danger") %>
         <% end %>
         <% if connect_service_presenter.error_message.present? %>
-          <br/>
+          <br>
           <%= fa_icon("circle-xmark", type: :regular, text: connect_service_presenter.error_message, class: "text-danger") %>
         <% end %>
       </div>

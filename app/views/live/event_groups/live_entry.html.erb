@@ -31,12 +31,11 @@
   data-live-entry--raw-times-push-event-group-id-value="<%= @event_group.id %>"
   data-live-entry--main-current-user-id-value="<%= current_user.id %>"
   data-live-entry--main-event-group-id-value="<%= @event_group.id %>"
-  data-live-entry--main-server-uri-value="<%= OstConfig.base_uri %>"
->
+  data-live-entry--main-server-uri-value="<%= OstConfig.base_uri %>">
   <div class="row lap-disabled group-disabled time-out-disabled pacer-disabled">
     <div class="col-12 col-md-5 col-lg-4 py-5 live-entry">
       <form id="js-add-effort-form">
-        <input type="hidden" id="js-unique-id" value=""/>
+        <input type="hidden" id="js-unique-id" value="">
         <div class="mb-3 row">
           <label class="col-4" for="js-station-select">Aid Station</label>
           <div class="col-8">
@@ -73,6 +72,7 @@
           <div class="col-8">
             <div class="input-group">
               <input id="js-time-in" type="tel" name="timeIn" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)"
+                     autocomplete="off"
                      data-controller="inputmask"
                      data-inputmask-type-value="military">
               <span class="input-group-text time-status">
@@ -89,6 +89,7 @@
           <div class="col-8">
             <div class="input-group">
               <input id="js-time-out" type="tel" name="timeOut" class="form-control form-control-sm" value="" placeholder="hh:mm:ss (24hr)"
+                     autocomplete="off"
                      data-controller="inputmask"
                      data-inputmask-type-value="military">
               <span class="input-group-text time-status">
@@ -183,8 +184,7 @@
   <div class="row provisional-data mt-4">
     <div class="col-12 table-submit-wrapper d-flex-inline"
          data-controller="live-entry--pull-times"
-         data-live-entry--pull-times-event-group-id-value="<%= @event_group.id %>"
-    >
+         data-live-entry--pull-times-event-group-id-value="<%= @event_group.id %>">
       <%= render partial: "pull_times_button", locals: { event_group: @event_group } %>
       <%= render partial: "force_pull_times_button", locals: { event_group: @event_group } %>
 

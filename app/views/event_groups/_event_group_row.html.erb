@@ -15,12 +15,12 @@
       Not yet determined
     <% end %>
   </td>
-  <td><%= "#{pluralize(event_group.efforts_count, 'entrant')}" %></td>
+  <td><%= pluralize(event_group.efforts_count, "entrant") %></td>
   <% if presenter.show_visibility_columns? %>
-    <td class="text-center"><%= event_group.concealed? ? fa_icon('eye-slash 2x') : fa_icon('eye 2x') %></td>
+    <td class="text-center"><%= event_group.concealed? ? fa_icon("eye-slash 2x") : fa_icon("eye 2x") %></td>
     <td class="text-center">
       <% if event_group.available_live? && current_user&.authorized_to_edit?(event_group) %>
-        <%= link_to 'Live Entry', live_entry_live_event_group_path(event_group), class: 'btn btn-xs btn-primary' %>
+        <%= link_to "Live Entry", live_entry_live_event_group_path(event_group), class: "btn btn-xs btn-primary" %>
       <% end %>
     </td>
   <% end %>
@@ -34,7 +34,7 @@
         <td><%= link_to event.guaranteed_short_name, edit_event_group_event_path(event_group, event) %></td>
       <% end %>
       <td><%= l(event.scheduled_start_time_local, format: "%a | %B %d, %Y | %I:%M%p(%Z)") %></td>
-      <td><%= "#{pluralize(event.efforts_count, 'entrant')}" %></td>
+      <td><%= pluralize(event.efforts_count, "entrant") %></td>
       <% if presenter.show_visibility_columns? %>
         <td colspan="2"></td>
       <% end %>

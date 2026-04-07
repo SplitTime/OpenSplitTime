@@ -4,13 +4,12 @@
   <div class="form-check form-switch"
        data-controller="tooltip"
        data-bs-placement="top"
-       data-bs-original-title="<%= case
-                                   when split.start? || split.finish?
-                                     'Start and finish splits are always included'
-                                   when aid_station.present?
-                                     'Turn off time recording at this split for this event'
+       data-bs-original-title="<%= if split.start? || split.finish?
+                                     "Start and finish splits are always included"
+                                   elsif aid_station.present?
+                                     "Turn off time recording at this split for this event"
                                    else
-                                     'Turn on time recording at this split for this event'
+                                     "Turn on time recording at this split for this event"
                                    end %>">
     <label class="form-check-label" for="aid-station-check-box-<%= dom_id(split) %>"></label>
     <input class="form-check-input"
@@ -21,7 +20,6 @@
            data-course-setup--aid-station-checkbox-split-id-value="<%= split.id %>"
            data-course-setup--aid-station-checkbox-aid-station-id-value="<%= aid_station&.id %>"
            <%= split.intermediate? ? "" : "disabled" %>
-           <%= aid_station.present? ? "checked" : "" %>
-    >
+           <%= aid_station.present? ? "checked" : "" %>>
   </div>
 </div>

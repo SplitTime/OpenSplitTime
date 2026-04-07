@@ -12,14 +12,13 @@
            id="<%= dom_id(event, "switch_#{connection.source_id}") %>"
            data-controller="event-connections--switch tooltip"
            data-bs-placement="top"
-           data-bs-original-title="<%= connection.persisted? ? 'Remove this connection' : 'Create this connection' %>"
+           data-bs-original-title="<%= connection.persisted? ? "Remove this connection" : "Create this connection" %>"
            data-event-connections--switch-event-group-id-value="<%= event.event_group_id %>"
            data-event-connections--switch-event-id-value="<%= event.id %>"
            data-event-connections--switch-connection-id-value="<%= connection.id %>"
            data-event-connections--switch-source-id-value="<%= connection.source_id %>"
            data-event-connections--switch-source-name-value="<%= connection.source_name %>"
            data-event-connections--switch-service-identifier-value="<%= connection.service_identifier %>"
-           <%= connection.persisted? ? "checked" : "" %>
-    >
+           <%= connection.persisted? ? "checked" : "" %>>
   </div>
 </div>

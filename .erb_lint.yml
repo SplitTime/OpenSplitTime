@@ -1,0 +1,53 @@
+---
+EnableDefaultLinters: true
+
+exclude:
+  - "vendor/**/*"
+  - "tmp/**/*"
+
+linters:
+  ClosingErbTagIndent:
+    enabled: true
+
+  ExtraNewline:
+    enabled: true
+
+  FinalNewline:
+    enabled: true
+
+  NoJavascriptTagHelper:
+    enabled: true
+
+  RightTrim:
+    enabled: true
+    enforced_style: "-"
+
+  SelfClosingTag:
+    enabled: true
+
+  SpaceAroundErbTag:
+    enabled: true
+
+  TrailingWhitespace:
+    enabled: true
+
+  Rubocop:
+    enabled: true
+    rubocop_config:
+      inherit_from: .rubocop.yml
+      Layout/InitialIndentation:
+        Enabled: false
+      Layout/LineLength:
+        Enabled: false
+      Style/MultilineTernaryOperator:
+        Enabled: false
+      Layout/TrailingEmptyLines:
+        Enabled: false
+      Lint/EmptyBlock:
+        Enabled: false
+      Lint/UselessAssignment:
+        Enabled: false
+      Naming/FileName:
+        Enabled: false
+      Style/FrozenStringLiteralComment:
+        Enabled: false

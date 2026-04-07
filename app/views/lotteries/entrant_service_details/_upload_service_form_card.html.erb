@@ -38,8 +38,7 @@
                       data: {
                         turbo: false,
                         controller: "form-disable-submit",
-                      }
-              },
+                      } },
             ) do |f| %>
 
           <div class="mb-3 text-center">
@@ -48,8 +47,7 @@
                  data-dropzone-max-file-size="5"
                  data-dropzone-max-files="1"
                  data-dropzone-accepted-files="image/*,.pdf"
-                 data-action="dropzone:success->form-disable-submit#enableSubmitButton"
-            >
+                 data-action="dropzone:success->form-disable-submit#enableSubmitButton">
               <%= f.file_field :completed_form, direct_upload: true, data: { "dropzone-target" => "input" } %>
               <div class="dropzone-msg dz-message needsclick text-muted">
                 <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>

@@ -14,7 +14,7 @@
       <tr>
         <td><strong><%= link_to event.name, event_path(event) %></strong></td>
         <td><%= l(event.scheduled_start_time_local, format: :full_day_time_and_zone) %></td>
-        <td><%= "#{pluralize(event.efforts_count, 'entrants')}" %></td>
+        <td><%= pluralize(event.efforts_count, "entrants") %></td>
       </tr>
   <% end %>
   </tbody>

@@ -27,7 +27,7 @@
 <article class="ost-article container">
   <h5><%= @presenter.subtext %></h5>
 
-  <hr/>
+  <hr>
   <% if @presenter.suppress_form? %>
     <div class="col">
       <%= link_to "Back", effort_path(@presenter.effort), class: "btn btn-outline-secondary" %>
@@ -54,7 +54,7 @@
             <tbody>
             <% @presenter.lap_split_rows_plus_one.each do |row| %>
               <tr>
-                <td class="text-nowrap"><strong><%= "#{row.name}" %></strong></td>
+                <td class="text-nowrap"><strong><%= row.name %></strong></td>
                 <% row.time_points.each do |time_point| %>
                   <%= f.fields_for :split_times, @presenter.guaranteed_split_time(time_point) do |builder| %>
                     <td><%= text_with_status_indicator("", @presenter.guaranteed_split_time(time_point).data_status) %></td>

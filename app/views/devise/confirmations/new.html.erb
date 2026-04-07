@@ -11,7 +11,7 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {method: :post, data: {turbo: false}}) do |f| %>
+      <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, data: { turbo: false } }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="form-floating mb-3">

@@ -21,7 +21,7 @@
         <div class="card-body">
           <h4 class="card-text"><%= effort.bio %></h4>
           <h4 class="card-text"><%= effort.flexible_geolocation %></h4>
-          <hr/>
+          <hr>
           <h4 class="card-text"><strong>Status: </strong><%= effort.effort_status %></h4>
           <% if effort.final_absolute_time %>
             <h4 class="card-text">
@@ -33,7 +33,7 @@
             <h4 class="card-text"><strong><%= "Rank at #{effort.final_split_name}:" %></strong></h4>
             <h4 class="card-text"><%= "#{effort.overall_rank.ordinalize} Overall, #{effort.gender_rank.ordinalize} #{effort.gender.titleize}" %></h4>
           <% end %>
-          <hr/>
+          <hr>
           <% days = effort.days_away_from_birthday %>
           <% if days.present? && days.abs < 3 %>
             <h4 class="card-text"><%= effort.birthday_notice %></h4>

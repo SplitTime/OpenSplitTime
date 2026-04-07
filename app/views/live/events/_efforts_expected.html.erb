@@ -5,11 +5,11 @@
     <table class="table table-striped">
       <thead>
       <tr>
-        <th class="text-center"><%= link_to_reversing_sort_heading('Bib', :bib_number, @aid_station_detail.existing_sort) %></th>
-        <th><%= link_to_reversing_sort_heading('Name', :full_name, @aid_station_detail.existing_sort) %></th>
-        <th><%= link_to_reversing_sort_heading('Category', :bio_historic, @aid_station_detail.existing_sort) %></th>
-        <th class="text-center"><%= link_to_reversing_sort_heading('Last Reported', :last_reported_info, @aid_station_detail.existing_sort) %></th>
-        <th class="text-center"><%= link_to_reversing_sort_heading('Due Next', :due_next_info, @aid_station_detail.existing_sort) %></th>
+        <th class="text-center"><%= link_to_reversing_sort_heading("Bib", :bib_number, @aid_station_detail.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Name", :full_name, @aid_station_detail.existing_sort) %></th>
+        <th><%= link_to_reversing_sort_heading("Category", :bio_historic, @aid_station_detail.existing_sort) %></th>
+        <th class="text-center"><%= link_to_reversing_sort_heading("Last Reported", :last_reported_info, @aid_station_detail.existing_sort) %></th>
+        <th class="text-center"><%= link_to_reversing_sort_heading("Due Next", :due_next_info, @aid_station_detail.existing_sort) %></th>
         <th class="text-center"><%= link_to_reversing_sort_heading("Expected at #{@aid_station_detail.split_name}", :expected_here_info, @aid_station_detail.existing_sort) %></th>
       </tr>
       </thead>

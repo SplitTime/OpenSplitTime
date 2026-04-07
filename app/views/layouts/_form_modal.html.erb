@@ -4,8 +4,7 @@
      data-action="turbo:frame-load->form-modal#open
                   turbo:submit-end->form-modal#close
                   turbo:submit-end->form-modal#conditionalReload
-                  shown.bs.modal->form-modal#autofocus"
->
+                  shown.bs.modal->form-modal#autofocus">
   <div class="modal-dialog" data-form-modal-target="resizedElement">
     <div class="modal-content">
       <%= turbo_frame_tag "form_modal" %>

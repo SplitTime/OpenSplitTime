@@ -1,5 +1,5 @@
 <div>
-  <h6><%= [person.bio.presence, person.flexible_geolocation.presence].compact.join(' | ') %></h6>
+  <h6><%= [person.bio.presence, person.flexible_geolocation.presence].compact.join(" | ") %></h6>
   <% if person.email %>
     <h6><%= "Email: #{person.email}" %></h6>
   <% end %>
@@ -11,7 +11,7 @@
 <div>
   <% if person.claimed? %>
     <% if person.claimant == current_user %>
-      <strong>Hey, this is me!</strong><br/>
+      <strong>Hey, this is me!</strong><br>
     <% else %>
       <%= "Identified as user #{person.claimant.full_name}" %>
     <% end %>
@@ -20,7 +20,7 @@
   <% end %>
 </div>
 
-<hr/>
+<hr>
 
 <div>
   <% if person.efforts.present? %>

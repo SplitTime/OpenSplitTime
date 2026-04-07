@@ -33,7 +33,7 @@
 
 <article class="ost-article container">
   <h4><%= @presenter.table_title %></h4>
-  <br/>
+  <br>
 
   <% if @presenter.visible_events_exist? && @presenter.interval_split_cutoff_analyses.present? %>
     <div>
@@ -41,7 +41,7 @@
                        stacked: true,
                        colors: ["#198754", "#f0ad4e", "#dc3545"] %>
     </div>
-    <hr/>
+    <hr>
 
     <table class="table">
       <thead>
@@ -50,7 +50,7 @@
         <th class="text-center">Total</th>
         <th class="text-center">Finished</th>
         <th class="text-center">Stopped Here</th>
-        <th class="text-center">Continued</br>and DNF</th>
+        <th class="text-center">Continued<br>and DNF</th>
       </tr>
       </thead>
       <tbody>

@@ -7,9 +7,11 @@
     <div class="col-md-12">
       <%= form_with(
             model: fact,
-            url: fact.new_record? ?
-              organization_historical_facts_path(fact.organization) :
-              organization_historical_fact_path(fact.organization, fact)
+            url: if fact.new_record?
+                   organization_historical_facts_path(fact.organization)
+                 else
+                   organization_historical_fact_path(fact.organization, fact)
+                 end
           ) do |f| %>
         <div class="row">
           <div class="col-md-4 mb-3">
@@ -71,7 +73,7 @@
             <%= carmen_country_select :historical_fact, :country_code %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :state_code, "State", class: "mb-1" %><br/>
+            <%= f.label :state_code, "State", class: "mb-1" %><br>
             <%= render partial: "carmen/subregion_select",
                        locals: { model: :historical_fact, parent_region: f.object.country_code } %>
           </div>
@@ -92,7 +94,7 @@
           </div>
         </div>
 
-        <br/>
+        <br>
         <div class="row mb-3">
           <div class="col">
             <%= f.submit(fact.new_record? ? "Create Fact" : "Update Fact", class: "btn btn-primary btn-large") %>

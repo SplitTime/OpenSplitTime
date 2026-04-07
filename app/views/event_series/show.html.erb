@@ -12,7 +12,7 @@
         <div class="ost-title">
           <h1><strong><%= "#{@presenter.name} Results" %></strong></h1>
           <ul class="breadcrumb">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to "Event Series", organization_event_series_index_path(@presenter.organization) %></li>
             <li class="breadcrumb-item active"><%= "#{@presenter.name} Results" %></li>
@@ -37,14 +37,14 @@
 
 <article class="ost-article container">
   <h5><%= @presenter.subtext %></h5>
-  <hr/>
+  <hr>
 
   <table class="table table-sm table-striped podium">
     <% @presenter.categories.each do |category| %>
       <% if category.invalid_efforts? %>
-        <%= render 'invalid_results_category', category: category %>
+        <%= render "invalid_results_category", category: category %>
       <% else %>
-        <%= render 'results_category', category: category %>
+        <%= render "results_category", category: category %>
       <% end %>
     <% end %>
   </table>

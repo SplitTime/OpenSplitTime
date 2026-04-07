@@ -3,8 +3,7 @@
 <tr id="<%= dom_id effort, :roster_row %>"
     data-controller="highlight"
     data-highlight-fast-value="true"
-    data-highlight-timestamp-value="<%= effort.updated_at.to_i %>"
->
+    data-highlight-timestamp-value="<%= effort.updated_at.to_i %>">
   <td class="text-center">
     <%= effort.unreconciled? ? fa_icon("circle-minus", type: :solid, class: "text-warning") : fa_icon("circle-check", type: :regular, class: "text-success") %>
   </td>

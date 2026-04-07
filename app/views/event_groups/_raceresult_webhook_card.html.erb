@@ -8,7 +8,7 @@
     </div>
     <div class="card-body">
       <p>Configure your RaceResult RFID timing system to send live chip reads to <%= presenter.name %> via webhooks.
-        Read the <%= link_to "full documentation", docs_url("raceresult-integration"), target: "_blank" %>
+        Read the <%= link_to "full documentation", docs_url("raceresult-integration"), target: "_blank", rel: "noopener" %>
         for a detailed explanation of how to set up this integration.</p>
       <% if presenter.webhook_token? %>
         <p class="text-muted"><%= t("event_groups.setup.webhook_token_active_detail") %></p>

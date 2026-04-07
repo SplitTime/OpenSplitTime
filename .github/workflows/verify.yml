@@ -70,6 +70,32 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Run erb_lint on changed ERB files
+        run: |
+          # Get list of changed ERB files from the PR
+          CHANGED_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[].path' | grep -E '\.erb$' || true)
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No ERB files changed, skipping erb_lint"
+            exit 0
+          fi
+
+          echo "Running erb_lint on changed files:"
+          echo "$CHANGED_FILES"
+
+          # Filter out deleted files
+          EXISTING_FILES=$(echo "$CHANGED_FILES" | while read -r f; do [ -f "$f" ] && echo "$f"; done || true)
+
+          if [ -z "$EXISTING_FILES" ]; then
+            echo "No existing ERB files to lint, skipping erb_lint"
+            exit 0
+          fi
+
+          # Run erb_lint on changed files
+          echo "$EXISTING_FILES" | xargs bundle exec erb_lint
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   build-assets:
     name: Build assets
     runs-on: ubuntu-latest

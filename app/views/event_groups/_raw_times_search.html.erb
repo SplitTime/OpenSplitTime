@@ -6,6 +6,7 @@
                        presenter.search_text,
                        placeholder: "Bib #",
                        autofocus: true,
+                       autocomplete: "off",
                        class: "form-control search-box" %>
     <%= hidden_field_tag :stopped, request.params[:stopped] %>
     <%= hidden_field_tag :reviewed, request.params[:reviewed] %>

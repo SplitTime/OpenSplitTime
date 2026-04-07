@@ -8,7 +8,7 @@
       </div>
       <div class="col text-end">
         <%= fa_icon("circle-check", type: :regular, text: "Credentials not required", class: "text-success") %>
-        <br/>
+        <br>
         <% if connect_service_presenter.error_message.present? %>
           <%= fa_icon("circle-xmark", type: :regular, text: connect_service_presenter.error_message, class: "text-danger") %>
         <% end %>

@@ -22,7 +22,7 @@ Rails.application.configure do
     authentication: :plain,
     user_name: "apikey",
     password: ::OstConfig.sendgrid_api_key,
-    domain: "heroku.com",
+    domain: "opensplittime.org",
     enable_starttls_auto: true
   }
 

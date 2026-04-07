@@ -65,7 +65,9 @@
       </div>
       <div class="col">
         <span class="brackets">
-          <%= link_to "Cancel", @event_series.new_record? ? organization_event_series_index_path(@event_series.organization) : organization_event_series_path(@event_series.organization, @event_series) %>
+          <%= link_to "Cancel", @event_series.new_record? ?
+                                  organization_event_series_index_path(@event_series.organization) :
+                                  organization_event_series_path(@event_series.organization, @event_series) %>
         </span>
       </div>
     <% end %>

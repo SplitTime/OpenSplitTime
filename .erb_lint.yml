@@ -39,6 +39,8 @@ linters:
         Enabled: false
       Layout/LineLength:
         Enabled: false
+      Style/MultilineTernaryOperator:
+        Enabled: false
       Layout/TrailingEmptyLines:
         Enabled: false
       Lint/EmptyBlock:

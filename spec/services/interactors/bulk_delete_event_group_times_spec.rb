@@ -12,6 +12,13 @@ RSpec.describe Interactors::BulkDeleteEventGroupTimes do
         expect { subject.perform! }.to change { event_group.split_times.count }.from(anything).to(0)
       end
 
+      it "deletes all effort segments for the event group's efforts" do
+        efforts = Effort.where(event_id: event_group.events)
+        efforts.each { |effort| EffortSegment.set_for_effort(effort) }
+        expect(EffortSegment.where(effort_id: efforts).count).to be_positive
+        expect { subject.perform! }.to change { EffortSegment.where(effort_id: efforts).count }.to(0)
+      end
+
       it "deletes all raw times" do
         expect(event_group.raw_times.count).to be_positive
         expect { subject.perform! }.to change { event_group.raw_times.count }.from(anything).to(0)
@@ -34,15 +41,6 @@ RSpec.describe Interactors::BulkDeleteEventGroupTimes do
           expect(effort.started).to eq(false), "Expected effort #{effort.id} to not be started"
           expect(effort.final_split_time_id).to be_nil, "Expected effort #{effort.id} to have nil final_split_time_id"
         end
-      end
-
-      it "deletes effort segments for affected efforts" do
-        efforts = Effort.where(event_id: event_group.events).started
-        efforts.each { |effort| EffortSegment.set_for_effort(effort) }
-
-        effort_ids = efforts.pluck(:id)
-        expect(EffortSegment.where(effort_id: effort_ids).count).to be_positive
-        expect { subject.perform! }.to change { EffortSegment.where(effort_id: effort_ids).count }.to(0)
       end
 
       it "returns a response with a descriptive message" do

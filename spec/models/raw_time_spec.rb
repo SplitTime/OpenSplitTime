@@ -269,4 +269,27 @@ RSpec.describe RawTime, type: :model do
       end
     end
   end
+
+  describe "broadcasting" do
+    let(:event_group) { event_groups(:sum) }
+    let(:raw_time) { build(:raw_time, event_group: event_group) }
+
+    describe "after create" do
+      it "broadcasts a turbo stream to the event group channel" do
+        expect { raw_time.save! }
+          .to have_enqueued_job(Turbo::Streams::BroadcastJob)
+          .on_queue(:default)
+      end
+    end
+
+    describe "after update" do
+      before { raw_time.save! }
+
+      it "broadcasts a turbo stream to the event group channel" do
+        expect { raw_time.update!(reviewed_by: 1) }
+          .to have_enqueued_job(Turbo::Streams::BroadcastJob)
+          .on_queue(:default)
+      end
+    end
+  end
 end

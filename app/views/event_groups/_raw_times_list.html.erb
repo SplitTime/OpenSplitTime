@@ -42,15 +42,11 @@
                } %>
     <br/>
   <% else %>
-    <div class="row">
-      <div class="col-xs-8">
-        <% if view_object.filtered_raw_times_unpaginated_count == view_object.raw_times_count %>
-          <h4><%= "#{view_object.raw_times_count} raw times" %></h4>
-        <% else %>
-          <h4><%= "Showing #{view_object.filtered_raw_times_unpaginated_count} of #{view_object.raw_times_count} raw times" %></h4>
-        <% end %>
-      </div>
-    </div>
+    <%= render partial: "event_groups/raw_times_count",
+               locals: {
+                 raw_times_count: view_object.raw_times_count,
+                 filtered_raw_times_count: view_object.filtered_raw_times_unpaginated_count,
+               } %>
   <% end %>
 
   <table class="table table-striped">
@@ -64,6 +60,9 @@
       <th><%= link_to_reversing_sort_heading("Split Name", "split_name,sortable_bib_number", view_object.existing_sort) %></th>
       <% if view_object.multiple_sub_splits? %>
         <th class="text-center"><%= link_to_reversing_sort_heading("In/Out", "bitkey,sortable_bib_number", view_object.existing_sort) %></th>
+      <% end %>
+      <% if view_object.multiple_laps? %>
+        <th class="text-center"><%= link_to_reversing_sort_heading("Lap", "lap,sortable_bib_number", view_object.existing_sort) %></th>
       <% end %>
       <th><%= link_to_reversing_sort_heading("Time", :absolute_time, view_object.existing_sort) %></th>
       <% if view_object.monitor_pacers? %>
@@ -87,6 +86,7 @@
                  locals: {
                    multiple_events: view_object.multiple_events?,
                    multiple_sub_splits: view_object.multiple_sub_splits?,
+                   multiple_laps: view_object.multiple_laps?,
                    monitor_pacers: view_object.monitor_pacers?,
                    home_time_zone: view_object.home_time_zone,
                  }

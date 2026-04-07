@@ -1,21 +1,20 @@
 require "rails_helper"
 
-RSpec.describe "Visit an event group entrants page and try various features", type: :system, js: true do
+RSpec.describe "Visit an event group entrants page and try various features", :js, type: :system do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
+  let(:organization) { organizations(:hardrock) }
+  let(:event_group) { event_groups(:hardrock_2015) }
 
   before do
     organization.update(created_by: owner.id)
     organization.stewards << steward
   end
 
-  let(:organization) { organizations(:hardrock) }
-  let(:event_group) { event_groups(:hardrock_2015) }
-
-  context "The event group is visible" do
-    context "The event group has entrants" do
+  context "when the event group is visible" do
+    context "when the event group has entrants" do
       scenario "The user is a visitor" do
         visit_page
 
@@ -61,6 +60,21 @@ RSpec.describe "Visit an event group entrants page and try various features", ty
         verify_monitor_mode_returns_to_roster
       end
 
+      scenario "The user deletes all entrants" do
+        login_as owner, scope: :user
+        visit_page
+
+        first_entrant_name = event_group.efforts.first.full_name
+        click_button "Actions"
+        expect do
+          click_link("Delete all entrants")
+          expect(page).to have_field("confirm")
+          fill_in "confirm", with: "HARDROCK 2015 ENTRANTS"
+          click_button("Permanently Delete")
+          expect(page).not_to have_content(first_entrant_name)
+        end.to change { event_group.efforts.count }.to(0)
+      end
+
       scenario "The event group has multiple pages of entrants" do
         login_as owner, scope: :user
         visit_page_with_pagination
@@ -73,7 +87,7 @@ RSpec.describe "Visit an event group entrants page and try various features", ty
       end
     end
 
-    context "The event group has no entrants" do
+    context "when the event group has no entrants" do
       before { event_group.efforts.each(&:destroy) }
 
       scenario "The user owns the organization" do
@@ -111,7 +125,7 @@ RSpec.describe "Visit an event group entrants page and try various features", ty
     end
   end
 
-  context "The event group is concealed" do
+  context "when the event group is concealed" do
     before { event_group.update(concealed: true) }
 
     scenario "The user is a visitor" do

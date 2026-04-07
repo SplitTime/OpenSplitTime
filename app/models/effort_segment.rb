@@ -1,10 +1,6 @@
 class EffortSegment < ApplicationRecord
   readonly
 
-  def self.delete_all
-    Effort.find_each { |effort| delete_for_effort(effort) }
-  end
-
   def self.delete_for_effort(effort)
     query = EffortSegmentQuery.delete_for_effort(effort)
     ActiveRecord::Base.connection.execute(query)

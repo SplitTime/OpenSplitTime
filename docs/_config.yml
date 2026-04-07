@@ -28,6 +28,7 @@ defaults:
       layout: default
 
 # Build settings
+permalink: pretty
 markdown: kramdown
 sass:
   quiet_deps: true

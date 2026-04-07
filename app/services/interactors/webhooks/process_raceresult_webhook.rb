@@ -5,23 +5,21 @@ module Interactors
 
       class ParsingError < StandardError; end
 
-      # The raw data is expected to be in the format: JSON_DATA;EVENT_GROUP_NAME
-      def self.call(raw)
-        new(raw).call
+      def self.call(event_group:, record:)
+        new(event_group: event_group, record: record).call
       end
 
-      def initialize(raw)
-        @raw = raw
+      def initialize(event_group:, record:)
+        @event_group = event_group
+        @raw_attributes = record
         @errors = []
       end
 
       def call
-        parse_raw
-        find_event_group
         process_data
         build_raw_time
         save_raw_time
-        submit_raw_time
+        process_raw_time_async
 
         Interactors::Response.new(errors, "", [raw_time])
       rescue ParsingError => e
@@ -31,27 +29,8 @@ module Interactors
 
       private
 
-      attr_reader :raw
-      attr_accessor :raw_attributes, :processed_attributes, :raw_time, :event_group_name, :event_group, :errors
-
-      def parse_raw
-        parts = raw.split(";")
-        raise ParsingError, "Invalid format: expected JSON;EVENT_GROUP_NAME" if parts.size != 2
-
-        raise ParsingError, "JSON data cannot be blank" if parts.first.blank?
-
-        self.raw_attributes = JSON.parse(parts.first) # Automatically raises JSON::ParserError if invalid
-
-        raise ParsingError, "JSON data cannot be empty" if raw_attributes.blank?
-
-        self.event_group_name = parts.last.to_s.strip
-        raise ParsingError, "Event group name cannot be blank" if event_group_name.blank?
-      end
-
-      def find_event_group
-        self.event_group = EventGroup.find_by(slug: event_group_name.parameterize)
-        raise ParsingError, "Event group not found: #{event_group_name}" unless event_group
-      end
+      attr_reader :event_group, :raw_attributes, :errors
+      attr_accessor :processed_attributes, :raw_time
 
       def process_data
         self.processed_attributes = {
@@ -74,25 +53,21 @@ module Interactors
           split_name: processed_attributes[:timing_point],
           entered_time: processed_attributes[:utc_time],
           bitkey: SubSplit::IN_BITKEY,
-          source: "raceresult_webhook",
+          source: source_from_device_id,
           created_by: nil
         )
+      end
+
+      def source_from_device_id
+        ["raceresult-webhook", processed_attributes[:device_id].presence].compact.join("-")
       end
 
       def save_raw_time
         raw_time.save!
       end
 
-      def submit_raw_time
-        raw_time_rows = RowifyRawTimes.build(event_group: event_group, raw_times: [raw_time])
-
-        Interactors::SubmitRawTimeRows.perform!(
-          raw_time_rows: raw_time_rows,
-          event_group: event_group,
-          force_submit: false,
-          mark_as_reviewed: false,
-          current_user_id: nil
-        )
+      def process_raw_time_async
+        ProcessImportedRawTimesJob.perform_later(event_group, [raw_time])
       end
     end
   end

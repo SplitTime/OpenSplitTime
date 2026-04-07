@@ -1,25 +1,146 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <h1 class="text-3xl font-bold mb-6">OpenSplitTime Admin Dashboard</h1>
-  
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-lg font-semibold mb-2">Events</h3>
-      <p class="text-3xl font-bold text-blue-600"><%= Event.count %></p>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-lg font-semibold mb-2">Efforts</h3>
-      <p class="text-3xl font-bold text-green-600"><%= Effort.count %></p>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow p-6">
-      <h3 class="text-lg font-semibold mb-2">Users</h3>
-      <p class="text-3xl font-bold text-purple-600"><%= User.count %></p>
-    </div>
+
+  <h2 class="text-xl font-semibold mb-4">Actions</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 2rem;">
+    <%= button_to "Test timeout", madmin_dashboard_timeout_path,
+                  method: :get,
+                  class: "btn btn-danger",
+                  form: { style: "margin: 0;" },
+                  data: { turbo_confirm: "This will intentionally timeout a server by sleeping for up to 35 seconds. Are you sure you want to do that?" } %>
+
+    <%= link_to "Solid Queue", mission_control_jobs_path,
+                target: "_blank",
+                class: "btn btn-primary" %>
+
+    <%= link_to "Solid Cache", solid_cache_dashboard_path,
+                target: "_blank",
+                class: "btn btn-primary" %>
   </div>
-  
-  <div class="mt-8 bg-white rounded-lg shadow p-6">
-    <h2 class="text-xl font-semibold mb-4">Recent Activity</h2>
-    <p class="text-gray-600">Recent events and activities will appear here.</p>
+
+  <h2 class="text-xl font-semibold mb-4">Database Statistics</h2>
+  <div class="bg-white rounded-lg shadow overflow-hidden mb-8">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Model</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Count</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">People</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Person.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Users</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= User.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Organizations</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Organization.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Stewardships</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Stewardship.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Connections</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Connection.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Partners</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Partner.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Courses</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Course.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Course Groups</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= CourseGroup.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Splits</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Split.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Event Groups</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= EventGroup.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Events</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Event.count %></td>
+          <td class="px-6 py-3 text-sm text-gray-500"><%= Effort.unreconciled.size %> unreconciled efforts</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Efforts</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Effort.count %></td>
+          <td class="px-6 py-3 text-sm text-gray-500"><%= Effort.bad.size %> bad, <%= Effort.questionable.size %> questionable</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Effort Segments</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= EffortSegment.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Split Times</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= SplitTime.count %></td>
+          <td class="px-6 py-3 text-sm text-gray-500"><%= SplitTime.bad.size %> bad, <%= SplitTime.questionable.size %> questionable</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Raw Times</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= RawTime.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Historical Facts</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= HistoricalFact.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Results Templates</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= ResultsTemplate.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Lotteries</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Lottery.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Notifications</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Notification.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Subscriptions</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= Subscription.count %></td>
+          <td class="px-6 py-3 text-sm text-gray-500"><%= Subscription.sms.size %> SMS, <%= Subscription.email.size %> email, <%= Subscription.http.size %> HTTP, <%= Subscription.https.size %> HTTPS</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Import Jobs</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= ImportJob.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+        <tr>
+          <td class="px-6 py-3 whitespace-nowrap font-medium">Export Jobs</td>
+          <td class="px-6 py-3 whitespace-nowrap text-right"><%= ExportJob.count %></td>
+          <td class="px-6 py-3"></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+
 </div>

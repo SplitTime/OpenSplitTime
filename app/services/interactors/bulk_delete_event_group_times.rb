@@ -15,6 +15,7 @@ module Interactors
     def perform!
       ActiveRecord::Base.transaction do
         delete_raw_times
+        delete_effort_segments
         delete_split_times
         set_effort_performance_data
         touch_records
@@ -38,8 +39,13 @@ module Interactors
       errors << active_record_error(e)
     end
 
-    def delete_split_times
+    def delete_effort_segments
       EffortSegment.where(effort_id: effort_ids).delete_all
+    rescue ActiveRecord::ActiveRecordError => e
+      errors << active_record_error(e)
+    end
+
+    def delete_split_times
       self.split_time_count = SplitTime.where(effort_id: effort_ids).delete_all
     rescue ActiveRecord::ActiveRecordError => e
       errors << active_record_error(e)

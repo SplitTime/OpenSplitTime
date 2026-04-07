@@ -3,10 +3,9 @@ require "rails_helper"
 RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
   include BitkeyDefinitions
 
-  let(:raw) { "#{json_data};#{event_group.name}" }
   let(:event_group) { event_groups(:hardrock_2014) }
 
-  let(:json_data) do
+  let(:record) do
     {
       "Bib" => bib,
       "TimingPoint" => timing_point,
@@ -15,7 +14,7 @@ RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
         "UTCTime" => utc_time,
         "DeviceID" => device_id
       }
-    }.to_json
+    }
   end
 
   let(:bib) { "101" }
@@ -25,12 +24,11 @@ RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
   let(:device_id) { "device_1" }
 
   describe ".call" do
-    let(:result) { described_class.call(raw) }
+    let(:result) { described_class.call(event_group: event_group, record: record) }
 
     context "when given valid data" do
       before do
-        allow(RowifyRawTimes).to receive(:build).and_return([])
-        allow(Interactors::SubmitRawTimeRows).to receive(:perform!)
+        allow(ProcessImportedRawTimesJob).to receive(:perform_later)
       end
 
       it "returns a successful response with a raw_time" do
@@ -51,74 +49,22 @@ RSpec.describe Interactors::Webhooks::ProcessRaceresultWebhook do
         expect(raw_time.split_name).to eq("Aid 1")
         expect(raw_time.entered_time).to eq("2014-07-11T10:45:00Z")
         expect(raw_time.bitkey).to eq(SubSplit::IN_BITKEY)
-        expect(raw_time.source).to eq("raceresult_webhook")
+        expect(raw_time.source).to eq("raceresult-webhook-device_1")
       end
 
-      it "submits the raw time" do
+      it "enqueues a job to process the raw time" do
         result
 
-        expect(RowifyRawTimes).to have_received(:build)
-        expect(Interactors::SubmitRawTimeRows).to have_received(:perform!)
+        expect(ProcessImportedRawTimesJob).to have_received(:perform_later).with(event_group, [RawTime.last])
       end
 
-      context "when the event group is identified by slug" do
-        let(:raw) { "#{json_data};#{event_group.slug}" }
+      context "when DeviceID is missing" do
+        let(:device_id) { nil }
 
-        it "finds the event group" do
-          expect(result.errors).to be_empty
-          expect(result.resources.size).to eq(1)
+        it "sets source to raceresult-webhook" do
+          result
+          expect(RawTime.last.source).to eq("raceresult-webhook")
         end
-      end
-    end
-
-    context "when the raw data format is invalid" do
-      it "returns an error when there is no semicolon separator" do
-        result = described_class.call("just_some_data")
-
-        expect(result.errors).to be_present
-        expect(result.resources).to be_empty
-      end
-
-      it "returns an error when there are too many semicolons" do
-        result = described_class.call("a;b;c")
-
-        expect(result.errors).to be_present
-        expect(result.resources).to be_empty
-      end
-    end
-
-    context "when the JSON is invalid" do
-      let(:raw) { "not_json;#{event_group.name}" }
-
-      it "raises a JSON::ParserError" do
-        expect { result }.to raise_error(JSON::ParserError)
-      end
-    end
-
-    context "when the JSON is empty" do
-      let(:raw) { "{};#{event_group.name}" }
-
-      it "returns an error" do
-        expect(result.errors).to be_present
-        expect(result.resources).to be_empty
-      end
-    end
-
-    context "when the event group name is blank" do
-      let(:raw) { "#{json_data}; " }
-
-      it "returns an error" do
-        expect(result.errors).to be_present
-        expect(result.resources).to be_empty
-      end
-    end
-
-    context "when the event group is not found" do
-      let(:raw) { "#{json_data};Nonexistent Group" }
-
-      it "returns an error" do
-        expect(result.errors).to be_present
-        expect(result.resources).to be_empty
       end
     end
 

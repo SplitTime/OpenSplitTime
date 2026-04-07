@@ -1,22 +1,20 @@
 require "rails_helper"
 
-RSpec.describe "manage entrants on the lottery setup page", js: true do
+RSpec.describe "manage entrants on the lottery setup page", :js do
   include ActionView::RecordIdentifier
 
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
+  let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
+  let(:organization) { lottery.organization }
 
   before do
     organization.update(created_by: owner.id)
     organization.stewards << steward
     stewardship = organization.stewardships.find_by(user: steward)
     stewardship.update(level: :lottery_manager)
+    lottery.update(status: :preview)
   end
-
-  let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
-  let(:organization) { lottery.organization }
-
-  before { lottery.update(status: :preview) }
 
   scenario "The user changes the name of an entrant" do
     login_as steward, scope: :user
@@ -120,7 +118,7 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
         click_link("Generate entrants")
       end
       expect(page).to have_content("Generated lottery entrants")
-    end.to change { lottery.entrants.count }
+    end.to(change { lottery.entrants.count })
   end
 
   scenario "The user deletes all entrants" do
@@ -131,7 +129,7 @@ RSpec.describe "manage entrants on the lottery setup page", js: true do
     expect do
       click_link("Delete all entrants")
       expect(page).to have_field("confirm")
-      fill_in "confirm", with: "DELETE ALL ENTRANTS"
+      fill_in "confirm", with: "LOTTERY WITH TICKETS AND DRAWS ENTRANTS"
       click_button("Permanently Delete")
       expect(page).to have_content("Deleted all lottery entrants")
     end.to change { lottery.entrants.count }.to(0)

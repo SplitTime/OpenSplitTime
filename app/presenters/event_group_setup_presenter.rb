@@ -4,6 +4,7 @@ class EventGroupSetupPresenter < BasePresenter
   CANDIDATE_SEPARATION_LIMIT = 7.days
 
   attr_reader :event_group
+
   delegate :available_live?,
            :connections,
            :concealed?,
@@ -15,6 +16,8 @@ class EventGroupSetupPresenter < BasePresenter
            :partners,
            :to_param,
            :unreconciled_efforts,
+           :webhook_token,
+           :webhook_token?,
            to: :event_group
 
   def initialize(event_group, view_context)
@@ -32,10 +35,12 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def candidate_events
-    return [] unless events.present?
+    return [] if events.blank?
 
     (organization.events.select_with_params("").order(scheduled_start_time: :desc) - events)
-      .select { |event| (event.scheduled_start_time - events.first.scheduled_start_time).abs < CANDIDATE_SEPARATION_LIMIT }
+      .select do |event|
+        (event.scheduled_start_time - events.first.scheduled_start_time).abs < CANDIDATE_SEPARATION_LIMIT
+      end
   end
 
   def courses
@@ -54,9 +59,9 @@ class EventGroupSetupPresenter < BasePresenter
     return @filtered_efforts if defined?(@filtered_efforts)
 
     scope = event_group_efforts
-              .where(filter_hash)
-              .search(search_text)
-              .order(sort_hash.presence || { bib_number: :asc })
+            .where(filter_hash)
+            .search(search_text)
+            .order(sort_hash.presence || { bib_number: :asc })
 
     @pagy, @filtered_efforts = pagy_from_scope(scope, limit: per_page, page: page)
     @filtered_efforts
@@ -83,7 +88,7 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def no_persisted_events?
-    @persisted_events ||= events.none?(&:persisted?)
+    @no_persisted_events ||= events.none?(&:persisted?)
   end
 
   def next_page_url
@@ -104,7 +109,9 @@ class EventGroupSetupPresenter < BasePresenter
 
   def existing_service_identifiers
     @existing_service_identifiers ||=
-      Connection.where(destination: event_group).or(Connection.where(destination: event_group.events)).distinct.pluck(:service_identifier)
+      Connection.where(destination: event_group)
+                .or(Connection.where(destination: event_group.events))
+                .distinct.pluck(:service_identifier)
   end
 
   def service_identifier
@@ -112,7 +119,7 @@ class EventGroupSetupPresenter < BasePresenter
   end
 
   def active_widget_card
-    if controller_name == "event_groups" && action_name.in?(%w(setup new))
+    if controller_name == "event_groups" && action_name.in?(%w[setup new])
       :overview
     elsif action_name == "setup_summary"
       :status
@@ -132,6 +139,7 @@ class EventGroupSetupPresenter < BasePresenter
   private
 
   attr_reader :params, :view_context
+
   delegate :current_user, :request, to: :view_context, private: true
 
   def pagy

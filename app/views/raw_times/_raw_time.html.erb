@@ -1,4 +1,4 @@
-<%# locals: (raw_time:, multiple_events:, multiple_sub_splits:, monitor_pacers:, home_time_zone:) -%>
+<%# locals: (raw_time:, multiple_events:, multiple_sub_splits:, multiple_laps:, monitor_pacers:, home_time_zone:) -%>
 
 <tr id="<%= dom_id(raw_time) %>"
     data-controller="highlight"
@@ -12,6 +12,9 @@
   <td><%= link_to_raw_time_split(raw_time) %></td>
   <% if multiple_sub_splits %>
     <td class="text-center"><%= raw_time.sub_split_kind %></td>
+  <% end %>
+  <% if multiple_laps %>
+    <td class="text-center"><%= raw_time.lap %></td>
   <% end %>
   <td><%= raw_time.military_time(home_time_zone) %></td>
   <% if monitor_pacers %>

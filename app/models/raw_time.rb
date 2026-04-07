@@ -23,6 +23,10 @@ class RawTime < ApplicationRecord
   attribute :lap, :integer
   attribute :split_time_exists, :boolean
 
+  def lap
+    super || split_time&.lap || entered_lap
+  end
+
   attr_accessor :new_split_time
   attr_writer :effort, :event, :split
 
@@ -31,6 +35,8 @@ class RawTime < ApplicationRecord
   before_validation :create_matchable_bib_number
 
   after_create_commit :broadcast_raw_time_create
+  after_update_commit :broadcast_raw_time_update
+  after_destroy_commit :broadcast_raw_time_destroy
 
   validates :entered_time, :split_name, :bitkey, :bib_number, :source, presence: true
   validates :bib_number, length: { maximum: 6 },
@@ -129,6 +135,17 @@ class RawTime < ApplicationRecord
   def broadcast_raw_time_create
     broadcast_render_later_to event_group, partial: "raw_times/created",
                                            locals: { event_group: event_group, raw_time: self }
+  end
+
+  def broadcast_raw_time_update
+    broadcast_render_later_to event_group, partial: "raw_times/updated",
+                                           locals: { event_group: event_group, raw_time: self }
+  end
+
+  def broadcast_raw_time_destroy
+    broadcast_render_to event_group,
+                        partial: "raw_times/destroyed",
+                        locals: { event_group: event_group, raw_time: self }
   end
 
   def create_sortable_bib_number

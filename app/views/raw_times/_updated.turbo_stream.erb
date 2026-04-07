@@ -1,6 +1,6 @@
 <%# locals: (event_group:, raw_time:) -%>
 
-<%= turbo_stream.prepend :raw_times,
+<%= turbo_stream.replace raw_time,
                          partial: "raw_times/raw_time",
                          locals: {
                            raw_time: raw_time,
@@ -10,7 +10,3 @@
                            monitor_pacers: event_group.monitor_pacers?,
                            home_time_zone: event_group.home_time_zone,
                          } %>
-
-<%= turbo_stream.replace :raw_times_count,
-                         partial: "event_groups/raw_times_count",
-                         locals: { raw_times_count: event_group.raw_times.count } %>

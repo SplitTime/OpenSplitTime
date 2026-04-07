@@ -153,6 +153,7 @@ Rails.application.routes.draw do
       patch :start_efforts
       patch :update_all_efforts
       patch :update_bibs
+      patch :generate_webhook_token
       patch :update_entrant_photos
       delete :delete_all_efforts
       delete :delete_all_times
@@ -279,8 +280,6 @@ Rails.application.routes.draw do
       as: :sitemap
 
   namespace :admin do
-    get "dashboard", to: "dashboard#show"
-    get "dashboard/timeout", to: "dashboard#timeout"
     post "impersonate/start/:id", to: "impersonate#start", as: "impersonate_start"
     post "impersonate/stop", to: "impersonate#stop", as: "impersonate_stop"
   end

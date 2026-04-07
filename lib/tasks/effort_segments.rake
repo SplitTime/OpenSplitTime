@@ -38,12 +38,12 @@ namespace :effort_segments do
 
       puts "Deleted all orphaned effort segments"
     end
+  end
 
-    desc "deletes effort segments for all efforts"
-    task delete: :environment do
-      puts "Deleting effort segments for all efforts"
+  desc "deletes effort segments for all efforts"
+  task delete: :environment do
+    puts "Deleting effort segments for all efforts"
 
-      EffortSegment.delete_all
-    end
+    EffortSegment.delete_all
   end
 end

@@ -54,7 +54,7 @@ Raw Time record. Only one Split Time may exist for an entrant at a particular po
 
 Raw Times are created via [OST Remote](../ost-remote/), the easy-to-use iOS client app for live time recording,
 by using the Live Entry screen in opensplittime.org, or by 
-[posting time data to the OpenSplitTime API](../api/queries.html#posting-raw-times).
+[posting time data to the OpenSplitTime API](../api/queries/#posting-raw-times).
 
 ## Creating Split Times
 

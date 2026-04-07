@@ -4,7 +4,8 @@ RSpec.describe EventGroup, type: :model do
   it { is_expected.to strip_attribute(:name).collapse_spaces }
 
   describe "#initialize" do
-    subject { EventGroup.new(name: name, organization: organization, home_time_zone: home_time_zone) }
+    subject { described_class.new(name: name, organization: organization, home_time_zone: home_time_zone) }
+
     let(:name) { "Test Name" }
     let(:organization) { organizations(:hardrock) }
     let(:home_time_zone) { "Arizona" }
@@ -29,7 +30,7 @@ RSpec.describe EventGroup, type: :model do
 
       it "is not valid" do
         expect(subject).to be_invalid
-        expect(subject.errors.full_messages).to include(/Organization can't be blank/)
+        expect(subject.errors.full_messages).to include(/Organization must exist/)
       end
     end
 
@@ -59,7 +60,7 @@ RSpec.describe EventGroup, type: :model do
 
     it "touches all events" do
       expect(event_group).to be_available_live
-      expect { event_group.update(available_live: false) }.to change { event_1.reload.updated_at }.and change { event_2.reload.updated_at }
+      expect { event_group.update(available_live: false) }.to change { event_1.reload.updated_at }.and(change { event_2.reload.updated_at })
     end
 
     describe "conforms the concealed status of related records" do
@@ -98,12 +99,12 @@ RSpec.describe EventGroup, type: :model do
           let(:subject_event_group_concealed) { true }
           context "when another event group for the organization is visible" do
             let(:other_event_group_concealed) { false }
-            include_examples "does not conceal the conforming record"
+            it_behaves_like "does not conceal the conforming record"
           end
 
           context "when all other event groups for the organization are concealed" do
             let(:other_event_group_concealed) { true }
-            include_examples "conceals the conforming record"
+            it_behaves_like "conceals the conforming record"
           end
         end
 
@@ -112,12 +113,12 @@ RSpec.describe EventGroup, type: :model do
           let(:subject_event_group_concealed) { false }
           context "when another event group for the organization is visible" do
             let(:other_event_group_concealed) { false }
-            include_examples "does not conceal the conforming record"
+            it_behaves_like "does not conceal the conforming record"
           end
 
           context "when all other event groups for the organization are concealed" do
             let(:other_event_group_concealed) { true }
-            include_examples "makes the conforming record visible"
+            it_behaves_like "makes the conforming record visible"
           end
         end
       end
@@ -128,7 +129,7 @@ RSpec.describe EventGroup, type: :model do
         let(:other_event_group) { event_groups(:rufa_2016) }
         let(:conforming_record) { organization }
 
-        include_examples "conceals and makes visible the conforming record"
+        it_behaves_like "conceals and makes visible the conforming record"
       end
 
       describe "conforms concealed status of people" do
@@ -137,7 +138,7 @@ RSpec.describe EventGroup, type: :model do
         let(:other_event_group) { event_groups(:dirty_30) }
         let(:conforming_record) { person }
 
-        include_examples "conceals and makes visible the conforming record"
+        it_behaves_like "conceals and makes visible the conforming record"
       end
 
       describe "conforms concealed status of courses" do
@@ -146,52 +147,52 @@ RSpec.describe EventGroup, type: :model do
         let(:other_event_group) { event_groups(:rufa_2016) }
         let(:conforming_record) { course }
 
-        include_examples "conceals and makes visible the conforming record"
+        it_behaves_like "conceals and makes visible the conforming record"
       end
     end
   end
 
   describe "scopes" do
     describe ".having_efforts" do
-      context "for an event group that has no events" do
+      context "when the event group has no events" do
         let(:event_group) { create(:event_group) }
 
         it "does not include the event group" do
-          expect(EventGroup.having_efforts).not_to include(event_group)
+          expect(described_class.having_efforts).not_to include(event_group)
         end
       end
 
-      context "for an event group that has events but no efforts" do
+      context "when the event group has events but no efforts" do
         let(:event) { create(:event) }
         let(:event_group) { event.event_group }
 
         it "does not include the event group" do
-          expect(EventGroup.having_efforts).not_to include(event_group)
+          expect(described_class.having_efforts).not_to include(event_group)
         end
       end
 
-      context "for an event group that has one event with efforts" do
+      context "when the event group has one event with efforts" do
         let(:event_group) { event_groups(:hardrock_2014) }
 
         it "includes the event group" do
-          expect(EventGroup.having_efforts).to include(event_group).once
+          expect(described_class.having_efforts).to include(event_group).once
         end
       end
 
-      context "for an event group that has multiple events, all having efforts" do
+      context "when the event group has multiple events, all having efforts" do
         let(:event_group) { event_groups(:ramble) }
 
         it "includes the event group" do
-          expect(EventGroup.having_efforts).to include(event_group).once
+          expect(described_class.having_efforts).to include(event_group).once
         end
       end
 
-      context "for an event group that has multiple events, only some of which have efforts" do
+      context "when the event group has multiple events, only some of which have efforts" do
         let(:event_group) { event_groups(:sum) }
         before { event_group.events.first.efforts.destroy_all }
 
         it "includes the event group" do
-          expect(EventGroup.having_efforts).to include(event_group).once
+          expect(described_class.having_efforts).to include(event_group).once
         end
       end
     end
@@ -199,6 +200,7 @@ RSpec.describe EventGroup, type: :model do
 
   describe "#multiple_laps?" do
     subject { build_stubbed(:event_group, events: events) }
+
     let(:event_1) { build_stubbed(:event, laps_required: 1) }
     let(:event_2) { build_stubbed(:event, laps_required: 1) }
     let(:event_3) { build_stubbed(:event, laps_required: 0) }
@@ -221,13 +223,15 @@ RSpec.describe EventGroup, type: :model do
   end
 
   describe "#pick_partner_with_banner" do
-    context "where multiple partners exist for both the subject event_group and another event_group" do
+    context "when multiple partners exist for both the subject event_group and another event_group" do
       let!(:event_group) { create(:event_group) }
       let!(:wrong_event_group) { create(:event_group) }
       let!(:related_partners_with_banners) { create_list(:partner, 3, :with_banner, partnerable: event_group) }
-      let!(:related_partners_without_banners) { create_list(:partner, 3, partnerable: event_group) }
-      let!(:unrelated_partners_with_banners) { create_list(:partner, 3, :with_banner, partnerable: wrong_event_group) }
-      let!(:unrelated_partners_without_banners) { create_list(:partner, 3, partnerable: wrong_event_group) }
+      before do
+        create_list(:partner, 3, partnerable: event_group)
+        create_list(:partner, 3, :with_banner, partnerable: wrong_event_group)
+        create_list(:partner, 3, partnerable: wrong_event_group)
+      end
 
       it "returns a random partner with a banner for the event_group" do
         partners = []
@@ -237,7 +241,7 @@ RSpec.describe EventGroup, type: :model do
       end
     end
 
-    context "where multiple partners with banners for the event_group exist and one is weighted more heavily" do
+    context "when multiple partners with banners exist and one is weighted more heavily" do
       # Four partners with weight: 1 and one partner with weight: 10 means the weighted partner should receive,
       # on average, about 71% of hits.
       let!(:event_group) { create(:event_group) }
@@ -255,7 +259,7 @@ RSpec.describe EventGroup, type: :model do
       end
     end
 
-    context "where no partners with banners for the event_group exist" do
+    context "when no partners with banners exist" do
       let(:event_group) { create(:event_group) }
 
       it "returns nil" do

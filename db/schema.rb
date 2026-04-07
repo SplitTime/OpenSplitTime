@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_24_200408) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -140,6 +140,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_200408) do
     t.integer "lap"
     t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey", "effort_id", "lap"], name: "index_effort_segments_on_unique_attributes", unique: true
     t.index ["begin_split_id", "begin_bitkey", "end_split_id", "end_bitkey"], name: "index_effort_segments_on_sub_splits"
+    t.index ["begin_split_id", "end_split_id", "elapsed_seconds"], name: "index_effort_segments_on_splits_and_elapsed"
     t.index ["course_id", "begin_split_kind", "end_split_kind"], name: "index_effort_segments_by_course_id_and_split_kind"
     t.index ["course_id"], name: "index_effort_segments_on_course_id"
     t.index ["effort_id"], name: "index_effort_segments_on_effort_id"
@@ -205,8 +206,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_200408) do
     t.integer "organization_id"
     t.string "slug"
     t.datetime "updated_at", precision: nil, null: false
+    t.string "webhook_token"
     t.index ["organization_id"], name: "index_event_groups_on_organization_id"
     t.index ["slug"], name: "index_event_groups_on_slug", unique: true
+    t.index ["webhook_token"], name: "index_event_groups_on_webhook_token", unique: true
   end
 
   create_table "event_series", force: :cascade do |t|

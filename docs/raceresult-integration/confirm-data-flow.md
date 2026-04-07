@@ -20,4 +20,4 @@ In OpenSplitTime, make sure Live Entry is enabled for your Event Group. To enabl
 
 ![OST ensure live entry on](/assets/images/docs/race_result/race_result_doc_7.png)
 
-Then go back to your event, head to **Live Times** → **List** and watch for raw times to appear as they are received from RaceResult.
+Then go back to your event, head to **Raw Times** → **List** and watch for raw times to appear as they are received from RaceResult.

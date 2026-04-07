@@ -29,7 +29,7 @@
     <tr>
       <th colspan="5"><%= "Projections based on #{pluralize(presenter.effort_count, 'effort')} " \
                             "from #{'year'.pluralize(presenter.effort_years.size)} " \
-                            presenter.effort_years.to_sentence.to_s %></th>
+                            "#{presenter.effort_years.to_sentence}" %></th>
     </tr>
     <tr class="table-dark">
       <th>Split</th>

@@ -16,6 +16,7 @@ module Interactors
       ActiveRecord::Base.transaction do
         delete_raw_times
         delete_split_times
+        set_effort_performance_data
         touch_records
         raise ActiveRecord::Rollback if errors.present?
       end
@@ -27,19 +28,25 @@ module Interactors
     private
 
     attr_reader :event_group, :response
+    attr_accessor :raw_time_count, :split_time_count
+
     delegate :errors, to: :response, private: true
 
     def delete_raw_times
-      @raw_time_count = RawTime.where(event_group_id: event_group).delete_all
+      self.raw_time_count = RawTime.where(event_group_id: event_group).delete_all
     rescue ActiveRecord::ActiveRecordError => e
       errors << active_record_error(e)
     end
 
     def delete_split_times
-      efforts = Effort.where(event_id: event_group.events)
-      @split_time_count = SplitTime.where(effort_id: efforts).delete_all
+      EffortSegment.where(effort_id: effort_ids).delete_all
+      self.split_time_count = SplitTime.where(effort_id: effort_ids).delete_all
     rescue ActiveRecord::ActiveRecordError => e
       errors << active_record_error(e)
+    end
+
+    def set_effort_performance_data
+      effort_ids.each { |id| Results::SetEffortPerformanceData.perform!(id) }
     end
 
     def touch_records
@@ -52,8 +59,12 @@ module Interactors
         if errors.present?
           "Unable to delete times"
         else
-          "Deleted #{pluralize(@raw_time_count, 'raw time')} and #{pluralize(@split_time_count, 'split time')}"
+          "Deleted #{pluralize(raw_time_count, 'raw time')} and #{pluralize(split_time_count, 'split time')}"
         end
+    end
+
+    def effort_ids
+      @effort_ids ||= Effort.where(event_id: event_group.events).pluck(:id)
     end
   end
 end

@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe Interactors::BulkDeleteEventGroupTimes do
   subject { described_class.new(event_group) }
+
   let(:event_group) { event_groups(:sum) }
 
   describe "#perform!" do
@@ -22,6 +23,28 @@ RSpec.describe Interactors::BulkDeleteEventGroupTimes do
         event_group.events.each { |event| expect(event.reload.updated_at).to be_within(1.second).of(Time.current) }
       end
 
+      it "resets effort performance data so no effort is marked as started" do
+        efforts = Effort.where(event_id: event_group.events)
+        expect(efforts.started.count).to be_positive
+
+        subject.perform!
+
+        efforts.each do |effort|
+          effort.reload
+          expect(effort.started).to eq(false), "Expected effort #{effort.id} to not be started"
+          expect(effort.final_split_time_id).to be_nil, "Expected effort #{effort.id} to have nil final_split_time_id"
+        end
+      end
+
+      it "deletes effort segments for affected efforts" do
+        efforts = Effort.where(event_id: event_group.events).started
+        efforts.each { |effort| EffortSegment.set_for_effort(effort) }
+
+        effort_ids = efforts.pluck(:id)
+        expect(EffortSegment.where(effort_id: effort_ids).count).to be_positive
+        expect { subject.perform! }.to change { EffortSegment.where(effort_id: effort_ids).count }.to(0)
+      end
+
       it "returns a response with a descriptive message" do
         raw_times_count = event_group.raw_times.count
         split_times_count = event_group.split_times.count
@@ -36,11 +59,18 @@ RSpec.describe Interactors::BulkDeleteEventGroupTimes do
     end
 
     context "when an error occurs" do
-      before { allow_any_instance_of(ActiveRecord::Relation).to receive(:delete_all).and_raise ActiveRecord::ActiveRecordError, "a thing happened" }
+      before do
+        allow(SplitTime).to receive(:where).and_call_original
+        allow(SplitTime)
+          .to receive(:where)
+          .with(effort_id: anything)
+          .and_raise(ActiveRecord::ActiveRecordError, "a thing happened")
+      end
 
       it "does not delete split times or raw times" do
-        expect { subject.perform! }.to not_change { event_group.split_times.count }
-                                         .and not_change { event_group.raw_times.count }
+        expect { subject.perform! }
+          .to not_change { event_group.split_times.count }
+          .and(not_change { event_group.raw_times.count })
       end
 
       it "returns a response with errors" do

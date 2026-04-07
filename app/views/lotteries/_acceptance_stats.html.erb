@@ -2,7 +2,7 @@
 
 <% presenter.stats.each do |division_name, division_stats| %>
   <div class="card">
-    <h4 class="card-header fw-bold bg-primary text-white"><%= division_name.to_s %></h4>
+    <h4 class="card-header fw-bold bg-primary text-white"><%= division_name %></h4>
     <div class="card-body">
       <%= column_chart presenter.stats_chart_data(division_stats),
                        stacked: true,

@@ -9,7 +9,7 @@
         </div>
         <div class="col">
           <h4 class="text-end"><span class="badge bg-secondary"><%= presenter.division_name %></span></h4>
-          <h6 class="text-end fw-bold"><%= pluralize(presenter.number_of_tickets, "ticket").to_s %></h6>
+          <h6 class="text-end fw-bold"><%= pluralize(presenter.number_of_tickets, "ticket") %></h6>
         </div>
       </div>
       <% if presenter.service_manageable_by_user?(current_user) %>

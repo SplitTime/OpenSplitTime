@@ -6,7 +6,7 @@
     <tbody>
     <% template.template_categories.includes(:category).find_each do |rtc| %>
       <tr>
-        <td class="text-danger"><%= ("*" if rtc.fixed_position).to_s %></td>
+        <td class="text-danger"><%= ("*" if rtc.fixed_position) %></td>
         <td><%= "#{rtc.position}." %></td>
         <td><%= "#{rtc.category_name} (#{rtc.category_description})" %></td>
       </tr>

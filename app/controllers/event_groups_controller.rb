@@ -355,8 +355,12 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     UpdateEffortsStatusJob.perform_later(@event_group, current_user: current_user)
-    flash[:success] = "Data status update has started. This may take a minute for large events."
-    redirect_to roster_event_group_path(@event_group)
+    flash.now[:success] = "Data status update has started. This may take a minute for large events."
+
+    respond_to do |format|
+      format.html { redirect_to roster_event_group_path(@event_group) }
+      format.turbo_stream
+    end
   end
 
   # GET /event_groups/1/start_efforts_form

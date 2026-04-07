@@ -35,10 +35,9 @@
   <% if @presenter.course_has_location_data? %>
     <div style="width: 100%; height: 350px;"
          data-controller="maps"
-         data-maps-course-id-value="<%= @presenter.id %>"
-    ></div>
+         data-maps-course-id-value="<%= @presenter.id %>"></div>
   <% end %>
-  <br/>
+  <br>
 
   <% if @presenter.display_style == "splits" %>
     <% if @presenter.ordered_splits.present? %>

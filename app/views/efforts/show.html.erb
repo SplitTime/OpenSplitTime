@@ -43,13 +43,13 @@
             <div class="mx-1"><%= link_to effort_beacon_button_text(@presenter.beacon_url),
                                           url_with_protocol(@presenter.beacon_url),
                                           class: "btn btn-outline-secondary",
-                                          target: "_blank" %></div>
+                                          target: "_blank", rel: "noopener" %></div>
           <% end %>
           <% if @presenter.report_url %>
             <div class="mx-1"><%= link_to effort_report_button_text(@presenter.report_url),
                                           url_with_protocol(@presenter.report_url),
                                           class: "btn btn-outline-secondary",
-                                          target: "_blank" %></div>
+                                          target: "_blank", rel: "noopener" %></div>
           <% end %>
         </div>
       </div>

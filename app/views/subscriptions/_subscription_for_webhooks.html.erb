@@ -4,8 +4,7 @@
     class="align-middle"
     data-controller="highlight"
     data-highlight-fast-value="true"
-    data-highlight-timestamp-value="<%= subscription.updated_at.to_i %>"
->
+    data-highlight-timestamp-value="<%= subscription.updated_at.to_i %>">
   <td><%= badge_with_text(subscription.protocol, color: subscription.protocol == "http" ? "info" : "primary") %></td>
   <td class="font-monospace"><%= subscription.endpoint %></td>
   <td><%= subscription_status_badge(subscription) %></td>

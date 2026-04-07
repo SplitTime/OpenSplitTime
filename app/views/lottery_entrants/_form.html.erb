@@ -45,7 +45,7 @@
         </div>
 
         <div class="mb-3 col-md-3">
-          <%= f.label :state_code, "State", class: "mb-1" %><br/>
+          <%= f.label :state_code, "State", class: "mb-1" %><br>
           <%= render partial: "carmen/subregion_select",
                      locals: { model: :lottery_entrant, parent_region: f.object.country_code } %>
         </div>
@@ -81,7 +81,7 @@
         </div>
       </div>
 
-      <br/>
+      <br>
       <div class="row">
         <div class="col">
           <%= f.submit(@lottery_entrant.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary") %>

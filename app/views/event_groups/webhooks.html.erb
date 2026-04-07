@@ -42,7 +42,7 @@
                  detail_paragraphs: [t("event_groups.webhooks.pending_subscription_warning")],
                } %>
   <% end %>
-  <hr/>
+  <hr>
   <% @presenter.events.each do |event| %>
     <div class="card">
       <div class="card-header">
@@ -59,15 +59,13 @@
                           new_event_subscription_path(event),
                           id: dom_id(event, "new_subscription"),
                           class: "btn btn-outline-success",
-                          data: { turbo_frame: "form_modal" }
-              %>
+                          data: { turbo_frame: "form_modal" } %>
             <% else %>
-            <span class="d-grid" data-controller="tooltip" data-bs-original-title="<%= t('event_groups.webhooks.no_webhooks_available') %>">
+            <span class="d-grid" data-controller="tooltip" data-bs-original-title="<%= t("event_groups.webhooks.no_webhooks_available") %>">
               <%= link_to fa_icon("plus", text: "Add Subscription"),
                           "#",
                           class: "btn btn-outline-success disabled",
-                          style: "pointer-events: none;"
-              %>
+                          style: "pointer-events: none;" %>
             </span>
             <% end %>
           </div>

@@ -39,8 +39,8 @@
   <% end %>
 
   <% if @presenter.event_group.entrant_photos.attached? %>
-    <br/>
-    <hr/>
+    <br>
+    <hr>
 
     <div class="row">
       <div class="col">
@@ -68,8 +68,8 @@
     </div>
   <% end %>
 
-  <br/>
-  <hr/>
+  <br>
+  <hr>
 
   <div class="row">
     <div class="col-12 col-md-6">
@@ -96,8 +96,7 @@
                       delete_photo_effort_path(effort),
                       method: :delete,
                       class: "btn btn-sm btn-outline-danger"
-                    ) { fa_icon("circle-xmark") }
-                %>
+                    ) { fa_icon("circle-xmark") } %>
               </div>
               <div class="col-2 mx-auto text-center">
                 <%= image_tag effort.photo.variant(:thumbnail) %>

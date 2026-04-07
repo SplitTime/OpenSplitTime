@@ -5,12 +5,12 @@
     <div id="lottery_entrants">
       <%= render partial: "lottery_entrants/lottery_entrant", collection: presenter.lottery_entrants_paginated, as: :record %>
     </div>
-    <hr/>
+    <hr>
 
     <%= render "shared/pager", next_page_url: presenter.next_page_url %>
   </div>
 <% else %>
-  <br/>
+  <br>
   <% if presenter.params[:search].blank? %>
     <p><strong>No entrants have been added yet</strong></p>
   <% elsif presenter.params[:search].present? && presenter.params[:search].length < 3 %>

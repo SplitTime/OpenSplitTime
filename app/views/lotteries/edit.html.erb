@@ -23,7 +23,7 @@
 <article class="ost-article container">
   <%= render "form" %>
   <hr>
-  <%= link_to_delete_resource('Delete this lottery', organization_lottery_path(@lottery.organization, @lottery),
+  <%= link_to_delete_resource("Delete this lottery", organization_lottery_path(@lottery.organization, @lottery),
                               resource: @lottery,
                               noteworthy_associations: [:entrants],
                               class: "btn btn-danger") %>

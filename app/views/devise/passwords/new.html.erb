@@ -2,7 +2,7 @@
   <div class="container">
     <div class="ost-heading row">
       <div class="ost-title col">
-        <h1><strong><%= t('.forgot_your_password') %></strong></h1>
+        <h1><strong><%= t(".forgot_your_password") %></strong></h1>
       </div>
     </div>
   </div>
@@ -11,20 +11,20 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :post, data: {turbo: false}}) do |f| %>
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, data: { turbo: false } }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="form-floating mb-3">
-          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
           <%= f.label :email %>
         </div>
 
         <div class="mb-3">
-          <%= f.submit t('.send_me_reset_password_instructions'), class: 'btn btn-primary' %>
+          <%= f.submit t(".send_me_reset_password_instructions"), class: "btn btn-primary" %>
         </div>
       <% end %>
 
-      <%= render 'devise/shared/links' %>
+      <%= render "devise/shared/links" %>
     </div>
   </div>
 </article>

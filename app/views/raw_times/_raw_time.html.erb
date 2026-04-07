@@ -2,8 +2,7 @@
 
 <tr id="<%= dom_id(raw_time) %>"
     data-controller="highlight"
-    data-highlight-timestamp-value="<%= raw_time.updated_at.to_i %>"
->
+    data-highlight-timestamp-value="<%= raw_time.updated_at.to_i %>">
   <td><%= raw_time.bib_number %></td>
   <% if multiple_events %>
     <td><%= raw_time.event&.guaranteed_short_name || "--" %></td>
@@ -18,9 +17,9 @@
   <% end %>
   <td><%= raw_time.military_time(home_time_zone) %></td>
   <% if monitor_pacers %>
-    <td class="text-center"><%= "#{raw_time.with_pacer? ? "Yes" : "No"}" %></td>
+    <td class="text-center"><%= (raw_time.with_pacer? ? "Yes" : "No").to_s %></td>
   <% end %>
-  <td class="text-center"><%= "#{raw_time.stopped_here? ? "Yes" : "No"}" %></td>
+  <td class="text-center"><%= (raw_time.stopped_here? ? "Yes" : "No").to_s %></td>
   <td><%= raw_time.source_text %></td>
   <td><%= raw_time.creator_full_name %></td>
   <td><%= raw_time.created_at ? l(raw_time.created_at.in_time_zone(home_time_zone), format: :short_day_and_time) : "--" %></td>

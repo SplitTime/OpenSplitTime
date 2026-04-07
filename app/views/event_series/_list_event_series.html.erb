@@ -1,7 +1,7 @@
 <%# locals: (presenter:, event_series:) -%>
 
 <% if event_series.present? || current_user&.authorized_to_edit?(presenter.organization) %>
-  <hr/>
+  <hr>
 
   <div class="row">
     <div class="col">
@@ -19,7 +19,7 @@
   <% if event_series.present? %>
     <%= render "event_series/event_series_list", presenter: presenter, event_series: event_series %>
   <% else %>
-    <br/>
+    <br>
     <h4>No event series are associated with this organization.</h4>
   <% end %>
 <% end %>

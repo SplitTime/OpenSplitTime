@@ -6,11 +6,8 @@
                 method: :post,
                 data: {
                   turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: "Syncing"),
-                  turbo_confirm: "This will add all accepted entrants from connected sources and will permanently" +
-                    " delete all withdrawn entrants and others who are not found in connected sources." +
-                    " This action cannot be undone. Proceed?"
-                }) { "Sync" }
-  %>
+                  turbo_confirm: "This will add all accepted entrants from connected sources and will permanently delete all withdrawn entrants and others who are not found in connected sources. This action cannot be undone. Proceed?"
+                }) { "Sync" } %>
 <% else %>
   <%= button_tag "Nothing to sync", class: "btn btn-outline-success", disabled: true %>
 <% end %>

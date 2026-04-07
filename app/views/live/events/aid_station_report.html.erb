@@ -16,7 +16,7 @@
           </ul>
         </div>
         <div class="ost-subtitle">
-          <h6>As of: <strong><%= "#{day_time_current_military_full(@presenter.home_time_zone)}" %></strong></h6>
+          <h6>As of: <strong><%= day_time_current_military_full(@presenter.home_time_zone).to_s %></strong></h6>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
           <th class="text-end"><%= pdu("singular").titleize %></th>
           <th class="text-center">Recorded
             <% if @aid_stations_display.multiple_sub_splits? %>
-              <br/>In / Out
+              <br>In / Out
             <% end %></th>
           <th class="text-center">In Aid</th>
           <th class="text-center">Missed</th>

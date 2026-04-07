@@ -28,7 +28,7 @@
     <div id="organizations">
       <%= render partial: "organization", collection: @presenter.records_from_context, as: :record %>
     </div>
-    <hr/>
+    <hr>
 
     <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
   </div>

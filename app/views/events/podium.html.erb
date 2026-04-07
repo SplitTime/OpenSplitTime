@@ -39,7 +39,7 @@
             <% @presenter.sort_methods.each do |sort_method| %>
               <%= link_to sort_method.to_s.titleize,
                           request.params.merge(sort: sort_method),
-                          class: "btn #{ @presenter.sort_method == sort_method ? 'btn-primary' : 'btn-outline-secondary' }" %>
+                          class: "btn #{@presenter.sort_method == sort_method ? 'btn-primary' : 'btn-outline-secondary'}" %>
             <% end %>
           <% end %>
         </div>

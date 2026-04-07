@@ -22,7 +22,7 @@
   <% if @presenter.lottery_draws.any? %>
     <% @presenter.ordered_divisions.each do |division| %>
       <div class="card">
-        <h4 class="card-header fw-bold bg-primary text-white"><%= "#{division.name}" %></h4>
+        <h4 class="card-header fw-bold bg-primary text-white"><%= division.name.to_s %></h4>
         <div class="card-body">
           <h5>Accepted</h5>
           <%= render partial: "manage_entrants_table", locals: { entrants: division.accepted_entrants.includes(:service_detail) } %>
@@ -38,7 +38,7 @@
           <% end %>
         </div>
       </div>
-      <br/>
+      <br>
     <% end %>
   <% else %>
     <p><strong>No results are available yet</strong></p>

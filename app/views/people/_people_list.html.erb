@@ -3,12 +3,12 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <th><%= link_to_reversing_sort_heading('Name', 'last_name,first_name', params[:sort]) %></th>
-    <th><%= link_to_reversing_sort_heading('Bio', 'gender,current_age_from_efforts', params[:sort]) %></th>
-    <th><%= link_to_reversing_sort_heading('From', 'state_code', params[:sort]) %></th>
+    <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", params[:sort]) %></th>
+    <th><%= link_to_reversing_sort_heading("Bio", "gender,current_age_from_efforts", params[:sort]) %></th>
+    <th><%= link_to_reversing_sort_heading("From", "state_code", params[:sort]) %></th>
     <th>Efforts</th>
     <% if current_user&.admin? %>
-        <th><%= link_to_reversing_sort_heading('Concealed?', 'concealed', params[:sort]) %></th>
+        <th><%= link_to_reversing_sort_heading("Concealed?", "concealed", params[:sort]) %></th>
     <% end %>
   </tr>
   </thead>

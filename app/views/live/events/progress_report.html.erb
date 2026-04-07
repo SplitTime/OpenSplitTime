@@ -9,26 +9,26 @@
         <div class="ost-title">
           <h1><strong><%= "#{@progress_display.event_name}: Progress Report" %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item active">Progress Report</li>
           </ul>
         </div>
         <div class="ost-subtitle">
-          <h6>As of: <strong><%= "#{day_time_current_military_full(@progress_display.home_time_zone)}" %></strong></h6>
+          <h6>As of: <strong><%= day_time_current_military_full(@progress_display.home_time_zone).to_s %></strong></h6>
         </div>
       </div>
     </div>
     <!-- Navigation -->
-    <%= render 'events/view_buttons', view_object: @presenter %>
+    <%= render "events/view_buttons", view_object: @presenter %>
   </div>
 </header>
 
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
-      <%= render 'event_groups/event_widget', events: @progress_display.ordered_events_within_group, current_event: @progress_display.event %>
+      <%= render "event_groups/event_widget", events: @progress_display.ordered_events_within_group, current_event: @progress_display.event %>
     </div>
   </div>
 </aside>
@@ -36,12 +36,12 @@
 <article class="ost-article container">
   <div class="row">
     <div class="col">
-      <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br/>
-      <%= "Finished: #{@progress_display.efforts_finished_count}" %><br/>
+      <h4><%= "Of #{pluralize(@progress_display.efforts_started_count, 'effort')} started" %></h4><br>
+      <%= "Finished: #{@progress_display.efforts_finished_count}" %><br>
       <% unless @progress_display.laps_unlimited? %>
-        <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br/>
+        <%= "Dropped: #{@progress_display.efforts_dropped_count}" %><br>
       <% end %>
-      <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br/>
+      <%= "In progress: #{@progress_display.efforts_in_progress_count}" %><br>
     </div>
   </div>
   <hr>
@@ -50,7 +50,7 @@
     <div class="col-6">
       <% if @progress_display.efforts_in_progress_count > 0 %>
         <h4><%= "Of the #{@progress_display.efforts_in_progress_count} efforts in progress, #{@progress_display.efforts_past_due_count} are overdue by more than #{@progress_display.past_due_threshold} minutes" %></h4>
-        <br/>
+        <br>
         <table class="table table-striped">
           <thead>
           <tr>

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="ost-heading row">
       <div class="ost-title col">
-        <h1><strong><%= t('.change_your_password') %></strong></h1>
+        <h1><strong><%= t(".change_your_password") %></strong></h1>
       </div>
     </div>
   </div>
@@ -11,28 +11,28 @@
 <article class="ost-article container">
   <div class="row justify-content-center">
     <div class="col col-login">
-      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put}) do |f| %>
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
         <%= f.hidden_field :reset_password_token %>
 
         <div class="form-floating mb-3">
-          <%= f.password_field :password, autofocus: true, class: 'form-control' %>
-          <%= f.label :password, t('.new_password') %>
+          <%= f.password_field :password, autofocus: true, class: "form-control" %>
+          <%= f.label :password, t(".new_password") %>
 
-          <small class="form-text text-muted"><%= t('devise.shared.minimum_password_length') %></small>
+          <small class="form-text text-muted"><%= t("devise.shared.minimum_password_length") %></small>
         </div>
 
         <div class="form-floating mb-3">
-          <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control' %>
-          <%= f.label :password_confirmation, t('.confirm_new_password') %>
+          <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+          <%= f.label :password_confirmation, t(".confirm_new_password") %>
         </div>
 
         <div class="mb-3">
-          <%= f.submit t('.change_my_password'), class: 'btn btn-primary' %>
+          <%= f.submit t(".change_my_password"), class: "btn btn-primary" %>
         </div>
       <% end %>
 
-      <%= render 'devise/shared/links' %>
+      <%= render "devise/shared/links" %>
     </div>
   </div>
 </article>

@@ -51,7 +51,7 @@
   <table class="table table-sm">
     <tbody>
     <tr>
-      <td><%= (2 ** (presenter.calculation.application_count + presenter.calculation.weighted_finish_count + 1)).round(2) %></td>
+      <td><%= (2**(presenter.calculation.application_count + presenter.calculation.weighted_finish_count + 1)).round(2) %></td>
       <td>2 ^ Finishes and applications component</td>
     </tr>
     <tr>

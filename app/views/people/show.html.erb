@@ -19,7 +19,7 @@
           <% if @presenter.claimed? %>
             <h6>
               <% if @presenter.claimant == current_user %>
-                <strong>Hey, this is me!</strong><br/>
+                <strong>Hey, this is me!</strong><br>
               <% else %>
                 <% if current_user&.admin? %>
                   <%= "Identified as user #{@presenter.claimant.full_name}" %>
@@ -56,8 +56,7 @@
                           method: :patch,
                           data: {
                             turbo_confirm: t(".confirm_person_claimed", user_email: current_user.email, person_full_name: @presenter.full_name),
-                          }
-            %>
+                          } %>
           <% end %>
           <% if current_user.present? && (current_user.admin? || current_user.avatar == @presenter.person) %>
             <%= person_actions_dropdown_menu(@presenter) %>

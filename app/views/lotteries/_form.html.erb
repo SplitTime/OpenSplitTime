@@ -1,4 +1,4 @@
-<%= render 'shared/errors', obj: @lottery %>
+<%= render "shared/errors", obj: @lottery %>
 
 <div class="row">
   <div class="col-md-12">
@@ -44,12 +44,12 @@
 
       <div class="mb-3">
         <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit(@lottery.new_record? ? "Create Lottery" : "Update Lottery", class: 'btn btn-primary btn-large') %>
+          <%= f.submit(@lottery.new_record? ? "Create Lottery" : "Update Lottery", class: "btn btn-primary btn-large") %>
         </div>
       </div>
 
       <div class="col">
-        <span class="brackets"><%= link_to 'Cancel', @lottery.new_record? ? organization_lotteries_path(@lottery.organization) : setup_organization_lottery_path(@lottery.organization, @lottery) %></span>
+        <span class="brackets"><%= link_to "Cancel", @lottery.new_record? ? organization_lotteries_path(@lottery.organization) : setup_organization_lottery_path(@lottery.organization, @lottery) %></span>
       </div>
     <% end %>
   </div>

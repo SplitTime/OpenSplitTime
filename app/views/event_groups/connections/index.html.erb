@@ -11,13 +11,13 @@
   <div class="row flex-nowrap">
     <div class="col">
       <%= render partial: "shared/callout_with_link", locals: {
-        main_text: t(".callout.main_text"),
-        detail_paragraphs: [t(".callout.detail_paragraph_1"), t(".callout.detail_paragraph_2")],
-        callout_color: "success",
-        icon_color: "success",
-        icon_name: "info-circle",
-        link: connection_services_dropdown_menu(presenter),
-      } %>
+            main_text: t(".callout.main_text"),
+            detail_paragraphs: [t(".callout.detail_paragraph_1"), t(".callout.detail_paragraph_2")],
+            callout_color: "success",
+            icon_color: "success",
+            icon_name: "info-circle",
+            link: connection_services_dropdown_menu(presenter),
+          } %>
 
       <% if presenter.existing_connection_services.any? %>
         <hr class="mt-5">

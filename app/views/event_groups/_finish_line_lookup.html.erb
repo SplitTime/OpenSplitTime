@@ -6,6 +6,7 @@
                        params.dig(:effort, :bib_number),
                        placeholder: "Bib #",
                        autofocus: true,
+                       autocomplete: "off",
                        class: "form-control search-box input-xl" %>
     <%= button_tag(type: :submit, id: "search-submit", class: "btn btn-primary input-group-text") do %>
       <i class="fas fa-search"></i>

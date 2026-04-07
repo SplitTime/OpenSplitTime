@@ -1,7 +1,7 @@
 <% unless Rails.env.test? %>
-<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places" +
-                             "&callback=Function.prototype" +
-                             "&key=#{::OstConfig.google_maps_api_key}" %>
+<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places" \
+                           "&callback=Function.prototype" \
+                           "&key=#{::OstConfig.google_maps_api_key}" %>
 <% else %>
   <!-- Test env: provide a minimal stub so any code that references google.maps.places won't crash -->
   <script>

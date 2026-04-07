@@ -51,7 +51,7 @@
             <%= carmen_country_select :effort, :country_code %>
           </div>
           <div class="col-md-3 mb-3">
-            <%= f.label :state_code, "State", class: "mb-1" %><br/>
+            <%= f.label :state_code, "State", class: "mb-1" %><br>
             <%= render partial: "carmen/subregion_select",
                        locals: { model: :effort, parent_region: f.object.country_code } %>
           </div>
@@ -121,7 +121,7 @@
           </div>
         </div>
 
-        <br/>
+        <br>
         <div class="row mb-3">
           <div class="col">
             <%= f.submit(effort.new_record? ? "Create Entrant" : "Update Entrant", class: "btn btn-primary btn-large") %>

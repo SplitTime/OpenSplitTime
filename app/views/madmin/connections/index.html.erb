@@ -4,7 +4,7 @@
   <div class="actions">
     <form class="search">
       <%= hidden_field_tag :page, params[:page], value: 1 %>
-      <%= search_field_tag :q, params[:q], placeholder: "Search" %>
+      <%= search_field_tag :q, params[:q], placeholder: "Search", autocomplete: "off" %>
     </form>
 
     <%= link_to clear_search_params, class: "btn btn-secondary" do %>
@@ -21,11 +21,11 @@
 
 <div class="mb-4">
   <% if resource.scopes.any? %>
-    <%= link_to "All", resource.index_path, class: class_names("p-2 rounded", {"bg-gray-100" =>  params[:scope].blank?}) %>
+    <%= link_to "All", resource.index_path, class: class_names("p-2 rounded", { "bg-gray-100" => params[:scope].blank? }) %>
   <% end %>
 
   <% resource.scopes.each do |scope| %>
-    <%= link_to scope.to_s.humanize, resource.index_path(scope: scope), class: class_names("p-2 rounded", {"bg-gray-100" => params[:scope] == scope.to_s}) %>
+    <%= link_to scope.to_s.humanize, resource.index_path(scope: scope), class: class_names("p-2 rounded", { "bg-gray-100" => params[:scope] == scope.to_s }) %>
   <% end %>
 </div>
 <div class="min-w-full max-w-xl overflow-x-auto pb-4">

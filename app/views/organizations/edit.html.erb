@@ -9,7 +9,7 @@
         <div class="ost-title">
           <h1><strong><%= @organization.name %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
-            <li class="breadcrumb-item"><%= link_to 'Organizations', organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @organization.name, organization_path(@organization) %></li>
             <li class="breadcrumb-item active">Edit</li>
           </ul>
@@ -20,9 +20,9 @@
 </header>
 
 <article class="ost-article container">
-  <%= render 'form' %>
+  <%= render "form" %>
   <hr>
-  <%= link_to_delete_resource('Delete this organization', organization_path(@organization),
+  <%= link_to_delete_resource("Delete this organization", organization_path(@organization),
                               resource: @organization,
                               noteworthy_associations: [:events, :stewards, :courses],
                               class: "btn btn-danger") %>

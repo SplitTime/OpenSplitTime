@@ -94,6 +94,7 @@ group :development, :test do
   gem "bundler-audit"
   gem "rspec"
   gem "rspec-rails", ">= 4.0.2"
+  gem "erb_lint", require: false
   gem "rubocop"
   gem "rubocop-rails"
   gem "rubocop-rspec"

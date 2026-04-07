@@ -10,8 +10,11 @@ nav_order: 2
 
 In RaceResult, open the event you wish to connect to OpenSplitTime.
 
+## 2. Configure timing points
 
-## 2. Connect and map decoders
+In the left panel, go to **Timing** → **Settings** → **Timing Points** and configure the Timing Points so the names match exactly with aid station names in OpenSplitTime.
+
+## 3. Connect and map decoders
 
 Connect your RaceResult decoders to the RaceResult platform and map each decoder to the corresponding **Timing Points**. You can map decoders at **Timing** → **Chip Timing** → **Systems**.
 

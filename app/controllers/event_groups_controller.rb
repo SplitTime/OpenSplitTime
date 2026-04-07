@@ -354,13 +354,12 @@ class EventGroupsController < ApplicationController
   def set_data_status
     authorize @event_group
 
-    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: { split_times: :split }).first
-    response = Interactors::UpdateEffortsStatus.perform!(@event_group.efforts)
-    set_flash_message(response)
+    UpdateEffortsStatusJob.perform_later(@event_group, current_user: current_user)
+    flash.now[:success] = "Data status update has started. This may take a minute for large events."
 
     respond_to do |format|
       format.html { redirect_to roster_event_group_path(@event_group) }
-      format.turbo_stream { @presenter = EventGroupRosterPresenter.new(@event_group, view_context) }
+      format.turbo_stream
     end
   end
 

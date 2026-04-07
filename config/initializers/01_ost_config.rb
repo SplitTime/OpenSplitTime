@@ -78,10 +78,13 @@ module OstConfig
   end
 
   def self.app_name
-    if credentials_env == "production"
+    case credentials_env
+    when "production"
       "OpenSplitTime"
-    elsif credentials_env == "staging"
+    when "staging"
       "OST Staging"
+    else
+      "OST"
     end
   end
 

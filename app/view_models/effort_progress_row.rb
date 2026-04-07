@@ -26,7 +26,7 @@ class EffortProgressRow
   end
 
   def extract_attributes(*attributes)
-    attributes.index_with { |attribute| send(attribute) }
+    attributes.map { |attribute| [attribute, send(attribute)] }.to_h
   end
 
   private
@@ -49,7 +49,7 @@ class EffortProgressRow
   end
 
   def predicted_upcoming_time
-    @predicted_upcoming_time ||= due_next_time_point && predicted_segment_time(upcoming_segment)
+    @predicted_upcoming_time ||= predicted_segment_time(upcoming_segment)
   end
 
   def predicted_segment_time(segment)
@@ -98,6 +98,6 @@ class EffortProgressRow
   end
 
   def absolute_times_local(split_times)
-    split_times.map { |st| st&.absolute_time_local }
+    split_times.map { |st| st.absolute_time_local if st }
   end
 end

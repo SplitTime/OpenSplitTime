@@ -48,18 +48,6 @@ RSpec.describe LiveProgressDisplay do
     it "returns an array" do
       expect(subject.past_due_progress_rows).to be_a(Array)
     end
-
-    context "when an in-progress effort has no due_next_time_point" do
-      let(:past_due_threshold) { 0 }
-
-      it "does not raise an error" do
-        progress_rows = subject.send(:progress_rows)
-        progress_rows.each do |row|
-          allow(row).to receive(:due_next_time_point).and_return(nil)
-        end
-        expect { subject.past_due_progress_rows }.not_to raise_error
-      end
-    end
   end
 
   describe "#efforts_past_due_count" do

@@ -5,6 +5,13 @@ class UpdateEffortsStatusJob < ApplicationJob
     set_current_user(current_user: current_user)
 
     event_group = EventGroup.where(id: event_group.id).includes(efforts: { split_times: :split }).first
-    Interactors::UpdateEffortsStatus.perform!(event_group.efforts)
+    response = Interactors::UpdateEffortsStatus.perform!(event_group.efforts)
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      event_group,
+      target: "flash",
+      partial: "layouts/flash",
+      locals: { flash: { success: response.message } }
+    )
   end
 end

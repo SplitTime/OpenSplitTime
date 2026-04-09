@@ -7,8 +7,8 @@ module FlashBroadcastable
     Turbo::StreamsChannel.broadcast_replace_to(
       streamable,
       target: "flash",
-      partial: "layouts/flash",
-      locals: { flash: { level => message } }
+      partial: "layouts/broadcast_flash",
+      locals: { level: level, message: message }
     )
   end
 end

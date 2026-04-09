@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_131941) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_09_152853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -192,6 +192,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_131941) do
     t.index ["person_id"], name: "index_efforts_on_person_id"
     t.index ["slug"], name: "index_efforts_on_slug", unique: true
     t.index ["topic_resource_key"], name: "index_efforts_on_topic_resource_key"
+  end
+
+  create_table "email_events", force: :cascade do |t|
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "event"
+    t.string "event_type"
+    t.string "ip"
+    t.string "provider_event_id"
+    t.string "provider_message_id"
+    t.string "reason"
+    t.string "response"
+    t.string "smtp_id"
+    t.string "status"
+    t.datetime "timestamp"
+    t.string "type", default: "Analytics::SendgridEvent", null: false
+    t.datetime "updated_at", null: false
+    t.string "useragent"
   end
 
   create_table "event_groups", id: :serial, force: :cascade do |t|
@@ -620,25 +639,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_131941) do
     t.string "slug", null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_results_templates_on_organization_id"
-  end
-
-  create_table "sendgrid_events", force: :cascade do |t|
-    t.string "category"
-    t.datetime "created_at", null: false
-    t.string "email"
-    t.string "event"
-    t.string "event_type"
-    t.string "ip"
-    t.string "provider_event_id"
-    t.string "provider_message_id"
-    t.string "reason"
-    t.string "response"
-    t.string "smtp_id"
-    t.string "status"
-    t.datetime "timestamp"
-    t.string "type", default: "Analytics::SendgridEvent", null: false
-    t.datetime "updated_at", null: false
-    t.string "useragent"
   end
 
   create_table "shortened_urls", id: :serial, force: :cascade do |t|

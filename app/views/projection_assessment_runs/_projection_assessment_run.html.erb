@@ -1,6 +1,6 @@
 <%# locals: (organization:, event:, projection_assessment_run:) %>
 
-<tr id=<%= dom_id projection_assessment_run %>>
+<tr id="<%= dom_id projection_assessment_run %>">
   <td><%= projection_assessment_run.id %></td>
   <td><%= "#{time_ago_in_words(projection_assessment_run.created_at)} ago" %></td>
   <td class="text-center"><%= event.efforts_count %></td>

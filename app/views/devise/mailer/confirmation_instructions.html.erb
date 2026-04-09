@@ -1,10 +1,11 @@
-<p><%= t('.greeting', :recipient => @resource.email, :default => "Welcome to OpenSplitTime!") %></p>
+<p><%= t(".greeting", :recipient => @resource.email, :default => "Welcome to OpenSplitTime!") %></p>
 
-<p><%= t('.instruction', :default => "Please confirm your email by clicking the link below:") %></p>
+<p><%= t(".instruction", :default => "Please confirm your email by clicking the link below:") %></p>
 
-<p><%= link_to t('.action', :default => "Confirm my account"),
+<p><%= link_to t(".action", :default => "Confirm my account"),
                Rails.application.routes.url_helpers.user_confirmation_url(
                  host: OstConfig.full_uri,
                  :confirmation_token => @token,
-                 locale: I18n.locale) %>
+                 locale: I18n.locale
+               ) %>
 </p>

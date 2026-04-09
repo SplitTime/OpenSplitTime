@@ -92,6 +92,7 @@ end
 group :development, :test do
   gem "brakeman"
   gem "bundler-audit"
+  gem "erb_lint", require: false
   gem "rspec"
   gem "rspec-rails", ">= 4.0.2"
   gem "rubocop"

@@ -8,7 +8,6 @@
       <%= form_with model: service_detail,
                     url: organization_lottery_entrant_service_detail_path(service_detail.organization, service_detail.lottery, service_detail) do |f| %>
 
-
         <%= f.hidden_field :form_accepted_at, value: nil %>
         <%= f.hidden_field :form_accepted_comments, value: nil %>
         <%= f.hidden_field :form_rejected_at, value: nil %>

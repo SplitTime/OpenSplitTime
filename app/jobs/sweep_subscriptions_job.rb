@@ -4,7 +4,7 @@ class SweepSubscriptionsJob < ApplicationJob
   def perform
     start_time = Time.current
     report = ""
-    report += "Started job for #{OstConfig.heroku_app_name} at #{start_time}\n"
+    report += "Started job for #{OstConfig.app_name} at #{start_time}\n"
 
     problem_subs = []
     obsolete_effort_ids = Effort.joins(:event).where(events: { scheduled_start_time: ...1.year.ago }).select(:id)

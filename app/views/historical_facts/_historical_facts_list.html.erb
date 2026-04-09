@@ -9,7 +9,7 @@
                main_text: "No historical facts exist for this organization",
                detail_paragraphs: ["Imported historical facts will appear here."],
              } %>
-  <br/>
+  <br>
 <% else %>
   <div class="row">
     <div class="col-xs-8">
@@ -40,7 +40,7 @@
   </tr>
   </thead>
   <tbody id="historical_facts">
-  <%= render partial: "historical_fact", collection: presenter.filtered_historical_facts, as: :fact, locals: { presenter: presenter} %>
+  <%= render partial: "historical_fact", collection: presenter.filtered_historical_facts, as: :fact, locals: { presenter: presenter } %>
   </tbody>
 </table>
 

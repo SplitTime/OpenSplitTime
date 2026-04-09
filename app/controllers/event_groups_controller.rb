@@ -218,8 +218,16 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     EffortsAutoReconcileJob.perform_later(@event_group, current_user: current_user)
-    flash[:success] = "Automatic reconcile has started. Please return to reconcile after a minute or so."
-    redirect_to reconcile_event_group_path(@event_group)
+
+    respond_to do |format|
+      format.html do
+        flash[:success] = "Automatic reconcile has started."
+        redirect_to reconcile_event_group_path(@event_group)
+      end
+      format.turbo_stream do
+        flash.now[:success] = "Automatic reconcile has started."
+      end
+    end
   end
 
   # PATCH /event_groups/1/associate_people
@@ -350,13 +358,12 @@ class EventGroupsController < ApplicationController
   def set_data_status
     authorize @event_group
 
-    @event_group = EventGroup.where(id: @event_group.id).includes(efforts: { split_times: :split }).first
-    response = Interactors::UpdateEffortsStatus.perform!(@event_group.efforts)
-    set_flash_message(response)
+    UpdateEffortsStatusJob.perform_later(@event_group, current_user: current_user)
+    flash.now[:success] = "Data status update has started. This may take a minute for large events."
 
     respond_to do |format|
       format.html { redirect_to roster_event_group_path(@event_group) }
-      format.turbo_stream { @presenter = EventGroupRosterPresenter.new(@event_group, view_context) }
+      format.turbo_stream
     end
   end
 

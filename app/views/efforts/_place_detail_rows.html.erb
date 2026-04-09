@@ -4,25 +4,25 @@
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-end"><%= pdu('singular').titleize %></th>
+    <th class="text-end"><%= pdu("singular").titleize %></th>
     <th class="text-center">Time of Day
-      <% if view_object.multiple_sub_splits? %><br/>In / Out
+      <% if view_object.multiple_sub_splits? %><br>In / Out
       <% end %>
     </th>
     <th class="text-center">Split Place
-      <% if view_object.multiple_sub_splits? %><br/>In / Out
+      <% if view_object.multiple_sub_splits? %><br>In / Out
       <% end %>
     </th>
     <th class="text-center">Passed
-      <% if view_object.multiple_sub_splits? %><br/>Segment / Aid
+      <% if view_object.multiple_sub_splits? %><br>Segment / Aid
       <% end %>
     </th>
     <th class="text-center">Passed by
-      <% if view_object.multiple_sub_splits? %><br/>Segment / Aid
+      <% if view_object.multiple_sub_splits? %><br>Segment / Aid
       <% end %>
     </th>
     <% if view_object.multiple_sub_splits? %>
-      <th class="text-center">Together<br/>In Aid With</th>
+      <th class="text-center">Together<br>In Aid With</th>
     <% end %>
   </tr>
   </thead>
@@ -32,8 +32,8 @@
     <tr id='<%= "lap_#{place_detail_row.lap}_split_#{place_detail_row.split.id}" %>' class="align-middle">
       <td><%= place_detail_row.name %></td>
       <td class="text-end"><%= d(place_detail_row.distance_from_start) %></td>
-      <td class="text-center"><%= place_detail_row.absolute_times_local.map(&method(:day_time_format)).join(' / ') %></td>
-      <td class="text-center"><%= place_detail_row.split_times.map { |st| st.try(:time_point_rank) || '--' }.compact.join(' / ') %></td>
+      <td class="text-center"><%= place_detail_row.absolute_times_local.map(&method(:day_time_format)).join(" / ") %></td>
+      <td class="text-center"><%= place_detail_row.split_times.map { |st| st.try(:time_point_rank) || "--" }.compact.join(" / ") %></td>
 
       <td class="text-center">
         <%= link_to_effort_ids_popover(place_detail_row.passed_segment_ids, place_detail_row.passed_segment_table_title) %>

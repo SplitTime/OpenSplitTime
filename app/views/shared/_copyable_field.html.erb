@@ -4,6 +4,7 @@
 <div class="input-group mb-3" data-controller="clipboard">
   <input type="text" id="<%= field_id %>" class="form-control" readonly
          value="<%= value %>"
+         autocomplete="off"
          data-clipboard-target="source">
   <button class="btn btn-outline-secondary" type="button" style="min-width: 5.5em" data-action="clipboard#copy" data-clipboard-target="button">Copy</button>
 </div>

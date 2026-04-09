@@ -11,8 +11,7 @@
          data-controller="course-setup--main"
          data-action="course-setup--aid-station-checkbox:changed->course-setup--main#aidStationChanged
                       course-setup--splits-table:set-marker-highlight->course-setup--main#highlightMapMarker
-                      split-table-modified@window->course-setup--main#refreshMapMarkers"
->
+                      split-table-modified@window->course-setup--main#refreshMapMarkers">
   <h3><strong>Provide Your Course Details for <%= @presenter.course_name %></strong></h3>
   <%= render "course_setup_gpx", event: @presenter.event %>
 
@@ -25,7 +24,7 @@
   </div>
 
   <%= render "course_setup_map", course_id: @presenter.course_id, event_id: @presenter.event_id %>
-  <br/>
+  <br>
 
   <% if @presenter.ordered_splits.count == 2 %>
     <aside class="col-12">
@@ -42,8 +41,7 @@
   <%= render "events/course_setup_splits",
              event: @presenter.event,
              splits: @presenter.ordered_splits,
-             aid_stations_by_split_id: @presenter.aid_stations_by_split_id
-  %>
+             aid_stations_by_split_id: @presenter.aid_stations_by_split_id %>
 
   <div class="col-12">
     <div>
@@ -51,8 +49,7 @@
                   new_event_group_event_split_path(@presenter.event_group, @presenter.event),
                   id: "add-split",
                   class: "btn btn-success",
-                  data: { turbo_frame: "form_modal" }
-      %>
+                  data: { turbo_frame: "form_modal" } %>
       <%= link_to "Import",
                   new_import_job_path(import_job: { parent_type: "Event", parent_id: @presenter.event.id, format: :event_course_splits }),
                   class: "btn btn-outline-secondary" %>

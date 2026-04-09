@@ -2,32 +2,32 @@
   <thead>
   <tr>
     <th>Split</th>
-    <th class="text-end"><%= pdu('singular').titleize %></th>
-    <th class="text-center">Segment<br/>
+    <th class="text-end"><%= pdu("singular").titleize %></th>
+    <th class="text-center">Segment<br>
       <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "#{view_object.full_name}'s actual segment times" %>">Time</a>
       /
       <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Statistical average segment times for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
     </th>
-    <th class="text-center">Segment<br/>
+    <th class="text-center">Segment<br>
       <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Amount that #{view_object.full_name}'s segments were over or (under) typical times" %>">Over
         (Under)</a>
     </th>
     <% if view_object.multiple_sub_splits? %>
-      <th class="text-center">In Aid<br/>
+      <th class="text-center">In Aid<br>
         <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "#{view_object.full_name}'s actual times in aid" %>">Time</a>
         /
         <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Statistical average times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
       </th>
-      <th class="text-center">In Aid<br/>
+      <th class="text-center">In Aid<br>
         <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Amount that #{view_object.full_name}'s times in aid were over or (under) typical times" %>">Over
           (Under)</a>
       </th>
-      <th class="text-center">Combined<br/>
+      <th class="text-center">Combined<br>
         <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "#{view_object.full_name}'s actual segment times + times in aid" %>">Time</a>
         /
         <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Statistical average segment times + times in aid for a typical #{time_format_xxhyym(view_object.farthest_recorded_time)} time to #{view_object.farthest_recorded_split_name}" %>">Expected</a>
       </th>
-      <th class="text-center">Combined<br/>
+      <th class="text-center">Combined<br>
         <a data-controller="popover" data-bs-placement="bottom" data-bs-content="<%= "Amount that #{view_object.full_name}'s segment times + times in aid were over or (under) typical times" %>">Over
           (Under)</a>
       </th>
@@ -39,12 +39,12 @@
     <tr>
       <td><%= analysis_row.name %></td>
       <td class="text-end"><%= d(analysis_row.distance_from_start) %></td>
-      <td class="text-center"><%= [time_format_xxhyym(analysis_row.segment_time), time_format_xxhyym(analysis_row.segment_time_typical)].join(' / ') %></td>
+      <td class="text-center"><%= [time_format_xxhyym(analysis_row.segment_time), time_format_xxhyym(analysis_row.segment_time_typical)].join(" / ") %></td>
       <td class="text-center"><%= time_format_minutes(analysis_row.segment_time_over_under(round_to: 1.minute)) %></td>
       <% if view_object.multiple_sub_splits? %>
-        <td class="text-center"><%= [time_format_minutes(analysis_row.time_in_aid), time_format_minutes(analysis_row.time_in_aid_typical)].join(' / ') %></td>
+        <td class="text-center"><%= [time_format_minutes(analysis_row.time_in_aid), time_format_minutes(analysis_row.time_in_aid_typical)].join(" / ") %></td>
         <td class="text-center"><%= time_format_minutes(analysis_row.time_in_aid_over_under(round_to: 1.minute)) %></td>
-        <td class="text-center"><%= [time_format_xxhyym(analysis_row.combined_time), time_format_xxhyym(analysis_row.combined_time_typical)].join(' / ') %></td>
+        <td class="text-center"><%= [time_format_xxhyym(analysis_row.combined_time), time_format_xxhyym(analysis_row.combined_time_typical)].join(" / ") %></td>
         <td class="text-center"><%= time_format_minutes(analysis_row.combined_time_over_under(round_to: 1.minute)) %></td>
       <% end %>
     </tr>
@@ -53,20 +53,20 @@
     <td><strong>Totals</strong></td>
     <td></td>
     <td class="text-center">
-      <strong><%= [time_format_xxhyym(view_object.total_segment_time), time_format_xxhyym(view_object.total_segment_time_typical)].join(' / ') %></strong>
+      <strong><%= [time_format_xxhyym(view_object.total_segment_time), time_format_xxhyym(view_object.total_segment_time_typical)].join(" / ") %></strong>
     </td>
     <td class="text-center">
       <strong><%= time_format_minutes(view_object.total_segment_time_over_under(round_to: 1.minute)) %></strong>
     </td>
     <% if view_object.multiple_sub_splits? %>
       <td class="text-center">
-        <strong><%= [time_format_xxhyym(view_object.total_time_in_aid), time_format_xxhyym(view_object.total_time_in_aid_typical)].join(' / ') %></strong>
+        <strong><%= [time_format_xxhyym(view_object.total_time_in_aid), time_format_xxhyym(view_object.total_time_in_aid_typical)].join(" / ") %></strong>
       </td>
       <td class="text-center">
         <strong><%= time_format_minutes(view_object.total_time_in_aid_over_under(round_to: 1.minute)) %></strong>
       </td>
       <td class="text-center">
-        <strong><%= [time_format_xxhyym(view_object.total_time_combined), time_format_xxhyym(view_object.total_time_combined_typical)].join(' / ') %></strong>
+        <strong><%= [time_format_xxhyym(view_object.total_time_combined), time_format_xxhyym(view_object.total_time_combined_typical)].join(" / ") %></strong>
       </td>
       <td class="text-center">
         <strong><%= time_format_minutes(view_object.total_combined_time_over_under(round_to: 1.minute)) %></strong>

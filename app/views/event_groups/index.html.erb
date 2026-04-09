@@ -36,7 +36,7 @@
     <%= render "list_event_groups", presenter: @presenter, event_groups: @presenter.event_groups %>
     <%= render "shared/pager", next_page_url: @presenter.next_page_url %>
   <% else %>
-    <br/>
+    <br>
     <% if params[:search].blank? %>
       <p><strong>Enter an event name to search</strong></p>
     <% else %>

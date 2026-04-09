@@ -3,8 +3,7 @@
 <div id="<%= dom_id lottery_draw %>"
      class="card mt-3"
      data-controller="highlight"
-     data-highlight-timestamp-value="<%= lottery_draw.updated_at.to_i %>"
->
+     data-highlight-timestamp-value="<%= lottery_draw.updated_at.to_i %>">
   <div class="card-header fw-bold bg-primary text-white">
     <div class="row">
       <div class="col col-8">
@@ -23,7 +22,7 @@
       </div>
       <div class="col text-end">
         <h4><span class="badge bg-secondary"><%= lottery_draw.entrant_division_name %></span></h4>
-        <h6 class="text-end fw-bold"><%= "#{pluralize(lottery_draw.number_of_tickets, 'ticket')}" %></h6>
+        <h6 class="text-end fw-bold"><%= pluralize(lottery_draw.number_of_tickets, "ticket") %></h6>
       </div>
     </div>
   </div>

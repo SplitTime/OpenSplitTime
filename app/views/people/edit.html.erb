@@ -9,7 +9,7 @@
         <div class="ost-title">
             <h1><strong>Edit Person - <%= @person.full_name %></strong></h1>
             <ul class="breadcrumb breadcrumb-ost">
-                <li class="breadcrumb-item"><%= link_to 'People', people_path %></li>
+                <li class="breadcrumb-item"><%= link_to "People", people_path %></li>
                 <li class="breadcrumb-item"><%= link_to @person.full_name, person_path(@person) %></li>
                 <li class="breadcrumb-item active">Edit</li>
             </ul>
@@ -20,5 +20,5 @@
 </header>
 
 <article class="ost-article container">
-    <%= render 'form' %>
+    <%= render "form" %>
 </article>

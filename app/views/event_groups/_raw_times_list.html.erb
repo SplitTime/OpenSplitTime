@@ -40,7 +40,7 @@
                  detail_paragraphs: [t("raw_times.index.no_raw_times_detail_1"), t("raw_times.index.no_raw_times_detail_2")],
                  link: link_to("Enable or Disable Live", setup_summary_event_group_path(view_object.event_group), class: "btn btn-outline-info"),
                } %>
-    <br/>
+    <br>
   <% else %>
     <%= render partial: "event_groups/raw_times_count",
                locals: {
@@ -89,8 +89,7 @@
                    multiple_laps: view_object.multiple_laps?,
                    monitor_pacers: view_object.monitor_pacers?,
                    home_time_zone: view_object.home_time_zone,
-                 }
-      %>
+                 } %>
       </tbody>
     <% elsif view_object.raw_times.exists? %>
       <tr class="fw-bold">

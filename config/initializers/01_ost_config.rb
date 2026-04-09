@@ -77,8 +77,15 @@ module OstConfig
     ENV.fetch("FULL_URI", "http://localhost:3000")
   end
 
-  def self.heroku_app_name
-    ENV.fetch("HEROKU_APP_NAME", nil)
+  def self.app_name
+    case credentials_env
+    when "production"
+      "OpenSplitTime"
+    when "staging"
+      "OST Staging"
+    else
+      "OST"
+    end
   end
 
   def self.google_maps_api_key

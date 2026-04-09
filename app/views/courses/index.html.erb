@@ -21,7 +21,7 @@
   <% end %>
 
   <% if @presenter.course_groups.present? || current_user&.authorized_to_edit?(@presenter.organization) %>
-    <hr/>
+    <hr>
 
     <div class="row">
       <div class="col">
@@ -39,7 +39,7 @@
     <% if @presenter.course_groups.present? %>
       <%= render "organizations/course_groups_list", course_groups: @presenter.course_groups %>
     <% else %>
-      <br/>
+      <br>
       <h4>No course groups are associated with this organization.</h4>
     <% end %>
   <% end %>

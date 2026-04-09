@@ -11,7 +11,7 @@ RSpec.describe EventGroupsCollectionPresenter do
            url_for: nil)
   end
 
-  let(:request_double) { double("request", params: prepared_params) } # rubocop:disable RSpec/VerifiedDoubles
+  let(:request_double) { double("request", params: params_hash) } # rubocop:disable RSpec/VerifiedDoubles
   let(:prepared_params) { PreparedParams.new(ActionController::Parameters.new(params_hash), permitted, permitted_query) }
   let(:params_hash) { {} }
   let(:permitted) { [:search] }
@@ -77,12 +77,12 @@ RSpec.describe EventGroupsCollectionPresenter do
   end
 
   describe "#show_visibility_columns?" do
+    subject(:result) { described_class.new(view_context).show_visibility_columns? }
+
     context "when the user is an admin" do
       let(:current_user) { users(:admin_user) }
 
-      it "returns true" do
-        expect(subject.show_visibility_columns?).to eq(true)
-      end
+      it { expect(result).to eq(true) }
     end
 
     context "when the user has stewardships" do
@@ -90,25 +90,19 @@ RSpec.describe EventGroupsCollectionPresenter do
 
       before { Stewardship.create!(user: current_user, organization: visible_event_group.organization) }
 
-      it "returns true" do
-        expect(subject.show_visibility_columns?).to eq(true)
-      end
+      it { expect(result).to eq(true) }
     end
 
     context "when the user has no stewardships and is not an admin" do
       let(:current_user) { users(:third_user) }
 
-      it "returns false" do
-        expect(subject.show_visibility_columns?).to eq(false)
-      end
+      it { expect(result).to eq(false) }
     end
 
     context "when the user is nil" do
       let(:current_user) { nil }
 
-      it "returns false" do
-        expect(subject.show_visibility_columns?).to eq(false)
-      end
+      it { expect(result).to eq(false) }
     end
   end
 
@@ -116,6 +110,19 @@ RSpec.describe EventGroupsCollectionPresenter do
     context "when there is no next page" do
       it "returns nil" do
         expect(subject.next_page_url).to be_nil
+      end
+    end
+
+    context "when there is a next page" do
+      let(:params_hash) { { per_page: 2 } }
+      let(:expected_url) { "/expected_url" }
+
+      before do
+        allow(view_context).to receive(:url_for).and_return(expected_url)
+      end
+
+      it "returns a url" do
+        expect(subject.next_page_url).to eq(expected_url)
       end
     end
   end

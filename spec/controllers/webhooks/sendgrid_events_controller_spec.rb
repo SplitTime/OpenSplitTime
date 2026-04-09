@@ -4,7 +4,7 @@ RSpec.describe Webhooks::SendgridEventsController do
   describe "#create" do
     subject(:make_request) { post :create, params: params }
 
-    before { allow_any_instance_of(described_class).to receive(:valid_webhook_token?).and_return(true) }
+    before { allow(controller).to receive(:valid_webhook_token?).and_return(true) }
 
     context "when the request is valid" do
       let(:params) do
@@ -31,13 +31,25 @@ RSpec.describe Webhooks::SendgridEventsController do
       end
 
       it "creates a new event for each row" do
-        expect { make_request }.to change { Analytics::SendgridEvent.count }.by(11)
+        expect { make_request }.to change(Analytics::SendgridEvent, :count).by(11)
       end
 
       it "saves type as the event type" do
         make_request
         sendgrid_event = Analytics::SendgridEvent.find_by(event: "bounce")
         expect(sendgrid_event.event_type).to eq("bounced")
+      end
+
+      it "sets the STI type to Analytics::SendgridEvent" do
+        make_request
+        expect(Analytics::SendgridEvent.distinct.pluck(:type)).to eq(["Analytics::SendgridEvent"])
+      end
+
+      it "maps sg_event_id to provider_event_id" do
+        make_request
+        sendgrid_event = Analytics::SendgridEvent.find_by(event: "processed")
+        expect(sendgrid_event.provider_event_id).to eq("X8wfWWCzIxX8tMWL7sjY5w==")
+        expect(sendgrid_event.sg_event_id).to eq("X8wfWWCzIxX8tMWL7sjY5w==")
       end
     end
 
@@ -56,7 +68,7 @@ RSpec.describe Webhooks::SendgridEventsController do
       end
 
       it "does not create a new record" do
-        expect { make_request }.to_not change { Analytics::SendgridEvent.count }
+        expect { make_request }.not_to(change(Analytics::SendgridEvent, :count))
       end
     end
 

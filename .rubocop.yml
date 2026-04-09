@@ -106,6 +106,10 @@ RSpec/IndexedLet:
 RSpec/NoExpectationExample:
   Enabled: false
 
+Style/NumericLiterals:
+  Exclude:
+    - "spec/**/*"
+
 Style/Documentation:
   Enabled: false
 

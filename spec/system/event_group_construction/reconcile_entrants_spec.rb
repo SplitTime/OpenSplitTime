@@ -14,7 +14,7 @@ RSpec.describe "reconcile entrants from the reconcile view" do
 
     click_button "Auto Reconcile"
     expect(page).to have_current_path(reconcile_event_group_path(event_group))
-    expect(page).to have_content("Automatic reconcile has started")
+    expect(page).to have_content("Automatic reconcile has started.")
   end
 
   scenario "Auto reconcile", :js do
@@ -22,7 +22,7 @@ RSpec.describe "reconcile entrants from the reconcile view" do
     visit_page
 
     click_button "Auto Reconcile"
-    expect(page).to have_content("Automatic reconcile has started")
+    expect(page).to have_content("Automatic reconcile has started.")
   end
 
   scenario "Create a person" do

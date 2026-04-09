@@ -1,11 +1,8 @@
-<%# locals: (level:, message:, action_url: nil, action_text: "Refresh") -%>
+<%# locals: (level:, message:) -%>
 
 <div id="flash" class="flash">
   <div class="alert alert-<%= level %> alert-dismissible text-center fade show mb-0" role="alert">
     <%= message %>
-    <% if action_url.present? %>
-      <a href="<%= action_url %>" class="alert-link ms-2"><%= action_text %></a>
-    <% end %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 </div>

@@ -15,7 +15,7 @@ module Analytics
     attribute :response
     attribute :event_type
     attribute :useragent
-    attribute :provider
+    attribute :type
     attribute :created_at, form: false
     attribute :updated_at, form: false
 

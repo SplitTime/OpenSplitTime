@@ -40,9 +40,9 @@ RSpec.describe Webhooks::SendgridEventsController do
         expect(sendgrid_event.event_type).to eq("bounced")
       end
 
-      it "sets the provider to sendgrid" do
+      it "sets the STI type to Analytics::SendgridEvent" do
         make_request
-        expect(Analytics::SendgridEvent.distinct.pluck(:provider)).to eq(["sendgrid"])
+        expect(Analytics::SendgridEvent.distinct.pluck(:type)).to eq(["Analytics::SendgridEvent"])
       end
 
       it "maps sg_event_id to provider_event_id" do

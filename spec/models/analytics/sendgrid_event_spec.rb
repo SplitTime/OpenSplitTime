@@ -5,8 +5,9 @@ RSpec.describe ::Analytics::SendgridEvent do
     expect(described_class.superclass).to eq(Analytics::EmailEvent)
   end
 
-  it "defaults provider to sendgrid" do
-    expect(described_class.new.provider).to eq("sendgrid")
+  it "sets type automatically via STI" do
+    event = described_class.new
+    expect(event.type).to eq("Analytics::SendgridEvent")
   end
 
   it "aliases sg_event_id to provider_event_id" do

@@ -28,17 +28,4 @@ RSpec.describe ::Analytics::EmailEvent do
       it { expect(email_event.timestamp).to eq("2023-01-01 12:00:00") }
     end
   end
-
-  describe "#provider" do
-    it "defaults to sendgrid" do
-      email_event = described_class.new
-      expect(email_event.provider).to eq("sendgrid")
-    end
-
-    it "validates presence" do
-      email_event = described_class.new(email: "test@example.com", event: "delivered", timestamp: Time.current, provider: nil)
-      expect(email_event).not_to be_valid
-      expect(email_event.errors[:provider]).to be_present
-    end
-  end
 end

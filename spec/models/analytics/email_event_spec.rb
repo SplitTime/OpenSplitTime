@@ -5,7 +5,7 @@ RSpec.describe ::Analytics::EmailEvent do
     let(:email_event) { described_class.new(timestamp: timestamp) }
 
     context "when provided an integer" do
-      let(:timestamp) { 1_683_409_840 }
+      let(:timestamp) { 1683409840 }
 
       it { expect(email_event.timestamp).to eq(Time.zone.at(timestamp)) }
     end

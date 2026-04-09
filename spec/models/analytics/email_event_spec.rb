@@ -1,0 +1,44 @@
+require "rails_helper"
+
+RSpec.describe ::Analytics::EmailEvent do
+  describe "#timestamp=" do
+    let(:email_event) { described_class.new(timestamp: timestamp) }
+
+    context "when provided an integer" do
+      let(:timestamp) { 1_683_409_840 }
+
+      it { expect(email_event.timestamp).to eq(Time.zone.at(timestamp)) }
+    end
+
+    context "when provided a timestamp as a string" do
+      let(:timestamp) { "1683409840" }
+
+      it { expect(email_event.timestamp).to eq(Time.zone.at(timestamp.to_i)) }
+    end
+
+    context "when provided a string" do
+      let(:timestamp) { "2023-01-01 12:00:00" }
+
+      it { expect(email_event.timestamp).to eq("2023-01-01 12:00:00") }
+    end
+
+    context "when provided a datetime" do
+      let(:timestamp) { "2023-01-01 12:00:00".in_time_zone }
+
+      it { expect(email_event.timestamp).to eq("2023-01-01 12:00:00") }
+    end
+  end
+
+  describe "#provider" do
+    it "defaults to sendgrid" do
+      email_event = described_class.new
+      expect(email_event.provider).to eq("sendgrid")
+    end
+
+    it "validates presence" do
+      email_event = described_class.new(email: "test@example.com", event: "delivered", timestamp: Time.current, provider: nil)
+      expect(email_event).not_to be_valid
+      expect(email_event.errors[:provider]).to be_present
+    end
+  end
+end

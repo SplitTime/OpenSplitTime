@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_09_131941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -629,10 +629,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.string "event"
     t.string "event_type"
     t.string "ip"
+    t.string "provider", default: "sendgrid", null: false
+    t.string "provider_event_id"
+    t.string "provider_message_id"
     t.string "reason"
     t.string "response"
-    t.string "sg_event_id"
-    t.string "sg_message_id"
     t.string "smtp_id"
     t.string "status"
     t.datetime "timestamp"

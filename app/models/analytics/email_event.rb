@@ -1,7 +1,5 @@
 module ::Analytics
   class EmailEvent < ApplicationRecord
-    self.table_name = "sendgrid_events"
-
     validates :email, :event, :timestamp, presence: true
 
     def timestamp=(timestamp)

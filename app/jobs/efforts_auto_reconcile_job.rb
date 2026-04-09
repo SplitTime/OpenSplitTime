@@ -9,5 +9,6 @@ class EffortsAutoReconcileJob < ApplicationJob
 
     report = EffortAutoReconciler.reconcile(event_group, options)
     broadcast_flash(event_group, message: report, action_url: reconcile_event_group_path(event_group))
+    Turbo::StreamsChannel.broadcast_refresh_to(event_group)
   end
 end

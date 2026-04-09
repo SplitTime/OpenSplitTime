@@ -1,5 +1,7 @@
 module ::Analytics
   class EmailEvent < ApplicationRecord
+    self.table_name = "analytics_email_events"
+
     validates :email, :event, :timestamp, presence: true
 
     def timestamp=(timestamp)

@@ -16,7 +16,7 @@ module Analytics
     attribute :event_type, index: false
     attribute :provider_event_id, index: false
     attribute :provider_message_id, index: false
-    attribute :created_at, form: false, index: false
+    attribute :created_at, form: false, index: true
     attribute :updated_at, form: false, index: false
 
     # Associations

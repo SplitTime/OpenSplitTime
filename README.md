@@ -184,7 +184,7 @@ Configure this URL in the Mailgun dashboard under Sending > Webhooks. If using C
 Email events use single-table inheritance (STI) with `Analytics::EmailEvent` as the base model:
 
 - `Analytics::MailgunEvent` -- current provider, with alias mappings for Mailgun field names
-- `Analytics::SendgridEvent` -- legacy provider (SendGrid webhook endpoint is still active)
+- `Analytics::SendgridEvent` -- legacy provider (model retained for historical data)
 
 Events are viewable in the admin interface at `/madmin/analytics/email_events`.
 

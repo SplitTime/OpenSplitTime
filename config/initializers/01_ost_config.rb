@@ -136,14 +136,6 @@ module OstConfig
     Rails.application.credentials.dig(:mailgun, :webhook_signing_key)
   end
 
-  def self.sendgrid_api_key
-    Rails.application.credentials.dig(:sendgrid, :api_key)
-  end
-
-  def self.sendgrid_webhook_verification_key
-    Rails.application.credentials.dig(:sendgrid, :webhook_verification_key)
-  end
-
   def self.shortened_uri
     ENV.fetch("SHORTENED_URI", base_uri)
   end

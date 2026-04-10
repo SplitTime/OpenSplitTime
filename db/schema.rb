@@ -68,7 +68,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_122908) do
     t.string "smtp_id"
     t.string "status"
     t.datetime "timestamp"
-    t.string "type", default: "Analytics::MailgunEvent", null: false
+    t.string "type", null: false
     t.datetime "updated_at", null: false
     t.string "useragent"
   end

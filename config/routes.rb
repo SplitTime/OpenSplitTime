@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   end
 
   namespace :webhooks do
+    resources :mailgun_events, only: [:create]
     resources :sendgrid_events, only: [:create]
     post "raceresult", to: "raceresult#receive"
   end

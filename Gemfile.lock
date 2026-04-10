@@ -669,7 +669,6 @@ GEM
       ffi (~> 1.12)
       logger
     ruby2_keywords (0.0.5)
-    ruby_http_client (3.6.0)
     rubyzip (2.4.1)
     scenic (1.9.0)
       activerecord (>= 4.0.0)
@@ -687,8 +686,6 @@ GEM
       opentelemetry-sdk (>= 1.2)
       scout_apm
     securerandom (0.4.1)
-    sendgrid-ruby (6.7.0)
-      ruby_http_client (~> 3.4)
     shortener (1.0.2)
       voight_kampff (~> 2.0)
     sitemap_generator (6.3.0)
@@ -855,7 +852,6 @@ DEPENDENCIES
   scenic (>= 1.5.4)
   scout_apm
   scout_apm_logging
-  sendgrid-ruby
   shortener
   sitemap_generator
   smarter_csv

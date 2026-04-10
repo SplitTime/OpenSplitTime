@@ -55,7 +55,6 @@ gem "rack-attack"
 gem "scenic", ">= 1.5.4"
 gem "scout_apm"
 gem "scout_apm_logging"
-gem "sendgrid-ruby"
 gem "shortener"
 gem "sitemap_generator"
 gem "smarter_csv", require: false

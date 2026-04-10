@@ -132,6 +132,10 @@ module OstConfig
     Rails.application.credentials.dig(:mailgun, :domain)
   end
 
+  def self.mailgun_webhook_signing_key
+    Rails.application.credentials.dig(:mailgun, :webhook_signing_key)
+  end
+
   def self.sendgrid_api_key
     Rails.application.credentials.dig(:sendgrid, :api_key)
   end

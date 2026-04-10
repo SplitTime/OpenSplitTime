@@ -124,6 +124,14 @@ module OstConfig
     ENV.fetch("SCOUT_APM_SAMPLE_RATE", nil)&.to_f || 1.0
   end
 
+  def self.mailgun_api_key
+    Rails.application.credentials.dig(:mailgun, :api_key)
+  end
+
+  def self.mailgun_domain
+    Rails.application.credentials.dig(:mailgun, :domain)
+  end
+
   def self.sendgrid_api_key
     Rails.application.credentials.dig(:sendgrid, :api_key)
   end

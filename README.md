@@ -157,6 +157,37 @@ OpenSplitTime is hosted on [Digital Ocean](https://www.digitalocean.com/) and de
 
 The infrastructure includes Digital Ocean droplets for web and worker processes, and a Digital Ocean managed PostgreSQL database. Deployments are managed through the Hatchbox dashboard.
 
+Email
+-------------------------
+
+OpenSplitTime uses [Mailgun](https://www.mailgun.com/) for transactional email delivery via their API (not SMTP). Email events (delivered, opened, bounced, etc.) are tracked via Mailgun webhooks.
+
+**Configuration**
+
+The following credentials are required in Rails encrypted credentials (`bin/rails credentials:edit`):
+
+```yaml
+mailgun:
+  api_key: <your-mailgun-api-key>
+  domain: <your-verified-mailgun-domain>
+  webhook_signing_key: <your-mailgun-webhook-signing-key>
+```
+
+The webhook signing key can be found in the Mailgun dashboard under Settings > API Keys > Webhook Signing Key.
+
+**Webhook endpoint:** `POST /webhooks/mailgun_events`
+
+Configure this URL in the Mailgun dashboard under Sending > Webhooks. If using Cloudflare, ensure Bot Fight Mode is disabled or an exception rule is in place, as it will block Mailgun's webhook requests.
+
+**Architecture**
+
+Email events use single-table inheritance (STI) with `Analytics::EmailEvent` as the base model:
+
+- `Analytics::MailgunEvent` -- current provider, with alias mappings for Mailgun field names
+- `Analytics::SendgridEvent` -- legacy provider (SendGrid webhook endpoint is still active)
+
+Events are viewable in the admin interface at `/madmin/analytics/email_events`.
+
 Starting the Server
 -------------------------
 

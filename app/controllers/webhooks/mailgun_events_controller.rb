@@ -5,17 +5,18 @@ module Webhooks
     def create
       return head :unauthorized unless valid_signature?
 
+      event_data = params.require(:event_data)
       mailgun_event = Analytics::MailgunEvent.new(
-        recipient: params[:recipient],
-        timestamp: params[:timestamp],
-        event: params[:event],
-        mailgun_event_id: params[:id],
-        mailgun_message_id: params.dig(:message, :headers, :message_id),
-        ip: params[:ip],
-        reason: params[:reason],
-        status: params.dig(:delivery_status, :code)&.to_s,
-        response: params.dig(:delivery_status, :message),
-        useragent: params.dig(:client_info, :user_agent),
+        recipient: event_data[:recipient],
+        timestamp: event_data[:timestamp],
+        event: event_data[:event],
+        mailgun_event_id: event_data[:id],
+        mailgun_message_id: event_data.dig(:message, :headers, :message_id),
+        ip: event_data[:ip],
+        reason: event_data[:reason],
+        status: event_data.dig(:delivery_status, :code)&.to_s,
+        response: event_data.dig(:delivery_status, :message),
+        useragent: event_data.dig(:client_info, :user_agent),
       )
 
       if mailgun_event.save

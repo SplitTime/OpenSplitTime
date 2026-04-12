@@ -46,55 +46,15 @@ jobs:
 
       - name: Run rubocop on changed files
         run: |
-          # Get list of changed Ruby files from the PR
-          CHANGED_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[].path' | grep -E '\.(rb|rake)$|Rakefile$|Gemfile$' || true)
-
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "No Ruby files changed, skipping rubocop"
-            exit 0
-          fi
-
-          echo "Running rubocop on changed files:"
-          echo "$CHANGED_FILES"
-
-          # Filter out deleted files
-          EXISTING_FILES=$(echo "$CHANGED_FILES" | while read -r f; do [ -f "$f" ] && echo "$f"; done || true)
-
-          if [ -z "$EXISTING_FILES" ]; then
-            echo "No existing Ruby files to lint, skipping rubocop"
-            exit 0
-          fi
-
-          # Run rubocop on changed files (pass them as arguments)
-          echo "$EXISTING_FILES" | xargs bundle exec rubocop --force-exclusion
-        env:
-          GH_TOKEN: ${{ github.token }}
+          { git diff --name-only --diff-filter=d ${{ github.event.pull_request.base.sha }}...HEAD \
+            | grep -E '\.(rb|rake)$|(^|/)(Rakefile|Gemfile)$' || true; } \
+            | xargs --no-run-if-empty bundle exec rubocop --force-exclusion
 
       - name: Run erb_lint on changed ERB files
         run: |
-          # Get list of changed ERB files from the PR
-          CHANGED_FILES=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[].path' | grep -E '\.erb$' || true)
-
-          if [ -z "$CHANGED_FILES" ]; then
-            echo "No ERB files changed, skipping erb_lint"
-            exit 0
-          fi
-
-          echo "Running erb_lint on changed files:"
-          echo "$CHANGED_FILES"
-
-          # Filter out deleted files
-          EXISTING_FILES=$(echo "$CHANGED_FILES" | while read -r f; do [ -f "$f" ] && echo "$f"; done || true)
-
-          if [ -z "$EXISTING_FILES" ]; then
-            echo "No existing ERB files to lint, skipping erb_lint"
-            exit 0
-          fi
-
-          # Run erb_lint on changed files
-          echo "$EXISTING_FILES" | xargs bundle exec erb_lint
-        env:
-          GH_TOKEN: ${{ github.token }}
+          { git diff --name-only --diff-filter=d ${{ github.event.pull_request.base.sha }}...HEAD \
+            | grep -E '\.erb$' || true; } \
+            | xargs --no-run-if-empty bundle exec erb_lint
 
   build-assets:
     name: Build assets

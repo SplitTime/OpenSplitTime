@@ -115,4 +115,29 @@ RSpec.describe Person, type: :model do
       end
     end
   end
+
+  describe "cache busting when hide_age changes" do
+    let(:person) { create(:person, hide_age: false) }
+    let(:effort) { efforts(:hardrock_2014_finished_first) }
+
+    before do
+      effort.update_columns(person_id: person.id)
+    end
+
+    it "touches the event when hide_age changes so public caches invalidate" do
+      original = effort.event.updated_at
+      travel 1.second do
+        person.update!(hide_age: true)
+      end
+      expect(effort.event.reload.updated_at).to be > original
+    end
+
+    it "does not touch the event when unrelated attributes change" do
+      original = effort.event.updated_at
+      travel 1.second do
+        person.update!(city: "Boulder")
+      end
+      expect(effort.event.reload.updated_at).to eq(original)
+    end
+  end
 end

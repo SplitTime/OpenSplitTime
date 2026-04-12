@@ -47,6 +47,8 @@ class Person < ApplicationRecord
   validates :user_id, uniqueness: true, allow_blank: true
   validates_with BirthdateValidator
 
+  after_update_commit :touch_related_events, if: :saved_change_to_hide_age?
+
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.
   def self.search(param)
@@ -104,6 +106,13 @@ class Person < ApplicationRecord
   end
 
   private
+
+  # Invalidate cached public views (e.g. events/spread) that key on event.
+  # Touch events directly rather than efforts because Effort#after_touch
+  # triggers an expensive performance-data recalc we don't need here.
+  def touch_related_events
+    Event.where(id: efforts.select(:event_id)).touch_all
+  end
 
   def generate_new_topic_resource?
     true

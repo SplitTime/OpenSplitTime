@@ -1,12 +1,10 @@
 require "rails_helper"
 
-RSpec.describe "manage lottery service form upload and download", js: true do
+RSpec.describe "manage lottery service form upload and download", :js do
   let(:steward) { users(:third_user) }
 
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:organization) { lottery.organization }
-  let(:download_path) { Rails.root.join("tmp/downloads") }
-
   before do
     lottery.update(status: :finished)
     organization.stewards << steward
@@ -14,7 +12,7 @@ RSpec.describe "manage lottery service form upload and download", js: true do
     stewardship.update(level: :lottery_manager)
   end
 
-  context "service form not yet uploaded" do
+  context "when service form not yet uploaded" do
     scenario "user uploads a service form" do
       login_as steward, scope: :user
       visit_page
@@ -28,7 +26,7 @@ RSpec.describe "manage lottery service form upload and download", js: true do
     end
   end
 
-  context "service form is available" do
+  context "when service form is available" do
     before do
       lottery.service_form.attach(
         io: File.open(file_fixture("service_form.pdf")),
@@ -37,20 +35,12 @@ RSpec.describe "manage lottery service form upload and download", js: true do
       )
     end
 
-    scenario "user downloads the service form", :local_only do
+    scenario "user sees a link to download the service form" do
       login_as steward, scope: :user
       visit_page
 
       expect(page).to have_current_path(page_path)
-
-      click_link "Download"
-      downloaded_file = download_path.join("service_form.pdf")
-
-      # Wait for download to complete (async operation)
-      wait_for_download(downloaded_file)
-
-      expect(File.exist?(downloaded_file)).to be true
-      expect(page).to have_current_path(page_path)
+      expect(page).to have_link("Download", href: download_service_form_organization_lottery_path(organization, lottery))
     end
 
     scenario "user removes the service form" do

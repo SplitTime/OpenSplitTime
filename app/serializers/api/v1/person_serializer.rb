@@ -12,10 +12,17 @@ module Api
                  :last_name,
                  :full_name,
                  :gender,
-                 :current_age,
                  :city,
                  :state_code,
                  :country_code
+
+      attribute :current_age do |person, params|
+        if person.hide_age? && !params[:current_user]&.authorized_to_edit?(person)
+          nil
+        else
+          person.current_age_from_birthdate || person.current_age_approximate
+        end
+      end
 
       PRIVATE_ATTRIBUTES.each do |att|
         attribute att, if: proc { |effort, params|

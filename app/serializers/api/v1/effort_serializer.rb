@@ -9,8 +9,7 @@ module Api
                             :emergency_contact,
                             :emergency_phone].freeze
 
-      attributes :age,
-                 :beacon_url,
+      attributes :beacon_url,
                  :bib_number,
                  :city,
                  :country_code,
@@ -26,6 +25,14 @@ module Api
                  :report_url,
                  :scheduled_start_time,
                  :state_code
+
+      attribute :age do |effort, params|
+        if effort.person&.hide_age? && !params[:current_user]&.authorized_to_edit?(effort)
+          nil
+        else
+          effort.age
+        end
+      end
 
       PRIVATE_ATTRIBUTES.each do |att|
         attribute att, if: proc { |effort, params|

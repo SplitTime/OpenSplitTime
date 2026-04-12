@@ -19,7 +19,7 @@
     <tr>
       <td><strong><%= link_to effort.event.name, effort_path(effort) %></strong></td>
       <td><%= effort.state_and_country %></td>
-      <td><%= effort.age %></td>
+      <td><%= effort.display_age %></td>
       <td><%= l(effort.event.scheduled_start_time.to_date, format: :full_with_weekday) %></td>
       <td class="text-end"><%= text_with_status_indicator(effort.finish_status, effort.data_status, data_type: :effort_time_data) %></td>
       <% if current_user&.admin? %>

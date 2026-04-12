@@ -552,4 +552,49 @@ RSpec.describe Effort, type: :model do
       end
     end
   end
+
+  describe "hide_age behavior" do
+    let(:effort) { build_stubbed(:effort, age: 45, gender: "female", person: person) }
+
+    context "when person is nil" do
+      let(:person) { nil }
+
+      it "returns the effort's age via display_age" do
+        expect(effort.display_age).to eq(45)
+      end
+
+      it "includes age in bio_historic" do
+        expect(effort.bio_historic).to eq("Female, 45")
+      end
+    end
+
+    context "when the linked person has hide_age set" do
+      let(:person) { build_stubbed(:person, hide_age: true) }
+
+      it "returns nil from display_age" do
+        expect(effort.display_age).to be_nil
+      end
+
+      it "omits age from bio_historic" do
+        expect(effort.bio_historic).to eq("Female")
+      end
+
+      it "leaves the raw age attribute untouched for internal uses" do
+        expect(effort.age).to eq(45)
+        expect(effort.template_age).to eq(45)
+      end
+    end
+
+    context "when the linked person has hide_age false" do
+      let(:person) { build_stubbed(:person, hide_age: false) }
+
+      it "returns the effort's age via display_age" do
+        expect(effort.display_age).to eq(45)
+      end
+
+      it "includes age in bio_historic" do
+        expect(effort.bio_historic).to eq("Female, 45")
+      end
+    end
+  end
 end

@@ -296,6 +296,16 @@ class Effort < ApplicationRecord
     @current_age_approximate ||= age && (((Time.current - calculated_start_time) / 1.year) + age).round
   end
 
+  def bio_historic
+    return [gender&.titlecase].compact.join(", ") if person&.hide_age?
+
+    super
+  end
+
+  def display_age
+    person&.hide_age? ? nil : age
+  end
+
   def unreconciled?
     person_id.nil?
   end

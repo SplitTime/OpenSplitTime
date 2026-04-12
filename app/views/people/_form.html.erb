@@ -25,6 +25,10 @@
         <%= f.label :birthdate, class: "mb-1" %>
         <%= f.datepicker_field :birthdate %>
       </div>
+      <div class="col-md-4 mb-3 align-self-end">
+        <%= f.label :hide_age, "Hide my age on public pages", class: "me-2" %>
+        <%= f.check_box :hide_age %>
+      </div>
     </div>
 
     <div class="row">

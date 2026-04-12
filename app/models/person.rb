@@ -85,6 +85,12 @@ class Person < ApplicationRecord
     Person.where(id: id).with_age_and_effort_count.order(:id).first&.current_age_from_efforts
   end
 
+  def current_age
+    return nil if hide_age?
+
+    super
+  end
+
   def unclaimed?
     claimant.nil?
   end

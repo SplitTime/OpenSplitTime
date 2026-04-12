@@ -14,7 +14,7 @@ RSpec.describe Person, type: :model do
 
   describe "#initialize" do
     it "saves a generic factory-created record to the database" do
-      expect { create(:person) }.to change { Person.count }.by(1)
+      expect { create(:person) }.to change(described_class, :count).by(1)
     end
 
     it "is valid when created with a first_name, a last_name, and a gender" do
@@ -46,7 +46,7 @@ RSpec.describe Person, type: :model do
     it "rejects invalid email" do
       bad_emails = %w[johnny@appleseed appleseed.com johnny@.com johnny]
       bad_emails.each do |email|
-        person = Person.new(email: email)
+        person = described_class.new(email: email)
         expect(person).not_to be_valid
         expect(person.errors[:email]).to include("is invalid")
       end
@@ -61,7 +61,7 @@ RSpec.describe Person, type: :model do
       bad_birthdates = { "1880-01-01" => "can't be before 1900",
                          1.day.from_now => "can't be today or in the future" }
       bad_birthdates.each do |birthdate, error_message|
-        person = Person.new(birthdate: birthdate)
+        person = described_class.new(birthdate: birthdate)
         expect(person).not_to be_valid
         expect(person.errors[:birthdate]).to include(error_message)
       end
@@ -88,6 +88,30 @@ RSpec.describe Person, type: :model do
       good_phone_numbers.each do |phone|
         person = build_stubbed(:person, phone: phone)
         expect(person).to be_valid
+      end
+    end
+  end
+
+  describe "#current_age" do
+    let(:person) { build_stubbed(:person, birthdate: 40.years.ago.to_date, hide_age: hide_age) }
+
+    context "when hide_age is false" do
+      let(:hide_age) { false }
+
+      it "returns the age derived from birthdate" do
+        expect(person.current_age).to eq(40)
+      end
+    end
+
+    context "when hide_age is true" do
+      let(:hide_age) { true }
+
+      it "returns nil" do
+        expect(person.current_age).to be_nil
+      end
+
+      it "still exposes the raw age via current_age_from_birthdate" do
+        expect(person.current_age_from_birthdate).to eq(40)
       end
     end
   end

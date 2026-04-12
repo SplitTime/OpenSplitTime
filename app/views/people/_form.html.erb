@@ -28,6 +28,11 @@
       <div class="col-md-4 mb-3 align-self-end">
         <%= f.label :hide_age, "Hide my age on public pages", class: "me-2" %>
         <%= f.check_box :hide_age %>
+        <div class="form-text">
+          Suppresses age on your public profile, effort history, and in API responses.
+          Your birthdate is still stored and used for age-group scoring, so if an event
+          places you in an age category (e.g. "M40-49"), that category is still visible.
+        </div>
       </div>
     </div>
 

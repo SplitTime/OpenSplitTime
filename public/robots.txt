@@ -1,8 +1,5 @@
-User-agent: *
-Allow: /people/$
-Allow: /event_groups/$
-Allow: /organizations/$
-Disallow: /people/
-Disallow: /event_groups/
-Disallow: /organizations/
-Disallow: /api/
+# This file is managed by Cloudflare. Rules configured here may be
+# overridden or supplemented by the rules Cloudflare serves in front
+# of the origin. Make changes in the Cloudflare dashboard when possible.
+#
+# See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file.

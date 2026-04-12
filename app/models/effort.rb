@@ -297,7 +297,7 @@ class Effort < ApplicationRecord
   end
 
   def bio_historic
-    return [gender&.titlecase].compact.join(", ") if person&.hide_age?
+    return gender&.titlecase if person&.hide_age?
 
     super
   end

@@ -46,13 +46,13 @@ jobs:
 
       - name: Run rubocop on changed files
         run: |
-          { git diff --name-only --diff-filter=d "origin/${{ github.event.pull_request.base.ref }}"...HEAD \
+          { git diff --name-only --diff-filter=d ${{ github.event.pull_request.base.sha }}...HEAD \
             | grep -E '\.(rb|rake)$|(^|/)(Rakefile|Gemfile)$' || true; } \
             | xargs --no-run-if-empty bundle exec rubocop --force-exclusion
 
       - name: Run erb_lint on changed ERB files
         run: |
-          { git diff --name-only --diff-filter=d "origin/${{ github.event.pull_request.base.ref }}"...HEAD \
+          { git diff --name-only --diff-filter=d ${{ github.event.pull_request.base.sha }}...HEAD \
             | grep -E '\.erb$' || true; } \
             | xargs --no-run-if-empty bundle exec erb_lint
 

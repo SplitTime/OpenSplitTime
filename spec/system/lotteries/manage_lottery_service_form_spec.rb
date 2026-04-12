@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "manage lottery service form upload and download", js: true do
+RSpec.describe "manage lottery service form upload and download", :js do
   let(:steward) { users(:third_user) }
 
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
@@ -14,7 +14,7 @@ RSpec.describe "manage lottery service form upload and download", js: true do
     stewardship.update(level: :lottery_manager)
   end
 
-  context "service form not yet uploaded" do
+  context "when service form not yet uploaded" do
     scenario "user uploads a service form" do
       login_as steward, scope: :user
       visit_page
@@ -28,7 +28,7 @@ RSpec.describe "manage lottery service form upload and download", js: true do
     end
   end
 
-  context "service form is available" do
+  context "when service form is available" do
     before do
       lottery.service_form.attach(
         io: File.open(file_fixture("service_form.pdf")),
@@ -37,7 +37,7 @@ RSpec.describe "manage lottery service form upload and download", js: true do
       )
     end
 
-    scenario "user downloads the service form", :local_only do
+    scenario "user downloads the service form" do
       login_as steward, scope: :user
       visit_page
 

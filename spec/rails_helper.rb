@@ -40,7 +40,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # require only the support files necessary.
 #
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Rails.root.glob("spec/support/**/*.rb").each { |f| require f }
 
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -84,7 +84,7 @@ RSpec.configure do |config|
     :users,
   ]
 
-  config.fixture_paths = ["#{::Rails.root}/spec/fixtures"]
+  config.fixture_paths = [Rails.root.join("spec/fixtures").to_s]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -135,8 +135,6 @@ RSpec.configure do |config|
   config.include ::Turbo::FramesHelper
 
   config.run_all_when_everything_filtered = true
-
-  config.filter_run_excluding :local_only if ENV["CI"]
 
   Aws.config.update(stub_responses: true)
 end

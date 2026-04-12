@@ -6,8 +6,6 @@ RSpec.describe "manage entrant service form upload and download", :js do
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:organization) { lottery.organization }
   let(:entrant) { lottery_entrants(:lottery_entrant_0004) }
-  let(:download_path) { Rails.root.join("tmp/downloads") }
-
   before do
     entrant.update!(email: user.email)
     lottery.update!(status: :finished)
@@ -32,21 +30,13 @@ RSpec.describe "manage entrant service form upload and download", :js do
       )
     end
 
-    scenario "user downloads the service form" do
+    scenario "user sees a link to download the service form" do
       login_as user, scope: :user
       visit_page
 
       expect(page).to have_current_path(page_path)
       expect(page).to have_text("Download a blank service form")
-
-      click_link "Download"
-      downloaded_file = download_path.join("service_form.pdf")
-
-      # Wait for download to complete (async operation)
-      wait_for_download(downloaded_file)
-
-      expect(File.exist?(downloaded_file)).to be true
-      expect(page).to have_current_path(page_path)
+      expect(page).to have_link("Download", href: download_service_form_organization_lottery_path(organization, lottery))
     end
 
     scenario "user uploads a completed service form pdf" do

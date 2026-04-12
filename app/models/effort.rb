@@ -15,7 +15,7 @@ class Effort < ApplicationRecord
   include LapsRequiredMethods
   include GuaranteedFindable
   include DelegatedConcealable
-  include Delegablae
+  include Delegable
   include DataStatusMethods
   include CapitalizeAttributes
   include Auditable

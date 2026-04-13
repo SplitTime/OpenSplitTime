@@ -26,9 +26,9 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
   let(:time_2) { split_time_2.absolute_time_local }
   let(:time_3) { split_time_3.absolute_time_local }
 
-  let(:raw_time_1) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_1.split.base_name, bitkey: split_time_1.bitkey, absolute_time: time_1) }
-  let(:raw_time_2) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_2.split.base_name, bitkey: split_time_2.bitkey, absolute_time: time_2) }
-  let(:raw_time_3) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_3.split.base_name, bitkey: split_time_3.bitkey, absolute_time: time_3) }
+  let(:raw_time_1) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_1.split.base_name, bitkey: split_time_1.bitkey, absolute_time: time_1, entered_time: split_time_1.military_time) }
+  let(:raw_time_2) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_2.split.base_name, bitkey: split_time_2.bitkey, absolute_time: time_2, entered_time: split_time_2.military_time) }
+  let(:raw_time_3) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_time_3.split.base_name, bitkey: split_time_3.bitkey, absolute_time: time_3, entered_time: split_time_3.military_time) }
   let(:raw_time_4) { create(:raw_time, bib_number: effort.bib_number, event_group: event_group, split_name: split_3.base_name, bitkey: in_bitkey, absolute_time: time_4) }
   let(:time_4) { event.scheduled_start_time_local + 3.hours }
 
@@ -118,7 +118,7 @@ RSpec.describe Interactors::MatchRawTimesToSplitTimes do
       let(:non_matching_raw_times) { [raw_time_2] }
       let(:tolerance) { 10.seconds }
 
-      before { raw_time_2.update(absolute_time: split_time_2.absolute_time_local - 30.seconds) }
+      before { raw_time_2.update(absolute_time: split_time_2.absolute_time_local - 30.seconds, entered_time: TimeConversion.absolute_to_hms(split_time_2.absolute_time_local - 30.seconds)) }
 
       it "sets split_time for matching raw_times only" do
         verify_raw_times

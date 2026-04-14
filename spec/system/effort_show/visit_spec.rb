@@ -182,7 +182,7 @@ RSpec.describe "visit an effort show page", :js do
     before { effort.person.update!(obscure_name: true) }
 
     scenario "A visitor sees initials in the effort header" do
-      visit effort_path(effort)
+      visit effort_path(effort.reload)
       expect(page).to have_content("F. F.")
       expect(page).not_to have_content("Finished First")
     end

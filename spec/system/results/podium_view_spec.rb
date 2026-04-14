@@ -34,6 +34,19 @@ RSpec.describe "visit the podium page" do
     verify_podium_view
   end
 
+  scenario "A visitor sees initials when the winner's linked person has obscure_name set" do
+    winner = efforts(:rufa_2017_24h_finished_first)
+    winner.update!(first_name: "Obscured", last_name: "Runner",
+                   person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: winner.gender, obscure_name: true))
+
+    visit_page
+    podium_table = page.find("table")
+    within(podium_table.find_by_id("overall_women_1")) do
+      expect(page).to have_content("O. R.")
+      expect(page).not_to have_content("Obscured Runner")
+    end
+  end
+
   scenario "Best Performance works" do
     visit_page
     tables = page.all("table")

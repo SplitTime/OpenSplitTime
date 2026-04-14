@@ -75,6 +75,18 @@ RSpec.describe "Visit an event group entrants page and try various features", :j
         end.to change { event_group.efforts.count }.to(0)
       end
 
+      scenario "An admin sees real names on the entrants page even when an effort's person has obscure_name set" do
+        effort = event_group.efforts.first
+        effort.update!(first_name: "Obscured", last_name: "Runner",
+                       person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: effort.gender, obscure_name: true))
+
+        login_as admin, scope: :user
+        visit_page
+
+        expect(page).to have_content("Obscured Runner")
+        expect(page).not_to have_content("O. R.")
+      end
+
       scenario "The event group has multiple pages of entrants" do
         login_as owner, scope: :user
         visit_page_with_pagination

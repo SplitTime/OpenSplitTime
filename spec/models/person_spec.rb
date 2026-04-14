@@ -116,14 +116,14 @@ RSpec.describe Person, type: :model do
     end
   end
 
-  describe "#full_name" do
+  describe "#display_full_name" do
     let(:person) { build_stubbed(:person, first_name: "Mark", last_name: "Oveson", obscure_name: obscure_name) }
 
     context "when obscure_name is false" do
       let(:obscure_name) { false }
 
       it "returns the real full name" do
-        expect(person.full_name).to eq("Mark Oveson")
+        expect(person.display_full_name).to eq("Mark Oveson")
       end
     end
 
@@ -131,10 +131,11 @@ RSpec.describe Person, type: :model do
       let(:obscure_name) { true }
 
       it "returns initials" do
-        expect(person.full_name).to eq("M. O.")
+        expect(person.display_full_name).to eq("M. O.")
       end
 
-      it "still exposes raw first_name and last_name columns" do
+      it "leaves full_name and first_name/last_name columns untouched" do
+        expect(person.full_name).to eq("Mark Oveson")
         expect(person.first_name).to eq("Mark")
         expect(person.last_name).to eq("Oveson")
       end

@@ -30,7 +30,7 @@
         <td><%= effort.laps_finished %></td>
       <% end %>
       <td><%= time_format_hhmmss(effort.final_elapsed_seconds) %></td>
-      <td><%= effort.full_name %></td>
+      <td><%= effort.display_full_name %></td>
       <td><%= effort.bio_historic %></td>
       <td><%= effort.flexible_geolocation %></td>
       <% if @presenter.point_system? %>

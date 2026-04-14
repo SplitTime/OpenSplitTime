@@ -13,7 +13,7 @@
     <% effort_rows.each do |row| %>
       <tr>
         <td class="text-center"><%= row.bib_number %></td>
-        <td class="text-nowrap"><%= link_to row.full_name, effort_path(row) %></td>
+        <td class="text-nowrap"><%= link_to row.display_full_name, effort_path(row) %></td>
         <td class="text-nowrap"><%= row.bio_historic %></td>
       </tr>
     <% end %>

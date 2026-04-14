@@ -93,10 +93,8 @@ class Person < ApplicationRecord
     super
   end
 
-  def full_name
-    return initials if obscure_name?
-
-    super
+  def display_full_name
+    obscure_name? ? initials : full_name
   end
 
   def display_first_name

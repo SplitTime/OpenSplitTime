@@ -41,6 +41,16 @@ RSpec.describe "visit the spread page" do
     verify_efforts_absent(subject_efforts.nonbinary)
   end
 
+  scenario "A visitor sees initials for an effort whose person has obscure_name set" do
+    effort = subject_efforts.first
+    effort.update!(first_name: "Obscured", last_name: "Runner",
+                   person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: effort.gender, obscure_name: true))
+
+    visit spread_event_path(event)
+    expect(page).to have_content("O. R.")
+    expect(page).not_to have_content("Obscured Runner")
+  end
+
   scenario "A user chooses different display styles" do
     visit spread_event_path(event)
     expect(page).to have_content(event.name)

@@ -1,7 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "visit an effort show page", js: true do
+RSpec.describe "visit an effort show page", :js do
   let(:user) { users(:third_user) }
+  let(:event) { effort.event }
+  let(:event_group) { event.event_group }
+  let(:organization) { event_group.organization }
+  let(:completed_effort) { efforts(:hardrock_2014_finished_first) }
+  let(:in_progress_effort) { efforts(:hardrock_2014_progress_sherman) }
+  let(:unstarted_effort) { efforts(:hardrock_2014_not_started) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
@@ -11,15 +17,7 @@ RSpec.describe "visit an effort show page", js: true do
     organization.stewards << steward
   end
 
-  let(:event) { effort.event }
-  let(:event_group) { event.event_group }
-  let(:organization) { event_group.organization }
-
-  let(:completed_effort) { efforts(:hardrock_2014_finished_first) }
-  let(:in_progress_effort) { efforts(:hardrock_2014_progress_sherman) }
-  let(:unstarted_effort) { efforts(:hardrock_2014_not_started) }
-
-  context "When the effort is finished" do
+  context "when the effort is finished" do
     let(:effort) { completed_effort }
     let(:next_effort) { efforts(:hardrock_2014_finished_with_stop) }
 
@@ -68,7 +66,7 @@ RSpec.describe "visit an effort show page", js: true do
     end
   end
 
-  context "When the effort is in progress" do
+  context "when the effort is in progress" do
     let(:effort) { in_progress_effort }
     let(:prior_effort) { efforts(:hardrock_2014_ken_bradtke) }
     let(:next_effort) { efforts(:hardrock_2014_pat_schaden) }
@@ -129,7 +127,7 @@ RSpec.describe "visit an effort show page", js: true do
     end
   end
 
-  context "When the effort is not started" do
+  context "when the effort is not started" do
     let(:effort) { unstarted_effort }
     let(:prior_effort) { efforts(:hardrock_2014_drop_ouray) }
 
@@ -175,6 +173,21 @@ RSpec.describe "visit an effort show page", js: true do
       verify_page_content
       verify_admin_links_present
       expect(page).to have_link(nil, href: effort_path(prior_effort.id))
+    end
+  end
+
+  context "when the linked person has obscure_name set", js: false do
+    let(:effort) { completed_effort }
+
+    before do
+      effort.update!(first_name: "Obscured", last_name: "Runner",
+                     person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: effort.gender, obscure_name: true))
+    end
+
+    scenario "A visitor sees initials in the effort header" do
+      visit effort_path(effort)
+      expect(page).to have_content("O. R.")
+      expect(page).not_to have_content("Obscured Runner")
     end
   end
 

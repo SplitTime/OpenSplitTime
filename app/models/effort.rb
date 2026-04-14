@@ -306,10 +306,8 @@ class Effort < ApplicationRecord
     person&.hide_age? ? nil : age
   end
 
-  def full_name
-    return initials if person&.obscure_name?
-
-    super
+  def display_full_name
+    person&.obscure_name? ? initials : full_name
   end
 
   def display_first_name

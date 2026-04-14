@@ -2,6 +2,11 @@ require "rails_helper"
 
 RSpec.describe "visit an event group roster page and try various features" do
   let(:user) { users(:third_user) }
+  let(:event_group) { event_groups(:rufa_2017) }
+  let(:organization) { event_group.organization }
+  let(:all_efforts) { event_group.efforts }
+  let(:effort_1) { efforts(:rufa_2017_12h_start_only) }
+  let(:other_efforts) { all_efforts.where.not(id: effort_1.id) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
@@ -10,12 +15,6 @@ RSpec.describe "visit an event group roster page and try various features" do
     organization.update(created_by: owner.id)
     organization.stewards << steward
   end
-
-  let(:event_group) { event_groups(:rufa_2017) }
-  let(:organization) { event_group.organization }
-  let(:all_efforts) { event_group.efforts }
-  let(:effort_1) { efforts(:rufa_2017_12h_start_only) }
-  let(:other_efforts) { all_efforts.where.not(id: effort_1.id) }
 
   scenario "The user is an admin" do
     login_as admin, scope: :user
@@ -33,6 +32,17 @@ RSpec.describe "visit an event group roster page and try various features" do
     login_as steward, scope: :user
     visit roster_event_group_path(event_group)
     verify_links_present
+  end
+
+  scenario "An admin sees real names on the roster even when an effort's person has obscure_name set" do
+    effort_1.update!(first_name: "Obscured", last_name: "Runner",
+                     person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: effort_1.gender, obscure_name: true))
+
+    login_as admin, scope: :user
+    visit roster_event_group_path(event_group)
+
+    expect(page).to have_content("Obscured Runner")
+    expect(page).not_to have_content("O. R.")
   end
 
   scenario "The user searches for a name" do

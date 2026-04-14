@@ -179,15 +179,12 @@ RSpec.describe "visit an effort show page", :js do
   context "when the linked person has obscure_name set", js: false do
     let(:effort) { completed_effort }
 
-    before do
-      effort.update!(first_name: "Obscured", last_name: "Runner",
-                     person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: effort.gender, obscure_name: true))
-    end
+    before { effort.person.update!(obscure_name: true) }
 
     scenario "A visitor sees initials in the effort header" do
       visit effort_path(effort)
-      expect(page).to have_content("O. R.")
-      expect(page).not_to have_content("Obscured Runner")
+      expect(page).to have_content("F. F.")
+      expect(page).not_to have_content("Finished First")
     end
   end
 

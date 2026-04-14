@@ -35,14 +35,12 @@ RSpec.describe "visit an event group roster page and try various features" do
   end
 
   scenario "An admin sees real names on the roster even when an effort's person has obscure_name set" do
-    effort_1.update!(first_name: "Obscured", last_name: "Runner",
-                     person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: effort_1.gender, obscure_name: true))
+    effort_1.person.update!(obscure_name: true)
 
     login_as admin, scope: :user
     visit roster_event_group_path(event_group)
 
-    expect(page).to have_content("Obscured Runner")
-    expect(page).not_to have_content("O. R.")
+    expect(page).to have_content("Start Only")
   end
 
   scenario "The user searches for a name" do

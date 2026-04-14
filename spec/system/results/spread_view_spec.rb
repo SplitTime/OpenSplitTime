@@ -42,13 +42,12 @@ RSpec.describe "visit the spread page" do
   end
 
   scenario "A visitor sees initials for an effort whose person has obscure_name set" do
-    effort = subject_efforts.first
-    effort.update!(first_name: "Obscured", last_name: "Runner",
-                   person: Person.create!(first_name: "Obscured", last_name: "Runner", gender: effort.gender, obscure_name: true))
+    effort = efforts(:hardrock_2015_tuan_jacobs)
+    effort.person.update!(obscure_name: true)
 
     visit spread_event_path(event)
-    expect(page).to have_content("O. R.")
-    expect(page).not_to have_content("Obscured Runner")
+    expect(page).to have_content("T. J.")
+    expect(page).not_to have_content("Tuan Jacobs")
   end
 
   scenario "A user chooses different display styles" do

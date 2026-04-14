@@ -116,8 +116,53 @@ RSpec.describe Person, type: :model do
     end
   end
 
-  describe "cache busting when hide_age changes" do
-    let(:person) { create(:person, hide_age: false) }
+  describe "#full_name" do
+    let(:person) { build_stubbed(:person, first_name: "Mark", last_name: "Oveson", obscure_name: obscure_name) }
+
+    context "when obscure_name is false" do
+      let(:obscure_name) { false }
+
+      it "returns the real full name" do
+        expect(person.full_name).to eq("Mark Oveson")
+      end
+    end
+
+    context "when obscure_name is true" do
+      let(:obscure_name) { true }
+
+      it "returns initials" do
+        expect(person.full_name).to eq("M. O.")
+      end
+
+      it "still exposes raw first_name and last_name columns" do
+        expect(person.first_name).to eq("Mark")
+        expect(person.last_name).to eq("Oveson")
+      end
+    end
+  end
+
+  describe "#display_first_name" do
+    let(:person) { build_stubbed(:person, first_name: "Mark", obscure_name: obscure_name) }
+
+    context "when obscure_name is false" do
+      let(:obscure_name) { false }
+
+      it "returns the real first name" do
+        expect(person.display_first_name).to eq("Mark")
+      end
+    end
+
+    context "when obscure_name is true" do
+      let(:obscure_name) { true }
+
+      it "returns the first initial with a period" do
+        expect(person.display_first_name).to eq("M.")
+      end
+    end
+  end
+
+  describe "cache busting when visibility flags change" do
+    let(:person) { create(:person, hide_age: false, obscure_name: false) }
     let(:effort) { efforts(:hardrock_2014_finished_first) }
 
     before do
@@ -128,6 +173,14 @@ RSpec.describe Person, type: :model do
       original = effort.event.updated_at
       travel 1.second do
         person.update!(hide_age: true)
+      end
+      expect(effort.event.reload.updated_at).to be > original
+    end
+
+    it "touches the event when obscure_name changes so public caches invalidate" do
+      original = effort.event.updated_at
+      travel 1.second do
+        person.update!(obscure_name: true)
       end
       expect(effort.event.reload.updated_at).to be > original
     end

@@ -34,6 +34,15 @@
           places you in an age category (e.g. "M40-49"), that category is still visible.
         </div>
       </div>
+      <div class="col-md-4 mb-3 align-self-end">
+        <%= f.label :obscure_name, "Show only my initials on public pages", class: "me-2" %>
+        <%= f.check_box :obscure_name %>
+        <div class="form-text">
+          Replaces your full name with initials (e.g. "M. O.") on your public profile,
+          effort listings, and in API responses. Your name is still stored and visible
+          to administrators and event directors.
+        </div>
+      </div>
     </div>
 
     <div class="row">

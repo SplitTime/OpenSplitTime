@@ -8,13 +8,28 @@ module Api
                             :birthdate].freeze
 
       attributes :id,
-                 :first_name,
-                 :last_name,
-                 :full_name,
                  :gender,
                  :city,
                  :state_code,
                  :country_code
+
+      [:first_name, :last_name].each do |att|
+        attribute att do |person, params|
+          if person.obscure_name? && !params[:current_user]&.authorized_to_edit?(person)
+            "#{person.public_send(att)&.first}."
+          else
+            person.public_send(att)
+          end
+        end
+      end
+
+      attribute :full_name do |person, params|
+        if person.obscure_name? && !params[:current_user]&.authorized_to_edit?(person)
+          person.initials
+        else
+          [person.first_name, person.last_name].compact_blank.join(" ")
+        end
+      end
 
       attribute :current_age do |person, params|
         if person.hide_age? && !params[:current_user]&.authorized_to_edit?(person)

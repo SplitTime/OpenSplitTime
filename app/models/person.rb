@@ -47,7 +47,7 @@ class Person < ApplicationRecord
   validates :user_id, uniqueness: true, allow_blank: true
   validates_with BirthdateValidator
 
-  after_update_commit :touch_related_events, if: :saved_change_to_hide_age?
+  after_update_commit :touch_related_events, if: :visibility_flags_changed?
 
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.
@@ -93,6 +93,20 @@ class Person < ApplicationRecord
     super
   end
 
+  def full_name
+    return initials if obscure_name?
+
+    super
+  end
+
+  def display_first_name
+    obscure_name? ? "#{first_name&.first}." : first_name
+  end
+
+  def initials
+    "#{first_name&.first}. #{last_name&.first}."
+  end
+
   def unclaimed?
     claimant.nil?
   end
@@ -112,6 +126,10 @@ class Person < ApplicationRecord
   # triggers an expensive performance-data recalc we don't need here.
   def touch_related_events
     Event.where(id: efforts.select(:event_id)).touch_all
+  end
+
+  def visibility_flags_changed?
+    saved_change_to_hide_age? || saved_change_to_obscure_name?
   end
 
   def generate_new_topic_resource?

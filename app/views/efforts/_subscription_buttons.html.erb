@@ -2,7 +2,7 @@
 
 <div class="card effort">
   <h5 class="card-header">
-    <strong><%= "Notify Me of #{effort.first_name}'s Progress" %></strong>
+    <strong><%= "Notify Me of #{effort.display_first_name}'s Progress" %></strong>
   </h5>
   <div class="card-body text-center d-inline-flex justify-content-center">
     <%= render "subscriptions/subscription_button", subscribable: effort, protocol: :email %>

@@ -597,4 +597,45 @@ RSpec.describe Effort, type: :model do
       end
     end
   end
+
+  describe "obscure_name behavior" do
+    let(:effort) { build_stubbed(:effort, first_name: "Mark", last_name: "Oveson", person: person) }
+
+    context "when person is nil" do
+      let(:person) { nil }
+
+      it "returns the real full name" do
+        expect(effort.full_name).to eq("Mark Oveson")
+      end
+
+      it "returns the real first name via display_first_name" do
+        expect(effort.display_first_name).to eq("Mark")
+      end
+    end
+
+    context "when the linked person has obscure_name set" do
+      let(:person) { build_stubbed(:person, obscure_name: true) }
+
+      it "returns initials from full_name" do
+        expect(effort.full_name).to eq("M. O.")
+      end
+
+      it "returns an initial with period from display_first_name" do
+        expect(effort.display_first_name).to eq("M.")
+      end
+
+      it "leaves the raw first_name and last_name columns untouched" do
+        expect(effort.first_name).to eq("Mark")
+        expect(effort.last_name).to eq("Oveson")
+      end
+    end
+
+    context "when the linked person has obscure_name false" do
+      let(:person) { build_stubbed(:person, obscure_name: false) }
+
+      it "returns the real full name" do
+        expect(effort.full_name).to eq("Mark Oveson")
+      end
+    end
+  end
 end

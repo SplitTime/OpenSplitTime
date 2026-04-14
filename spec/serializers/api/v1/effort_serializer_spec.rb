@@ -50,4 +50,39 @@ RSpec.describe Api::V1::EffortSerializer do
       end
     end
   end
+
+  context "when the linked person has obscure_name true" do
+    let(:effort) { build_stubbed(:effort, first_name: "Mark", last_name: "Oveson", person: person) }
+    let(:person) { build_stubbed(:person, obscure_name: true) }
+
+    context "with no current_user" do
+      let(:current_user) { nil }
+
+      it "returns initials for name fields" do
+        expect(attributes[:firstName]).to eq("M.")
+        expect(attributes[:lastName]).to eq("O.")
+        expect(attributes[:fullName]).to eq("M. O.")
+      end
+    end
+
+    context "with an admin current_user" do
+      let(:current_user) { build_stubbed(:admin) }
+
+      it "exposes the real name fields" do
+        expect(attributes[:firstName]).to eq("Mark")
+        expect(attributes[:lastName]).to eq("Oveson")
+        expect(attributes[:fullName]).to eq("Mark Oveson")
+      end
+    end
+  end
+
+  context "when the effort has no linked person and name fields are set" do
+    let(:effort) { build_stubbed(:effort, first_name: "Mark", last_name: "Oveson", person: nil) }
+    let(:current_user) { nil }
+
+    it "exposes real name fields" do
+      expect(attributes[:firstName]).to eq("Mark")
+      expect(attributes[:fullName]).to eq("Mark Oveson")
+    end
+  end
 end

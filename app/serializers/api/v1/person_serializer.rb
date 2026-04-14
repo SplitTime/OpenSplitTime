@@ -15,19 +15,19 @@ module Api
 
       [:first_name, :last_name].each do |att|
         attribute att do |person, params|
-          if person.obscure_name? && !params[:current_user]&.authorized_to_edit?(person)
-            "#{person.public_send(att)&.first}."
-          else
+          if params[:current_user]&.authorized_to_edit?(person) || !person.obscure_name?
             person.public_send(att)
+          else
+            "#{person.public_send(att)&.first}."
           end
         end
       end
 
       attribute :full_name do |person, params|
-        if person.obscure_name? && !params[:current_user]&.authorized_to_edit?(person)
-          person.initials
+        if params[:current_user]&.authorized_to_edit?(person) || !person.obscure_name?
+          person.full_name
         else
-          [person.first_name, person.last_name].compact_blank.join(" ")
+          person.initials
         end
       end
 

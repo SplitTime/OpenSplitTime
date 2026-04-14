@@ -307,11 +307,11 @@ class Effort < ApplicationRecord
   end
 
   def display_full_name
-    person&.obscure_name? ? initials : full_name
+    person ? person.display_full_name : full_name
   end
 
   def display_first_name
-    person&.obscure_name? ? "#{first_name&.first}." : first_name
+    person ? person.display_first_name : first_name
   end
 
   def initials

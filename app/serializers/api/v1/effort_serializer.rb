@@ -25,19 +25,19 @@ module Api
 
       [:first_name, :last_name].each do |att|
         attribute att do |effort, params|
-          if effort.person&.obscure_name? && !params[:current_user]&.authorized_to_edit?(effort)
-            "#{effort.public_send(att)&.first}."
-          else
+          if params[:current_user]&.authorized_to_edit?(effort) || !effort.person&.obscure_name?
             effort.public_send(att)
+          else
+            "#{effort.public_send(att)&.first}."
           end
         end
       end
 
       attribute :full_name do |effort, params|
-        if effort.person&.obscure_name? && !params[:current_user]&.authorized_to_edit?(effort)
-          effort.initials
+        if params[:current_user]&.authorized_to_edit?(effort) || !effort.person&.obscure_name?
+          effort.full_name
         else
-          [effort.first_name, effort.last_name].compact_blank.join(" ")
+          effort.initials
         end
       end
 

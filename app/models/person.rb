@@ -93,18 +93,6 @@ class Person < ApplicationRecord
     super
   end
 
-  def display_full_name
-    obscure_name? ? initials : full_name
-  end
-
-  def display_first_name
-    obscure_name? ? "#{first_name&.first}." : first_name
-  end
-
-  def initials
-    "#{first_name&.first}. #{last_name&.first}."
-  end
-
   def unclaimed?
     claimant.nil?
   end

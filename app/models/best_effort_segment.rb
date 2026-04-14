@@ -9,9 +9,17 @@ class BestEffortSegment < ::ApplicationRecord
 
   zonable_attribute :begin_time
 
-  scope :for_courses, -> (courses) { where(course_id: courses) }
+  def display_full_name
+    person ? person.display_full_name : full_name
+  end
+
+  def display_first_name
+    person ? person.display_first_name : first_name
+  end
+
+  scope :for_courses, ->(courses) { where(course_id: courses) }
   scope :full_course, -> { where(full_course: true) }
-  scope :for_efforts, -> (efforts) { where(effort_id: efforts) }
+  scope :for_efforts, ->(efforts) { where(effort_id: efforts) }
   scope :over_segment, lambda { |segment|
     where(begin_split_id: segment.begin_id,
           begin_bitkey: segment.begin_bitkey,
@@ -21,7 +29,13 @@ class BestEffortSegment < ::ApplicationRecord
   scope :finish_count_subquery, -> { from(::BestEffortSegmentQuery.finish_count_subquery(self)) }
 
   scope :with_overall_gender_age_and_event_rank, lambda {
-    select("*, rank() over (order by elapsed_seconds) as overall_rank, rank() over (partition by gender order by elapsed_seconds) as gender_rank, rank() over (partition by age_group order by elapsed_seconds) as age_group_rank, rank() over (partition by event_id order by elapsed_seconds) as event_rank")
+    select(
+      "*, " \
+      "rank() over (order by elapsed_seconds) as overall_rank, " \
+      "rank() over (partition by gender order by elapsed_seconds) as gender_rank, " \
+      "rank() over (partition by age_group order by elapsed_seconds) as age_group_rank, " \
+      "rank() over (partition by event_id order by elapsed_seconds) as event_rank",
+    )
   }
 
   def age_group

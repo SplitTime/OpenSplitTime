@@ -614,17 +614,17 @@ RSpec.describe Effort, type: :model do
     end
 
     context "when the linked person has obscure_name set" do
-      let(:person) { build_stubbed(:person, obscure_name: true) }
+      let(:person) { build_stubbed(:person, first_name: "Mark", last_name: "Oveson", obscure_name: true) }
 
-      it "returns initials from display_full_name" do
+      it "returns the person's initials from display_full_name" do
         expect(effort.display_full_name).to eq("M. O.")
       end
 
-      it "returns an initial with period from display_first_name" do
+      it "returns the person's first initial with period from display_first_name" do
         expect(effort.display_first_name).to eq("M.")
       end
 
-      it "leaves full_name and the raw name columns untouched" do
+      it "leaves the effort's full_name and raw name columns untouched" do
         expect(effort.full_name).to eq("Mark Oveson")
         expect(effort.first_name).to eq("Mark")
         expect(effort.last_name).to eq("Oveson")
@@ -632,9 +632,9 @@ RSpec.describe Effort, type: :model do
     end
 
     context "when the linked person has obscure_name false" do
-      let(:person) { build_stubbed(:person, obscure_name: false) }
+      let(:person) { build_stubbed(:person, first_name: "Mark", last_name: "Oveson", obscure_name: false) }
 
-      it "returns the real full name via display_full_name" do
+      it "returns the person's full name via display_full_name" do
         expect(effort.display_full_name).to eq("Mark Oveson")
       end
     end

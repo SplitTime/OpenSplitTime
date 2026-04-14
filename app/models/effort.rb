@@ -307,13 +307,17 @@ class Effort < ApplicationRecord
   end
 
   def full_name
-    return initials if person&.obscure_name?
+    return initials if obscure_name_applied?
 
     super
   end
 
   def display_first_name
-    person&.obscure_name? ? "#{first_name&.first}." : first_name
+    obscure_name_applied? ? "#{first_name&.first}." : first_name
+  end
+
+  def obscure_name_applied?
+    has_attribute?(:person_id) && person&.obscure_name?
   end
 
   def initials

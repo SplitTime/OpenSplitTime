@@ -306,10 +306,6 @@ class Effort < ApplicationRecord
     person&.hide_age? ? nil : age
   end
 
-  def initials
-    "#{first_name&.first}. #{last_name&.first}."
-  end
-
   def unreconciled?
     person_id.nil?
   end

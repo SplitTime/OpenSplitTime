@@ -162,6 +162,49 @@ RSpec.describe Person, type: :model do
     end
   end
 
+  describe "slug generation" do
+    let(:effort) { efforts(:hardrock_2014_finished_first) }
+
+    it "uses the full name when obscure_name is false" do
+      person = create(:person, first_name: "Mark", last_name: "Oveson", obscure_name: false)
+      expect(person.slug).to start_with("mark-oveson")
+    end
+
+    it "uses initials when obscure_name is true on create" do
+      person = create(:person, first_name: "Mark", last_name: "Oveson", obscure_name: true)
+      expect(person.slug).not_to include("mark")
+      expect(person.slug).not_to include("oveson")
+      expect(person.slug).to start_with("m-o")
+    end
+
+    it "regenerates the slug and purges history when obscure_name is toggled on" do
+      person = create(:person, first_name: "Mark", last_name: "Oveson", obscure_name: false)
+      effort.update!(person_id: person.id, first_name: "Mark", last_name: "Oveson", slug: nil)
+      original_person_slug = person.slug
+      original_effort_slug = effort.reload.slug
+      expect(original_effort_slug).to include("oveson")
+
+      person.update!(obscure_name: true)
+
+      expect(person.reload.slug).to start_with("m-o")
+      expect(person.slug).not_to include("oveson")
+      expect(described_class.friendly.exists?(original_person_slug)).to be(false)
+
+      expect(effort.reload.slug).not_to include("oveson")
+      expect(Effort.friendly.exists?(original_effort_slug)).to be(false)
+    end
+
+    it "regenerates the slug when obscure_name is toggled off, keeping history" do
+      person = create(:person, first_name: "Mark", last_name: "Oveson", obscure_name: true)
+      obscured_slug = person.slug
+
+      person.update!(obscure_name: false)
+
+      expect(person.reload.slug).to start_with("mark-oveson")
+      expect(described_class.friendly.find(obscured_slug)).to eq(person)
+    end
+  end
+
   describe "cache busting when visibility flags change" do
     let(:person) { create(:person, hide_age: false, obscure_name: false) }
     let(:effort) { efforts(:hardrock_2014_finished_first) }

@@ -88,6 +88,10 @@ module PersonalInfo
     "#{first_name&.first}. #{last_name&.first}."
   end
 
+  def name_for_slug
+    obscure_name_applied? ? initials : full_name
+  end
+
   def personal_info
     [full_name, bio, flexible_geolocation].compact_blank.join(" – ")
   end

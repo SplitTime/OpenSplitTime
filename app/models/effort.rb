@@ -117,10 +117,10 @@ class Effort < ApplicationRecord
 
   def slug_candidates
     [
-      [:event_name, :full_name],
-      [:event_name, :full_name, :state_and_country],
-      [:event_name, :full_name, :state_and_country, Time.zone.today.to_s],
-      [:event_name, :full_name, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]
+      [:event_name, :name_for_slug],
+      [:event_name, :name_for_slug, :state_and_country],
+      [:event_name, :name_for_slug, :state_and_country, Time.zone.today.to_s],
+      [:event_name, :name_for_slug, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]
     ]
   end
 

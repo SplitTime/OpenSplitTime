@@ -36,6 +36,12 @@ RSpec.describe "visit an event series page" do
         expect(page).to have_content("S. F.")
         expect(page).not_to have_content("Series Finisher")
       end
+
+      scenario "A visitor sees the full name for a finisher whose person does not have obscure_name set" do
+        visit organization_event_series_path(organization, subject_series)
+        expect(page).to have_content("Series Finisher")
+        expect(page).not_to have_content("S. F.")
+      end
     end
   end
 

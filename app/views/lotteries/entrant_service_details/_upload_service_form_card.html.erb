@@ -6,7 +6,7 @@
       <% if presenter.completed_form.attached? %>
         <div class="col">
           <span class="fs-3 fw-bold">Completed Service Form</span>
-          <span class="fs-5 text-muted ps-2"><%= fa_icon("circle-check", class: "text-success", text: "Attached") %></span>
+          <span class="fs-5 text-body-secondary ps-2"><%= fa_icon("circle-check", class: "text-success", text: "Attached") %></span>
         </div>
         <div class="col text-end">
           <div class="d-flex justify-content-end gap-2">
@@ -49,7 +49,7 @@
                  data-dropzone-accepted-files="image/*,.pdf"
                  data-action="dropzone:success->form-disable-submit#enableSubmitButton">
               <%= f.file_field :completed_form, direct_upload: true, data: { "dropzone-target" => "input" } %>
-              <div class="dropzone-msg dz-message needsclick text-muted">
+              <div class="dropzone-msg dz-message needsclick text-body-secondary">
                 <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
                 <span class="dropzone-msg-desc text-sm">5 MB file size maximum. File must be a pdf, jpeg, or png file.</span>
               </div>

@@ -25,7 +25,7 @@
            data-dropzone-accepted-files="image/*"
            data-action="dropzone:success->form-disable-submit#enableSubmitButton">
         <%= f.file_field :entrant_photos, multiple: true, direct_upload: true, data: { "dropzone-target" => "input" } %>
-        <div class="dropzone-msg dz-message needsclick text-muted">
+        <div class="dropzone-msg dz-message needsclick text-body-secondary">
           <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
           <span class="dropzone-msg-desc text-sm">1 MB file size maximum. Allowed file types png, jpg.</span>
         </div>
@@ -76,7 +76,7 @@
       <div class="row my-3">
         <div class="col">
           <h4 class="fw-bold">Already assigned
-            <span class="fw-light text-muted small"><%= @presenter.event_group.efforts.photo_assigned.count %></span>
+            <span class="fw-light text-body-secondary small"><%= @presenter.event_group.efforts.photo_assigned.count %></span>
           </h4>
         </div>
         <div class="col">
@@ -114,7 +114,7 @@
       <div class="row my-3">
         <div class="col">
           <h4 class="fw-bold">Not yet assigned
-            <span class="fw-light text-muted small"><%= @presenter.event_group.efforts.no_photo_assigned.count %></span>
+            <span class="fw-light text-body-secondary small"><%= @presenter.event_group.efforts.no_photo_assigned.count %></span>
           </h4>
         </div>
       </div>

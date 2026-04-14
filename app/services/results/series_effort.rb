@@ -8,8 +8,9 @@ module Results
     attr_reader :person, :efforts
     attr_accessor :points # For duck typing only
 
-    delegate :full_name, to: :person, allow_nil: true
-    delegate :age, :gender, :bio_historic, :flexible_geolocation, :person_id, :template_age, :to_param, to: :baseline_effort, allow_nil: true
+    delegate :full_name, :display_full_name, to: :person, allow_nil: true
+    delegate :age, :gender, :bio_historic, :flexible_geolocation, :person_id, :template_age, :to_param,
+             to: :baseline_effort, allow_nil: true
 
     validate :verify_effort_consistency
     after_validation :set_template_age
@@ -106,12 +107,14 @@ module Results
         errors.add(:efforts, :mismatched_genders, message: "must match the provided person's gender")
       end
 
-      if efforts.all? { |effort| effort.age && effort.actual_start_time }
-        effort_birth_years = efforts.map { |effort| effort.actual_start_time.year - effort.age }.sort
-        if (effort_birth_years.last - effort_birth_years.first).abs > AGE_DIFFERENCE_THRESHOLD
-          errors.add(:efforts, :mismatched_ages, message: "implied birth years based on effort start time and age are too far apart: #{effort_birth_years.to_sentence}")
-        end
-      end
+      return unless efforts.all? { |effort| effort.age && effort.actual_start_time }
+
+      effort_birth_years = efforts.map { |effort| effort.actual_start_time.year - effort.age }.sort
+      return unless (effort_birth_years.last - effort_birth_years.first).abs > AGE_DIFFERENCE_THRESHOLD
+
+      errors.add(:efforts, :mismatched_ages,
+                 message: "implied birth years based on effort start time and age " \
+                          "are too far apart: #{effort_birth_years.to_sentence}")
     end
 
     def set_template_age

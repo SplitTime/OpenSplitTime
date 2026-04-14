@@ -13,9 +13,9 @@
       <td></td>
       <td>
         <% if effort.person_id %>
-          <%= link_to effort.person.full_name, person_path(effort.person) %>
+          <%= link_to effort.person.display_full_name, person_path(effort.person) %>
         <% else %>
-          <%= link_to effort.full_name, effort_path(effort) %>
+          <%= link_to effort.display_full_name, effort_path(effort) %>
         <% end %>
       </td>
       <td><%= effort.errors.full_messages %></td>

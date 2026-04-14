@@ -31,6 +31,7 @@ RSpec.describe "Visit the cutoff analysis page", :js do
       AidStation.delete_all
       ProjectionAssessment.delete_all
       ProjectionAssessmentRun.delete_all
+      EventSeriesEvent.delete_all
       Event.delete_all
     end
 

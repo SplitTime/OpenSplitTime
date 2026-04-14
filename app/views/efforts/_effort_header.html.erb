@@ -12,9 +12,9 @@
           <%= link_to_refresh %>
           <h1><strong>
             <% if view_object.person %>
-              <%= link_to view_object.full_name, person_path(view_object.person) %>
+              <%= link_to view_object.display_full_name, person_path(view_object.person) %>
             <% else %>
-              <%= view_object.full_name %>
+              <%= view_object.display_full_name %>
             <% end %>
           </strong></h1>
           <%= effort_view_breadcrumbs(view_object, title) %>

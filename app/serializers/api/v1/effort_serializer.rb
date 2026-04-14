@@ -14,17 +14,32 @@ module Api
                  :city,
                  :country_code,
                  :event_id,
-                 :first_name,
                  :flexible_geolocation,
-                 :full_name,
                  :gender,
                  :id,
-                 :last_name,
                  :participant_id,
                  :person_id,
                  :report_url,
                  :scheduled_start_time,
                  :state_code
+
+      [:first_name, :last_name].each do |att|
+        attribute att do |effort, params|
+          if params[:current_user]&.authorized_to_edit?(effort) || !effort.person&.obscure_name?
+            effort.public_send(att)
+          else
+            "#{effort.public_send(att)&.first}."
+          end
+        end
+      end
+
+      attribute :full_name do |effort, params|
+        if params[:current_user]&.authorized_to_edit?(effort) || !effort.person&.obscure_name?
+          effort.full_name
+        else
+          effort.initials
+        end
+      end
 
       attribute :age do |effort, params|
         if effort.person&.hide_age? && !params[:current_user]&.authorized_to_edit?(effort)

@@ -75,6 +75,15 @@ RSpec.describe "Visit an event group entrants page and try various features", :j
         end.to change { event_group.efforts.count }.to(0)
       end
 
+      scenario "An admin sees real names on the entrants page even when an effort's person has obscure_name set" do
+        efforts(:hardrock_2015_tuan_jacobs).person.update!(obscure_name: true)
+
+        login_as admin, scope: :user
+        visit_page
+
+        expect(page).to have_content("Tuan Jacobs")
+      end
+
       scenario "The event group has multiple pages of entrants" do
         login_as owner, scope: :user
         visit_page_with_pagination

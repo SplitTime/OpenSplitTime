@@ -41,6 +41,15 @@ RSpec.describe "visit the spread page" do
     verify_efforts_absent(subject_efforts.nonbinary)
   end
 
+  scenario "A visitor sees initials for an effort whose person has obscure_name set" do
+    effort = efforts(:hardrock_2015_tuan_jacobs)
+    effort.person.update!(obscure_name: true)
+
+    visit spread_event_path(event)
+    expect(page).to have_content("T. J.")
+    expect(page).not_to have_content("Tuan Jacobs")
+  end
+
   scenario "A user chooses different display styles" do
     visit spread_event_path(event)
     expect(page).to have_content(event.name)

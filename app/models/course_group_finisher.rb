@@ -14,12 +14,4 @@ class CourseGroupFinisher < ::ApplicationRecord
 
     search_names_and_locations(param)
   end
-
-  def display_full_name
-    person ? person.display_full_name : full_name
-  end
-
-  def display_first_name
-    person ? person.display_first_name : first_name
-  end
 end

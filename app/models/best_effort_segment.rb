@@ -9,14 +9,6 @@ class BestEffortSegment < ::ApplicationRecord
 
   zonable_attribute :begin_time
 
-  def display_full_name
-    person ? person.display_full_name : full_name
-  end
-
-  def display_first_name
-    person ? person.display_first_name : first_name
-  end
-
   scope :for_courses, ->(courses) { where(course_id: courses) }
   scope :full_course, -> { where(full_course: true) }
   scope :for_efforts, ->(efforts) { where(effort_id: efforts) }

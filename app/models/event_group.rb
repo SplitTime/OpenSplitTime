@@ -47,7 +47,7 @@ class EventGroup < ApplicationRecord
   attr_accessor :duplicate_event_date
 
   scope :having_efforts, -> { joins(:events).distinct.where("events.efforts_count > 0") }
-  scope :standard_includes, -> { includes(events: :splits) }
+  scope :standard_includes, -> { includes(events: [:splits, { efforts: :person }]) }
   scope :with_policy_scope_attributes, -> { all }
   scope :by_group_start_time, lambda {
     left_joins(:events)

@@ -33,6 +33,8 @@ class Effort < ApplicationRecord
   belongs_to :event, counter_cache: true, touch: true
   belongs_to :person, optional: true
 
+  scope :standard_includes, -> { includes(:person) }
+
   # effort_segments are destroyed when the associated split_times are destroyed.
   # This is accomplished by the :dependent option on the has_many :split_times association.
   # Do not add a dependent: :destroy option to the has_many :effort_segments association

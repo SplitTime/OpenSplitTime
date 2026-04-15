@@ -64,9 +64,8 @@ class PreparedParams
   end
 
   def sort
-    # rubocop:disable Style/HashSlice -- slice reorders keys; we need sort_hash's original key order preserved
-    @sort ||= sort_hash.reject { |field, _| permitted_query.exclude?(field) }.with_indifferent_access
-    # rubocop:enable Style/HashSlice
+    @sort ||= sort_hash.filter_map { |field, dir| [field, dir] if permitted_query.include?(field) }
+                       .to_h.with_indifferent_access
   end
 
   def sort_text

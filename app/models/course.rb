@@ -19,15 +19,16 @@ class Course < ApplicationRecord
   has_many :splits, dependent: :destroy
   has_one_attached :gpx
 
-  accepts_nested_attributes_for :splits, reject_if: ->(s) { s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank? }
+  accepts_nested_attributes_for :splits, reject_if: lambda { |s|
+    s[:distance_from_start].blank? && s[:distance_in_preferred_units].blank?
+  }
 
   scope :standard_includes, -> { includes(:splits) }
   scope :with_policy_scope_attributes, -> { all }
 
   after_commit :sync_track_points, on: [:create, :update]
 
-  validates_presence_of :name, :organization
-  validates_uniqueness_of :name, case_sensitive: false
+  validates :name, presence: true, uniqueness: { scope: :organization_id, case_sensitive: false }
   validates :gpx,
             content_type: %w[application/gpx+xml text/xml application/xml application/octet-stream],
             size: { less_than: 1.megabyte, message: "must be less than 1 MB" }
@@ -37,7 +38,8 @@ class Course < ApplicationRecord
   end
 
   def add_basic_splits!
-    splits << Split.new(base_name: "Start", kind: :start, sub_split_bitmap: 1, distance_from_start: 0, vert_gain_from_start: 0, vert_loss_from_start: 0)
+    splits << Split.new(base_name: "Start", kind: :start, sub_split_bitmap: 1, distance_from_start: 0,
+                        vert_gain_from_start: 0, vert_loss_from_start: 0)
     splits << Split.new(base_name: "Finish", kind: :finish, sub_split_bitmap: 1)
     self
   end
@@ -95,7 +97,7 @@ class Course < ApplicationRecord
   private
 
   def sync_track_points
-    return unless attachment_changes["gpx"].present?
+    return if attachment_changes["gpx"].blank?
 
     ::SyncTrackPointsJob.set(wait: 5.seconds).perform_later(id)
   end

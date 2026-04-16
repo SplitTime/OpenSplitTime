@@ -27,6 +27,12 @@ module Interactors
     def perform!
       if errors.blank?
         ActiveRecord::Base.transaction do
+          # Lock the effort row and refresh its split_times to serialize concurrent
+          # raw-time processing for the same effort. Without this, two workers can
+          # both miss an existing time_point in their in-memory caches and race to
+          # insert, hitting the unique index on (effort_id, lap, split_id, sub_split_bitkey).
+          effort.lock!
+          effort.split_times.reload
           valid_raw_times.each { |raw_time| create_and_update_resources(raw_time) }
           update_effort(effort, upserted_split_times)
           if errors.present?

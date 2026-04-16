@@ -128,7 +128,7 @@ RSpec.describe Interactors::MatchTimeRecordsToSplitTimes do
       end
     end
 
-    context "when the candidate pool contains a matching split_time belonging to a different effort" do
+    context "when the candidate pool contains a matching split_time belonging to an effort in a different event_group" do
       let(:other_event_group) { create(:event_group) }
       let(:other_event) do
         create(:event, event_group: other_event_group, course: event.course,
@@ -146,7 +146,7 @@ RSpec.describe Interactors::MatchTimeRecordsToSplitTimes do
         SplitTime.where(id: [split_time_2.id, other_split_time.id]).with_time_record_matchers
       end
 
-      it "does not match a split_time that belongs to a different effort" do
+      it "does not match a split_time that belongs to an effort in a different event_group" do
         expect(response).to be_successful
         expect(response.resources[:matched].map(&:id)).to contain_exactly(raw_time_2.id)
         expect(response.resources[:unmatched].map(&:id)).to contain_exactly(raw_time_1.id)

@@ -30,10 +30,10 @@ class UserSettingsController < ApplicationController
 
   def update
     updated = current_user.update(settings_update_params)
-    message = case
-              when updated && current_user.unconfirmed_email.present?
-                "You have requested that your email address be changed. Please check your email to confirm your new address."
-              when updated
+    message = if updated && current_user.unconfirmed_email.present?
+                "You have requested that your email address be changed. " \
+                  "Please check your email to confirm your new address."
+              elsif updated
                 nil
               else
                 current_user.errors.full_messages.join("; ")
@@ -49,14 +49,15 @@ class UserSettingsController < ApplicationController
   end
 
   def settings_update_params
-    params.require(:user)
-      .permit(
-        :first_name,
-        :last_name,
-        :email,
-        :phone,
-        :pref_distance_unit,
-        :pref_elevation_unit,
+    params
+      .expect(
+        user: [:first_name,
+               :last_name,
+               :email,
+               :phone,
+               :sms_consent,
+               :pref_distance_unit,
+               :pref_elevation_unit],
       )
   end
 end

@@ -52,6 +52,9 @@ application.register("form-auto-submit", FormAutoSubmitController)
 import FormDisableSubmitController from "./form_disable_submit_controller"
 application.register("form-disable-submit", FormDisableSubmitController)
 
+import PhoneConsentController from "./phone_consent_controller"
+application.register("phone-consent", PhoneConsentController)
+
 import FormModalController from "./form_modal_controller"
 application.register("form-modal", FormModalController)
 

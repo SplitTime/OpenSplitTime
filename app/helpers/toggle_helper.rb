@@ -119,8 +119,14 @@ module ToggleHelper
     return if subscribable.topic_resource_key.blank?
 
     args.merge!(subscribable: subscribable, protocol: protocol)
-    if current_user
-      link_to_toggle_subscription(args)
+    if protocol == "sms" && !current_user&.admin?
+      content_tag(:span, "SMS temporarily out of service.", class: "small text-muted")
+    elsif current_user
+      if protocol == "sms" && !current_user.sms_opted_in?
+        link_to_sms_opt_in(icon: args[:icon_name])
+      else
+        link_to_toggle_subscription(args)
+      end
     else
       button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
     end
@@ -153,6 +159,12 @@ module ToggleHelper
     end
 
     button_to(url, html_options) { fa_icon(icon_name, text: protocol) }
+  end
+
+  def link_to_sms_opt_in(icon:)
+    link_to(user_settings_preferences_path, class: "btn btn-lg btn-outline-secondary") do
+      fa_icon(icon, text: "Enable SMS")
+    end
   end
 
   def button_to_sign_in(icon:, protocol:)

@@ -7,9 +7,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   devise :omniauthable, omniauth_providers: [:facebook, :google_oauth2]
 
-  enum :role, [:user, :admin]
-  enum :pref_distance_unit, [:miles, :kilometers]
-  enum :pref_elevation_unit, [:feet, :meters]
+  enum :role, { :user => 0, :admin => 1 }
+  enum :pref_distance_unit, { :miles => 0, :kilometers => 1 }
+  enum :pref_elevation_unit, { :feet => 0, :meters => 1 }
 
   strip_attributes collapse_spaces: true
   capitalize_attributes :first_name, :last_name
@@ -34,11 +34,15 @@ class User < ApplicationRecord
                   .left_joins(:avatar), :users)
   }
 
-  validates_presence_of :first_name, :last_name
-  validates :phone, format: {with: /\+1\d{9}/, message: "must be a valid US or Canada phone number"}, if: :phone?
+  attr_accessor :sms_consent
 
-  before_validation :normalize_phone, if: :phone?
+  validates :first_name, :last_name, presence: true
+  validates :phone, format: { with: /\+1\d{9}/, message: "must be a valid US or Canada phone number" }, if: :phone?
+
   after_initialize :set_default_role, if: :new_record?
+  before_validation :normalize_phone, if: :phone?
+  before_save :update_sms_consent_timestamp, if: :sms_consent
+  before_save :clear_sms_consent_on_phone_change, if: :phone_changed?
 
   def set_default_role
     self.role ||= :user
@@ -86,7 +90,7 @@ class User < ApplicationRecord
 
   # @return [[Symbol, [Symbol, Date], [Symbol, Date, String]]]
   def slug_candidates
-    [:full_name, [:full_name, Date.today], [:full_name, Date.today, Time.current.strftime("%H:%M:%S")]]
+    [:full_name, [:full_name, Time.zone.today], [:full_name, Time.zone.today, Time.current.strftime("%H:%M:%S")]]
   end
 
   # @return [Boolean]
@@ -116,7 +120,7 @@ class User < ApplicationRecord
 
   # @return [Boolean]
   def authorized_to_claim?(person)
-    return false if has_avatar?
+    return false if avatar?
 
     admin? || (last_name == person.last_name) || (first_name == person.first_name)
   end
@@ -135,7 +139,7 @@ class User < ApplicationRecord
   def lottery_steward_of?(resource)
     return false unless resource.respond_to?(:stewards)
 
-    resource.stewards.where(stewardships: {level: :lottery_manager}).include?(self)
+    resource.stewards.where(stewardships: { level: :lottery_manager }).include?(self)
   end
 
   # @return [Boolean]
@@ -164,12 +168,12 @@ class User < ApplicationRecord
   end
 
   # @return [Boolean]
-  def has_avatar?
+  def avatar?
     avatar.present?
   end
 
   # @return [Boolean]
-  def has_credentials_for?(service_identifier)
+  def credentials_for?(service_identifier)
     credentials.for_service(service_identifier).exists?
   end
 
@@ -182,6 +186,11 @@ class User < ApplicationRecord
   end
 
   # @return [Boolean]
+  def sms_opted_in?
+    phone_confirmed_at.present? && phone.present?
+  end
+
+  # @return [Boolean]
   def from_omniauth?
     provider? && uid?
   end
@@ -191,7 +200,19 @@ class User < ApplicationRecord
   def normalize_phone
     phone.gsub!(/[^+\d]/, "")
     phone.gsub!(/\A\+?1?/, "")
-    self.phone = "+1" + phone if phone.length == 10
+    self.phone = "+1#{phone}" if phone.length == 10
     self.phone = phone.presence
+  end
+
+  def update_sms_consent_timestamp
+    if sms_consent == "1" && phone.present?
+      self.phone_confirmed_at ||= Time.current
+    elsif sms_consent == "0"
+      self.phone_confirmed_at = nil
+    end
+  end
+
+  def clear_sms_consent_on_phone_change
+    self.phone_confirmed_at = nil if phone_was.present?
   end
 end

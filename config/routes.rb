@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "photo_credits", to: "visitors#photo_credits"
   get "about", to: "visitors#about"
   get "privacy_policy", to: "visitors#privacy_policy"
+  get "sms_info", to: "visitors#sms_info"
   get "terms", to: "visitors#terms"
   get "donations", to: "visitors#donations"
   get "bitcoin_donations", to: "visitors#bitcoin_donations"

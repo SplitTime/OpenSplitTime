@@ -120,7 +120,7 @@ module ToggleHelper
 
     args.merge!(subscribable: subscribable, protocol: protocol)
     if protocol == "sms" && !current_user&.admin?
-      content_tag(:span, "SMS temporarily out of service.", class: "small text-muted")
+      content_tag(:span, class: "mx-3") { safe_join(["SMS temporarily out of service.", tag.br, "Please use email."]) }
     elsif current_user
       if protocol == "sms" && !current_user.sms_opted_in?
         link_to_sms_opt_in(icon: args[:icon_name])

@@ -132,6 +132,33 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
       end
     end
 
+    context "when a concurrent worker has already created a split_time at the same time_point" do
+      let(:raw_times) { [raw_time_4] }
+      let(:new_split_time) do
+        SplitTime.new(absolute_time: start_time + 25_000, effort_id: effort.id, lap: 1,
+                      split_id: split_3.id, bitkey: in_bitkey)
+      end
+
+      before do
+        raw_time_4.new_split_time = new_split_time
+        effort.reload
+        # Prime the in-memory association cache so the interactor's `effort.split_times.find`
+        # would otherwise miss the concurrently-created row.
+        effort.split_times.to_a
+        # Simulate a concurrent worker having committed a split_time at the same time_point
+        # after the cache was loaded.
+        SplitTime.create!(effort_id: effort.id, lap: 1, split_id: split_3.id,
+                          sub_split_bitkey: in_bitkey, absolute_time: start_time + 24_000)
+      end
+
+      it "updates the existing split_time instead of raising RecordNotUnique" do
+        expect { response }.not_to raise_error
+        expect(response).to be_successful
+        expect(SplitTime.where(effort_id: effort.id, lap: 1, split_id: split_3.id,
+                               sub_split_bitkey: in_bitkey).count).to eq(1)
+      end
+    end
+
     context "when a raw_time has no new_split_time (e.g., invalid sub_split kind for the split)" do
       let(:raw_times) { [raw_time_2, raw_time_3] }
       let(:new_split_time_1) { SplitTime.new(absolute_time: start_time + 5000, effort_id: effort.id, lap: 1, split_id: split_2.id, bitkey: in_bitkey) }

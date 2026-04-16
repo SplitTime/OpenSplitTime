@@ -127,5 +127,31 @@ RSpec.describe Interactors::MatchTimeRecordsToSplitTimes do
         expect(response.resources[:unmatched].size).to eq(1)
       end
     end
+
+    context "when the candidate pool contains a matching split_time belonging to a different effort" do
+      let(:other_event_group) { create(:event_group) }
+      let(:other_event) do
+        create(:event, event_group: other_event_group, course: event.course,
+                       scheduled_start_time: event.scheduled_start_time)
+      end
+      let(:other_effort) do
+        create(:effort, event: other_event, bib_number: effort.bib_number,
+                        scheduled_start_time: effort.scheduled_start_time)
+      end
+      let!(:other_split_time) do
+        create(:split_time, effort: other_effort, lap: 1, split: split_1, bitkey: in_bitkey,
+                            absolute_time: split_time_1.absolute_time)
+      end
+      let(:split_times) do
+        SplitTime.where(id: [split_time_2.id, other_split_time.id]).with_time_record_matchers
+      end
+
+      it "does not match a split_time that belongs to a different effort" do
+        expect(response).to be_successful
+        expect(response.resources[:matched].map(&:id)).to contain_exactly(raw_time_2.id)
+        expect(response.resources[:unmatched].map(&:id)).to contain_exactly(raw_time_1.id)
+        expect(response.resources[:matched].map(&:split_time_id)).not_to include(other_split_time.id)
+      end
+    end
   end
 end

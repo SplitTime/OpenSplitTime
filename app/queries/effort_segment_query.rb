@@ -61,7 +61,13 @@ class EffortSegmentQuery < BaseQuery
               (select course_id, begin_split_id, begin_bitkey, end_split_id, end_bitkey,
                       effort_id, lap, begin_time, end_time, elapsed_seconds::integer,
                       begin_split_kind, end_split_kind
-               from sub_split_segments)
+               from sub_split_segments
+               /* Skip segments whose elapsed_seconds would overflow a 32-bit integer
+                  (~68 years). No legitimate race produces such values, but a single
+                  imported split_time with a malformed absolute_time can, and would
+                  otherwise crash the entire ingestion job. */
+               where elapsed_seconds is null
+                  or elapsed_seconds between -2147483648 and 2147483647)
       on conflict (begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap) do update
           set begin_time      = EXCLUDED.begin_time,
               end_time        = EXCLUDED.end_time,

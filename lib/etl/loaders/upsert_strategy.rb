@@ -1,9 +1,16 @@
 module Etl
   module Loaders
     class UpsertStrategy < BaseLoader
+      # Maps record_type -> parent class name that DOES accept it, used to tell the API client
+      # where to send the payload when they've hit the wrong endpoint.
+      SUGGESTED_PARENT_FOR_RECORD_TYPE = {
+        raw_time: "event_group",
+      }.freeze
+
       def post_initialize(options)
         @unique_key = options[:unique_key]&.map { |attribute| attribute.to_s.underscore.to_sym }
         @parent = options[:parent]
+        validate_parent_accepts_record_types
       end
 
       def custom_load
@@ -77,6 +84,21 @@ module Etl
 
       def unique_key_valid?(unique_key, unique_attributes)
         unique_key.present? && unique_key.size == unique_attributes.size && unique_attributes.values.none?(&:nil?)
+      end
+
+      def validate_parent_accepts_record_types
+        return unless parent
+
+        proto_records.map(&:record_type).compact.uniq.each do |record_type|
+          plural_model_class = record_type.to_s.pluralize
+          next if parent.respond_to?(plural_model_class)
+
+          errors << unsupported_record_type_error(
+            parent.class.name,
+            record_type,
+            suggested_parent: SUGGESTED_PARENT_FOR_RECORD_TYPE[record_type],
+          )
+        end
       end
     end
   end

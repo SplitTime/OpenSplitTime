@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "User subscribes to notifications for a person", type: :system, js: true do
+RSpec.describe "User subscribes to notifications for a person", :js, type: :system do
   include ActionView::RecordIdentifier
 
   let(:user) { users(:third_user) }
@@ -19,6 +19,7 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
   end
 
   scenario "The user is not logged in and subscribes to sms" do
+    pending "SMS is admin-only pending 10DLC campaign approval"
     visit_page
 
     page.accept_confirm("You must be signed in to subscribe to notifications") do
@@ -41,6 +42,7 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
   end
 
   scenario "The user is logged in and subscribes to sms without a phone number" do
+    pending "SMS is admin-only pending 10DLC campaign approval"
     login_as user, scope: :user
     visit_page
 
@@ -52,6 +54,7 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
   end
 
   scenario "The user is logged in and subscribes to sms with a phone number" do
+    pending "SMS is admin-only pending 10DLC campaign approval"
     user.update_columns(phone: "1234567890")
     login_as user, scope: :user
     visit_page

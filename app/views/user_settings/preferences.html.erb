@@ -37,7 +37,7 @@
             <div class="mb-3">
               <%= f.label "Phone", class: "mb-1" %>
               <%= f.text_field :phone, class: "form-control", placeholder: "XXX-XXX-XXXX",
-                               data: { phone_consent_target: "phone", action: "input->phone-consent#toggle" } %>
+                                       data: { phone_consent_target: "phone", action: "input->phone-consent#toggle" } %>
               <div class="form-text">US or Canada mobile number only</div>
             </div>
 
@@ -50,7 +50,7 @@
               </p>
               <div class="form-check">
                 <%= f.check_box :sms_consent, class: "form-check-input", checked: current_user.sms_opted_in?,
-                                data: { phone_consent_target: "consent" } %>
+                                              data: { phone_consent_target: "consent" } %>
                 <%= f.label :sms_consent, class: "form-check-label" do %>
                   I agree to receive SMS text messages from OpenSplitTime
                 <% end %>

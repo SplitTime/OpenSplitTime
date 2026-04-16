@@ -65,12 +65,24 @@ RSpec.describe Course, type: :model do
 
   describe "#average_finish_seconds" do
     let(:result) { course.average_finish_seconds }
-    let(:course) { courses(:hardrock_ccw) }
 
-    before { EffortSegment.set_all }
+    context "with a complete course that has finished efforts" do
+      let(:course) { courses(:hardrock_ccw) }
 
-    it "returns the average finish time in seconds for the course" do
-      expect(result).to eq(139039)
+      before { EffortSegment.set_all }
+
+      it "returns the average finish time in seconds for the course" do
+        expect(result).to eq(139039)
+      end
+    end
+
+    context "when the course is missing start or finish splits" do
+      let(:course) { create(:course) }
+
+      it "returns nil without raising" do
+        expect { result }.not_to raise_error
+        expect(result).to be_nil
+      end
     end
   end
 

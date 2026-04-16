@@ -46,9 +46,9 @@ class Course < ApplicationRecord
 
   # @return [Integer, nil]
   def average_finish_seconds
-    starting_split_id = start_split.id
-    finish_split_id = finish_split.id
-    segments = EffortSegment.where(begin_split_id: starting_split_id, end_split_id: finish_split_id)
+    return nil unless start_split && finish_split
+
+    segments = EffortSegment.where(begin_split_id: start_split.id, end_split_id: finish_split.id)
     return nil if segments.empty?
 
     segments.average(:elapsed_seconds).to_i

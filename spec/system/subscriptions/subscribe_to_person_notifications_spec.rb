@@ -4,6 +4,7 @@ RSpec.describe "User subscribes to notifications for a person", :js, type: :syst
   include ActionView::RecordIdentifier
 
   let(:user) { users(:third_user) }
+  let(:admin) { users(:admin_user) }
   let(:person) { people(:progress_cascade) }
 
   before { person.update!(topic_resource_key: "anything") }
@@ -64,6 +65,32 @@ RSpec.describe "User subscribes to notifications for a person", :js, type: :syst
     end
     expect(page).to have_current_path(person_path(person))
     expect(page).to have_content("You have subscribed to sms notifications for #{person.full_name}.")
+  end
+
+  scenario "Non-admin user sees SMS out of service message" do
+    login_as user, scope: :user
+    visit_page
+
+    expect(page).to have_content("SMS temporarily out of service")
+  end
+
+  scenario "Admin without SMS opt-in sees Enable SMS link" do
+    admin.update_columns(phone_confirmed_at: nil)
+    login_as admin, scope: :user
+    visit_page
+
+    within("##{dom_id(person, :sms)}") do
+      expect(page).to have_link("Enable SMS")
+    end
+  end
+
+  scenario "Admin with SMS opt-in sees SMS subscribe button" do
+    login_as admin, scope: :user
+    visit_page
+
+    within("##{dom_id(person, :sms)}") do
+      expect(page).to have_button("sms")
+    end
   end
 
   def visit_page

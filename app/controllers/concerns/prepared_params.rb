@@ -20,20 +20,23 @@ class PreparedParams
   end
 
   def editable
-    params[:filter] && params[:filter][:editable]&.to_boolean
+    filter_hash = params[:filter]
+    return nil unless filter_hash.is_a?(ActionController::Parameters) || filter_hash.is_a?(Hash)
+
+    filter_hash[:editable]&.to_boolean
   end
 
   def fields
-    @fields ||= (params[:fields] || ActionController::Parameters.new({})).to_unsafe_h
-        .transform_values { |fields| fields.split(",").map { |field| field.camelize(:lower).to_sym } }
-        .with_indifferent_access
+    raw_fields = (params[:fields] || ActionController::Parameters.new({})).to_unsafe_h
+    @fields ||= raw_fields.transform_values { |fields| fields.split(",").map { |field| field.camelize(:lower).to_sym } }
+                          .with_indifferent_access
   end
 
   def filter
     return @filter if defined?(@filter)
 
     filter_params = transformed_filter_values.except(*SPECIAL_FILTER_FIELDS)
-    filter_params["gender"] = prepare_gender(filter_params["gender"]) if filter_params.has_key?("gender")
+    filter_params["gender"] = prepare_gender(filter_params["gender"]) if filter_params.key?("gender")
     BOOLEAN_FILTER_ATTRIBUTES.each do |attr|
       filter_params[attr] = filter_params[attr].to_boolean if filter_params[attr]
     end
@@ -50,23 +53,31 @@ class PreparedParams
 
   def page
     result = params[:page]&.to_i || FIRST_PAGE
-    result == 0 ? FIRST_PAGE : result
+    result.zero? ? FIRST_PAGE : result
   end
 
   def search
-    params[:filter] && params[:filter][:search].presence
+    filter_hash = params[:filter]
+    return nil unless filter_hash.is_a?(ActionController::Parameters) || filter_hash.is_a?(Hash)
+
+    filter_hash[:search].presence
   end
 
   def sort
-    @sort ||= sort_hash.reject { |field, _| permitted_query.exclude?(field) }.with_indifferent_access
+    @sort ||= sort_hash.filter_map { |field, dir| [field, dir] if permitted_query.include?(field) }
+                       .to_h.with_indifferent_access
   end
 
   def sort_text
     sort.map { |field, direction| "#{field} #{direction}" }.join(",")
   end
 
-  def method_missing(method)
+  def method_missing(method, ...)
     params[method]
+  end
+
+  def respond_to_missing?(method, include_private = false)
+    params.key?(method) || super
   end
 
   private
@@ -88,7 +99,7 @@ class PreparedParams
   def sort_hash
     sort_fields.each_with_object({}) do |field, hash|
       if field.start_with?("-")
-        hash[field[1..-1].underscore] = :desc
+        hash[field[1..].underscore] = :desc
       else
         hash[field.underscore] = :asc
       end
@@ -96,11 +107,14 @@ class PreparedParams
   end
 
   def permitted_filter_params
+    filter_hash = params[:filter]
+    return {} unless filter_hash.is_a?(ActionController::Parameters)
+
     # ActionController::Parameters#permit will strip out any key whose value is an Array,
     # so first convert any Arrays to comma-separated lists
-    params[:filter]&.each { |k, v| params[:filter][k] = v.join(",") if v.is_a?(Array) }
+    filter_hash.each { |k, v| filter_hash[k] = v.join(",") if v.is_a?(Array) }
     permitted_keys = permitted_query << :editable
-    params[:filter]&.permit(*permitted_keys) || {}
+    filter_hash.permit(*permitted_keys)
   end
 
   def sort_fields

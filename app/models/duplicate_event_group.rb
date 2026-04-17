@@ -32,13 +32,22 @@ class DuplicateEventGroup
 
   def duplicate_event_group
     self.new_event_group = existing_event_group.dup
-    new_event_group.assign_attributes(name: new_name, concealed: true, available_live: false,
-                                      webhook_token: nil, created_by: created_by)
+    new_event_group.assign_attributes(
+      name: new_name,
+      concealed: true,
+      available_live: false,
+      webhook_token: nil,
+      created_by: created_by,
+    )
     existing_event_group.events.each do |existing_event|
       new_event = existing_event.dup
-      new_event.assign_attributes(scheduled_start_time: existing_event.scheduled_start_time + offset,
-                                  historical_name: nil, beacon_url: nil, efforts_count: 0,
-                                  created_by: created_by)
+      new_event.assign_attributes(
+        scheduled_start_time: existing_event.scheduled_start_time + offset,
+        historical_name: nil,
+        beacon_url: nil,
+        efforts_count: 0,
+        created_by: created_by,
+      )
       new_event_group.events << new_event
     end
   end

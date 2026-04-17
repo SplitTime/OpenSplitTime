@@ -54,7 +54,7 @@
               <% if current_user.sms_opted_in? %>
                 <p class="small text-success mt-2 mb-0">
                   <i class="fas fa-check-circle"></i>
-                  <%= t("sms.consent.enabled_since", date: current_user.phone_confirmed_at.strftime("%B %-d, %Y")) %>
+                  <%= t("sms.consent.enabled_since", date: l(current_user.phone_confirmed_at.to_date, format: :long)) %>
                 </p>
               <% end %>
             </div>

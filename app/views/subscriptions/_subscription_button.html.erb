@@ -1,5 +1,6 @@
 <%# locals: (subscribable:, protocol:) -%>
 
+<%= turbo_stream_from subscribable %>
 <%= content_tag :span, id: dom_id(subscribable, protocol), class: "mx-1" do %>
   <%= link_to_subscription(subscribable, protocol) %>
 <% end %>

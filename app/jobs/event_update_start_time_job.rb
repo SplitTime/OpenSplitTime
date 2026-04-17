@@ -9,9 +9,11 @@ class EventUpdateStartTimeJob < ApplicationJob
 
     result = Interactors::ShiftEventStartTime.perform!(event, new_start_time: new_start_time)
 
-    message = "#{result.message} Refresh the page to see changes."
-    level = result.successful? ? :success : :danger
-    broadcast_flash(event.event_group, message: message, level: level)
+    if result.successful?
+      broadcast_flash(event.event_group, message: "#{result.message} Refresh the page to see changes.")
+    else
+      broadcast_flash(event.event_group, message: result.message, level: :danger)
+    end
     result
   end
 

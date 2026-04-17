@@ -37,7 +37,7 @@ RSpec.describe "create a duplicate event group using the duplicate event group p
     end
 
     scenario "The source event group has a webhook token" do
-      event_group.update_column(:webhook_token, SecureRandom.base58(24))
+      event_group.regenerate_webhook_token
       login_as admin, scope: :user
 
       visit new_duplicate_path

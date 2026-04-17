@@ -41,7 +41,7 @@ RSpec.describe DuplicateEventGroup, type: :model do
     end
 
     context "when the source event group has a webhook token" do
-      before { event_group.update_column(:webhook_token, SecureRandom.base58(24)) }
+      before { event_group.regenerate_webhook_token }
 
       it "does not copy the webhook token from the source" do
         expect(subject.new_event_group.webhook_token).not_to eq(event_group.reload.webhook_token)

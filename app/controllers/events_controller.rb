@@ -24,7 +24,9 @@ class EventsController < ApplicationController
     )
     # Scheduled start time has to be set separately otherwise home_time_zone
     # delegation does not work
-    @event.scheduled_start_time_local = @event_group.scheduled_start_time_local || (7.days.from_now.in_time_zone(@event.home_time_zone).midnight + 6.hours)
+    @event.scheduled_start_time_local =
+      @event_group.scheduled_start_time_local ||
+      (7.days.from_now.in_time_zone(@event.home_time_zone).midnight + 6.hours)
     authorize @event
 
     @presenter = ::EventSetupPresenter.new(@event, view_context)
@@ -121,7 +123,7 @@ class EventsController < ApplicationController
   def reassign
     authorize @event
 
-    @event.assign_attributes(params.require(:event).permit(:event_group_id))
+    @event.assign_attributes(params.expect(event: [:event_group_id]))
     redirect_id = @event.event_group_id || @event.changed_attributes["event_group_id"]
 
     response = Interactors::UpdateEventAndGrouping.perform!(@event)
@@ -132,14 +134,17 @@ class EventsController < ApplicationController
         format.turbo_stream do
           redirect_event_group = EventGroup.find(redirect_id)
           presenter = ::EventGroupSetupPresenter.new(redirect_event_group, view_context)
-          render turbo_stream: turbo_stream.replace("event_overview_cards", partial: "event_groups/event_overview_cards", locals: { presenter: presenter })
+          render turbo_stream: turbo_stream.replace(
+            "event_overview_cards",
+            partial: "event_groups/event_overview_cards",
+            locals: { presenter: presenter }
+          )
         end
       end
     else
       set_flash_message(response)
       redirect_to setup_event_group_path(redirect_id), status: :unprocessable_content
     end
-
   end
 
   # Special views with results
@@ -154,14 +159,17 @@ class EventsController < ApplicationController
         csv_stream = render_to_string(partial: "spread", formats: :csv)
         send_data(csv_stream,
                   type: "text/csv",
-                  filename: "#{@event.name}-#{@presenter.display_style}-#{Date.today}.csv")
+                  filename: "#{@event.name}-#{@presenter.display_style}-#{Time.zone.today}.csv")
       end
     end
   end
 
   # GET /events/1/summary
   def summary
-    event = Event.where(id: @event.id).includes(:course, :splits, event_group: :organization).references(:course, :splits, event_group: :organization).first
+    event = Event.where(id: @event.id)
+                 .includes(:course, :splits, event_group: :organization)
+                 .references(:course, :splits, event_group: :organization)
+                 .first
     params[:per_page] ||= MAX_SUMMARY_EFFORTS
     @presenter = SummaryPresenter.new(event: event, params: prepared_params, current_user: current_user)
   end
@@ -183,7 +191,7 @@ class EventsController < ApplicationController
   def set_stops
     authorize @event
     event = Event.where(id: @event.id).includes(efforts: { split_times: :split }).first
-    stop_status = params[:stop_status].blank? ? true : params[:stop_status].to_boolean
+    stop_status = params[:stop_status].blank? || params[:stop_status].to_boolean
     response = Interactors::UpdateEffortsStop.perform!(event.efforts, stop_status: stop_status)
     set_flash_message(response)
     redirect_to setup_event_group_path(@event.event_group)

@@ -18,8 +18,7 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def error_message
-    # Ensure that all_sources has been called so that @error_message is set.
-    set_all_sources
+    all_sources
     @error_message
   end
 
@@ -86,12 +85,6 @@ class ConnectServicePresenter < BasePresenter
   delegate :organization, to: :event_group, private: true
 
   def all_sources
-    # Ensure that set_all_sources has been called so that @all_sources is set.
-    set_all_sources
-    @all_sources
-  end
-
-  def set_all_sources
     return @all_sources if defined?(@all_sources)
 
     @all_sources = [] and return unless some_credentials_present?
@@ -109,7 +102,7 @@ class ConnectServicePresenter < BasePresenter
   rescue ::Connectors::Errors::Base => e
     @error_message = e.message
   ensure
-    @all_sources ||= [] # rubocop:disable Naming/MemoizedInstanceVariableName
+    @all_sources ||= []
   end
 
   def candidate_separation_limit

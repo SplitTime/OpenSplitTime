@@ -37,7 +37,6 @@ RSpec.describe "create an entrant from the event group entrants view", :js do
     visit_page
 
     expect(page).to have_content("Add or Import Your Entrants")
-    expect(page).not_to have_css("tbody#entrants")
 
     click_link "Add"
     expect(page).to have_content("Add an Entrant")
@@ -48,7 +47,6 @@ RSpec.describe "create an entrant from the event group entrants view", :js do
 
     expect do
       click_button "Create Entrant"
-      expect(page).to have_css("tbody#entrants")
       expect(page).to have_css(".bg-highlight")
     end.to change { event_group.reload.efforts.count }.by(1)
 

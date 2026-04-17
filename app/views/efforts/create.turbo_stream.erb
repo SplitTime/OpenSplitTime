@@ -2,12 +2,13 @@
 
 <%= turbo_stream.replace("form_modal", "") %>
 
-<% if presenter.event_group_efforts_count == 1 %>
-  <%= turbo_stream.replace("entrants_empty_state",
-                           partial: "event_groups/entrants_table",
-                           locals: { presenter: presenter }) %>
-<% else %>
-  <%= turbo_stream.prepend("entrants",
-                           partial: "efforts/entrant_for_setup",
-                           locals: { presenter: presenter, effort: effort }) %>
-<% end %>
+<%= turbo_stream.replace("entrants_callout",
+                         partial: "event_groups/entrants_callout",
+                         locals: { presenter: presenter }) %>
+
+<%= turbo_stream.replace("entrants_count",
+                         html: filter_count_text(presenter.filtered_efforts_total_count, presenter.event_group_efforts_count, "entrant")) %>
+
+<%= turbo_stream.prepend("entrants",
+                         partial: "efforts/entrant_for_setup",
+                         locals: { presenter: presenter, effort: effort }) %>

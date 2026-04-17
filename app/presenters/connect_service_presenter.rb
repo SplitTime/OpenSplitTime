@@ -109,7 +109,7 @@ class ConnectServicePresenter < BasePresenter
   rescue ::Connectors::Errors::Base => e
     @error_message = e.message
   ensure
-    @set_all_sources ||= []
+    @all_sources ||= [] # rubocop:disable Naming/MemoizedInstanceVariableName
   end
 
   def candidate_separation_limit

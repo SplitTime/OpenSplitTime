@@ -5,6 +5,7 @@ class DuplicateEventGroup
   attribute :existing_id, :integer
   attribute :new_name, :string
   attribute :new_start_date, :date
+  attribute :created_by, :integer
   attr_reader :new_event_group
 
   validates :existing_event_group, :new_name, :new_start_date, presence: true
@@ -31,11 +32,13 @@ class DuplicateEventGroup
 
   def duplicate_event_group
     self.new_event_group = existing_event_group.dup
-    new_event_group.assign_attributes(name: new_name, concealed: true, available_live: false)
+    new_event_group.assign_attributes(name: new_name, concealed: true, available_live: false,
+                                      webhook_token: nil, created_by: created_by)
     existing_event_group.events.each do |existing_event|
       new_event = existing_event.dup
       new_event.assign_attributes(scheduled_start_time: existing_event.scheduled_start_time + offset,
-                                  historical_name: nil, beacon_url: nil, efforts_count: 0)
+                                  historical_name: nil, beacon_url: nil, efforts_count: 0,
+                                  created_by: created_by)
       new_event_group.events << new_event
     end
   end

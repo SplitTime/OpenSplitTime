@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe Credential do
   subject { described_class.new(user: user, service_identifier: service_identifier, key: key, value: value) }
+
   let(:user) { users(:third_user) }
   let(:service_identifier) { "runsignup" }
   let(:key) { "api_key" }
@@ -11,7 +12,7 @@ RSpec.describe Credential do
     before { subject.validate }
 
     context "when no conflicting credentials exist" do
-      before { Credential.delete_all }
+      before { described_class.delete_all }
 
       context "when all attributes are valid" do
         it { expect(subject).to be_valid }
@@ -60,6 +61,40 @@ RSpec.describe Credential do
     end
   end
 
+  describe "#value when decryption fails" do
+    let(:credential) { user.credentials.for_service("runsignup").find_by(key: "api_key") }
+
+    before do
+      # Write invalid ciphertext directly to simulate an encryption key mismatch
+      described_class.connection.execute(
+        "UPDATE credentials SET value = 'corrupted-ciphertext' WHERE id = #{credential.id}"
+      )
+      credential.reload
+    end
+
+    it "returns nil instead of raising" do
+      expect(credential.value).to be_nil
+    end
+  end
+
+  describe ".fetch when decryption fails" do
+    let(:result) { user.credentials.fetch(service_identifier, key) }
+    let(:user) { users(:third_user) }
+    let(:service_identifier) { "runsignup" }
+    let(:key) { "api_key" }
+
+    before do
+      credential = user.credentials.for_service(service_identifier).find_by(key: key)
+      described_class.connection.execute(
+        "UPDATE credentials SET value = 'corrupted-ciphertext' WHERE id = #{credential.id}"
+      )
+    end
+
+    it "returns nil instead of raising" do
+      expect(result).to be_nil
+    end
+  end
+
   describe ".fetch" do
     let(:result) { user.credentials.fetch(service_identifier, key) }
     let(:user) { users(:third_user) }
@@ -74,7 +109,7 @@ RSpec.describe Credential do
     end
 
     context "when multiple records exist" do
-      let(:result) { Credential.fetch(service_identifier, key) }
+      let(:result) { described_class.fetch(service_identifier, key) }
       before { described_class.create(user: other_user, service_identifier: service_identifier, key: key, value: "5678") }
 
       it "raises an error" do

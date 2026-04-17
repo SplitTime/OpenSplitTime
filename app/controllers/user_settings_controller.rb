@@ -31,20 +31,16 @@ class UserSettingsController < ApplicationController
   def update
     sms_was_opted_in = current_user.sms_opted_in?
     updated = current_user.update(settings_update_params)
-    message = if updated && current_user.unconfirmed_email.present?
-                "You have requested that your email address be changed. " \
-                  "Please check your email to confirm your new address."
-              elsif updated && !sms_was_opted_in && current_user.sms_opted_in?
-                t("sms.consent.opted_in")
-              elsif updated && sms_was_opted_in && !current_user.sms_opted_in?
-                t("sms.consent.opted_out")
-              elsif updated
-                nil
-              else
-                current_user.errors.full_messages.join("; ")
-              end
 
-    redirect_to request.referrer, notice: message
+    if updated
+      messages = []
+      messages << t("user_settings.update.email_change_requested") if current_user.unconfirmed_email.present?
+      messages << t("sms.consent.opted_in") if !sms_was_opted_in && current_user.sms_opted_in?
+      messages << t("sms.consent.opted_out") if sms_was_opted_in && !current_user.sms_opted_in?
+      redirect_to request.referrer, notice: messages.join(" ").presence
+    else
+      redirect_to request.referrer, notice: current_user.errors.full_messages.join("; ")
+    end
   end
 
   private

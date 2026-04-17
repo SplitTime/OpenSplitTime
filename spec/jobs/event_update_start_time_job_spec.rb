@@ -6,6 +6,7 @@ RSpec.describe EventUpdateStartTimeJob do
   subject(:job) { described_class.perform_later(event, **options) }
 
   let(:event) { events(:ramble) }
+  let(:event_group) { event.event_group }
   let(:options) { { new_start_time: "2017-10-01 08:00:00", current_user: users(:admin_user) } }
 
   after do
@@ -21,14 +22,34 @@ RSpec.describe EventUpdateStartTimeJob do
     result = Interactors::Response.new(errors: [])
     allow(Interactors::ShiftEventStartTime).to receive(:perform!)
       .with(event, new_start_time: "2017-10-01 08:00:00").and_return(result)
+
     perform_enqueued_jobs { job }
+
     expect(Interactors::ShiftEventStartTime).to have_received(:perform!)
       .with(event, new_start_time: "2017-10-01 08:00:00")
   end
 
   it "shifts the event start time without error" do
     perform_enqueued_jobs { job }
+
     expect(event.reload.scheduled_start_time_local.to_s).to include("2017-10-01")
+  end
+
+  it "broadcasts a flash message on completion" do
+    expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
+      event_group,
+      target: "flash",
+      partial: "layouts/broadcast_flash",
+      locals: hash_including(level: :success, message: anything)
+    )
+
+    perform_enqueued_jobs { job }
+  end
+
+  it "broadcasts a refresh on completion" do
+    expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_to).with(event_group)
+
+    perform_enqueued_jobs { job }
   end
 
   describe "validation" do

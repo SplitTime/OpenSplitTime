@@ -77,10 +77,33 @@ en:
       no_raw_times_detail_2: "When your Event Group has Live Entry enabled, you can use OST Remote to submit Raw Times from your iOS device or the Live Entry view to submit Raw Times from the website. If Live Entry is enabled for your Event Group, you will see the \"Live Updating\" indicator at the top of the page, meaning that Raw Times will appear here without a page refresh."
 
   subscriptions:
+    create:
+      success: "You have subscribed to %{protocol} notifications for %{name}. Messages will be sent to %{endpoint}."
+      sms_no_phone: "Please add a mobile phone number and opt in to SMS on your preferences page."
+      sms_not_opted_in: "Please opt in to SMS text messages on your preferences page."
     tooltips:
       confirmed: "This subscription is confirmed."
       no_topic: "This subscription does not have a resource key. Click Actions > Refresh to attempt to generate one, or delete this subscription and create a new one."
       pending: "This subscription is pending confirmation. If you have confirmed the endpoint, click Actions > Refresh to change its status here."
+    toggle:
+      subscribe_email: "Receive %{update_type} updates for %{name}? (You will need to click a link in a confirmation email that will be sent to you from AWS Notifications.)"
+      subscribe_sms: "Receive %{update_type} updates for %{name}?"
+      unsubscribe: "Stop receiving %{update_type} updates for %{name}?"
+      sms_out_of_service: "SMS temporarily out of service."
+      sms_please_use_email: "Please use email."
+      enable_sms: "Enable SMS"
+      sign_in_required: "You must be signed in to subscribe to notifications."
+      effort_update_type: "live progress"
+      person_update_type: "future event sign-up"
+
+  sms:
+    consent:
+      disclosure: "By checking the box below, you agree to receive SMS text messages from OpenSplitTime with live race progress updates for participants you choose to follow. Message frequency varies. Msg & data rates may apply. Reply STOP to cancel or HELP for help. US and Canada numbers only."
+      checkbox_label: "I agree to receive SMS text messages from OpenSplitTime"
+      view_terms: "View full SMS terms"
+      enabled_since: "SMS enabled since %{date}"
+    phone:
+      hint: "US or Canada mobile number only"
 
   user_settings:
     credentials:

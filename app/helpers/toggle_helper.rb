@@ -94,24 +94,25 @@ module ToggleHelper
 
     update_type = case subscribable.class.name
                   when "Effort"
-                    "live progress"
+                    t("subscriptions.toggle.effort_update_type")
                   when "Person"
-                    "future event sign-up"
+                    t("subscriptions.toggle.person_update_type")
                   else
                     raise ArgumentError, "Unknown subscribable class: #{subscribable.class.name}"
                   end
 
+    name = subscribable.full_name
+    unsubscribe_alert = t("subscriptions.toggle.unsubscribe", update_type: update_type, name: name)
+
     args = case protocol
            when "email"
              { icon_name: "envelope",
-               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}? " \
-                                "(You will need to click a link in a confirmation email that will be sent to you " \
-                                "from AWS Notifications.)",
-               unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?" }
+               subscribe_alert: t("subscriptions.toggle.subscribe_email", update_type: update_type, name: name),
+               unsubscribe_alert: unsubscribe_alert }
            when "sms"
              { icon_name: "mobile-alt",
-               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}?",
-               unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?" }
+               subscribe_alert: t("subscriptions.toggle.subscribe_sms", update_type: update_type, name: name),
+               unsubscribe_alert: unsubscribe_alert }
            else
              {}
            end
@@ -120,7 +121,10 @@ module ToggleHelper
 
     args.merge!(subscribable: subscribable, protocol: protocol)
     if protocol == "sms" && !current_user&.admin?
-      content_tag(:span, class: "mx-3") { safe_join(["SMS temporarily out of service.", tag.br, "Please use email."]) }
+      content_tag(:span, class: "mx-3") do
+        safe_join([t("subscriptions.toggle.sms_out_of_service"), tag.br,
+                   t("subscriptions.toggle.sms_please_use_email")])
+      end
     elsif current_user
       if protocol == "sms" && !current_user.sms_opted_in?
         link_to_sms_opt_in(icon: args[:icon_name])
@@ -163,7 +167,7 @@ module ToggleHelper
 
   def link_to_sms_opt_in(icon:)
     link_to(user_settings_preferences_path, class: "btn btn-lg btn-outline-secondary") do
-      fa_icon(icon, text: "Enable SMS")
+      fa_icon(icon, text: t("subscriptions.toggle.enable_sms"))
     end
   end
 
@@ -173,7 +177,7 @@ module ToggleHelper
       method: :get,
       class: "btn btn-lg btn-outline-secondary",
       data: {
-        turbo_confirm: "You must be signed in to subscribe to notifications.",
+        turbo_confirm: t("subscriptions.toggle.sign_in_required"),
       }
     }
 

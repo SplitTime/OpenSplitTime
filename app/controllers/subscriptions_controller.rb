@@ -15,6 +15,7 @@ class SubscriptionsController < ApplicationController
   end
 
   # POST /subscribable/:subscribable_id/subscriptions
+  # rubocop:disable Rails/I18nLazyLookup -- mounted under multiple parent resources; lazy lookup resolves wrong path
   def create
     @subscription = @subscribable.subscriptions.new(permitted_params)
     @subscription.user = current_user
@@ -28,14 +29,16 @@ class SubscriptionsController < ApplicationController
 
     if protocol == "sms" && !current_user.sms_opted_in?
       flash[:warning] = if current_user.sms.blank?
-                          "Please add a mobile phone number and opt in to SMS on your preferences page."
+                          t("subscriptions.create.sms_no_phone")
                         else
-                          "Please opt in to SMS text messages on your preferences page."
+                          t("subscriptions.create.sms_not_opted_in")
                         end
       redirect_to user_settings_preferences_path
     elsif @subscription.save
-      flash.now[:success] = "You have subscribed to #{protocol} notifications for #{@subscribable.name}. " \
-                            "Messages will be sent to #{@subscription[:endpoint]}."
+      flash.now[:success] = t("subscriptions.create.success",
+                              protocol: protocol,
+                              name: @subscribable.name,
+                              endpoint: @subscription[:endpoint])
       render :create, locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
     elsif @subscription.subscribable.is_a?(Event)
       render :new, locals: { subscription: @subscription }, status: :unprocessable_content
@@ -44,6 +47,7 @@ class SubscriptionsController < ApplicationController
       render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
     end
   end
+  # rubocop:enable Rails/I18nLazyLookup
 
   # DELETE /subscribable/:subscribable_id/subscriptions/:id
   def destroy

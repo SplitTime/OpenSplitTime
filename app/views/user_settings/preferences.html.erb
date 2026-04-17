@@ -38,27 +38,23 @@
               <%= f.label "Phone", class: "mb-1" %>
               <%= f.text_field :phone, class: "form-control", placeholder: "XXX-XXX-XXXX",
                                        data: { phone_consent_target: "phone", action: "input->phone-consent#toggle" } %>
-              <div class="form-text">US or Canada mobile number only</div>
+              <div class="form-text"><%= t("sms.phone.hint") %></div>
             </div>
 
             <div class="mb-3 p-3 bg-light border rounded">
               <p class="small mb-2">
-                By checking the box below, you agree to receive SMS text messages from OpenSplitTime with live race
-                progress updates for participants you choose to follow. Message frequency varies. Msg & data rates may
-                apply. Reply STOP to cancel or HELP for help. US and Canada numbers only.
-                <%= link_to "View full SMS terms", sms_info_path %>.
+                <%= t("sms.consent.disclosure") %>
+                <%= link_to t("sms.consent.view_terms"), sms_info_path %>.
               </p>
               <div class="form-check">
                 <%= f.check_box :sms_consent, class: "form-check-input", checked: current_user.sms_opted_in?,
                                               data: { phone_consent_target: "consent" } %>
-                <%= f.label :sms_consent, class: "form-check-label" do %>
-                  I agree to receive SMS text messages from OpenSplitTime
-                <% end %>
+                <%= f.label :sms_consent, t("sms.consent.checkbox_label"), class: "form-check-label" %>
               </div>
               <% if current_user.sms_opted_in? %>
                 <p class="small text-success mt-2 mb-0">
                   <i class="fas fa-check-circle"></i>
-                  SMS enabled since <%= current_user.phone_confirmed_at.strftime("%B %-d, %Y") %>
+                  <%= t("sms.consent.enabled_since", date: current_user.phone_confirmed_at.strftime("%B %-d, %Y")) %>
                 </p>
               <% end %>
             </div>

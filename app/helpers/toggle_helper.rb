@@ -144,25 +144,34 @@ module ToggleHelper
     unsubscribe_alert = args[:unsubscribe_alert]
     existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
 
-    if existing_subscription
+    if existing_subscription&.confirmed?
       url = polymorphic_path([subscribable, existing_subscription])
-      html_options = { method: :delete,
-                       class: "#{protocol}-sub btn btn-lg btn-primary",
-                       data: {
-                         turbo_confirm: unsubscribe_alert,
-                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
-                       } }
+      button_class = "btn-primary"
+      confirm_text = unsubscribe_alert
+      method = :delete
+      label = protocol
+    elsif existing_subscription&.pending?
+      RefreshPendingSubscriptionJob.perform_later(existing_subscription.id)
+      url = polymorphic_path([subscribable, existing_subscription])
+      button_class = "btn-outline-primary"
+      confirm_text = unsubscribe_alert
+      method = :delete
+      label = "#{protocol} #{t('subscriptions.toggle.pending_suffix')}"
     else
       url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
-      html_options = { method: :post,
-                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary",
-                       data: {
-                         turbo_confirm: subscribe_alert,
-                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
-                       } }
+      button_class = "btn-outline-secondary"
+      confirm_text = subscribe_alert
+      method = :post
+      label = protocol
     end
 
-    button_to(url, html_options) { fa_icon(icon_name, text: protocol) }
+    html_options = { method: method,
+                     class: "#{protocol}-sub btn btn-lg #{button_class}",
+                     data: {
+                       turbo_confirm: confirm_text,
+                       turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
+                     } }
+    button_to(url, html_options) { fa_icon(icon_name, text: label) }
   end
 
   def link_to_sms_opt_in(icon:)

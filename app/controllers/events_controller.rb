@@ -206,9 +206,8 @@ class EventsController < ApplicationController
     if @event.valid?
       new_start_time = @event.scheduled_start_time_local.to_s
       @event.reload
-      response = EventUpdateStartTimeJob.perform_now(@event, new_start_time: new_start_time, current_user: current_user)
-      set_flash_message(response)
-      redirect_to setup_event_group_path(@event.event_group)
+      EventUpdateStartTimeJob.perform_later(@event, new_start_time: new_start_time, current_user: current_user)
+      redirect_to setup_event_group_path(@event.event_group), notice: "Shifting start time..."
     else
       render :edit_start_time
     end

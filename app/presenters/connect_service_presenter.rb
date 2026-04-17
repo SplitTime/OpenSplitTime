@@ -18,6 +18,7 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def error_message
+    # Trigger lazy load so @error_message is set if an API call fails
     all_sources
     @error_message
   end

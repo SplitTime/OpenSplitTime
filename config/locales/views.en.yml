@@ -102,6 +102,8 @@ en:
       checkbox_label: "I agree to receive SMS text messages from OpenSplitTime"
       view_terms: "View full SMS terms"
       enabled_since: "SMS enabled since %{date}"
+      opted_in: "You have opted in to receive SMS text message updates from OpenSplitTime. Reply STOP to cancel. Reply HELP for help. Msg & data rates may apply."
+      opted_out: "You have opted out of SMS text message updates."
     phone:
       hint: "US or Canada mobile number only"
 

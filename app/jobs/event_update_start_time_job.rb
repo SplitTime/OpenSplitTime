@@ -9,8 +9,9 @@ class EventUpdateStartTimeJob < ApplicationJob
 
     result = Interactors::ShiftEventStartTime.perform!(event, new_start_time: new_start_time)
 
-    broadcast_flash(event.event_group, message: result.message)
-    Turbo::StreamsChannel.broadcast_refresh_to(event.event_group)
+    message = "#{result.message} Refresh the page to see changes."
+    level = result.successful? ? :success : :danger
+    broadcast_flash(event.event_group, message: message, level: level)
     result
   end
 

@@ -6,8 +6,8 @@
                          partial: "event_groups/entrants_callout",
                          locals: { presenter: presenter }) %>
 
-<%= turbo_stream.replace("entrants_count",
-                         html: filter_count_text(presenter.filtered_efforts_total_count, presenter.event_group_efforts_count, "entrant")) %>
+<%= turbo_stream.update("entrants_count",
+                        html: filter_count_text(presenter.filtered_efforts_total_count, presenter.event_group_efforts_count, "entrant")) %>
 
 <%= turbo_stream.prepend("entrants",
                          partial: "efforts/entrant_for_setup",

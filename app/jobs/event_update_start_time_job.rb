@@ -2,11 +2,10 @@ class EventUpdateStartTimeJob < ApplicationJob
   queue_as :default
 
   def perform(event, new_start_time:, current_user:)
-    options = { new_start_time: new_start_time, current_user: current_user }
     validate_setup(event)
-    set_current_user(options)
+    set_current_user(current_user: current_user)
 
-    result = Interactors::ShiftEventStartTime.perform!(event, options)
+    result = Interactors::ShiftEventStartTime.perform!(event, new_start_time: new_start_time)
 
     Rails.logger.debug result.message_with_error_report # TODO: use ActionCable to send this message to the session
     result

@@ -17,11 +17,18 @@ RSpec.describe EventUpdateStartTimeJob do
     expect { job }.to change(described_class.queue_adapter.enqueued_jobs, :size).by(1)
   end
 
-  it "calls Interactors::ShiftEventStartTime with the correct arguments" do
+  it "calls Interactors::ShiftEventStartTime with keyword arguments" do
     result = Interactors::Response.new(errors: [])
-    allow(Interactors::ShiftEventStartTime).to receive(:perform!).with(event, { new_start_time: "2017-10-01 08:00:00" }).and_return(result)
+    allow(Interactors::ShiftEventStartTime).to receive(:perform!)
+      .with(event, new_start_time: "2017-10-01 08:00:00").and_return(result)
     perform_enqueued_jobs { job }
-    expect(Interactors::ShiftEventStartTime).to have_received(:perform!).with(event, { new_start_time: "2017-10-01 08:00:00" })
+    expect(Interactors::ShiftEventStartTime).to have_received(:perform!)
+      .with(event, new_start_time: "2017-10-01 08:00:00")
+  end
+
+  it "shifts the event start time without error" do
+    perform_enqueued_jobs { job }
+    expect(event.reload.scheduled_start_time_local.to_s).to include("2017-10-01")
   end
 
   describe "validation" do

@@ -5,12 +5,13 @@ class DuplicateEventGroupsController < ApplicationController
 
   def new
     authorize @existing_event_group, policy_class: DuplicateEventGroupPolicy
-    @duplicate_event_group = DuplicateEventGroup.new(existing_id: @existing_event_group.id, new_start_date: Date.today)
+    @duplicate_event_group = DuplicateEventGroup.new(existing_id: @existing_event_group.id,
+                                                     new_start_date: Time.zone.today)
   end
 
   def create
     authorize @existing_event_group, policy_class: DuplicateEventGroupPolicy
-    @duplicate_event_group = DuplicateEventGroup.create(permitted_params)
+    @duplicate_event_group = DuplicateEventGroup.create(permitted_params.merge(created_by: current_user.id))
 
     if @duplicate_event_group.valid?
       redirect_to setup_event_group_path(@duplicate_event_group.new_event_group)

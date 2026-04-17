@@ -36,6 +36,14 @@ RSpec.describe "create a duplicate event group using the duplicate event group p
       verify_visit_and_duplication
     end
 
+    scenario "The source event group has a webhook token" do
+      event_group.update_column(:webhook_token, SecureRandom.base58(24))
+      login_as admin, scope: :user
+
+      visit new_duplicate_path
+      verify_visit_and_duplication
+    end
+
     scenario "The name has been taken" do
       login_as admin, scope: :user
 

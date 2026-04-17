@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-xs-8">
-    <h4 id="entrants_count"><%= filter_count_text(presenter.filtered_efforts_total_count, presenter.event_group_efforts_count, "entrant") if presenter.event_group_efforts_count.positive? %></h4>
+    <%= render "entrants_count", presenter: presenter %>
   </div>
   <div class="col-xs-4 text-end">
   </div>

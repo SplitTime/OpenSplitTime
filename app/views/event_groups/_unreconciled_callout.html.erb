@@ -1,0 +1,14 @@
+<%# locals: (presenter:) %>
+
+<div id="unreconciled_callout">
+  <% if presenter.unreconciled_efforts.present? %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: "warning",
+                 icon_color: "warning",
+                 icon_name: "exclamation-triangle",
+                 main_text: "Unreconciled efforts exist; please reconcile when you have a moment",
+                 link: link_to_reconcile_efforts(presenter.event_group),
+               } %>
+  <% end %>
+</div>

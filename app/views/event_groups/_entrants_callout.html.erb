@@ -1,0 +1,17 @@
+<%# locals: (presenter:) %>
+
+<div id="entrants_callout">
+  <% unless presenter.event_group_efforts_count.positive? %>
+    <%= render partial: "shared/callout_with_link",
+               locals: {
+                 callout_color: "info",
+                 icon_color: "info",
+                 icon_name: "info-circle",
+                 main_text: "Add or Import Your Entrants",
+                 detail_paragraphs: [
+                   "Click the <strong>Add</strong> button to manually add an Entrant. Click the <strong>Import</strong> button to import Entrants from a CSV file.".html_safe,
+                   "To connect to an external service, click the <strong>Connections</strong> button.".html_safe
+                 ]
+               } %>
+  <% end %>
+</div>

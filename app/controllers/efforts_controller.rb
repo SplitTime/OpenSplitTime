@@ -1,19 +1,22 @@
 class EffortsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
+  before_action :authenticate_user!,
+                except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
   before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :mini_table]
-  after_action :verify_authorized, except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
+  after_action :verify_authorized,
+               except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
 
   # GET /efforts
   def index
     @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-                 .where(prepared_params[:filter])
+                                   .where(prepared_params[:filter])
     respond_to do |format|
       format.csv do
         builder = CsvBuilder.new(Effort, @efforts)
         filename = if prepared_params[:filter] == { "id" => "0" }
                      "ost-effort-import-template.csv"
                    else
-                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
+                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}" \
+                       "-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
                    end
 
         send_data(builder.full_string, type: "text/csv", filename: filename)
@@ -53,14 +56,17 @@ class EffortsController < ApplicationController
       respond_to do |format|
         format.html { redirect_to entrants_event_group_path(effort.event_group) }
         format.turbo_stream do
-          render :create, locals: { effort: effort, presenter: EventGroupSetupPresenter.new(effort.event_group, view_context) }
+          render :create,
+                 locals: { effort: effort, presenter: EventGroupSetupPresenter.new(effort.event_group, view_context) }
         end
       end
     else
       respond_to do |format|
         format.html { render :new, status: :unprocessable_content }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/new_modal", locals: { effort: effort }), status: :unprocessable_content
+          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/new_modal",
+                                                                  locals: { effort: effort }),
+                 status: :unprocessable_content
         end
       end
     end
@@ -100,7 +106,9 @@ class EffortsController < ApplicationController
           presenter = ::EventGroupRosterPresenter.new(effort.event_group, view_context)
           render :update, locals: { effort: effort, presenter: presenter }
         else
-          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/edit_modal", locals: { effort: effort }), status: :unprocessable_content
+          render turbo_stream: turbo_stream.replace("form_modal", partial: "efforts/edit_modal",
+                                                                  locals: { effort: effort }),
+                 status: :unprocessable_content
         end
       end
     end
@@ -113,7 +121,10 @@ class EffortsController < ApplicationController
     @effort.destroy
     respond_to do |format|
       format.html { redirect_to entrants_event_group_path(@effort.event_group) }
-      format.turbo_stream
+      format.turbo_stream do
+        render :destroy,
+               locals: { effort: @effort, presenter: EventGroupSetupPresenter.new(@effort.event_group, view_context) }
+      end
     end
   end
 
@@ -187,7 +198,9 @@ class EffortsController < ApplicationController
       end
     else
       respond_to do |format|
-        format.turbo_stream { render :start_form, locals: { effort: @effort }, status: :unprocessable_content, alert: response.message }
+        format.turbo_stream do
+          render :start_form, locals: { effort: @effort }, status: :unprocessable_content, alert: response.message
+        end
         format.html { redirect_to effort_path(@effort), status: :unprocessable_content, alert: response.message }
       end
     end
@@ -301,7 +314,8 @@ class EffortsController < ApplicationController
   def mini_table
     if params[:effort_ids].present? && params[:target].present?
       mini_table = EffortsMiniTable.new(params[:effort_ids])
-      render turbo_stream: turbo_stream.update(params[:target], partial: "efforts/efforts_mini_table", locals: { effort_rows: mini_table.effort_rows })
+      render turbo_stream: turbo_stream.update(params[:target], partial: "efforts/efforts_mini_table",
+                                                                locals: { effort_rows: mini_table.effort_rows })
     else
       head :unprocessable_content
     end

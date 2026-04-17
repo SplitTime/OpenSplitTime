@@ -1,5 +1,5 @@
-<%# locals: (message:, path_on_confirm:, required_pattern:) -%>
+<%# locals: (message:, path_on_confirm:, required_pattern:, method: :delete, button_text: "Permanently Delete") -%>
 
 <%= turbo_frame_tag "form_modal" do %>
-  <%= render "form", message: message, path_on_confirm: path_on_confirm, required_pattern: required_pattern %>
+  <%= render "form", message: message, path_on_confirm: path_on_confirm, required_pattern: required_pattern, method: method, button_text: button_text %>
 <% end %>

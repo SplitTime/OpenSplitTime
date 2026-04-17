@@ -1,4 +1,4 @@
-<%# locals: (message:, path_on_confirm:, required_pattern:) -%>
+<%# locals: (message:, path_on_confirm:, required_pattern:, method: :delete, button_text: "Permanently Delete") -%>
 
 <div data-controller="confirm" data-confirm-required-pattern-value="<%= required_pattern %>">
   <div class="modal-header">
@@ -10,7 +10,7 @@
     <% message.split("\n").each do |fragment| %>
       <p><%= fragment %></p>
     <% end %>
-    <p>To proceed, please type <strong><%= required_pattern %></strong> below and click the Delete button.</p>
+    <p>To proceed, please type <strong><%= required_pattern %></strong> below and click the button.</p>
   </div>
   <div class="modal-footer">
     <div class="container p-0 d-block justify-content-center">
@@ -24,12 +24,12 @@
                            action: "keyup->confirm#compare",
                            "confirm-target": "pattern",
                          } %>
-      <%= button_to "Permanently Delete",
+      <%= button_to button_text,
                     path_on_confirm,
                     tabindex: -1,
                     class: "btn btn-danger fw-bold disabled w-100",
                     form: { class: "mt-2" },
-                    method: :delete,
+                    method: method,
                     data: {
                       "confirm-target" => "deleteButton",
                       action: "click->confirm#onClickDelete",

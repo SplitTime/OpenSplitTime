@@ -15,7 +15,6 @@ class SubscriptionsController < ApplicationController
   end
 
   # POST /subscribable/:subscribable_id/subscriptions
-  # rubocop:disable Rails/I18nLazyLookup -- mounted under multiple parent resources; lazy lookup resolves wrong path
   def create
     @subscription = @subscribable.subscriptions.new(permitted_params)
     @subscription.user = current_user
@@ -47,7 +46,6 @@ class SubscriptionsController < ApplicationController
       render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
     end
   end
-  # rubocop:enable Rails/I18nLazyLookup
 
   # DELETE /subscribable/:subscribable_id/subscriptions/:id
   def destroy

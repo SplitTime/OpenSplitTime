@@ -44,7 +44,7 @@ class NotifyProgressJob < ApplicationJob
   end
 
   def followers
-    @followers ||= effort.followers
+    @followers ||= effort.followers.distinct
   end
 
   def effort_not_notifiable?

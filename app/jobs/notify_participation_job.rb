@@ -14,7 +14,7 @@ class NotifyParticipationJob < ApplicationJob
     notification = Notification.new(
       kind: :participation,
       effort: effort,
-      follower_ids: person.followers.ids,
+      follower_ids: person.followers.distinct.ids,
       subject: response.resources[:subject],
       notice_text: response.resources[:notice_text],
       topic_resource_key: topic_resource_key

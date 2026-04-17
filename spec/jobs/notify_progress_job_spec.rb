@@ -9,7 +9,7 @@ RSpec.describe NotifyProgressJob do
 
   let(:effort_id) { effort.id }
   let(:event) { events(:rufa_2017_24h) }
-  let(:effort) { efforts(:rufa_2017_24h_progress_lap6) } # rubocop:disable Naming/VariableNumber
+  let(:effort) { efforts(:rufa_2017_24h_progress_lap6) }
   let(:splits) { event.splits }
 
   describe "#perform" do
@@ -40,6 +40,18 @@ RSpec.describe NotifyProgressJob do
           expect(notification.bitkey).to eq(notification_split_times.last.bitkey)
           expect(notification.topic_resource_key).to eq(effort.topic_resource_key)
           expect(notification.subject).to eq("Update for Progress Lap6 at RUFA 2017 (24H) from OpenSplitTime")
+        end
+
+        it "stores distinct follower_ids when a user has multiple subscriptions" do
+          user = users(:admin_user)
+          Subscription.create!(user: user, subscribable: effort, protocol: :email,
+                               endpoint: user.email, resource_key: "arn:aws:sns:us-west-2:123:test-email")
+          Subscription.create!(user: user, subscribable: effort, protocol: :sms,
+                               endpoint: user.phone, resource_key: "arn:aws:sns:us-west-2:123:test-sms")
+
+          perform_notification
+          notification = Notification.last
+          expect(notification.follower_ids).to eq([user.id])
         end
       end
 

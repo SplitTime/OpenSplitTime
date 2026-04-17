@@ -1,16 +1,15 @@
 require "rails_helper"
 
-RSpec.describe "edit and delete entrants from the event group entrants view", js: true do
+RSpec.describe "edit and delete entrants from the event group entrants view", :js do
   include ActionView::RecordIdentifier
   include ActiveJob::TestHelper
 
   let(:steward) { users(:fifth_user) }
-
-  before { organization.stewards << steward }
-
   let(:event_group) { event_groups(:rufa_2016) }
   let(:organization) { event_group.organization }
   let(:entrant) { event_group.efforts.find_by(first_name: "Finished", last_name: "First") }
+
+  before { organization.stewards << steward }
 
   scenario "Edit an entrant" do
     login_as steward, scope: :user
@@ -33,7 +32,7 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
     expect(page).to have_content(entrant.reload.full_name)
   end
 
-  xscenario "Edit an entrant with failed attempt" do
+  scenario "Edit an entrant with failed attempt" do
     login_as steward, scope: :user
     visit_page
 
@@ -57,7 +56,7 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
       # Wait for the update to complete
       expect(page).to have_css(".bg-highlight")
     end.to change { entrant.reload.last_name }.from("First").to("New Last Name")
-             .and change { entrant.reload.birthdate }.to("2000-01-01".to_date)
+                                              .and change { entrant.reload.birthdate }.to("2000-01-01".to_date)
 
     expect(page).to have_content(entrant.reload.full_name)
   end
@@ -79,6 +78,31 @@ RSpec.describe "edit and delete entrants from the event group entrants view", js
         expect(page).not_to have_content(entrant.full_name)
       end.to change { event_group.efforts.count }.by(-1)
     end
+  end
+
+  scenario "Delete the last entrant restores empty state" do
+    login_as steward, scope: :user
+
+    event_group.efforts.where.not(id: entrant.id).find_each(&:destroy)
+    visit_page
+
+    expect(page).not_to have_content("Add or Import Your Entrants")
+
+    perform_enqueued_jobs do
+      expect do
+        within("##{dom_id(entrant, :event_group_setup)}") do
+          button = page.find("button.dropdown-toggle")
+          button.click
+          accept_confirm do
+            click_link "Delete"
+          end
+        end
+
+        expect(page).to have_content("Add or Import Your Entrants")
+      end.to change { event_group.efforts.count }.by(-1)
+    end
+
+    expect(page).not_to have_content(entrant.full_name)
   end
 
   def visit_page

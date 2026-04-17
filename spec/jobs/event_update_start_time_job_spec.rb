@@ -40,14 +40,8 @@ RSpec.describe EventUpdateStartTimeJob do
       event_group,
       target: "flash",
       partial: "layouts/broadcast_flash",
-      locals: hash_including(level: :success, message: anything)
+      locals: hash_including(level: :success, message: /Refresh the page to see changes/)
     )
-
-    perform_enqueued_jobs { job }
-  end
-
-  it "broadcasts a refresh on completion" do
-    expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_to).with(event_group)
 
     perform_enqueued_jobs { job }
   end

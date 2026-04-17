@@ -1,9 +1,10 @@
 require "rails_helper"
 
-RSpec.describe "User subscribes to notifications for a person", type: :system, js: true do
+RSpec.describe "User subscribes to notifications for a person", :js, type: :system do
   include ActionView::RecordIdentifier
 
   let(:user) { users(:third_user) }
+  let(:admin) { users(:admin_user) }
   let(:person) { people(:progress_cascade) }
 
   before { person.update!(topic_resource_key: "anything") }
@@ -19,6 +20,7 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
   end
 
   scenario "The user is not logged in and subscribes to sms" do
+    pending "SMS is admin-only pending 10DLC campaign approval"
     visit_page
 
     page.accept_confirm("You must be signed in to subscribe to notifications") do
@@ -41,6 +43,7 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
   end
 
   scenario "The user is logged in and subscribes to sms without a phone number" do
+    pending "SMS is admin-only pending 10DLC campaign approval"
     login_as user, scope: :user
     visit_page
 
@@ -52,6 +55,7 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
   end
 
   scenario "The user is logged in and subscribes to sms with a phone number" do
+    pending "SMS is admin-only pending 10DLC campaign approval"
     user.update_columns(phone: "1234567890")
     login_as user, scope: :user
     visit_page
@@ -61,6 +65,32 @@ RSpec.describe "User subscribes to notifications for a person", type: :system, j
     end
     expect(page).to have_current_path(person_path(person))
     expect(page).to have_content("You have subscribed to sms notifications for #{person.full_name}.")
+  end
+
+  scenario "Non-admin user sees SMS out of service message" do
+    login_as user, scope: :user
+    visit_page
+
+    expect(page).to have_content("SMS temporarily out of service")
+  end
+
+  scenario "Admin without SMS opt-in sees Enable SMS link" do
+    admin.update_columns(phone_confirmed_at: nil)
+    login_as admin, scope: :user
+    visit_page
+
+    within("##{dom_id(person, :sms)}") do
+      expect(page).to have_link("Enable SMS")
+    end
+  end
+
+  scenario "Admin with SMS opt-in sees SMS subscribe button" do
+    login_as admin, scope: :user
+    visit_page
+
+    within("##{dom_id(person, :sms)}") do
+      expect(page).to have_button("sms")
+    end
   end
 
   def visit_page

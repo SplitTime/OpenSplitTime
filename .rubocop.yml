@@ -150,6 +150,9 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   Enabled: false
 
+Rails/I18nLazyLookup:
+  Enabled: false
+
 Style/OpenStructUse:
   Exclude:
     - "lib/etl/extractors/**/*"

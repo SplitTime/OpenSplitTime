@@ -22,7 +22,7 @@ admin_user:
   http_endpoint:
   https_endpoint:
   phone_confirmation_token:
-  phone_confirmed_at:
+  phone_confirmed_at: 2024-09-15 12:00:00.000000000 Z
   phone_confirmation_sent_at:
 third_user:
   id: 3

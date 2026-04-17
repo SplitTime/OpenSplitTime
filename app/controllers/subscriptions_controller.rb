@@ -26,20 +26,24 @@ class SubscriptionsController < ApplicationController
                              end
     authorize @subscription
 
-    if protocol == "sms" && current_user.sms.blank?
-      flash[:warning] = "Please add a mobile phone number to receive sms text notifications."
+    if protocol == "sms" && !current_user.sms_opted_in?
+      flash[:warning] = if current_user.sms.blank?
+                          t("subscriptions.create.sms_no_phone")
+                        else
+                          t("subscriptions.create.sms_not_opted_in")
+                        end
       redirect_to user_settings_preferences_path
     elsif @subscription.save
-      flash.now[:success] = "You have subscribed to #{protocol} notifications for #{@subscribable.name}. " +
-        "Messages will be sent to #{@subscription[:endpoint]}."
+      flash.now[:success] = t("subscriptions.create.success",
+                              protocol: protocol,
+                              name: @subscribable.name,
+                              endpoint: @subscription[:endpoint])
       render :create, locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
+    elsif @subscription.subscribable.is_a?(Event)
+      render :new, locals: { subscription: @subscription }, status: :unprocessable_content
     else
-      if @subscription.subscribable.is_a?(Event)
-        render :new, locals: { subscription: @subscription }, status: :unprocessable_content
-      else
-        flash.now[:danger] = @subscription.errors.full_messages.to_sentence
-        render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
-      end
+      flash.now[:danger] = @subscription.errors.full_messages.to_sentence
+      render turbo_stream: turbo_stream.replace("flash", partial: "layouts/flash")
     end
   end
 
@@ -61,7 +65,7 @@ class SubscriptionsController < ApplicationController
       @subscription.touch
       flash.now[:success] = "Subscription was refreshed."
     else
-      flash.now[:danger] = "Subscription could not be refreshed." + @subscription.errors.full_messages.to_sentence
+      flash.now[:danger] = "Subscription could not be refreshed.#{@subscription.errors.full_messages.to_sentence}"
     end
 
     render :refresh, locals: { subscription: @subscription }

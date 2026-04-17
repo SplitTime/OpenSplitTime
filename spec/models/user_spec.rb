@@ -6,23 +6,24 @@ RSpec.describe User, type: :model do
 
   it "creates a valid user with name and email and password" do
     user_attr = FactoryBot.attributes_for(:user)
-    user = User.create!(user_attr)
+    user = described_class.create!(user_attr)
 
     expect(user).to be_valid
   end
 
   it "is invalid without a last name" do
     user = build_stubbed(:user, last_name: nil)
-    expect(user.valid?).to be_falsey
+    expect(user).not_to be_valid
   end
 
   it "is invalid without an email" do
     user = build_stubbed(:user, email: nil)
-    expect(user.valid?).to be_falsey
+    expect(user).not_to be_valid
   end
 
   describe "#normalize_phone" do
     subject(:user) { build(:user, phone: phone) }
+
     let(:normalized_phone) { "+12025551212" }
 
     context "when phone is a standard US or Canada number with +1 prefix" do
@@ -108,6 +109,7 @@ RSpec.describe User, type: :model do
 
   describe "#steward_of?" do
     subject { build_stubbed(:user) }
+
     let(:organization) { build_stubbed(:organization, stewards: stewards) }
     let(:event_group) { build_stubbed(:event_group, organization: organization) }
     let(:event) { build_stubbed(:event, event_group: event_group) }
@@ -147,9 +149,69 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "#has_credentials_for?" do
+  describe "#sms_opted_in?" do
+    context "when phone and phone_confirmed_at are both present" do
+      subject { build(:user, phone: "+12025551212", phone_confirmed_at: Time.current) }
+
+      it { is_expected.to be_sms_opted_in }
+    end
+
+    context "when phone is present but phone_confirmed_at is nil" do
+      subject { build(:user, phone: "+12025551212", phone_confirmed_at: nil) }
+
+      it { is_expected.not_to be_sms_opted_in }
+    end
+
+    context "when phone_confirmed_at is present but phone is nil" do
+      subject { build(:user, phone: nil, phone_confirmed_at: Time.current) }
+
+      it { is_expected.not_to be_sms_opted_in }
+    end
+  end
+
+  describe "sms consent callbacks" do
+    context "when sms_consent is set to '1' with a phone number" do
+      subject { build(:user, phone: "+12025551212", phone_confirmed_at: nil) }
+
+      it "sets phone_confirmed_at on save" do
+        subject.sms_consent = "1"
+        subject.save!
+        expect(subject.phone_confirmed_at).to be_present
+      end
+    end
+
+    context "when sms_consent is set to '0'" do
+      subject { create(:user, phone: "+12025551212", phone_confirmed_at: Time.current) }
+
+      it "clears phone_confirmed_at on save" do
+        subject.sms_consent = "0"
+        subject.save!
+        expect(subject.phone_confirmed_at).to be_nil
+      end
+    end
+
+    context "when phone is changed" do
+      subject { create(:user, phone: "+12025551212", phone_confirmed_at: Time.current) }
+
+      it "clears phone_confirmed_at" do
+        subject.update!(phone: "+13035551212")
+        expect(subject.phone_confirmed_at).to be_nil
+      end
+    end
+
+    context "when phone is cleared" do
+      subject { create(:user, phone: "+12025551212", phone_confirmed_at: Time.current) }
+
+      it "clears phone_confirmed_at" do
+        subject.update!(phone: nil)
+        expect(subject.phone_confirmed_at).to be_nil
+      end
+    end
+  end
+
+  describe "#credentials_for?" do
     let(:user) { users(:third_user) }
-    let(:result) { user.has_credentials_for?(service_identifier) }
+    let(:result) { user.credentials_for?(service_identifier) }
     let(:service_identifier) { "runsignup" }
 
     context "when credentials exist for the requested service" do

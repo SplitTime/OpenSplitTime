@@ -28,16 +28,15 @@
   </ol>
 
   <h2>SMS Terms and Conditions</h2>
+  <p>Before receiving any text messages, you must check a consent box on your
+    <%= link_to "Preferences", user_settings_preferences_path %> page agreeing to the following:</p>
+  <blockquote class="p-3 bg-light border rounded">
+    <p class="mb-0"><%= t("sms.consent.disclosure") %></p>
+  </blockquote>
+  <p class="mt-3">Additionally:</p>
   <ul>
-    <li>By opting in, you consent to receive SMS text messages from OpenSplitTime regarding live race progress updates
-      for participants you choose to follow.</li>
-    <li>Message frequency varies based on the events and participants you subscribe to.</li>
-    <li>Message and data rates may apply.</li>
-    <li>Reply <strong>STOP</strong> to any message to cancel and stop receiving all text messages from
-      OpenSplitTime.</li>
+    <li>Reply <strong>STOP</strong> to any message to cancel and stop receiving all text messages from OpenSplitTime.</li>
     <li>Reply <strong>HELP</strong> for help, or contact us at the email address below.</li>
-    <li>We do not share SMS opt-in data or phone numbers with third parties for marketing purposes.</li>
-    <li>Consent is not a condition of purchasing any goods or services.</li>
   </ul>
 
   <h2>How to Opt Out</h2>
@@ -50,6 +49,6 @@
   <h2>More Information</h2>
   <p>For questions or support, email
     <a href="mailto:mark@opensplittime.org">mark@opensplittime.org</a>.</p>
-  <p>See our <%= link_to "Privacy Policy", privacy_policy_path %> and
+  <p>See our <%= link_to "Privacy Policy", privacy_policy_path(anchor: "sms") %> and
     <%= link_to "Terms of Service", terms_path %> for additional details.</p>
 </article>

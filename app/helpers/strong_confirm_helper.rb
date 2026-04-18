@@ -4,10 +4,13 @@ module StrongConfirmHelper
       on_confirm: path_on_confirm,
       message: options[:message],
       required_pattern: options[:required_pattern],
+      method: options[:method] || :delete,
+      button_text: options[:button_text] || "Permanently Delete",
     }
 
     link_to name, strong_confirm_path(params),
             class: options[:class],
+            disabled: options[:disabled],
             data: { turbo_frame: "form_modal" }.merge(options[:data] || {})
   end
 

@@ -14,15 +14,15 @@
                   },
                   disabled: lottery_division.full? || lottery_division.all_entrants_drawn?,
                   class: "btn btn-lg btn-success fw-bold w-100" %>
-      <% if lottery_division.entrants.pre_selected.present? %>
-        <button class="btn btn-lg btn-success fw-bold dropdown-toggle dropdown-toggle-split"
-                <%= "disabled" if lottery_division.full? || lottery_division.all_entrants_drawn? %>
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-          <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <div class="dropdown-menu">
+      <button class="btn btn-lg btn-success fw-bold dropdown-toggle dropdown-toggle-split"
+              <%= "disabled" if lottery_division.full? || lottery_division.all_entrants_drawn? %>
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false">
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <div class="dropdown-menu">
+        <% if lottery_division.entrants.pre_selected.present? %>
           <a class="dropdown-item disabled" href="#">Pre-Selected Entrants</a>
           <div class="dropdown-divider"></div>
           <% lottery_division.entrants.pre_selected.each do |entrant| %>
@@ -31,8 +31,17 @@
                         disabled: entrant.drawn?,
                         class: "dropdown-item" %>
           <% end %>
-        </div>
-      <% end %>
+          <div class="dropdown-divider"></div>
+        <% end %>
+        <%= link_to_strong_confirm "Draw All Tickets",
+                                   draw_all_organization_lottery_path(lottery_division.organization, lottery_division.lottery, division_id: lottery_division.id),
+                                   class: "dropdown-item",
+                                   disabled: lottery_division.full? || lottery_division.all_entrants_drawn?,
+                                   message: "This will draw all remaining entrants for the #{lottery_division.name} division, filling accepted and waitlisted slots.",
+                                   required_pattern: lottery_division.name.upcase,
+                                   method: :post,
+                                   button_text: "Draw All Tickets" %>
+      </div>
     </div>
   </div>
 

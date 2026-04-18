@@ -240,6 +240,7 @@ Rails.application.routes.draw do
       member { get :manage_entrants }
       member { post :sync_calculations }
       member { post :draw }
+      member { post :draw_all }
       member { post :generate_entrants }
       member { post :generate_tickets }
       member { patch :attach_service_form }

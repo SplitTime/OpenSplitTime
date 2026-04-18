@@ -6,6 +6,6 @@ class StrongConfirmController < ApplicationController
       required_pattern: params[:required_pattern],
       method: params[:method],
       button_text: params[:button_text],
-    }.compact
+    }
   end
 end

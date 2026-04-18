@@ -4,9 +4,9 @@ module StrongConfirmHelper
       on_confirm: path_on_confirm,
       message: options[:message],
       required_pattern: options[:required_pattern],
-      method: options[:method],
-      button_text: options[:button_text],
-    }.compact
+      method: options[:method] || :delete,
+      button_text: options[:button_text] || "Permanently Delete",
+    }
 
     link_to name, strong_confirm_path(params),
             class: options[:class],

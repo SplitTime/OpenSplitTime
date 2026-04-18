@@ -6,7 +6,7 @@ module StrongConfirmHelper
       required_pattern: options[:required_pattern],
       method: options[:method],
       button_text: options[:button_text],
-    }
+    }.compact
 
     link_to name, strong_confirm_path(params),
             class: options[:class],

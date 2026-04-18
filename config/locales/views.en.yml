@@ -99,8 +99,8 @@ en:
 
   sms:
     consent:
-      disclosure: "By checking the box below, you agree to receive SMS text messages from OpenSplitTime with live race progress updates for participants you choose to follow. Message frequency varies. Msg & data rates may apply. Reply STOP to cancel or HELP for help. US and Canada numbers only."
-      checkbox_label: "I agree to receive SMS text messages from OpenSplitTime"
+      disclosure: "By checking the box below, you provide your express written consent to receive automated SMS text messages from OpenSplitTime with live race progress updates and related information for participants you choose to follow. Message frequency varies. Msg & data rates may apply. Reply STOP to cancel or HELP for help. Consent is not required as a condition to use OpenSplitTime for any service or transaction. No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Opt-in data will not be shared with unauthorized third parties."
+      checkbox_label: "I consent to receive automated SMS text messages from OpenSplitTime"
       view_terms: "View full SMS terms"
       enabled_since: "SMS enabled since %{date}"
       opted_in: "You have opted in to receive SMS text message updates from OpenSplitTime. Reply STOP to cancel. Reply HELP for help. Msg & data rates may apply."

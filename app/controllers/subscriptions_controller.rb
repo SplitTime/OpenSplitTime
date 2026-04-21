@@ -32,7 +32,7 @@ class SubscriptionsController < ApplicationController
                         else
                           t("subscriptions.create.sms_not_opted_in")
                         end
-      redirect_to user_settings_preferences_path
+      redirect_to user_settings_sms_messaging_path
     elsif @subscription.save
       flash.now[:success] = t("subscriptions.create.success",
                               protocol: protocol,

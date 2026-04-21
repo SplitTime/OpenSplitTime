@@ -18,6 +18,11 @@ class UserSettingsController < ApplicationController
     @presenter = UserSettings::CredentialsPresenter.new(current_user)
   end
 
+  # GET /user_settings/sms_messaging
+  def sms_messaging
+    flash.keep
+  end
+
   # GET /user_settings/credentials_new_service
   def credentials_new_service
     respond_to do |format|
@@ -33,11 +38,10 @@ class UserSettingsController < ApplicationController
     updated = current_user.update(settings_update_params)
 
     if updated
-      messages = []
-      messages << t("user_settings.update.email_change_requested") if current_user.unconfirmed_email.present?
-      messages << t("sms.consent.opted_in") if !sms_was_opted_in && current_user.sms_opted_in?
-      messages << t("sms.consent.opted_out") if sms_was_opted_in && !current_user.sms_opted_in?
-      redirect_to request.referrer, notice: messages.join(" ").presence
+      flash[:notice] = t("user_settings.update.email_change_requested") if current_user.unconfirmed_email.present?
+      flash[:info] = t("sms.consent.opted_in") if !sms_was_opted_in && current_user.sms_opted_in?
+      flash[:info] = t("sms.consent.opted_out") if sms_was_opted_in && !current_user.sms_opted_in?
+      redirect_to request.referrer
     else
       redirect_to request.referrer, notice: current_user.errors.full_messages.join("; ")
     end

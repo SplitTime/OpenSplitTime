@@ -9,6 +9,9 @@
           <%= render "shared/sidebar_item", title: "Password", icon: "user-shield", link: user_settings_password_path %>
         </li>
       <% end %>
+      <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "sms_messaging" ? "active" : nil %>">
+        <%= render "shared/sidebar_item", title: "SMS Messaging", icon: "mobile-alt", link: user_settings_sms_messaging_path %>
+      </li>
       <li class="nav-item border-sidebar w-100 mb-3 <%= action_name == "credentials" ? "active" : nil %>">
         <%= render "shared/sidebar_item", title: "Credentials", icon: "key", link: user_settings_credentials_path %>
       </li>

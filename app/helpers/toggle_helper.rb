@@ -175,7 +175,7 @@ module ToggleHelper
   end
 
   def link_to_sms_opt_in(icon:)
-    link_to(user_settings_preferences_path, class: "btn btn-lg btn-outline-secondary") do
+    link_to(user_settings_sms_messaging_path, class: "btn btn-lg btn-outline-secondary") do
       fa_icon(icon, text: t("subscriptions.toggle.enable_sms"))
     end
   end

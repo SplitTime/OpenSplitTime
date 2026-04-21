@@ -18,4 +18,13 @@ RSpec.describe "user settings sms messaging", type: :system do
     expect(page).to have_field("Phone")
     expect(page).to have_field("user_sms_consent")
   end
+
+  scenario "disclosure enumerates message contents and omits the old catch-all phrase" do
+    login_as user, scope: :user
+    visit user_settings_sms_messaging_path
+
+    expect(page).to have_text("name, event, aid station, distance, time of day, and elapsed time")
+    expect(page).to have_text("link to view full results")
+    expect(page).to have_no_text("related information")
+  end
 end

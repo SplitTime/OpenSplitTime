@@ -18,6 +18,11 @@ class UserSettingsController < ApplicationController
     @presenter = UserSettings::CredentialsPresenter.new(current_user)
   end
 
+  # GET /user_settings/sms_messaging
+  def sms_messaging
+    flash.keep
+  end
+
   # GET /user_settings/credentials_new_service
   def credentials_new_service
     respond_to do |format|

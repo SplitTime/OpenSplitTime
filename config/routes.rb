@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     get :password
     get :credentials
     get :credentials_new_service
+    get :sms_messaging
     put :update
   end
 

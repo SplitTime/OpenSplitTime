@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "visit the user settings preferences page and make changes", type: :system, js: true do
+RSpec.describe "visit the user settings preferences page and make changes", :js, type: :system do
   let(:user) { users(:third_user) }
 
   scenario "The user is a visitor" do
@@ -19,7 +19,6 @@ RSpec.describe "visit the user settings preferences page and make changes", type
 
     fill_in "First name", with: "John"
     fill_in "Last name", with: "Doe"
-    fill_in "user_phone", with: "555-555-5555"
 
     click_button "Save Changes"
 
@@ -29,7 +28,6 @@ RSpec.describe "visit the user settings preferences page and make changes", type
     user.reload
     expect(user.first_name).to eq("John")
     expect(user.last_name).to eq("Doe")
-    expect(user.phone).to eq("+15555555555")
   end
 
   def visit_page

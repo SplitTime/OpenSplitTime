@@ -66,8 +66,8 @@ class User < ApplicationRecord
     end
 
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.first_name = auth.info.first_name&.truncate(64, omission: "")
-      user.last_name = auth.info.last_name&.truncate(64, omission: "")
+      user.first_name = auth.info.first_name&.first(64)
+      user.last_name = auth.info.last_name&.first(64)
       user.email = auth.info.email
       user.password = ::Devise.friendly_token[0, 20]
       user.skip_confirmation!

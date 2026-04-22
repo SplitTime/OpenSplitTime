@@ -36,7 +36,7 @@ class User < ApplicationRecord
 
   attr_accessor :sms_consent
 
-  validates :first_name, :last_name, presence: true
+  validates :first_name, :last_name, presence: true, length: { maximum: 64 }
   validates :phone, format: { with: /\+1\d{9}/, message: "must be a valid US or Canada phone number" }, if: :phone?
 
   after_initialize :set_default_role, if: :new_record?
@@ -66,8 +66,8 @@ class User < ApplicationRecord
     end
 
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.first_name = auth.info.first_name
-      user.last_name = auth.info.last_name
+      user.first_name = auth.info.first_name&.truncate(64, omission: "")
+      user.last_name = auth.info.last_name&.truncate(64, omission: "")
       user.email = auth.info.email
       user.password = ::Devise.friendly_token[0, 20]
       user.skip_confirmation!

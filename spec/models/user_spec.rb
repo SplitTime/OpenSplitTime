@@ -21,6 +21,70 @@ RSpec.describe User, type: :model do
     expect(user).not_to be_valid
   end
 
+  it "is invalid with a first_name longer than 64 characters" do
+    user = build_stubbed(:user, first_name: "a" * 65)
+    expect(user).not_to be_valid
+    expect(user.errors[:first_name]).to be_present
+  end
+
+  it "is invalid with a last_name longer than 64 characters" do
+    user = build_stubbed(:user, last_name: "a" * 65)
+    expect(user).not_to be_valid
+    expect(user.errors[:last_name]).to be_present
+  end
+
+  describe ".from_omniauth" do
+    let(:auth) do
+      OmniAuth::AuthHash.new(
+        provider: "google_oauth2",
+        uid: "1234567890",
+        info: {
+          first_name: first_name,
+          last_name: last_name,
+          email: "oauth-user@example.com",
+        },
+      )
+    end
+    let(:first_name) { "Jane" }
+    let(:last_name) { "Doe" }
+
+    context "with a normal-length first_name" do
+      it "creates a valid user" do
+        user = described_class.from_omniauth(auth)
+        expect(user).to be_persisted
+        expect(user.first_name).to eq("Jane")
+      end
+    end
+
+    context "with a first_name longer than 64 characters" do
+      let(:first_name) { "A" * 100 }
+
+      it "truncates first_name and creates the user" do
+        user = described_class.from_omniauth(auth)
+        expect(user).to be_persisted
+        expect(user.first_name.length).to eq(64)
+      end
+    end
+
+    context "with a last_name longer than 64 characters" do
+      let(:last_name) { "B" * 100 }
+
+      it "truncates last_name and creates the user" do
+        user = described_class.from_omniauth(auth)
+        expect(user).to be_persisted
+        expect(user.last_name.length).to eq(64)
+      end
+    end
+
+    context "with a nil first_name" do
+      let(:first_name) { nil }
+
+      it "does not raise" do
+        expect { described_class.from_omniauth(auth) }.not_to raise_error
+      end
+    end
+  end
+
   describe "#normalize_phone" do
     subject(:user) { build(:user, phone: phone) }
 

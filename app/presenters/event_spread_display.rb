@@ -18,12 +18,13 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def display_style_hash
-    {elapsed: "Elapsed", ampm: "AM/PM", military: "24-Hour", segment: "Segment"}
+    { elapsed: "Elapsed", ampm: "AM/PM", military: "24-Hour", segment: "Segment" }
   end
 
   def effort_times_rows
     @effort_times_rows ||=
       filtered_ranked_efforts.map do |effort|
+        effort.person = indexed_people[effort.person_id]
         EffortTimesRow.new(effort: effort,
                            lap_splits: lap_splits,
                            split_times: split_times_by_effort.fetch(effort.id, []),
@@ -48,8 +49,8 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def segment_total_header_data
-    {title: aid_times_recorded? ? "Totals" : "Total",
-     extensions: aid_times_recorded? ? %w[Segment Aid] : []}
+    { title: aid_times_recorded? ? "Totals" : "Total",
+      extensions: aid_times_recorded? ? %w[Segment Aid] : [] }
   end
 
   def show_partner_banners?
@@ -62,11 +63,11 @@ class EventSpreadDisplay < EventWithEffortsPresenter
 
   def split_header_data
     lap_splits.map do |lap_split|
-      {title: header_name(lap_split),
-       extensions: header_extensions(lap_split),
-       distance: lap_split.distance_from_start,
-       split_name: lap_split.base_name_without_lap,
-       lap: lap_split.lap}
+      { title: header_name(lap_split),
+        extensions: header_extensions(lap_split),
+        distance: lap_split.distance_from_start,
+        split_name: lap_split.base_name_without_lap,
+        lap: lap_split.lap }
     end
   end
 
@@ -75,13 +76,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   delegate :multiple_laps?, to: :event
 
   def default_display_style
-    if simple?
-      "elapsed"
-    elsif available_live
-      "ampm"
-    else
-      "elapsed"
-    end
+    available_live && !simple? ? "ampm" : "elapsed"
   end
 
   def header_name(lap_split)

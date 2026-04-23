@@ -10,11 +10,14 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def cache_key
-    [event, request_params_digest]
+    [event, cacheable_params_digest]
   end
 
   def display_style
-    @display_style ||= params[:display_style].presence || default_display_style
+    @display_style ||= begin
+      raw = params[:display_style]
+      display_style_hash.key?(raw&.to_sym) ? raw : default_display_style
+    end
   end
 
   def display_style_hash
@@ -74,6 +77,15 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   private
 
   delegate :multiple_laps?, to: :event
+
+  def cacheable_params_digest
+    payload = {
+      "display_style" => display_style,
+      "filter" => params[:filter],
+      "sort" => params[:sort],
+    }
+    ::OpenSSL::Digest::MD5.base64digest(payload.to_json)
+  end
 
   def default_display_style
     available_live && !simple? ? "ampm" : "elapsed"

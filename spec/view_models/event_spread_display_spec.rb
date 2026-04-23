@@ -33,6 +33,61 @@ RSpec.describe EventSpreadDisplay do
     end
   end
 
+  describe "#cache_key" do
+    let(:event) { events(:hardrock_2015) }
+
+    def presenter_with(raw_params)
+      described_class.new(
+        event: event,
+        params: build(:prepared_params, params: ActionController::Parameters.new(raw_params)),
+      )
+    end
+
+    it "is identical across requests that differ only by tracking params" do
+      baseline = presenter_with(display_style: "elapsed").cache_key
+      with_tracking = presenter_with(
+        display_style: "elapsed",
+        utm_source: "newsletter",
+        fbclid: "abc123",
+        _hsenc: "xyz",
+      ).cache_key
+
+      expect(with_tracking).to eq(baseline)
+    end
+
+    it "changes when display_style changes" do
+      a = presenter_with(display_style: "elapsed").cache_key
+      b = presenter_with(display_style: "ampm").cache_key
+
+      expect(a).not_to eq(b)
+    end
+
+    it "changes when filter changes" do
+      a = presenter_with(display_style: "elapsed", filter: { gender: "female" }).cache_key
+      b = presenter_with(display_style: "elapsed", filter: { gender: "male" }).cache_key
+
+      expect(a).not_to eq(b)
+    end
+
+    it "changes when sort changes" do
+      a = presenter_with(display_style: "elapsed", sort: "name").cache_key
+      b = presenter_with(display_style: "elapsed", sort: "-name").cache_key
+
+      expect(a).not_to eq(b)
+    end
+
+    it "collapses unknown filter keys, unknown sort fields, and invalid display_style to the baseline" do
+      baseline = presenter_with({}).cache_key
+      junked = presenter_with(
+        display_style: "banana",
+        filter: { weirdkey: "foo" },
+        sort: "-nonexistent",
+      ).cache_key
+
+      expect(junked).to eq(baseline)
+    end
+  end
+
   describe "#split_header_data" do
     let(:course) { build_stubbed(:course, name: "Testrock Counter-clockwise", splits: splits) }
     let(:event) { build_stubbed(:event, course: course, splits: splits) }

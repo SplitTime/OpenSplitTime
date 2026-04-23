@@ -41,16 +41,12 @@ class BasePresenter
 
   def page
     result = params[:page]&.to_i || FIRST_PAGE
-    result == 0 ? FIRST_PAGE : result
+    result.zero? ? FIRST_PAGE : result
   end
 
   def per_page
     result = params[:per_page]&.to_i || DEFAULT_PER_PAGE
-    result == 0 ? DEFAULT_PER_PAGE : result
-  end
-
-  def request_params_digest
-    ::OpenSSL::Digest::MD5.base64digest(params.to_json)
+    result.zero? ? DEFAULT_PER_PAGE : result
   end
 
   def search_text
@@ -62,7 +58,7 @@ class BasePresenter
   end
 
   def sort_string
-    sort_hash.map { |field, direction| "#{(direction == :desc ? '-' : '')}#{field}" }.join(",")
+    sort_hash.map { |field, direction| "#{'-' if direction == :desc}#{field}" }.join(",")
   end
 
   private

@@ -1,6 +1,8 @@
 class EventSpreadDisplay < EventWithEffortsPresenter
   include ActiveModel::Serialization
 
+  VALID_DISPLAY_STYLES = %w[elapsed ampm military segment absolute all].freeze
+
   def aid_times_recorded?
     lap_splits.any? { |lap_split| lap_split.name_extensions.size > 1 }
   end
@@ -10,11 +12,14 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def cache_key
-    [event, request_params_digest]
+    [event, cacheable_params_digest]
   end
 
   def display_style
-    @display_style ||= params[:display_style].presence || default_display_style
+    @display_style ||= begin
+      raw = params[:display_style]
+      VALID_DISPLAY_STYLES.include?(raw) ? raw : default_display_style
+    end
   end
 
   def display_style_hash
@@ -74,6 +79,15 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   private
 
   delegate :multiple_laps?, to: :event
+
+  def cacheable_params_digest
+    payload = {
+      "display_style" => display_style,
+      "filter" => params[:filter],
+      "sort" => params[:sort],
+    }
+    ::OpenSSL::Digest::MD5.base64digest(payload.to_json)
+  end
 
   def default_display_style
     available_live && !simple? ? "ampm" : "elapsed"

@@ -1,6 +1,8 @@
 class EventSpreadDisplay < EventWithEffortsPresenter
   include ActiveModel::Serialization
 
+  VALID_DISPLAY_STYLES = %w[elapsed ampm military segment absolute all].freeze
+
   def aid_times_recorded?
     lap_splits.any? { |lap_split| lap_split.name_extensions.size > 1 }
   end
@@ -16,7 +18,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   def display_style
     @display_style ||= begin
       raw = params[:display_style]
-      display_style_hash.key?(raw&.to_sym) ? raw : default_display_style
+      VALID_DISPLAY_STYLES.include?(raw) ? raw : default_display_style
     end
   end
 

@@ -134,6 +134,10 @@ RSpec.describe Person, type: :model do
         expect(person.display_full_name).to eq("M. O.")
       end
 
+      it "returns the real full name from display_full_name_non_obscured" do
+        expect(person.display_full_name_non_obscured).to eq("Mark Oveson")
+      end
+
       it "leaves full_name and first_name/last_name columns untouched" do
         expect(person.full_name).to eq("Mark Oveson")
         expect(person.first_name).to eq("Mark")
@@ -158,6 +162,10 @@ RSpec.describe Person, type: :model do
 
       it "returns the first initial with a period" do
         expect(person.display_first_name).to eq("M.")
+      end
+
+      it "returns the real first name from display_first_name_non_obscured" do
+        expect(person.display_first_name_non_obscured).to eq("Mark")
       end
     end
   end

@@ -16,6 +16,10 @@ module PersonalInfo
   end
 
   def bio_historic
+    bio_historic_non_obscured
+  end
+
+  def bio_historic_non_obscured
     [gender&.titlecase, age&.to_i].compact.join(", ")
   end
 
@@ -77,11 +81,19 @@ module PersonalInfo
   alias name full_name
 
   def display_full_name
-    obscure_name_applied? ? initials : full_name
+    obscure_name_applied? ? initials : display_full_name_non_obscured
+  end
+
+  def display_full_name_non_obscured
+    full_name
   end
 
   def display_first_name
-    obscure_name_applied? ? "#{first_name&.first}." : first_name
+    obscure_name_applied? ? "#{first_name&.first}." : display_first_name_non_obscured
+  end
+
+  def display_first_name_non_obscured
+    first_name
   end
 
   def initials

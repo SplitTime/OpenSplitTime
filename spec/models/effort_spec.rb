@@ -579,6 +579,14 @@ RSpec.describe Effort, type: :model do
         expect(effort.bio_historic).to eq("Female")
       end
 
+      it "returns the raw age from display_age_non_obscured" do
+        expect(effort.display_age_non_obscured).to eq(45)
+      end
+
+      it "includes age in bio_historic_non_obscured" do
+        expect(effort.bio_historic_non_obscured).to eq("Female, 45")
+      end
+
       it "leaves the raw age attribute untouched for internal uses" do
         expect(effort.age).to eq(45)
         expect(effort.template_age).to eq(45)
@@ -622,6 +630,14 @@ RSpec.describe Effort, type: :model do
 
       it "returns the person's first initial with period from display_first_name" do
         expect(effort.display_first_name).to eq("M.")
+      end
+
+      it "returns the full name from display_full_name_non_obscured" do
+        expect(effort.display_full_name_non_obscured).to eq("Mark Oveson")
+      end
+
+      it "returns the first name from display_first_name_non_obscured" do
+        expect(effort.display_first_name_non_obscured).to eq("Mark")
       end
 
       it "leaves the effort's full_name and raw name columns untouched" do

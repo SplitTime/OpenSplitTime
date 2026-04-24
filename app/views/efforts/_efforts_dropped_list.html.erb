@@ -19,8 +19,8 @@
     <% if @presenter.multiple_events? %>
       <td><%= effort.event.guaranteed_short_name %></td>
     <% end %>
-    <td><strong><%= link_to effort.display_full_name, effort_path(effort) %></strong></td>
-    <td><%= effort.bio_historic %></td>
+    <td><strong><%= link_to effort.display_full_name_non_obscured, effort_path(effort) %></strong></td>
+    <td><%= effort.bio_historic_non_obscured %></td>
     <td><%= effort.flexible_geolocation %></td>
     <td><%= effort.final_split_name %></td>
     <td class="text-end"><%= day_time_format(effort.final_day_and_time) %></td>

@@ -301,11 +301,15 @@ class Effort < ApplicationRecord
   def bio_historic
     return gender&.titlecase if person&.hide_age?
 
-    super
+    bio_historic_non_obscured
   end
 
   def display_age
-    person&.hide_age? ? nil : age
+    person&.hide_age? ? nil : display_age_non_obscured
+  end
+
+  def display_age_non_obscured
+    age
   end
 
   def unreconciled?

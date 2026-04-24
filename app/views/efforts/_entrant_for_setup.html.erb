@@ -12,7 +12,7 @@
   <% end %>
   <td><%= effort.full_name %></td>
   <td class="text-center"><%= effort.bib_number %></td>
-  <td><%= effort.bio_historic %></td>
+  <td><%= effort.bio_historic_non_obscured %></td>
   <td><%= effort.flexible_geolocation %></td>
   <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
   <td><%= [effort.emergency_contact, effort.emergency_phone].compact.join(" / ") %></td>

@@ -1,9 +1,9 @@
 class EventGroupsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show, :follow, :traffic, :drop_list]
+  before_action :authenticate_user!, except: [:index, :show, :follow, :traffic]
   before_action :set_event_group, except: [:index, :new, :create]
   before_action :redirect_if_no_events,
                 only: [:roster, :raw_times, :split_raw_times, :finish_line, :stats, :drop_list, :follow, :traffic]
-  after_action :verify_authorized, except: [:index, :show, :new, :follow, :traffic, :drop_list, :efforts]
+  after_action :verify_authorized, except: [:index, :show, :new, :follow, :traffic, :efforts]
 
   # GET /event_groups
   def index
@@ -153,6 +153,8 @@ class EventGroupsController < ApplicationController
 
   # GET /event_groups/1/drop_list
   def drop_list
+    authorize @event_group
+
     event_group = EventGroup.where(id: @event_group).includes(:organization, events: :efforts).first
     @presenter = EventGroupPresenter.new(event_group, prepared_params, current_user)
   end

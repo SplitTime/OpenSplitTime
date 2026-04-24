@@ -88,6 +88,29 @@ RSpec.describe ParticipationNotifier do
             subject.publish
           end
         end
+
+        context "when the linked person prefers an obscured name" do
+          let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
+
+          before { effort.person.update!(obscure_name: true) }
+
+          it "uses initials in the subject and message and does not leak the full name or first name" do
+            stubbed_response = Struct.new(:successful?).new(true)
+            captured = {}
+            allow(sns_client).to receive(:publish) do |args|
+              captured = args
+              stubbed_response
+            end
+
+            subject.publish
+
+            expect(captured[:subject]).to include(effort.person.display_full_name)
+            expect(captured[:subject]).not_to include(effort.person.full_name)
+            expect(captured[:message]).to include(effort.person.display_full_name)
+            expect(captured[:message]).not_to include(effort.person.full_name)
+            expect(captured[:message]).not_to include(effort.first_name)
+          end
+        end
       end
     end
   end

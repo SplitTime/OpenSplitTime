@@ -4,7 +4,7 @@
   <% if presenter.interests.any? %>
     <% presenter.interests.each do |person| %>
       <h4 class="card-text">
-        <strong><%= link_to person.full_name, person_path(person) %></strong>
+        <strong><%= link_to person.display_full_name, person_path(person) %></strong>
       </h4>
     <% end %>
   <% else %>

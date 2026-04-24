@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe EffortProgressData do
-  subject { EffortProgressData.new(effort: effort, split_times: subject_split_times) }
+  subject { described_class.new(effort: effort, split_times: subject_split_times) }
+
   let(:event) { events(:hardrock_2015) }
   let(:effort) { event.efforts.order(:bib_number).first }
   let(:effort_split_times) { effort.ordered_split_times }
@@ -16,7 +17,7 @@ RSpec.describe EffortProgressData do
       end
     end
 
-    context "if no effort or effort_id is given" do
+    context "when no effort or effort_id is given" do
       let(:effort) { nil }
       let(:effort_split_times) { [] }
 
@@ -28,26 +29,26 @@ RSpec.describe EffortProgressData do
 
   describe "#effort_data" do
     let(:expected_effort_data) do
-      {full_name: effort.full_name,
-       event_name: event.name,
-       split_times_data: expected_split_times_data,
-       effort_id: effort.id,
-       effort_slug: effort.slug}
+      { full_name: effort.full_name,
+        event_name: event.name,
+        split_times_data: expected_split_times_data,
+        effort_id: effort.id,
+        effort_slug: effort.slug }
     end
 
     let(:expected_split_times_data) do
-      [{split_name: expected_in_split_name,
-        split_distance: expected_in_distance,
-        absolute_time_local: I18n.localize(in_split_time.absolute_time_local, format: :day_and_ampm),
-        elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
-        pacer: in_split_time.pacer,
-        stopped_here: in_split_time.stopped_here},
-       {split_name: expected_out_split_name,
-        split_distance: expected_out_distance,
-        absolute_time_local: I18n.localize(out_split_time.absolute_time_local, format: :day_and_ampm),
-        elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
-        pacer: out_split_time.pacer,
-        stopped_here: out_split_time.stopped_here}]
+      [{ split_name: expected_in_split_name,
+         split_distance: expected_in_distance,
+         absolute_time_local: I18n.l(in_split_time.absolute_time_local, format: :day_and_ampm),
+         elapsed_time: TimeConversion.seconds_to_hms(in_split_time.time_from_start.to_i),
+         pacer: in_split_time.pacer,
+         stopped_here: in_split_time.stopped_here },
+       { split_name: expected_out_split_name,
+         split_distance: expected_out_distance,
+         absolute_time_local: I18n.l(out_split_time.absolute_time_local, format: :day_and_ampm),
+         elapsed_time: TimeConversion.seconds_to_hms(out_split_time.time_from_start.to_i),
+         pacer: out_split_time.pacer,
+         stopped_here: out_split_time.stopped_here }]
     end
 
     context "when all split_times are in lap 1" do
@@ -63,16 +64,24 @@ RSpec.describe EffortProgressData do
 
     context "when one or more split_times has a lap greater than 1" do
       let(:in_split_time) { effort_split_times[1] }
-      let(:out_split_time) { effort_split_times[2] }
-      before { out_split_time.lap = 2 }
-
       let(:expected_in_split_name) { in_split_time.split_name_with_lap }
       let(:expected_out_split_name) { out_split_time.split_name_with_lap }
       let(:expected_in_distance) { in_split_time.total_distance }
       let(:expected_out_distance) { out_split_time.total_distance }
+      let(:out_split_time) { effort_split_times[2] }
+      before { out_split_time.lap = 2 }
 
       it "uses split names with a lap indicator and adjusts distance as expected" do
         expect(subject.effort_data).to eq(expected_effort_data)
+      end
+    end
+
+    context "when the linked person prefers an obscured name" do
+      before { effort.person.update!(obscure_name: true) }
+
+      it "returns the obscured display name in :full_name" do
+        expect(subject.effort_data[:full_name]).to eq(effort.display_full_name)
+        expect(subject.effort_data[:full_name]).not_to eq(effort.full_name)
       end
     end
   end

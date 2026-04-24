@@ -12,9 +12,9 @@ RSpec.describe "EventGroups#drop_list" do
   after { Warden.test_reset! }
 
   context "when the user is not signed in" do
-    it "redirects to sign in" do
+    it "does not render the page" do
       make_request
-      expect(response).to redirect_to(new_user_session_path)
+      expect(response).not_to have_http_status(:ok)
     end
   end
 

@@ -19,7 +19,7 @@ class EffortPlaceView < EffortWithLapSplitRows
           previous_lap_split = lap_splits.find { |ls| ls.key == prior_time_point.lap_split_key }
           effort_ids_by_category = categorized_effort_ids(lap_split, prior_time_point)
 
-          place_detail_row = PlaceDetailRow.new(effort_name: effort.name,
+          place_detail_row = PlaceDetailRow.new(effort_name: effort.display_full_name,
                                                 lap_split: lap_split,
                                                 previous_lap_split: previous_lap_split,
                                                 split_times: related_split_times(lap_split.time_points),

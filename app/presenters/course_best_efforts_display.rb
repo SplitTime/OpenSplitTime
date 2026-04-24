@@ -20,14 +20,17 @@ class CourseBestEffortsDisplay < BasePresenter
     return @filtered_segments if defined?(@filtered_segments)
 
     scope = BestEffortSegment.from(ranked_segments, :best_effort_segments)
-      .where(effort_id: filtered_efforts)
-      .order(:overall_rank)
+                             .where(effort_id: filtered_efforts)
+                             .order(:overall_rank)
 
     @pagy, @filtered_segments = pagy_countless_from_scope(
       scope,
       limit: per_page,
       page: page
     )
+
+    indexed_people = Person.where(id: @filtered_segments.map(&:person_id).compact).index_by(&:id)
+    @filtered_segments.each { |segment| segment.person = indexed_people[segment.person_id] }
 
     @filtered_segments
   end
@@ -59,15 +62,15 @@ class CourseBestEffortsDisplay < BasePresenter
   end
 
   def earliest_event_date
-    events.last.scheduled_start_time.to_date.to_formatted_s(:long)
+    events.last.scheduled_start_time.to_date.to_fs(:long)
   end
 
   def most_recent_event_date
-    most_recent_event && most_recent_event.scheduled_start_time.to_date.to_formatted_s(:long)
+    most_recent_event && most_recent_event.scheduled_start_time.to_date.to_fs(:long)
   end
 
   def most_recent_event
-    events.select { |event| event.scheduled_start_time < Time.now }.max_by(&:scheduled_start_time)
+    events.select { |event| event.scheduled_start_time < Time.current }.max_by(&:scheduled_start_time)
   end
 
   def relevant_genders
@@ -113,16 +116,20 @@ class CourseBestEffortsDisplay < BasePresenter
 
   def events
     @events ||= course.events
-                  .includes(:event_group)
-                  .order(scheduled_start_time: :desc)
-                  .select(&:visible?)
+                      .includes(:event_group)
+                      .order(scheduled_start_time: :desc)
+                      .select(&:visible?)
   end
 
   def segment
     return @segment if defined?(@segment)
 
-    split1 = ordered_splits.find { |split| [split.id.to_s, split.slug].compact.include?(split_1_id) } || ordered_splits.first
-    split2 = ordered_splits.find { |split| [split.id.to_s, split.slug].compact.include?(split_2_id) } || ordered_splits.last
+    split1 = ordered_splits.find do |split|
+      [split.id.to_s, split.slug].compact.include?(split_1_id)
+    end || ordered_splits.first
+    split2 = ordered_splits.find do |split|
+      [split.id.to_s, split.slug].compact.include?(split_2_id)
+    end || ordered_splits.last
     begin_split, end_split = [split1, split2].sort_by { |split| ordered_splits.index(split) }
     @segment = Segment.new(begin_point: TimePoint.new(1, begin_split.id, begin_split.bitkeys.last),
                            end_point: TimePoint.new(1, end_split.id, end_split.bitkeys.first),
@@ -152,6 +159,6 @@ class CourseBestEffortsDisplay < BasePresenter
 
   def ranked_segments
     BestEffortSegment.from(all_segments, :best_effort_segments)
-        .with_overall_and_gender_rank(:elapsed_seconds)
+                     .with_overall_and_gender_rank(:elapsed_seconds)
   end
 end

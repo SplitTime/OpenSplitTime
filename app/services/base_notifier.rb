@@ -14,7 +14,7 @@ class BaseNotifier
   end
 
   def publish
-    sns_response = sns_client.publish(topic_arn: topic_arn, subject: subject, message: message)
+    sns_response = sns_client.publish(**publish_params)
     Interactors::Response.new([], "Published", response: sns_response, subject: subject, notice_text: message)
   rescue Aws::SNS::Errors::ServiceError => e
     Interactors::Response.new([aws_sns_error(e)], e.message, {})
@@ -23,4 +23,12 @@ class BaseNotifier
   private
 
   attr_reader :topic_arn, :sns_client
+
+  def publish_params
+    {
+      topic_arn: topic_arn,
+      subject: subject,
+      message: message
+    }
+  end
 end

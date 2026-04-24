@@ -33,16 +33,42 @@ RSpec.describe ProgressNotifier do
     let(:expected_shortened_url) { "#{::OstConfig.shortened_uri}/s/#{expected_key}" }
     let(:expected_key) { Shortener::ShortenedUrl.find_by(url: effort_path).unique_key }
     let(:effort_path) { subject.send(:effort_path) }
-    let(:stubbed_response) { Struct.new(:successful?).new(true) }
 
     before { Shortener::ShortenedUrl.generate!(effort_path) }
 
-    it "sends a message to an SNS client containing the expected information" do
-      sns_client.stub_data(:publish)
-      expect(sns_client).to receive(:publish) # rubocop:disable RSpec/StubbedMock
-        .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
-        .and_return(stubbed_response)
-      subject.publish
+    context "when no SMS origination number is configured" do
+      before { allow(::OstConfig).to receive(:aws_sms_origination_number).and_return(nil) }
+
+      it "sends a message to an SNS client without SMS message attributes" do
+        expect(sns_client).to receive(:publish)
+          .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
+        subject.publish
+      end
+    end
+
+    context "when an SMS origination number is configured" do
+      let(:origination_number) { "+13035551212" }
+      let(:expected_message_attributes) do
+        {
+          "AWS.MM.SMS.OriginationNumber" => {
+            data_type: "String",
+            string_value: origination_number,
+          },
+        }
+      end
+
+      before { allow(::OstConfig).to receive(:aws_sms_origination_number).and_return(origination_number) }
+
+      it "sends a message to an SNS client with the origination number message attribute" do
+        expect(sns_client).to receive(:publish)
+          .with(
+            topic_arn: topic_arn,
+            subject: expected_subject,
+            message: expected_message,
+            message_attributes: expected_message_attributes,
+          )
+        subject.publish
+      end
     end
   end
 end

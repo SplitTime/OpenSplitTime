@@ -23,6 +23,10 @@ module OstConfig
     Rails.application.credentials.dig(:aws, :secret_access_key)
   end
 
+  def self.aws_sms_origination_number
+    Rails.application.credentials.dig(:aws, :sms_origination_number)
+  end
+
   def self.base_uri
     ENV.fetch("BASE_URI", "localhost:3000")
   end

@@ -7,6 +7,21 @@ class ProgressNotifier < BaseNotifier
 
   attr_reader :effort_data
 
+  def publish_params
+    params = super
+    params[:message_attributes] = sms_message_attributes if ::OstConfig.aws_sms_origination_number
+    params
+  end
+
+  def sms_message_attributes
+    {
+      "AWS.MM.SMS.OriginationNumber" => {
+        data_type: "String",
+        string_value: ::OstConfig.aws_sms_origination_number,
+      },
+    }
+  end
+
   def subject
     "Update for #{effort_data[:full_name]} at #{effort_data[:event_name]} from OpenSplitTime"
   end

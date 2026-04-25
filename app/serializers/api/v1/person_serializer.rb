@@ -13,30 +13,20 @@ module Api
                  :state_code,
                  :country_code
 
-      [:first_name, :last_name].each do |att|
-        attribute att do |person, params|
-          if params[:current_user]&.authorized_to_edit?(person) || !person.obscure_name?
-            person.public_send(att)
-          else
-            "#{person.public_send(att)&.first}."
-          end
-        end
+      attribute :first_name do |person, params|
+        person.display_first_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :last_name do |person, params|
+        person.display_last_name_conditionally_obscured(params[:current_user])
       end
 
       attribute :full_name do |person, params|
-        if params[:current_user]&.authorized_to_edit?(person) || !person.obscure_name?
-          person.full_name
-        else
-          person.initials
-        end
+        person.display_full_name_conditionally_obscured(params[:current_user])
       end
 
       attribute :current_age do |person, params|
-        if person.hide_age? && !params[:current_user]&.authorized_to_edit?(person)
-          nil
-        else
-          person.current_age_from_birthdate || person.current_age_approximate
-        end
+        person.current_age_conditionally_obscured(params[:current_user])
       end
 
       PRIVATE_ATTRIBUTES.each do |att|

@@ -23,30 +23,20 @@ module Api
                  :scheduled_start_time,
                  :state_code
 
-      [:first_name, :last_name].each do |att|
-        attribute att do |effort, params|
-          if params[:current_user]&.authorized_to_edit?(effort) || !effort.person&.obscure_name?
-            effort.public_send(att)
-          else
-            "#{effort.public_send(att)&.first}."
-          end
-        end
+      attribute :first_name do |effort, params|
+        effort.display_first_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :last_name do |effort, params|
+        effort.display_last_name_conditionally_obscured(params[:current_user])
       end
 
       attribute :full_name do |effort, params|
-        if params[:current_user]&.authorized_to_edit?(effort) || !effort.person&.obscure_name?
-          effort.full_name
-        else
-          effort.initials
-        end
+        effort.display_full_name_conditionally_obscured(params[:current_user])
       end
 
       attribute :age do |effort, params|
-        if effort.person&.hide_age? && !params[:current_user]&.authorized_to_edit?(effort)
-          nil
-        else
-          effort.age
-        end
+        effort.display_age_conditionally_obscured(params[:current_user])
       end
 
       PRIVATE_ATTRIBUTES.each do |att|

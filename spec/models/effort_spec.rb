@@ -604,6 +604,39 @@ RSpec.describe Effort, type: :model do
         expect(effort.bio_historic).to eq("Female, 45")
       end
     end
+
+    describe "#display_age_conditionally_obscured" do
+      let(:authorized_user) { instance_double(User) }
+      let(:unauthorized_user) { instance_double(User) }
+
+      before do
+        allow(authorized_user).to receive(:authorized_to_edit?).with(effort).and_return(true)
+        allow(unauthorized_user).to receive(:authorized_to_edit?).with(effort).and_return(false)
+      end
+
+      context "when the linked person has hide_age set" do
+        let(:person) { build_stubbed(:person, hide_age: true) }
+
+        it "returns nil for unauthenticated and unauthorized viewers" do
+          expect(effort.display_age_conditionally_obscured(nil)).to be_nil
+          expect(effort.display_age_conditionally_obscured(unauthorized_user)).to be_nil
+        end
+
+        it "returns the raw age for an authorized viewer" do
+          expect(effort.display_age_conditionally_obscured(authorized_user)).to eq(45)
+        end
+      end
+
+      context "when the linked person has hide_age unset" do
+        let(:person) { build_stubbed(:person, hide_age: false) }
+
+        it "returns the raw age regardless of viewer" do
+          expect(effort.display_age_conditionally_obscured(nil)).to eq(45)
+          expect(effort.display_age_conditionally_obscured(unauthorized_user)).to eq(45)
+          expect(effort.display_age_conditionally_obscured(authorized_user)).to eq(45)
+        end
+      end
+    end
   end
 
   describe "obscure_name behavior" do

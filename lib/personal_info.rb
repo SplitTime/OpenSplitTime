@@ -46,6 +46,10 @@ module PersonalInfo
   end
 
   def current_age
+    current_age_non_obscured
+  end
+
+  def current_age_non_obscured
     current_age_from_birthdate || (
       if has_attribute?("current_age_from_efforts")
         attributes["current_age_from_efforts"]&.round
@@ -88,16 +92,36 @@ module PersonalInfo
     full_name
   end
 
+  def display_full_name_conditionally_obscured(user)
+    obscure_name_applied_for?(user) ? initials : display_full_name_non_obscured
+  end
+
   def display_first_name
-    obscure_name_applied? ? "#{first_name&.first}." : display_first_name_non_obscured
+    obscure_name_applied? ? first_initial_with_period : display_first_name_non_obscured
   end
 
   def display_first_name_non_obscured
     first_name
   end
 
+  def display_first_name_conditionally_obscured(user)
+    obscure_name_applied_for?(user) ? first_initial_with_period : display_first_name_non_obscured
+  end
+
+  def display_last_name
+    obscure_name_applied? ? last_initial_with_period : display_last_name_non_obscured
+  end
+
+  def display_last_name_non_obscured
+    last_name
+  end
+
+  def display_last_name_conditionally_obscured(user)
+    obscure_name_applied_for?(user) ? last_initial_with_period : display_last_name_non_obscured
+  end
+
   def initials
-    "#{first_name&.first}. #{last_name&.first}."
+    "#{first_initial_with_period} #{last_initial_with_period}"
   end
 
   def name_for_slug
@@ -119,8 +143,35 @@ module PersonalInfo
   private
 
   def obscure_name_applied?
-    source = is_a?(Person) ? self : person
-    source&.obscure_name?
+    obscure_name_source&.obscure_name?
+  end
+
+  def obscure_name_applied_for?(user)
+    return false if user&.authorized_to_edit?(self)
+
+    obscure_name_applied?
+  end
+
+  def hide_age_applied?
+    obscure_name_source&.hide_age?
+  end
+
+  def hide_age_applied_for?(user)
+    return false if user&.authorized_to_edit?(self)
+
+    hide_age_applied?
+  end
+
+  def obscure_name_source
+    is_a?(Person) ? self : person
+  end
+
+  def first_initial_with_period
+    "#{first_name&.first}."
+  end
+
+  def last_initial_with_period
+    "#{last_name&.first}."
   end
 
   def country_abbreviations

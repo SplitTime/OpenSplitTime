@@ -18,8 +18,8 @@ class OrganizationHistoricalFactsReconcilePresenter < OrganizationPresenter
 
   # @return [String, nil]
   def previous_personal_info_hash
-    historical_facts.unreconciled.where(id: ...lowest_relevant_historical_fact_id)
-                    .order(id: :desc).first&.personal_info_hash
+    historical_facts.unreconciled.where("id < ?",
+                                        lowest_relevant_historical_fact_id).order(id: :desc).first&.personal_info_hash
   end
 
   # @return [String, nil]

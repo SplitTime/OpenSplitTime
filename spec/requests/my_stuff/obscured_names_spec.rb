@@ -5,9 +5,11 @@ RSpec.describe "MyStuff dashboard" do
 
   let(:admin_user) { users(:admin_user) }
   let(:watched_person) { people(:not_started_utah_us) }
+  let(:watched_effort) { efforts(:rufa_2017_12h_not_started) }
 
   before do
-    watched_person.update!(obscure_name: true)
+    watched_person.update!(first_name: "Distinct", last_name: "Surname", obscure_name: true)
+    watched_effort.update!(first_name: "Distinct", last_name: "Surname")
     login_as admin_user, scope: :user
   end
 
@@ -17,8 +19,9 @@ RSpec.describe "MyStuff dashboard" do
     it "shows initials for watched efforts when the person prefers an obscured name" do
       get my_stuff_live_updates_path
 
-      expect(response.body).to include(watched_person.display_full_name)
-      expect(response.body).not_to include(watched_person.full_name)
+      expect(response.body).to include("D. S.")
+      expect(response.body).not_to include("Distinct")
+      expect(response.body).not_to include("Surname")
     end
   end
 
@@ -26,8 +29,9 @@ RSpec.describe "MyStuff dashboard" do
     it "shows initials for followed people when the person prefers an obscured name" do
       get my_stuff_interests_path
 
-      expect(response.body).to include(watched_person.display_full_name)
-      expect(response.body).not_to include(watched_person.full_name)
+      expect(response.body).to include("D. S.")
+      expect(response.body).not_to include("Distinct")
+      expect(response.body).not_to include("Surname")
     end
   end
 end

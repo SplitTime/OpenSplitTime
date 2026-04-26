@@ -77,11 +77,15 @@ RSpec.describe EffortProgressData do
     end
 
     context "when the linked person prefers an obscured name" do
-      before { effort.person.update!(obscure_name: true) }
+      before do
+        effort.update!(first_name: "Distinct", last_name: "Surname")
+        effort.person.update!(first_name: "Distinct", last_name: "Surname", obscure_name: true)
+      end
 
       it "returns the obscured display name in :full_name" do
-        expect(subject.effort_data[:full_name]).to eq(effort.display_full_name)
-        expect(subject.effort_data[:full_name]).not_to eq(effort.full_name)
+        expect(subject.effort_data[:full_name]).to eq("D. S.")
+        expect(subject.effort_data[:full_name]).not_to include("Distinct")
+        expect(subject.effort_data[:full_name]).not_to include("Surname")
       end
     end
   end

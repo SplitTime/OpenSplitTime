@@ -7,14 +7,20 @@ RSpec.describe "Public views respect obscure_name and hide_age" do
   let(:effort) { efforts(:hardrock_2014_finished_first) }
   let(:person) { effort.person }
 
-  before { person.update!(obscure_name: true, hide_age: true) }
+  before do
+    effort.update!(first_name: "Distinct", last_name: "Surname", age: 99)
+    person.update!(first_name: "Distinct", last_name: "Surname", obscure_name: true, hide_age: true)
+  end
 
   shared_examples "obscures the name and age" do
-    it "renders initials and never the full name" do
+    it "renders initials and never the full name or real age" do
       make_request
+
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include(person.display_full_name)
-      expect(response.body).not_to include(person.full_name)
+      expect(response.body).to include("D. S.")
+      expect(response.body).not_to include("Distinct")
+      expect(response.body).not_to include("Surname")
+      expect(response.body).not_to match(/Male, 99/)
     end
   end
 

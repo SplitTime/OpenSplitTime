@@ -10,7 +10,7 @@
   </div>
   <div class="card-body">
     <% efforts.each do |effort| %>
-      <h6><%= "#{effort.full_name}, #{effort.flexible_geolocation}" %></h6>
+      <h6><%= "#{effort.display_full_name_non_obscured}, #{effort.flexible_geolocation}" %></h6>
     <% end %>
   </div>
 </div>

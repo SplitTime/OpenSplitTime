@@ -92,9 +92,11 @@ class Person < ApplicationRecord
   end
 
   def current_age
-    return nil if hide_age?
+    hide_age? ? nil : current_age_non_obscured
+  end
 
-    super
+  def current_age_conditionally_obscured(user)
+    hide_age_applied_for?(user) ? nil : current_age_non_obscured
   end
 
   def unclaimed?

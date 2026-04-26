@@ -299,13 +299,27 @@ class Effort < ApplicationRecord
   end
 
   def bio_historic
-    return gender&.titlecase if person&.hide_age?
+    return gender&.titlecase if hide_age_applied?
 
-    super
+    bio_historic_non_obscured
+  end
+
+  def bio_historic_conditionally_obscured(user)
+    return gender&.titlecase if hide_age_applied_for?(user)
+
+    bio_historic_non_obscured
   end
 
   def display_age
-    person&.hide_age? ? nil : age
+    hide_age_applied? ? nil : display_age_non_obscured
+  end
+
+  def display_age_non_obscured
+    age
+  end
+
+  def display_age_conditionally_obscured(user)
+    hide_age_applied_for?(user) ? nil : display_age_non_obscured
   end
 
   def unreconciled?

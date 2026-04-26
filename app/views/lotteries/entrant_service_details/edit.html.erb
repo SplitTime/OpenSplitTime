@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "form_modal" do %>
   <div class="modal-header">
-    <div class="modal-title fs-5 fw-bold"><%= "Review Service Form: #{@service_detail.full_name}" %></div>
+    <div class="modal-title fs-5 fw-bold"><%= "Review Service Form: #{@service_detail.display_full_name_non_obscured}" %></div>
     <div class="ms-auto">
       <%= render partial: "review_status_dropdown", locals: { status: params[:status] } %>
     </div>

@@ -110,8 +110,46 @@ RSpec.describe Person, type: :model do
         expect(person.current_age).to be_nil
       end
 
+      it "returns the raw age via current_age_non_obscured" do
+        expect(person.current_age_non_obscured).to eq(40)
+      end
+
       it "still exposes the raw age via current_age_from_birthdate" do
         expect(person.current_age_from_birthdate).to eq(40)
+      end
+    end
+  end
+
+  describe "#current_age_conditionally_obscured" do
+    let(:person) { build_stubbed(:person, birthdate: 40.years.ago.to_date, hide_age: hide_age) }
+    let(:authorized_user) { instance_double(User) }
+    let(:unauthorized_user) { instance_double(User) }
+
+    before do
+      allow(authorized_user).to receive(:authorized_to_edit?).with(person).and_return(true)
+      allow(unauthorized_user).to receive(:authorized_to_edit?).with(person).and_return(false)
+    end
+
+    context "when hide_age is true" do
+      let(:hide_age) { true }
+
+      it "returns nil for unauthenticated and unauthorized viewers" do
+        expect(person.current_age_conditionally_obscured(nil)).to be_nil
+        expect(person.current_age_conditionally_obscured(unauthorized_user)).to be_nil
+      end
+
+      it "returns the raw age for an authorized viewer" do
+        expect(person.current_age_conditionally_obscured(authorized_user)).to eq(40)
+      end
+    end
+
+    context "when hide_age is false" do
+      let(:hide_age) { false }
+
+      it "returns the raw age regardless of viewer" do
+        expect(person.current_age_conditionally_obscured(nil)).to eq(40)
+        expect(person.current_age_conditionally_obscured(unauthorized_user)).to eq(40)
+        expect(person.current_age_conditionally_obscured(authorized_user)).to eq(40)
       end
     end
   end
@@ -132,6 +170,10 @@ RSpec.describe Person, type: :model do
 
       it "returns initials" do
         expect(person.display_full_name).to eq("M. O.")
+      end
+
+      it "returns the real full name from display_full_name_non_obscured" do
+        expect(person.display_full_name_non_obscured).to eq("Mark Oveson")
       end
 
       it "leaves full_name and first_name/last_name columns untouched" do
@@ -158,6 +200,10 @@ RSpec.describe Person, type: :model do
 
       it "returns the first initial with a period" do
         expect(person.display_first_name).to eq("M.")
+      end
+
+      it "returns the real first name from display_first_name_non_obscured" do
+        expect(person.display_first_name_non_obscured).to eq("Mark")
       end
     end
   end

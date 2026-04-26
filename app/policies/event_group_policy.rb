@@ -114,6 +114,10 @@ class EventGroupPolicy < ApplicationPolicy
     roster?
   end
 
+  def drop_list?
+    roster?
+  end
+
   def delete_all_efforts?
     user.authorized_fully?(event_group)
   end

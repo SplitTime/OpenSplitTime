@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Merge people - #{@person_merge.full_name}" %>
+  <% "OpenSplitTime: Merge people - #{@person_merge.display_full_name_non_obscured}" %>
 <% end %>
 
 <% content_for(:container_type) do %>skip
@@ -10,10 +10,10 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong><%= "Merge: #{@person_merge.full_name}" %></strong></h1>
+          <h1><strong><%= "Merge: #{@person_merge.display_full_name_non_obscured}" %></strong></h1>
           <ul class="breadcrumb">
             <li class="breadcrumb-item"><%= link_to "People", people_path %></li>
-            <li class="breadcrumb-item"><%= link_to @person_merge.full_name, person_path(@person_merge.person) %></li>
+            <li class="breadcrumb-item"><%= link_to @person_merge.display_full_name_non_obscured, person_path(@person_merge.person) %></li>
             <li class="breadcrumb-item active">Merge</li>
           </ul>
         </div>
@@ -27,7 +27,7 @@
     <div class="col-sm-5">
       <div class="card">
         <h4 class="card-header">
-          <%= link_to @person_merge.person.full_name, person_path(@person_merge.person) %>
+          <%= link_to @person_merge.person.display_full_name_non_obscured, person_path(@person_merge.person) %>
         </h4>
         <div class="card-body">
           <%= render "inspect", person: @person_merge.person %>
@@ -48,7 +48,7 @@
       <div class="col-sm-5">
         <div class="card">
           <h4 class="card-header">
-            <%= link_to @person_merge.proposed_match.full_name, person_path(@person_merge.proposed_match) %>
+            <%= link_to @person_merge.proposed_match.display_full_name_non_obscured, person_path(@person_merge.proposed_match) %>
           </h4>
           <div class="card-body">
             <%= render "inspect", person: @person_merge.proposed_match %>

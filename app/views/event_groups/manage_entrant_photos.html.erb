@@ -102,7 +102,7 @@
                 <%= image_tag effort.photo.variant(:thumbnail) %>
               </div>
               <div class="col-9 my-auto">
-                <span class="fw-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+                <span class="fw-bold align-baseline"><%= "#{effort.display_full_name_non_obscured} ##{effort.bib_number}" %></span>
               </div>
             </div>
           </div>
@@ -126,7 +126,7 @@
                 <%= image_tag "small/avatar-empty.jpg" %>
               </div>
               <div class="col-10 my-auto">
-                <span class="fw-bold align-baseline"><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+                <span class="fw-bold align-baseline"><%= "#{effort.display_full_name_non_obscured} ##{effort.bib_number}" %></span>
               </div>
             </div>
           </div>

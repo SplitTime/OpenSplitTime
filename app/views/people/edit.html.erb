@@ -1,5 +1,5 @@
 <% content_for :title do %>
-    <% "OpenSplitTime: Edit person - #{@person.full_name}" %>
+    <% "OpenSplitTime: Edit person - #{@person.display_full_name_non_obscured}" %>
 <% end %>
 
 <header class="ost-header">
@@ -7,10 +7,10 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-            <h1><strong>Edit Person - <%= @person.full_name %></strong></h1>
+            <h1><strong>Edit Person - <%= @person.display_full_name_non_obscured %></strong></h1>
             <ul class="breadcrumb breadcrumb-ost">
                 <li class="breadcrumb-item"><%= link_to "People", people_path %></li>
-                <li class="breadcrumb-item"><%= link_to @person.full_name, person_path(@person) %></li>
+                <li class="breadcrumb-item"><%= link_to @person.display_full_name_non_obscured, person_path(@person) %></li>
                 <li class="breadcrumb-item active">Edit</li>
             </ul>
         </div>

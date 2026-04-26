@@ -41,7 +41,7 @@
           <tbody>
           <% presenter.mismatched_entrants.each do |entrant| %>
           <tr>
-            <td><%= entrant.full_name %></td>
+            <td><%= entrant.display_full_name_non_obscured %></td>
             <td class="text-center"><%= entrant.number_of_tickets %></td>
             <td class="text-center"><%= entrant.generated_tickets_count %></td>
           </tr>

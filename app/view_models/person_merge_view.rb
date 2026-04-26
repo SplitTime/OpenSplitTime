@@ -2,7 +2,8 @@ class PersonMergeView
   attr_reader :person, :proposed_match, :possible_matches
   attr_accessor :effort_counts
 
-  delegate :full_name, :first_name, :last_name, :id, to: :person
+  delegate :full_name, :first_name, :last_name, :id,
+           :display_full_name_non_obscured, to: :person
 
   def initialize(person, proposed_match_id)
     @person = person

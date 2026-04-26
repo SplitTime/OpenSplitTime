@@ -50,4 +50,20 @@ RSpec.describe "EventGroups admin views reveal obscured names and ages" do
       expect(response.body).to include("Male, #{effort.age}")
     end
   end
+
+  describe "GET /event_groups/:id/assign_bibs" do
+    it "shows the full name in the bib assignment table" do
+      get assign_bibs_event_group_path(event_group)
+
+      expect(response.body).to include("Bad Status")
+    end
+  end
+
+  describe "GET /event_groups/:id/manage_entrant_photos" do
+    it "shows the full name in the photo management cards" do
+      get manage_entrant_photos_event_group_path(event_group)
+
+      expect(response.body).to include("Bad Status")
+    end
+  end
 end

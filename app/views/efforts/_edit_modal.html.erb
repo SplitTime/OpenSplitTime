@@ -2,7 +2,7 @@
 
 <%= turbo_frame_tag "form_modal" do %>
   <div class="modal-header" data-form-modal-target="resizeIndicator">
-    <div class="modal-title h4 fw-bold">Edit Entrant - <%= effort.full_name %></div>
+    <div class="modal-title h4 fw-bold">Edit Entrant - <%= effort.display_full_name_non_obscured %></div>
   </div>
   <div class="modal-body">
     <%= render "form", effort: effort %>

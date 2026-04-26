@@ -304,6 +304,12 @@ class Effort < ApplicationRecord
     bio_historic_non_obscured
   end
 
+  def bio_historic_conditionally_obscured(user)
+    return gender&.titlecase if hide_age_applied_for?(user)
+
+    bio_historic_non_obscured
+  end
+
   def display_age
     hide_age_applied? ? nil : display_age_non_obscured
   end

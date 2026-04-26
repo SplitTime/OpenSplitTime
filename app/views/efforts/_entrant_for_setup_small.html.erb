@@ -7,7 +7,7 @@
   <% if presenter.multiple_events? %>
     <td><%= effort.event.guaranteed_short_name %></td>
   <% end %>
-  <td><%= effort.full_name %></td>
+  <td><%= effort.display_full_name_non_obscured %></td>
   <td class="text-center"><%= effort.bib_number %></td>
   <td><%= effort.bio_historic_non_obscured %></td>
   <td><%= effort.flexible_geolocation %></td>

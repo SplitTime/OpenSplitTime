@@ -22,8 +22,9 @@ RSpec.describe "Efforts#mini_table" do
     it "shows initials and obscures the age" do
       make_request
 
-      expect(response.body).to include(effort.display_full_name)
-      expect(response.body).not_to include(effort.full_name)
+      expect(response.body).to include("K. M.")
+      expect(response.body).not_to include("Keith")
+      expect(response.body).not_to include("Metz")
       expect(response.body).not_to match(/Male, \d+/)
     end
   end
@@ -34,8 +35,9 @@ RSpec.describe "Efforts#mini_table" do
     it "shows initials and obscures the age" do
       make_request
 
-      expect(response.body).to include(effort.display_full_name)
-      expect(response.body).not_to include(effort.full_name)
+      expect(response.body).to include("K. M.")
+      expect(response.body).not_to include("Keith")
+      expect(response.body).not_to include("Metz")
       expect(response.body).not_to match(/Male, \d+/)
     end
   end
@@ -46,8 +48,8 @@ RSpec.describe "Efforts#mini_table" do
     it "shows the real name and age" do
       make_request
 
-      expect(response.body).to include(effort.full_name)
-      expect(response.body).to match(/Male, #{effort.age}/)
+      expect(response.body).to include("Keith Metz")
+      expect(response.body).to include("Male, 42")
     end
   end
 end

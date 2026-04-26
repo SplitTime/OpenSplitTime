@@ -3,7 +3,7 @@ class EventGroupsController < ApplicationController
   before_action :set_event_group, except: [:index, :new, :create]
   before_action :redirect_if_no_events,
                 only: [:roster, :raw_times, :split_raw_times, :finish_line, :stats, :drop_list, :follow, :traffic]
-  after_action :verify_authorized, except: [:index, :show, :new, :follow, :traffic, :efforts]
+  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :efforts]
 
   # GET /event_groups
   def index

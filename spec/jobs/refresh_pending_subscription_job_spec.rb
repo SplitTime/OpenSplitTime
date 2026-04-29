@@ -22,6 +22,18 @@ RSpec.describe RefreshPendingSubscriptionJob do
 
       it "broadcasts a Turbo Stream refresh" do
         expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_to).with(effort)
+        allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to)
+        job.perform(subscription.id)
+      end
+
+      it "broadcasts a confirmation flash to the subscribable's stream" do
+        allow(Turbo::StreamsChannel).to receive(:broadcast_refresh_to)
+        expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
+          effort,
+          target: "flash",
+          partial: "layouts/broadcast_flash",
+          locals: hash_including(level: :success, message: a_string_matching(/now active/)),
+        )
         job.perform(subscription.id)
       end
     end

@@ -26,6 +26,16 @@ RSpec.describe Webhooks::SnsInboundController do
       end
     end
 
+    context "when the body is not parseable JSON" do
+      it "returns 401 (short-circuits before signature verification) and does not crash" do
+        allow(Rails.error).to receive(:report)
+        post_with_sns(body: "not json at all", type: "Notification")
+        expect(response).to have_http_status(:unauthorized)
+        expect(Rails.error).not_to have_received(:report)
+        expect(verifier).not_to have_received(:authentic?)
+      end
+    end
+
     context "with a SubscriptionConfirmation message and a valid AWS-host SubscribeURL" do
       let(:body) do
         {

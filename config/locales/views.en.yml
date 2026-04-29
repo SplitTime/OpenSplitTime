@@ -79,8 +79,10 @@ en:
   subscriptions:
     create:
       success: "You have subscribed to %{protocol} notifications for %{name}. Messages will be sent to %{endpoint}."
+      pending_confirmation: "You have subscribed to %{protocol} notifications for %{name}. To activate, click the confirmation link sent to %{endpoint}."
       sms_no_phone: "Please add a mobile phone number and opt in to SMS on your preferences page."
       sms_not_opted_in: "Please opt in to SMS text messages on your preferences page."
+    confirmed: "Your subscription to %{protocol} notifications for %{name} is now active."
     tooltips:
       confirmed: "This subscription is confirmed."
       no_topic: "This subscription does not have a resource key. Click Actions > Refresh to attempt to generate one, or delete this subscription and create a new one."

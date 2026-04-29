@@ -34,7 +34,8 @@ class SubscriptionsController < ApplicationController
                         end
       redirect_to user_settings_sms_messaging_path
     elsif @subscription.save
-      flash.now[:success] = t("subscriptions.create.success",
+      flash_key = protocol == "sms" ? "subscriptions.create.success" : "subscriptions.create.pending_confirmation"
+      flash.now[:success] = t(flash_key,
                               protocol: protocol,
                               name: @subscribable.name,
                               endpoint: @subscription[:endpoint])

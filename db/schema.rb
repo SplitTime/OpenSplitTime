@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_22_151312) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_29_065115) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -84,6 +84,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_22_151312) do
     t.bigint "user_id", null: false
     t.index ["record_type", "record_id"], name: "index_file_downloads_on_record"
     t.index ["user_id"], name: "index_analytics_file_downloads_on_user_id"
+  end
+
+  create_table "analytics_sms_inbound_messages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "destination_number", null: false
+    t.string "inbound_message_id"
+    t.string "keyword"
+    t.string "message_body", null: false
+    t.string "origination_number", null: false
+    t.datetime "received_at", null: false
+    t.string "sns_message_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["origination_number"], name: "index_analytics_sms_inbound_messages_on_origination_number"
+    t.index ["received_at"], name: "index_analytics_sms_inbound_messages_on_received_at"
+    t.index ["sns_message_id"], name: "index_analytics_sms_inbound_messages_on_sns_message_id", unique: true
   end
 
   create_table "connections", force: :cascade do |t|
@@ -915,6 +930,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_22_151312) do
     t.integer "role"
     t.integer "sign_in_count", default: 0, null: false
     t.string "slug", null: false
+    t.datetime "sms_carrier_opted_out_at"
     t.string "uid"
     t.string "unconfirmed_email"
     t.datetime "updated_at", precision: nil, null: false
@@ -922,6 +938,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_22_151312) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["sms_carrier_opted_out_at"], name: "index_users_on_sms_carrier_opted_out_at"
   end
 
   create_table "versions", force: :cascade do |t|

@@ -7,6 +7,7 @@ namespace :madmin do
   namespace :analytics do
     resources :file_downloads
     resources :email_events
+    resources :sms_inbound_messages
   end
   resources :connections
   namespace :active_storage do

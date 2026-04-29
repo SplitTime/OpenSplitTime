@@ -42,6 +42,18 @@
             </div>
 
             <div class="mb-3 p-3 bg-light border rounded">
+              <% if current_user.sms_carrier_opted_out? %>
+                <div class="alert alert-warning mb-3" role="alert">
+                  <p class="mb-2">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong><%= t("sms.carrier_opted_out.banner_title", date: l(current_user.sms_carrier_opted_out_at.to_date, format: :long)) %></strong>
+                  </p>
+                  <p class="small mb-0">
+                    <%= t("sms.carrier_opted_out.banner_body_html", last4: current_user.phone.last(4)) %>
+                  </p>
+                </div>
+              <% end %>
+
               <p class="small mb-2">
                 <%= t("sms.consent.disclosure") %>
               </p>
@@ -51,10 +63,15 @@
               </p>
               <div class="form-check">
                 <%= f.check_box :sms_consent, class: "form-check-input", checked: current_user.sms_opted_in?,
+                                              disabled: current_user.sms_carrier_opted_out?,
                                               data: { phone_consent_target: "consent" } %>
                 <%= f.label :sms_consent, t("sms.consent.checkbox_label"), class: "form-check-label" %>
               </div>
-              <% if current_user.sms_opted_in? %>
+              <% if current_user.sms_carrier_opted_out? %>
+                <p class="small text-muted mt-2 mb-0">
+                  <%= t("sms.carrier_opted_out.checkbox_disabled_note") %>
+                </p>
+              <% elsif current_user.sms_opted_in? %>
                 <p class="small text-success mt-2 mb-0">
                   <i class="fas fa-check-circle"></i>
                   <%= t("sms.consent.enabled_since", date: l(current_user.phone_confirmed_at.to_date, format: :long)) %>

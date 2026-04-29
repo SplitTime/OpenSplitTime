@@ -105,6 +105,10 @@ en:
       enabled_since: "SMS enabled since %{date}"
       opted_in: "You have opted in to receive SMS text message updates from OpenSplitTime. Reply STOP to cancel. Reply HELP for help. Msg & data rates may apply."
       opted_out: "You have opted out of SMS text message updates."
+    carrier_opted_out:
+      banner_title: "You replied STOP on %{date} and have been unsubscribed from SMS notifications."
+      banner_body_html: "To receive SMS notifications again, <strong>text START to +1 (762) 689-8865</strong> from your phone (ending in %{last4}). Once you do, the unsubscribe will be lifted automatically."
+      checkbox_disabled_note: "To re-enable SMS, text START as described in the banner above."
     phone:
       hint: "US or Canada mobile number only"
 

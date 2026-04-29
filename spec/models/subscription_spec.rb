@@ -82,40 +82,65 @@ RSpec.describe Subscription, type: :model do
     end
   end
 
-  describe "welcome dispatch on create" do
+  describe "welcome dispatch" do
     let(:user) { users(:admin_user) }
     let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
 
-    context "when protocol is email" do
-      it "enqueues the welcome mailer" do
-        expect do
-          described_class.create!(user: user, subscribable: effort, protocol: :email, endpoint: user.email)
-        end.to have_enqueued_mail(SubscriptionMailer, :welcome)
-      end
-    end
-
-    context "when protocol is sms" do
-      it "enqueues the SMS welcome job" do
+    context "when an SMS subscription is created" do
+      it "enqueues the SMS welcome job immediately" do
         expect do
           described_class.create!(user: user, subscribable: effort, protocol: :sms, endpoint: "+13035551212")
         end.to have_enqueued_job(SmsSubscriptionWelcomeJob)
       end
     end
 
-    context "when protocol is http" do
-      it "does not enqueue any welcome job or mail" do
+    context "when an email subscription is created" do
+      it "does not enqueue the welcome mailer on create — defers until AWS confirms" do
+        expect do
+          described_class.create!(user: user, subscribable: effort, protocol: :email, endpoint: user.email)
+        end.not_to have_enqueued_mail(SubscriptionMailer, :welcome)
+      end
+    end
+
+    context "when an http subscription is created" do
+      it "does not enqueue any welcome" do
         expect do
           described_class.create!(user: user, subscribable: effort, protocol: :http, endpoint: "https://example.com/hook")
         end.not_to have_enqueued_mail(SubscriptionMailer, :welcome)
       end
     end
 
-    context "when an existing subscription is updated" do
-      let!(:subscription) do
+    context "when an email subscription transitions from pending to confirmed" do
+      let(:subscription) do
         described_class.create!(user: user, subscribable: effort, protocol: :email, endpoint: user.email)
       end
+      let(:confirmed_arn) { "arn:aws:sns:us-west-2:186555151487:topic:#{SecureRandom.uuid}" }
 
-      it "does not re-fire the welcome (after_create_commit only)" do
+      before do
+        subscription.update_column(:resource_key, "pending#{SecureRandom.uuid}")
+        subscription.reload
+      end
+
+      it "enqueues the welcome mailer on the transition" do
+        subscription.resource_key = confirmed_arn
+        expect { subscription.save(validate: false) }.to have_enqueued_mail(SubscriptionMailer, :welcome)
+      end
+    end
+
+    context "when an already-confirmed email subscription is saved again" do
+      let(:subscription) do
+        described_class.create!(user: user, subscribable: effort, protocol: :email, endpoint: user.email)
+      end
+      let(:confirmed_arn) { "arn:aws:sns:us-west-2:186555151487:topic:#{SecureRandom.uuid}" }
+
+      before do
+        subscription.update_column(:resource_key, confirmed_arn)
+        allow(SnsSubscriptionManager).to receive(:update).and_return(
+          SnsSubscriptionManager::Response.new(subscription_arn: confirmed_arn),
+        )
+      end
+
+      it "does not re-fire the welcome mailer (no resource_key transition)" do
         expect do
           subscription.update!(endpoint: "new-#{user.email}")
         end.not_to have_enqueued_mail(SubscriptionMailer, :welcome)

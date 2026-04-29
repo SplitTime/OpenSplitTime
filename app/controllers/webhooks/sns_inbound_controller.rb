@@ -23,13 +23,15 @@ module Webhooks
     private
 
     def valid_signature?
+      return false if sns_message.nil?
+
       Aws::SNS::MessageVerifier.new.authentic?(request.raw_post)
-    rescue Aws::Json::ParseError, JSON::ParserError
-      false
     end
 
     def sns_message
       @sns_message ||= JSON.parse(request.raw_post)
+    rescue JSON::ParserError
+      nil
     end
 
     def confirm_subscription

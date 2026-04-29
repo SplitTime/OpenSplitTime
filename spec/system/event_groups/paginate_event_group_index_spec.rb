@@ -5,6 +5,11 @@ RSpec.describe "Paginate the event_groups index", :js do
   let(:per_page) { 3 }
 
   scenario "Visitor sees Show More link when results exceed per_page" do
+    # Shrink the viewport so the Show More link starts below the fold. Otherwise
+    # autoclick_controller.js's IntersectionObserver fires immediately on page
+    # load, auto-clicks Show More, and we end up with 6 rows instead of 3 —
+    # racing the assertion below.
+    page.current_window.resize_to(800, 300)
     visit event_groups_path(per_page: per_page)
 
     expect(page).to have_link("Show More")

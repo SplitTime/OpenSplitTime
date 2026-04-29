@@ -151,7 +151,11 @@ module ToggleHelper
       method = :delete
       label = protocol
     elsif existing_subscription&.pending?
-      RefreshPendingSubscriptionJob.perform_later(existing_subscription.id)
+      # Delay long enough for the browser to establish its ActionCable WebSocket
+      # subscription before the job's broadcast_refresh_to / broadcast_flash fire.
+      # Without the delay, the broadcasts are pub-subbed before any subscriber is
+      # listening, the messages are dropped, and the user has to reload manually.
+      RefreshPendingSubscriptionJob.set(wait: 3.seconds).perform_later(existing_subscription.id)
       url = polymorphic_path([subscribable, existing_subscription])
       button_class = "btn-outline-primary"
       confirm_text = unsubscribe_alert

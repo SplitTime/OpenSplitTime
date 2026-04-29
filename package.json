@@ -18,7 +18,7 @@
     "local-time": "^3.0.3",
     "masonry-layout": "^4.2.2",
     "nodemon": "^3.0.1",
-    "postcss": "^8.4.31",
+    "postcss": "^8.5.10",
     "postcss-cli": "^10.1.0",
     "sass": "^1.64.1",
     "simple-datatables": "^7.2.0",

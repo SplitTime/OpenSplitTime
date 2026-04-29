@@ -1,0 +1,14 @@
+<%# locals: (subscribable:, protocol:, subscription: nil) -%>
+<%#
+  When `subscription` is provided (e.g., from a background-job broadcast), the
+  link is built directly from that subscription via link_to_subscription_button —
+  no current_user is required. Otherwise we fall back to link_to_subscription,
+  which dispatches based on current_user (request-context render path).
+-%>
+<%= content_tag :span, id: dom_id(subscribable, protocol), class: "mx-1" do %>
+  <% if subscription %>
+    <%= link_to_subscription_button(subscription) %>
+  <% else %>
+    <%= link_to_subscription(subscribable, protocol) %>
+  <% end %>
+<% end %>

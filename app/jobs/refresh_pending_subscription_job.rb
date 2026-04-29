@@ -17,8 +17,12 @@ class RefreshPendingSubscriptionJob < ApplicationJob
     Turbo::StreamsChannel.broadcast_replace_to(
       subscription.subscribable,
       target: ActionView::RecordIdentifier.dom_id(subscription.subscribable, subscription.protocol),
-      partial: "subscriptions/confirmed_button",
-      locals: { subscription: subscription },
+      partial: "subscriptions/subscription_button_link",
+      locals: {
+        subscribable: subscription.subscribable,
+        protocol: subscription.protocol,
+        subscription: subscription,
+      },
     )
     broadcast_flash(
       subscription.subscribable,

@@ -92,34 +92,10 @@ module ToggleHelper
     protocol = protocol.to_s
     raise ArgumentError, "Improper protocol: #{protocol}" unless protocol.in?(%w[email sms])
 
-    update_type = case subscribable.class.name
-                  when "Effort"
-                    t("subscriptions.toggle.effort_update_type")
-                  when "Person"
-                    t("subscriptions.toggle.person_update_type")
-                  else
-                    raise ArgumentError, "Unknown subscribable class: #{subscribable.class.name}"
-                  end
-
-    name = subscribable.full_name
-    unsubscribe_alert = t("subscriptions.toggle.unsubscribe", update_type: update_type, name: name)
-
-    args = case protocol
-           when "email"
-             { icon_name: "envelope",
-               subscribe_alert: t("subscriptions.toggle.subscribe_email", update_type: update_type, name: name),
-               unsubscribe_alert: unsubscribe_alert }
-           when "sms"
-             { icon_name: "mobile-alt",
-               subscribe_alert: t("subscriptions.toggle.subscribe_sms", update_type: update_type, name: name),
-               unsubscribe_alert: unsubscribe_alert }
-           else
-             {}
-           end
+    args = subscription_args(subscribable, protocol)
 
     return if subscribable.topic_resource_key.blank?
 
-    args.merge!(subscribable: subscribable, protocol: protocol)
     if protocol == "sms" && !current_user&.admin?
       content_tag(:span, class: "mx-3") do
         safe_join([t("subscriptions.toggle.sms_out_of_service"), tag.br,
@@ -129,11 +105,20 @@ module ToggleHelper
       if protocol == "sms" && !current_user.sms_opted_in?
         link_to_sms_opt_in(icon: args[:icon_name])
       else
-        link_to_toggle_subscription(args)
+        existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
+        link_to_toggle_subscription(args.merge(existing_subscription: existing_subscription))
       end
     else
       button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
     end
+  end
+
+  # Renders the (un)subscribe button for a known subscription without needing
+  # current_user. Used by RefreshPendingSubscriptionJob's broadcast, which has
+  # no request context and therefore no Devise/Warden session.
+  def link_to_subscription_button(subscription)
+    args = subscription_args(subscription.subscribable, subscription.protocol)
+    link_to_toggle_subscription(args.merge(existing_subscription: subscription))
   end
 
   def link_to_toggle_subscription(args)
@@ -142,7 +127,7 @@ module ToggleHelper
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
+    existing_subscription = args[:existing_subscription]
 
     if existing_subscription&.confirmed?
       url = polymorphic_path([subscribable, existing_subscription])
@@ -152,9 +137,9 @@ module ToggleHelper
       label = protocol
     elsif existing_subscription&.pending?
       # Delay long enough for the browser to establish its ActionCable WebSocket
-      # subscription before the job's broadcast_refresh_to / broadcast_flash fire.
-      # Without the delay, the broadcasts are pub-subbed before any subscriber is
-      # listening, the messages are dropped, and the user has to reload manually.
+      # subscription before the job's broadcasts fire. Without the delay, the
+      # broadcasts are pub-subbed before any subscriber is listening, the
+      # messages are dropped, and the user has to reload manually.
       RefreshPendingSubscriptionJob.set(wait: 3.seconds).perform_later(existing_subscription.id)
       url = polymorphic_path([subscribable, existing_subscription])
       button_class = "btn-outline-primary"
@@ -177,6 +162,38 @@ module ToggleHelper
                      } }
     button_to(url, html_options) { fa_icon(icon_name, text: label) }
   end
+
+  private
+
+  # Computes the i18n-flavored args (icon, alerts) shared between
+  # link_to_subscription (request-context) and link_to_subscription_button
+  # (broadcast-context). Pure function; no current_user dependency.
+  def subscription_args(subscribable, protocol)
+    protocol = protocol.to_s
+    update_type = case subscribable.class.name
+                  when "Effort"
+                    t("subscriptions.toggle.effort_update_type")
+                  when "Person"
+                    t("subscriptions.toggle.person_update_type")
+                  else
+                    raise ArgumentError, "Unknown subscribable class: #{subscribable.class.name}"
+                  end
+
+    name = subscribable.full_name
+    unsubscribe_alert = t("subscriptions.toggle.unsubscribe", update_type: update_type, name: name)
+    icon_name = protocol == "sms" ? "mobile-alt" : "envelope"
+    subscribe_alert_key = "subscriptions.toggle.subscribe_#{protocol}"
+
+    {
+      icon_name: icon_name,
+      subscribe_alert: t(subscribe_alert_key, update_type: update_type, name: name),
+      unsubscribe_alert: unsubscribe_alert,
+      subscribable: subscribable,
+      protocol: protocol,
+    }
+  end
+
+  public
 
   def link_to_sms_opt_in(icon:)
     link_to(user_settings_sms_messaging_path, class: "btn btn-lg btn-outline-secondary") do

@@ -169,6 +169,17 @@ RSpec.describe User, type: :model do
         expect(user).to be_valid
       end
     end
+
+    context "when phone has a leading non-+1 country code" do
+      let(:phone) { "52+15517064638" }
+
+      it "is rejected by the format validator" do
+        user.validate
+        expect(user.phone).to eq("52+15517064638")
+        expect(user).not_to be_valid
+        expect(user.errors[:phone]).to include("must be a valid US or Canada phone number")
+      end
+    end
   end
 
   describe "#steward_of?" do
@@ -231,6 +242,26 @@ RSpec.describe User, type: :model do
 
       it { is_expected.not_to be_sms_opted_in }
     end
+
+    context "when phone and phone_confirmed_at are both present but the user is carrier-opted-out" do
+      subject { build(:user, phone: "+12025551212", phone_confirmed_at: Time.current, sms_carrier_opted_out_at: Time.current) }
+
+      it { is_expected.not_to be_sms_opted_in }
+    end
+  end
+
+  describe "#sms_carrier_opted_out?" do
+    context "when sms_carrier_opted_out_at is set" do
+      subject { build(:user, sms_carrier_opted_out_at: Time.current) }
+
+      it { is_expected.to be_sms_carrier_opted_out }
+    end
+
+    context "when sms_carrier_opted_out_at is nil" do
+      subject { build(:user, sms_carrier_opted_out_at: nil) }
+
+      it { is_expected.not_to be_sms_carrier_opted_out }
+    end
   end
 
   describe "sms consent callbacks" do
@@ -269,6 +300,21 @@ RSpec.describe User, type: :model do
       it "clears phone_confirmed_at" do
         subject.update!(phone: nil)
         expect(subject.phone_confirmed_at).to be_nil
+      end
+    end
+
+    context "when phone is changed and the user is carrier-opted-out" do
+      subject do
+        create(:user,
+               phone: "+12025551212",
+               phone_confirmed_at: Time.current,
+               sms_carrier_opted_out_at: Time.current)
+      end
+
+      it "clears both phone_confirmed_at and sms_carrier_opted_out_at" do
+        subject.update!(phone: "+13035551212")
+        expect(subject.phone_confirmed_at).to be_nil
+        expect(subject.sms_carrier_opted_out_at).to be_nil
       end
     end
   end

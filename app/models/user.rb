@@ -37,7 +37,7 @@ class User < ApplicationRecord
   attr_accessor :sms_consent
 
   validates :first_name, :last_name, presence: true, length: { maximum: 64 }
-  validates :phone, format: { with: /\+1\d{9}/, message: "must be a valid US or Canada phone number" }, if: :phone?
+  validates :phone, format: { with: /\A\+1\d{10}\z/, message: "must be a valid US or Canada phone number" }, if: :phone?
 
   after_initialize :set_default_role, if: :new_record?
   before_validation :normalize_phone, if: :phone?
@@ -187,7 +187,12 @@ class User < ApplicationRecord
 
   # @return [Boolean]
   def sms_opted_in?
-    phone_confirmed_at.present? && phone.present?
+    phone_confirmed_at.present? && phone.present? && sms_carrier_opted_out_at.nil?
+  end
+
+  # @return [Boolean]
+  def sms_carrier_opted_out?
+    sms_carrier_opted_out_at.present?
   end
 
   # @return [Boolean]
@@ -213,6 +218,9 @@ class User < ApplicationRecord
   end
 
   def clear_sms_consent_on_phone_change
-    self.phone_confirmed_at = nil if phone_was.present?
+    return if phone_was.blank?
+
+    self.phone_confirmed_at = nil
+    self.sms_carrier_opted_out_at = nil
   end
 end

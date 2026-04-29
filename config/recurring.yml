@@ -21,3 +21,7 @@ production:
     class: SweepSubscriptionsJob
     queue: default
     schedule: every month on the 1st at 7am
+  reconcile_sms_carrier_opt_outs:
+    class: ReconcileSmsCarrierOptOutsJob
+    queue: default
+    schedule: every hour at minute 7

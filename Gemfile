@@ -10,6 +10,7 @@ gem "acts_as_list", "~> 0.9"
 gem "allowable", "~> 1.1"
 gem "american_date"
 gem "api-pagination", "~> 7.0"
+gem "aws-sdk-pinpointsmsvoicev2", "~> 1", require: false
 gem "aws-sdk-rails", "~> 3"
 gem "aws-sdk-s3", "~> 1", require: false
 gem "aws-sdk-sns", "~> 1", require: false

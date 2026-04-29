@@ -1,0 +1,25 @@
+<%# locals: (subscription:) -%>
+<%#
+  Standalone confirmed-state subscription button used by RefreshPendingSubscriptionJob's
+  broadcast. Cannot reuse link_to_subscription because that helper depends on
+  current_user (via Devise's Warden), which isn't available inside a background job's
+  renderer context. This partial hand-builds the same HTML link_to_toggle_subscription
+  produces for a confirmed subscription.
+-%>
+<% subscribable = subscription.subscribable -%>
+<% protocol = subscription.protocol -%>
+<% icon_name = protocol == "sms" ? "mobile-alt" : "envelope" -%>
+<% update_type = subscribable.is_a?(Person) ? t("subscriptions.toggle.person_update_type") : t("subscriptions.toggle.effort_update_type") -%>
+<% confirm_text = t("subscriptions.toggle.unsubscribe", update_type: update_type, name: subscribable.full_name) -%>
+
+<%= content_tag :span, id: dom_id(subscribable, protocol), class: "mx-1" do %>
+  <%= button_to polymorphic_path([subscribable, subscription]),
+                method: :delete,
+                class: "#{protocol}-sub btn btn-lg btn-primary",
+                data: {
+                  turbo_confirm: confirm_text,
+                  turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
+                } do %>
+    <%= fa_icon(icon_name, text: protocol) %>
+  <% end %>
+<% end %>

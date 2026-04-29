@@ -11,7 +11,15 @@ class RefreshPendingSubscriptionJob < ApplicationJob
 
     return unless subscription.confirmed?
 
-    Turbo::StreamsChannel.broadcast_refresh_to(subscription.subscribable)
+    # Replace just the subscription button rather than the whole page.
+    # broadcast_refresh_to would trigger a full page re-fetch that wipes the
+    # flash element rendered by broadcast_flash below.
+    Turbo::StreamsChannel.broadcast_replace_to(
+      subscription.subscribable,
+      target: ActionView::RecordIdentifier.dom_id(subscription.subscribable, subscription.protocol),
+      partial: "subscriptions/confirmed_button",
+      locals: { subscription: subscription },
+    )
     broadcast_flash(
       subscription.subscribable,
       message: I18n.t(

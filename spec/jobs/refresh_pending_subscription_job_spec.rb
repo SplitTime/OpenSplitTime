@@ -20,14 +20,23 @@ RSpec.describe RefreshPendingSubscriptionJob do
         expect(subscription.reload.resource_key).to include("arn:aws:sns")
       end
 
-      it "broadcasts a Turbo Stream refresh" do
-        expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_to).with(effort)
-        allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to)
+      it "broadcasts a targeted replace of the subscription button" do
+        expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
+          effort,
+          target: ActionView::RecordIdentifier.dom_id(effort, subscription.protocol),
+          partial: "subscriptions/confirmed_button",
+          locals: hash_including(:subscription),
+        )
+        allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
+          effort, hash_including(target: "flash"),
+        )
         job.perform(subscription.id)
       end
 
       it "broadcasts a confirmation flash to the subscribable's stream" do
-        allow(Turbo::StreamsChannel).to receive(:broadcast_refresh_to)
+        allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
+          effort, hash_including(partial: "subscriptions/confirmed_button"),
+        )
         expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
           effort,
           target: "flash",
@@ -47,14 +56,14 @@ RSpec.describe RefreshPendingSubscriptionJob do
       end
 
       it "does not broadcast" do
-        expect(Turbo::StreamsChannel).not_to receive(:broadcast_refresh_to)
+        expect(Turbo::StreamsChannel).not_to receive(:broadcast_replace_to)
         job.perform(subscription.id)
       end
     end
 
     context "when the subscription is already confirmed" do
       it "does not attempt to save or broadcast" do
-        expect(Turbo::StreamsChannel).not_to receive(:broadcast_refresh_to)
+        expect(Turbo::StreamsChannel).not_to receive(:broadcast_replace_to)
         expect_any_instance_of(Subscription).not_to receive(:save) # rubocop:disable RSpec/AnyInstance
         job.perform(subscription.id)
       end

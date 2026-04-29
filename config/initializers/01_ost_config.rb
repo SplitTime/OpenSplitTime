@@ -27,6 +27,10 @@ module OstConfig
     Rails.application.credentials.dig(:aws, :sms_origination_number)
   end
 
+  def self.aws_sms_welcome_enabled?
+    cast_to_boolean(Rails.application.credentials.dig(:aws, :sms_welcome_enabled))
+  end
+
   def self.base_uri
     ENV.fetch("BASE_URI", "localhost:3000")
   end

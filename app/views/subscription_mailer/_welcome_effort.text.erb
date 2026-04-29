@@ -1,0 +1,7 @@
+<%# locals: (subscription:) %>
+<% effort = subscription.subscribable -%>
+You're now subscribed to live progress updates for <%= effort.full_name %> at <%= effort.event_name %>.
+
+You'll receive an email each time <%= effort.first_name %> passes an aid station, so you can follow along in real time.
+
+View live results: <%= effort_url(effort) %>

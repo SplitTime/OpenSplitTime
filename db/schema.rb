@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_22_151312) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_29_064635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -915,6 +915,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_22_151312) do
     t.integer "role"
     t.integer "sign_in_count", default: 0, null: false
     t.string "slug", null: false
+    t.datetime "sms_carrier_opted_out_at"
     t.string "uid"
     t.string "unconfirmed_email"
     t.datetime "updated_at", precision: nil, null: false
@@ -922,6 +923,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_22_151312) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["sms_carrier_opted_out_at"], name: "index_users_on_sms_carrier_opted_out_at"
   end
 
   create_table "versions", force: :cascade do |t|

@@ -51,6 +51,7 @@ Rails.application.routes.draw do
 
   namespace :webhooks do
     resources :mailgun_events, only: [:create]
+    resources :sns_inbound, only: [:create]
     post "raceresult", to: "raceresult#receive"
   end
 

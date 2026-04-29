@@ -31,8 +31,10 @@ module Interactors
     end
 
     def cannot_unstart_error(effort)
+      message = "The effort has one or more intermediate or finish times recorded. " \
+                "Times must be deleted from the effort view."
       { title: "Cannot mark #{effort} as DNS",
-        detail: { messages: ["The effort has one or more intermediate or finish times recorded. Times must be deleted from the effort view."] } }
+        detail: { messages: [message] } }
     end
 
     def distance_mismatch_error(child, new_parent)
@@ -41,8 +43,9 @@ module Interactors
     end
 
     def duplicate_bib_numbers_error(bib_numbers)
+      message = "The operation resulted in the creation of duplicate bib numbers: #{bib_numbers.join(', ')}"
       { title: "Duplicate bib numbers",
-        detail: { messages: ["The operation resulted in the creation of duplicate bib numbers: #{bib_numbers.join(', ')}"] } }
+        detail: { messages: [message] } }
     end
 
     def efforts_not_provided_error
@@ -51,9 +54,12 @@ module Interactors
     end
 
     def empty_bib_numbers_error(problems)
-      problem_efforts_text = problems.map { |problem| "#{problem.first} could not be set to #{problem.last}" }.join("\n")
+      problem_efforts_text = problems
+                             .map { |problem| "#{problem.first} could not be set to #{problem.last}" }
+                             .join("\n")
+      message = "The operation resulted in the following bib numbers being set to empty: #{problem_efforts_text}"
       { title: "Empty bib numbers",
-        detail: { messages: ["The operation resulted in the following bib numbers being set to empty: #{problem_efforts_text}"] } }
+        detail: { messages: [message] } }
     end
 
     def event_group_mismatch_error(resource_1, resource_2)
@@ -77,8 +83,10 @@ module Interactors
     end
 
     def invalid_raw_time_error(raw_time, valid_sub_splits)
+      message = "#{raw_time} is invalid; the sub_split #{raw_time.sub_split} " \
+                "must be one of #{valid_sub_splits}"
       { title: "Invalid raw time",
-        detail: { messages: ["#{raw_time} is invalid; the sub_split #{raw_time.sub_split} must be one of #{valid_sub_splits}"] } }
+        detail: { messages: [message] } }
     end
 
     def invalid_split_name_error(split_name, valid_split_names)
@@ -97,8 +105,9 @@ module Interactors
     end
 
     def lottery_draws_exist_error
+      message = "Draws already exist for this lottery; please delete them before running this operation"
       { title: "Lottery draws already exist",
-        detail: { messages: ["Draws already exist for this lottery; please delete them before running this operation"] } }
+        detail: { messages: [message] } }
     end
 
     def lottery_entrants_not_created_error
@@ -136,6 +145,11 @@ module Interactors
         detail: { messages: [message] } }
     end
 
+    def sns_payload_error(message)
+      { title: "An error occurred while attempting to parse the SNS payload",
+        detail: { messages: [message] } }
+    end
+
     def raw_time_mismatch_error
       { title: "Raw times do not match",
         detail: { messages: ["One or more raw times is not related to the provided event group"] } }
@@ -147,8 +161,10 @@ module Interactors
     end
 
     def split_name_mismatch_error(child, new_parent)
+      message = "#{child} cannot be assigned to #{new_parent} because #{child} has split times " \
+                "corresponding to split names that do not coincide with splits for #{new_parent}"
       { title: "Split names do not match",
-        detail: { messages: ["#{child} cannot be assigned to #{new_parent} because #{child} has split times corresponding to split names that do not coincide with splits for #{new_parent}"] } }
+        detail: { messages: [message] } }
     end
 
     def sub_split_mismatch_error(child, new_parent)
@@ -157,18 +173,24 @@ module Interactors
     end
 
     def multiple_event_groups_error(event_group_ids)
+      message = "Attempted to start efforts from multiple event_groups: #{event_group_ids.to_sentence}"
       { title: "Efforts are from multiple event groups",
-        detail: { messages: ["Attempted to start efforts from multiple event_groups: #{event_group_ids.to_sentence}"] } }
+        detail: { messages: [message] } }
     end
 
     def multiple_runsignup_race_ids_error(race_ids, event_group_id)
+      message = "Multiple runsignup race ids (#{race_ids.to_sentence}) are assigned " \
+                "to a single event group (#{event_group_id})"
       { title: "Multiple race ids assigned to event group",
-        detail: { messages: ["Multiple runsignup race ids (#{race_ids.to_sentence}) are assigned to a single event group (#{event_group_id})"] } }
+        detail: { messages: [message] } }
     end
 
     def mismatched_organization_error(old_event_group, new_event_group)
+      message = "The event cannot be updated because #{old_event_group} is organized " \
+                "under #{old_event_group.organization}, but #{new_event_group} is " \
+                "organized under #{new_event_group.organization}"
       { title: "Event group organizations do not match",
-        detail: { messages: ["The event cannot be updated because #{old_event_group} is organized under #{old_event_group.organization}, but #{new_event_group} is organized under #{new_event_group.organization}"] } }
+        detail: { messages: [message] } }
     end
 
     def no_runsignup_race_id_error(event_group_id)

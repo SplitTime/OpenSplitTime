@@ -10,7 +10,8 @@ class Subscription < ApplicationRecord
   before_destroy :delete_resource_key
   after_save :attempt_person_subscription, if: :effort_has_person?
   after_save :attempt_effort_subscriptions, if: :type_is_person?
-  after_create_commit :send_welcome
+  after_create_commit :enqueue_sms_welcome, if: :sms?
+  after_save :enqueue_email_welcome, if: :email_just_confirmed?
 
   # rubocop:disable Rails/RedundantPresenceValidationOnBelongsTo -- existing tests assert error messages on the column-level :user_id / :subscribable_id keys, which the explicit presence validators emit and the belongs_to default does not.
   validates :user_id, :subscribable_type, :subscribable_id, :endpoint, :user, :subscribable, :protocol, presence: true
@@ -88,12 +89,15 @@ class Subscription < ApplicationRecord
     subscribable_type == "Person"
   end
 
-  def send_welcome
-    case protocol
-    when "email"
-      SubscriptionMailer.welcome(self).deliver_later
-    when "sms"
-      SmsSubscriptionWelcomeJob.perform_later(self)
-    end
+  def email_just_confirmed?
+    email? && saved_change_to_resource_key? && confirmed?
+  end
+
+  def enqueue_sms_welcome
+    SmsSubscriptionWelcomeJob.perform_later(self)
+  end
+
+  def enqueue_email_welcome
+    SubscriptionMailer.welcome(self).deliver_later
   end
 end

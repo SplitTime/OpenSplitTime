@@ -1,9 +1,10 @@
 require "aws-sdk-pinpointsmsvoicev2"
 
 class AwsSmsClient
-  def self.fetch_all_opted_out_numbers(opt_out_list_name: "Default")
+  # @return [Hash{String => Time}] phone (E.164) → opted-out timestamp from AWS
+  def self.opted_out_at_by_phone(opt_out_list_name: "Default")
     client = Aws::PinpointSMSVoiceV2::Client.new(region: ::OstConfig.aws_region)
-    numbers = []
+    index = {}
     next_token = nil
 
     loop do
@@ -11,11 +12,13 @@ class AwsSmsClient
         opt_out_list_name: opt_out_list_name,
         next_token: next_token,
       )
-      numbers.concat(response.opted_out_numbers.map(&:opted_out_number))
+      response.opted_out_numbers.each do |record|
+        index[record.opted_out_number] = record.opted_out_timestamp
+      end
       next_token = response.next_token
       break if next_token.nil?
     end
 
-    numbers
+    index
   end
 end

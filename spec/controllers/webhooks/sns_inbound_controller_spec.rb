@@ -26,6 +26,19 @@ RSpec.describe Webhooks::SnsInboundController do
       end
     end
 
+    context "when the body is malformed and the SNS verifier raises a parse error" do
+      before do
+        allow(verifier).to receive(:authentic?).and_raise(JSON::ParserError, "unexpected character")
+      end
+
+      it "returns 401 (treats as bad signature) and does not crash" do
+        allow(Rails.error).to receive(:report)
+        post_with_sns(body: "not json at all", type: "Notification")
+        expect(response).to have_http_status(:unauthorized)
+        expect(Rails.error).not_to have_received(:report)
+      end
+    end
+
     context "with a SubscriptionConfirmation message and a valid AWS-host SubscribeURL" do
       let(:body) do
         {

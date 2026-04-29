@@ -24,6 +24,8 @@ module Webhooks
 
     def valid_signature?
       Aws::SNS::MessageVerifier.new.authentic?(request.raw_post)
+    rescue Aws::Json::ParseError, JSON::ParserError
+      false
     end
 
     def sns_message

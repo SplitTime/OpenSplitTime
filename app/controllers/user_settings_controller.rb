@@ -39,8 +39,7 @@ class UserSettingsController < ApplicationController
 
     if updated
       flash[:notice] = t("user_settings.update.email_change_requested") if current_user.unconfirmed_email.present?
-      flash[:info] = t("sms.consent.opted_in") if !sms_was_opted_in && current_user.sms_opted_in?
-      flash[:info] = t("sms.consent.opted_out") if sms_was_opted_in && !current_user.sms_opted_in?
+      handle_sms_consent_change(sms_was_opted_in)
       redirect_to request.referrer
     else
       redirect_to request.referrer, notice: current_user.errors.full_messages.join("; ")
@@ -51,6 +50,17 @@ class UserSettingsController < ApplicationController
 
   def authorize_action
     authorize self, policy_class: ::UserSettingsPolicy
+  end
+
+  def handle_sms_consent_change(was_opted_in)
+    return if was_opted_in == current_user.sms_opted_in?
+
+    if current_user.sms_opted_in?
+      flash[:info] = t("sms.consent.opted_in")
+      SmsOptInWelcomeJob.perform_later(current_user)
+    else
+      flash[:info] = t("sms.consent.opted_out")
+    end
   end
 
   def settings_update_params

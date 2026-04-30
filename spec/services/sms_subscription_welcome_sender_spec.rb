@@ -41,6 +41,13 @@ RSpec.describe SmsSubscriptionWelcomeSender do
           a_hash_including(message_body: a_string_ending_with("Reply STOP to cancel.")),
         )
       end
+
+      it "includes a message frequency disclosure (TCR-attested)" do
+        described_class.deliver(subscription)
+        expect(client).to have_received(:send_text_message).with(
+          a_hash_including(message_body: a_string_including("Message frequency varies.")),
+        )
+      end
     end
 
     context "when the welcome feature flag is disabled" do

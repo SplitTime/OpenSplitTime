@@ -106,7 +106,7 @@ module ToggleHelper
 
     args = case protocol
            when "email"
-             { icon_name: "envelope",
+             { icon_name: "circle-envelope",
                subscribe_alert: t("subscriptions.toggle.subscribe_email", update_type: update_type, name: name),
                unsubscribe_alert: unsubscribe_alert }
            when "sms"
@@ -175,7 +175,7 @@ module ToggleHelper
                        turbo_confirm: confirm_text,
                        turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
                      } }
-    button_to(url, html_options) { fa_icon(icon_name, text: label) }
+    button_to(url, html_options) { fa_icon(icon_name, text: label, type: :regular) }
   end
 
   def link_to_sms_opt_in(icon:)

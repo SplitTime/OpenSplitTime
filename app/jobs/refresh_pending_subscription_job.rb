@@ -11,7 +11,15 @@ class RefreshPendingSubscriptionJob < ApplicationJob
 
     return unless subscription.confirmed?
 
-    Turbo::StreamsChannel.broadcast_refresh_to(subscription.subscribable)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      subscription.subscribable,
+      target: ActionView::RecordIdentifier.dom_id(subscription.subscribable, subscription.protocol),
+      partial: "subscriptions/subscription_button",
+      locals: {
+        subscribable: subscription.subscribable,
+        protocol: subscription.protocol,
+      },
+    )
     broadcast_flash(
       subscription.subscribable,
       message: I18n.t(

@@ -1,9 +1,9 @@
 class SubscriptionsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:button]
   before_action :set_subscribable
-  before_action :set_subscription, except: [:new, :create]
+  before_action :set_subscription, except: [:new, :create, :button]
   after_action :verify_authorized
 
   # GET /subscribable/:subscribable_id/subscriptions/new
@@ -56,6 +56,12 @@ class SubscriptionsController < ApplicationController
     @subscription.destroy
 
     render "destroy", locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
+  end
+
+  # GET /subscribable/:subscribable_id/subscription_button/:notification_protocol
+  def button
+    @protocol = params[:notification_protocol]
+    skip_authorization
   end
 
   # PATCH /subscribable/:subscribable_id/subscriptions/:id/refresh

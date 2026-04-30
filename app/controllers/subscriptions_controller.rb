@@ -1,10 +1,10 @@
 class SubscriptionsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:button]
   before_action :set_subscribable
-  before_action :set_subscription, except: [:new, :create]
-  after_action :verify_authorized
+  before_action :set_subscription, except: [:new, :create, :button]
+  after_action :verify_authorized, except: [:button]
 
   # GET /subscribable/:subscribable_id/subscriptions/new
   def new
@@ -56,6 +56,16 @@ class SubscriptionsController < ApplicationController
     @subscription.destroy
 
     render "destroy", locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
+  end
+
+  # GET /subscribable/:subscribable_id/subscription_button/:protocol
+  #
+  # Renders just the subscription button as a turbo-frame fragment. The
+  # _subscription_button partial is a lazy <turbo-frame src=...>; this action
+  # supplies its contents. Initial page load and post-confirmation broadcasts
+  # both fetch through here, so there is exactly one server-side render path.
+  def button
+    @protocol = params[:notification_protocol]
   end
 
   # PATCH /subscribable/:subscribable_id/subscriptions/:id/refresh

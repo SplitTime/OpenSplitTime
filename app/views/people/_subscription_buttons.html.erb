@@ -1,5 +1,6 @@
 <%# locals: (person:) -%>
 
+<%= turbo_stream_from person %>
 <div class="card person">
   <h5 class="card-header">
     <strong><%= "Notify Me of #{person.display_first_name}'s Future Events" %></strong>

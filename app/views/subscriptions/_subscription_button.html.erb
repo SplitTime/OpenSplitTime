@@ -1,4 +1,11 @@
 <%# locals: (subscribable:, protocol:) -%>
-
-<%= turbo_stream_from subscribable %>
-<%= render "subscriptions/subscription_button_link", subscribable: subscribable, protocol: protocol %>
+<%#
+  Lazy-loaded frame: the page renders an empty turbo-frame that fetches its
+  contents from SubscriptionsController#button. Same partial is used by initial
+  render and by RefreshPendingSubscriptionJob's broadcast — Turbo swaps the
+  frame contents after each fetch, in a normal request context (current_user
+  available, helpers unchanged).
+-%>
+<%= turbo_frame_tag dom_id(subscribable, protocol),
+                    src: polymorphic_path([subscribable, :subscription_button], notification_protocol: protocol),
+                    loading: :eager %>

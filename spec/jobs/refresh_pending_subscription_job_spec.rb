@@ -24,8 +24,8 @@ RSpec.describe RefreshPendingSubscriptionJob do
         expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
           effort,
           target: ActionView::RecordIdentifier.dom_id(effort, subscription.protocol),
-          partial: "subscriptions/subscription_button_link",
-          locals: hash_including(:subscribable, :protocol, :subscription),
+          partial: "subscriptions/subscription_button",
+          locals: hash_including(:subscribable, :protocol),
         )
         allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
           effort, hash_including(target: "flash"),
@@ -35,7 +35,7 @@ RSpec.describe RefreshPendingSubscriptionJob do
 
       it "broadcasts a confirmation flash to the subscribable's stream" do
         allow(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
-          effort, hash_including(partial: "subscriptions/subscription_button_link"),
+          effort, hash_including(partial: "subscriptions/subscription_button"),
         )
         expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
           effort,

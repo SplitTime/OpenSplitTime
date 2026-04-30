@@ -4,7 +4,7 @@ RSpec.describe Analytics::SmsInboundMessage, type: :model do
   subject(:message) do
     described_class.new(
       origination_number: "+13038806481",
-      destination_number: "+17626898865",
+      destination_number: "+14138458807",
       message_body: "STOP",
       received_at: Time.current,
       sns_message_id: "abc-123",
@@ -27,7 +27,7 @@ RSpec.describe Analytics::SmsInboundMessage, type: :model do
     message.save!
     duplicate = described_class.new(
       origination_number: "+13038806481",
-      destination_number: "+17626898865",
+      destination_number: "+14138458807",
       message_body: "STOP",
       received_at: Time.current,
       sns_message_id: "abc-123",

@@ -6,7 +6,7 @@ RSpec.describe SmsOptInWelcomeSender do
 
   before do
     allow(Aws::PinpointSMSVoiceV2::Client).to receive(:new).and_return(client)
-    allow(::OstConfig).to receive_messages(aws_sms_origination_number: "+17626898865", aws_sms_welcome_enabled?: true)
+    allow(::OstConfig).to receive_messages(aws_sms_origination_number: "+14138458807", aws_sms_welcome_enabled?: true)
     user.update!(phone: "+13035551212", phone_confirmed_at: Time.current, sms_carrier_opted_out_at: nil)
   end
 
@@ -16,7 +16,7 @@ RSpec.describe SmsOptInWelcomeSender do
         described_class.deliver(user)
         expect(client).to have_received(:send_text_message).with(
           destination_phone_number: user.phone,
-          origination_identity: "+17626898865",
+          origination_identity: "+14138458807",
           message_body: a_string_starting_with("OpenSplitTime: Thanks for opting in to SMS notifications."),
           message_type: "TRANSACTIONAL",
         )

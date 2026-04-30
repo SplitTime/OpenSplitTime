@@ -155,7 +155,7 @@ module ToggleHelper
       # subscription before the job's broadcast fires. Without the delay, the
       # broadcasts are pub-subbed before any subscriber is listening, the
       # messages are dropped, and the user has to reload manually.
-      RefreshPendingSubscriptionJob.set(wait: 3.seconds).perform_later(existing_subscription.id)
+      RefreshPendingSubscriptionJob.set(wait: 1.second).perform_later(existing_subscription.id)
       url = polymorphic_path([subscribable, existing_subscription])
       button_class = "btn-outline-primary"
       confirm_text = unsubscribe_alert

@@ -34,7 +34,7 @@ RSpec.describe "user settings sms messaging", type: :system do
     visit user_settings_sms_messaging_path
 
     expect(page).to have_text("You replied STOP")
-    expect(page).to have_text("text START to +1 (413) 845-8807")
+    expect(page).to have_text("text START to (413)845-8807")
     expect(page).to have_text("ending in 6481")
     expect(page).to have_text("To re-enable SMS, text START")
     expect(page).to have_field("user_sms_consent", disabled: true)

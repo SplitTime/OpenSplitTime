@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Interactors::Webhooks::ProcessSnsInboundSms do
   let(:phone) { "+13038806481" }
-  let(:destination) { "+17626898865" }
+  let(:destination) { "+14138458807" }
   let(:message_body) { "STOP" }
   let(:received_at_str) { "2026-04-29T10:00:00Z" }
   let(:sns_message_id) { "11111111-2222-3333-4444-555555555555" }

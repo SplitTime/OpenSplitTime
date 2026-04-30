@@ -144,6 +144,7 @@ module ToggleHelper
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
+    label = args[:button_text]
     existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
 
     if existing_subscription&.confirmed?
@@ -151,7 +152,6 @@ module ToggleHelper
       button_class = "btn-primary"
       confirm_text = unsubscribe_alert
       method = :delete
-      label = args[:button_text]
     elsif existing_subscription&.pending?
       # Delay long enough for the browser to establish its ActionCable WebSocket
       # subscription before the job's broadcast fires. Without the delay, the
@@ -168,7 +168,6 @@ module ToggleHelper
       button_class = "btn-outline-secondary"
       confirm_text = subscribe_alert
       method = :post
-      label = args[:button_text]
     end
 
     html_options = { method: method,

@@ -59,7 +59,7 @@ RSpec.describe "GET subscription_button" do
       login_as admin, scope: :user
     end
 
-    it "renders the Enable SMS link with data-turbo-frame=_top so it breaks out of the lazy frame" do
+    it "renders the Enable texts link with data-turbo-frame=_top so it breaks out of the lazy frame" do
       get effort_subscription_button_path(effort, notification_protocol: "sms")
 
       expect(response).to have_http_status(:ok)

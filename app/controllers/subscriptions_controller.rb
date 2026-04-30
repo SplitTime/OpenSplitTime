@@ -4,7 +4,7 @@ class SubscriptionsController < ApplicationController
   before_action :authenticate_user!, except: [:button]
   before_action :set_subscribable
   before_action :set_subscription, except: [:new, :create, :button]
-  after_action :verify_authorized, except: [:button]
+  after_action :verify_authorized
 
   # GET /subscribable/:subscribable_id/subscriptions/new
   def new
@@ -58,9 +58,10 @@ class SubscriptionsController < ApplicationController
     render "destroy", locals: { subscription: @subscription, subscribable: @subscribable, protocol: protocol }
   end
 
-  # GET /subscribable/:subscribable_id/subscription_button/:protocol
+  # GET /subscribable/:subscribable_id/subscription_button/:notification_protocol
   def button
     @protocol = params[:notification_protocol]
+    skip_authorization
   end
 
   # PATCH /subscribable/:subscribable_id/subscriptions/:id/refresh

@@ -16,6 +16,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          cache-version: ${{ env.ImageOS }}-${{ env.ImageVersion }}
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -157,6 +158,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          cache-version: ${{ env.ImageOS }}-${{ env.ImageVersion }}
 
       - name: Install libvips
         run: sudo apt-get install -y --no-install-recommends libvips42

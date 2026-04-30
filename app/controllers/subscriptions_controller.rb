@@ -59,11 +59,6 @@ class SubscriptionsController < ApplicationController
   end
 
   # GET /subscribable/:subscribable_id/subscription_button/:protocol
-  #
-  # Renders just the subscription button as a turbo-frame fragment. The
-  # _subscription_button partial is a lazy <turbo-frame src=...>; this action
-  # supplies its contents. Initial page load and post-confirmation broadcasts
-  # both fetch through here, so there is exactly one server-side render path.
   def button
     @protocol = params[:notification_protocol]
   end

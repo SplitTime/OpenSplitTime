@@ -50,4 +50,21 @@ RSpec.describe "GET subscription_button" do
         .to raise_error(ActionController::RoutingError)
     end
   end
+
+  context "when signed in as admin without SMS opted in" do
+    let(:admin) { users(:admin_user) }
+
+    before do
+      admin.update!(phone: nil, phone_confirmed_at: nil)
+      login_as admin, scope: :user
+    end
+
+    it "renders the Enable SMS link with data-turbo-frame=_top so it breaks out of the lazy frame" do
+      get effort_subscription_button_path(effort, notification_protocol: "sms")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(user_settings_sms_messaging_path)
+      expect(response.body).to match(/data-turbo-frame=["']_top["']/)
+    end
+  end
 end

@@ -45,7 +45,7 @@ class SmsSubscriptionWelcomeSender
   def message_body
     "OpenSplitTime: You're now subscribed to live progress updates for #{effort.full_name} " \
       "at #{effort.event_name}. You'll receive an SMS each time #{effort.first_name} " \
-      "passes an aid station. Reply STOP to cancel."
+      "passes an aid station. Message frequency varies. Reply STOP to cancel."
   end
 
   def client

@@ -8,14 +8,12 @@ RSpec.describe "User subscribes to notifications for a person", :js, type: :syst
 
   before { person.update!(topic_resource_key: "anything") }
 
-  scenario "The user is not logged in and subscribes to email" do
+  scenario "Anonymous user sees the email subscribe CTA as a link into the login modal frame" do
     visit_page
 
-    page.accept_confirm("You must be signed in to subscribe to notifications") do
-      within("##{dom_id(person, :email)}") { click_button("email") }
+    within("##{dom_id(person, :email)}") do
+      expect(page).to have_link(href: new_user_session_path(reason: "subscribe"))
     end
-
-    expect(page).to have_current_path(person_path(person))
   end
 
   scenario "The user is logged in and subscribes to email" do
@@ -35,7 +33,6 @@ RSpec.describe "User subscribes to notifications for a person", :js, type: :syst
     visit_page
 
     expect(page).to have_no_css("##{dom_id(person, :sms)}")
-    expect(page).to have_no_content("SMS temporarily out of service")
     expect(page).to have_no_link(href: %r{/user_settings/sms_messaging})
   end
 

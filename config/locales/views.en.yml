@@ -91,8 +91,6 @@ en:
       subscribe_email: "Receive %{update_type} updates for %{name}? (You will need to click a link in a confirmation email that will be sent to you from AWS Notifications.)"
       subscribe_sms: "Receive %{update_type} updates for %{name}?"
       unsubscribe: "Stop receiving %{update_type} updates for %{name}?"
-      sms_out_of_service: "SMS temporarily out of service."
-      sms_please_use_email: "Please use email."
       sign_in_required: "You must be signed in to subscribe to notifications."
       effort_update_type: "live progress"
       person_update_type: "future event sign-up"

@@ -27,10 +27,6 @@ module OstConfig
     Rails.application.credentials.dig(:aws, :sms_origination_number)
   end
 
-  def self.aws_sms_welcome_enabled?
-    cast_to_boolean(Rails.application.credentials.dig(:aws, :sms_welcome_enabled))
-  end
-
   # Whether AWS SDK clients should return stubbed responses instead of making
   # real network calls. Always stubbed in test. In production (real prod, the
   # most strict definition: Rails.env.production? without an explicit

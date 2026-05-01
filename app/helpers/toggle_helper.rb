@@ -106,12 +106,12 @@ module ToggleHelper
 
     args = case protocol
            when "email"
-             { button_text: "email",
+             { label: "email",
                icon_name: "envelope",
                subscribe_alert: t("subscriptions.toggle.subscribe_email", update_type: update_type, name: name),
                unsubscribe_alert: unsubscribe_alert }
            when "sms"
-             { button_text: "text",
+             { label: "text",
                icon_name: "message-sms",
                subscribe_alert: t("subscriptions.toggle.subscribe_sms", update_type: update_type, name: name),
                unsubscribe_alert: unsubscribe_alert }
@@ -122,19 +122,14 @@ module ToggleHelper
     return if subscribable.topic_resource_key.blank?
 
     args.merge!(subscribable: subscribable, protocol: protocol)
-    if protocol == "sms" && !current_user&.admin?
-      content_tag(:span, class: "mx-3") do
-        safe_join([t("subscriptions.toggle.sms_out_of_service"), tag.br,
-                   t("subscriptions.toggle.sms_please_use_email")])
-      end
-    elsif current_user
+    if current_user
       if protocol == "sms" && !current_user.sms_opted_in?
-        link_to_sms_opt_in(icon: args[:icon_name], label: args[:button_text], subscribable: subscribable)
+        link_to_sms_opt_in(icon: args[:icon_name], label: args[:label], subscribable: subscribable)
       else
         link_to_toggle_subscription(args)
       end
     else
-      button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
+      button_to_sign_in(icon: args[:icon_name], label: args[:label])
     end
   end
 
@@ -144,7 +139,7 @@ module ToggleHelper
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    label = args[:button_text]
+    label = args[:label]
     existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
 
     if existing_subscription&.confirmed?
@@ -194,16 +189,11 @@ module ToggleHelper
     end
   end
 
-  def button_to_sign_in(icon:, protocol:)
-    url = "#"
-    html_options = {
-      method: :get,
-      class: "btn btn-lg btn-outline-secondary",
-      data: {
-        turbo_confirm: t("subscriptions.toggle.sign_in_required"),
-      }
-    }
-
-    button_to(url, html_options) { fa_icon(icon, text: protocol.to_s) }
+  def button_to_sign_in(icon:, label:)
+    link_to(new_user_session_path(reason: "subscribe"),
+            class: "btn btn-lg btn-outline-secondary",
+            data: { turbo_frame: "form_modal" }) do
+      fa_icon(icon, text: label, type: :regular)
+    end
   end
 end

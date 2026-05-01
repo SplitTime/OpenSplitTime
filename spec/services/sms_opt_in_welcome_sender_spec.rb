@@ -8,7 +8,7 @@ RSpec.describe SmsOptInWelcomeSender do
     # Reference the factory so its `require "aws-sdk-pinpointsmsvoicev2"` runs
     # before the `instance_double(Aws::PinpointSMSVoiceV2::Client)` above resolves.
     allow(PinpointSmsClientFactory).to receive(:client).and_return(client)
-    allow(::OstConfig).to receive_messages(aws_sms_origination_number: "+14138458807", aws_sms_welcome_enabled?: true)
+    allow(::OstConfig).to receive(:aws_sms_origination_number).and_return("+14138458807")
     user.update!(phone: "+13035551212", phone_confirmed_at: Time.current, sms_carrier_opted_out_at: nil)
   end
 
@@ -36,15 +36,6 @@ RSpec.describe SmsOptInWelcomeSender do
         expect(client).to have_received(:send_text_message).with(
           a_hash_including(message_body: a_string_ending_with("Reply STOP to cancel, HELP for help. Msg & data rates may apply.")),
         )
-      end
-    end
-
-    context "when the welcome feature flag is disabled" do
-      before { allow(::OstConfig).to receive(:aws_sms_welcome_enabled?).and_return(false) }
-
-      it "does not call AWS" do
-        described_class.deliver(user)
-        expect(client).not_to have_received(:send_text_message)
       end
     end
 

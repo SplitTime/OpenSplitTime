@@ -21,6 +21,10 @@ production:
     class: Sweepers::EffortSubscriptionsAndTopicsJob
     queue: default
     schedule: every Sunday at 4am
+  sweep_event_subscriptions_and_topics:
+    class: Sweepers::EventSubscriptionsAndTopicsJob
+    queue: default
+    schedule: every Sunday at 4:30am
   reconcile_sms_carrier_opt_outs:
     class: ReconcileSmsCarrierOptOutsJob
     queue: default

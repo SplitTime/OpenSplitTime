@@ -149,7 +149,10 @@ module Sweepers
     end
 
     def delete_topic_for(effort)
-      SnsTopicManager.delete(resource: effort)
+      # Subscribable#unassign_topic_resource calls SnsTopicManager.delete and clears the
+      # attribute in memory; follow up with update_column to persist (we aren't destroying
+      # the Effort, just giving up its topic).
+      effort.unassign_topic_resource
       effort.update_column(:topic_resource_key, nil)
       true
     rescue SnsTopicManager::TopicNotDeletedError, Aws::SNS::Errors::ServiceError => e

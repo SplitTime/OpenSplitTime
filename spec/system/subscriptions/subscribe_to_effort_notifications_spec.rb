@@ -8,24 +8,20 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
 
   before { effort.update!(topic_resource_key: "anything") }
 
-  scenario "The user is not logged in and clicks the email subscribe button" do
+  scenario "Anonymous user sees the email subscribe CTA as a link into the login modal frame" do
     visit_page
 
-    page.accept_confirm("You must be signed in to subscribe to notifications") do
-      within("##{dom_id(effort, :email)}") { click_button("email") }
+    within("##{dom_id(effort, :email)}") do
+      expect(page).to have_link(href: new_user_session_path)
     end
-
-    expect(page).to have_current_path(effort_path(effort))
   end
 
-  scenario "The user is not logged in and clicks the SMS subscribe button" do
+  scenario "Anonymous user sees the SMS subscribe CTA as a link into the login modal frame" do
     visit_page
 
-    page.accept_confirm("You must be signed in to subscribe to notifications") do
-      within("##{dom_id(effort, :sms)}") { click_button("text") }
+    within("##{dom_id(effort, :sms)}") do
+      expect(page).to have_link(href: new_user_session_path)
     end
-
-    expect(page).to have_current_path(effort_path(effort))
   end
 
   scenario "The logged-in user subscribes to email" do

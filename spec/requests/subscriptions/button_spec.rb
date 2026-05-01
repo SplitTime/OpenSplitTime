@@ -16,19 +16,22 @@ RSpec.describe "GET subscription_button" do
   after { Warden.test_reset! }
 
   context "when not signed in" do
-    it "renders a sign-in prompt button inside the turbo-frame" do
+    it "renders a sign-in CTA inside the turbo-frame" do
       get effort_subscription_button_path(effort, notification_protocol: "email")
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(%(id="#{dom_id(effort, :email)}"))
-      expect(response.body).to include("You must be signed in")
     end
 
-    it "renders the sign-in CTA with data-turbo-frame=_top so the click breaks out of the lazy frame" do
+    it "renders the sign-in CTA as a link to new_user_session_path that loads into the form_modal turbo-frame" do
       get effort_subscription_button_path(effort, notification_protocol: "email")
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to match(/<button[^>]*data-turbo-frame=["']_top["']/)
+      doc = Nokogiri::HTML.fragment(response.body)
+      link = doc.css(%(##{dom_id(effort, :email)} a)).first
+      expect(link).not_to be_nil
+      expect(link["href"]).to eq(new_user_session_path)
+      expect(link["data-turbo-frame"]).to eq("form_modal")
     end
   end
 

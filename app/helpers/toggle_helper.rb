@@ -190,16 +190,10 @@ module ToggleHelper
   end
 
   def button_to_sign_in(icon:, label:)
-    url = "#"
-    html_options = {
-      method: :get,
-      class: "btn btn-lg btn-outline-secondary",
-      data: {
-        turbo_confirm: t("subscriptions.toggle.sign_in_required"),
-        turbo_frame: "_top",
-      }
-    }
-
-    button_to(url, html_options) { fa_icon(icon, text: label, type: :regular) }
+    link_to(new_user_session_path,
+            class: "btn btn-lg btn-outline-secondary",
+            data: { turbo_frame: "form_modal" }) do
+      fa_icon(icon, text: label, type: :regular)
+    end
   end
 end

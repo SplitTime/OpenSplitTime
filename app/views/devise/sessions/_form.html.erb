@@ -34,6 +34,10 @@
       <% end %>
 
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <% if params[:subscribe_to].present? %>
+          <%= hidden_field_tag :subscribe_to, params[:subscribe_to] %>
+          <%= hidden_field_tag :notification_protocol, params[:notification_protocol] %>
+        <% end %>
         <div class="form-floating mb-3">
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
           <%= f.label :email %>

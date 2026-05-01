@@ -12,7 +12,7 @@ RSpec.describe "User subscribes to notifications for a person", :js, type: :syst
     visit_page
 
     within("##{dom_id(person, :email)}") do
-      expect(page).to have_link(href: new_user_session_path(reason: "subscribe"))
+      expect(page).to have_link(href: %r{/users/sign_in\?.*notification_protocol=email})
     end
   end
 

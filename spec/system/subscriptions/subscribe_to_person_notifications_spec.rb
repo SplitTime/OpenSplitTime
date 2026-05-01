@@ -36,7 +36,7 @@ RSpec.describe "User subscribes to notifications for a person", :js, type: :syst
 
     expect(page).to have_no_css("##{dom_id(person, :sms)}")
     expect(page).to have_no_content("SMS temporarily out of service")
-    expect(page).to have_no_link("Enable texts")
+    expect(page).to have_no_link(href: %r{/user_settings/sms_messaging})
   end
 
   def visit_page

@@ -34,6 +34,9 @@
           </p>
 
           <%= form_with(model: current_user, url: user_settings_update_path, html: { method: :put, data: { controller: "form-disable-submit phone-consent" } }) do |f| %>
+            <% if params[:subscribe_to].present? %>
+              <%= hidden_field_tag :subscribe_to, params[:subscribe_to] %>
+            <% end %>
             <div class="mb-3">
               <%= f.label :phone, "Phone", class: "mb-1" %>
               <%= f.text_field :phone, class: "form-control", placeholder: "XXX-XXX-XXXX",

@@ -93,7 +93,6 @@ en:
       unsubscribe: "Stop receiving %{update_type} updates for %{name}?"
       sms_out_of_service: "SMS temporarily out of service."
       sms_please_use_email: "Please use email."
-      enable_sms: "Enable texts"
       sign_in_required: "You must be signed in to subscribe to notifications."
       effort_update_type: "live progress"
       person_update_type: "future event sign-up"
@@ -107,6 +106,10 @@ en:
       enabled_since: "SMS enabled since %{date}"
       opted_in: "You have opted in to receive SMS text message updates from OpenSplitTime. Reply STOP to cancel. Reply HELP for help. Msg & data rates may apply."
       opted_out: "You have opted out of SMS text message updates."
+      subscribe_pending_phone_and_consent: "To subscribe to %{name} via SMS, please add your mobile phone number below and check the consent box."
+      subscribe_pending_consent_only: "To subscribe to %{name} via SMS, please check the consent box below."
+      subscribe_failed_phone_and_consent: "Subscription to %{name} could not be created — please add your mobile phone number and check the consent box, then save again."
+      subscribe_failed_consent_only: "Subscription to %{name} could not be created — please check the consent box, then save again."
     carrier_opted_out:
       banner_title: "You replied STOP on %{date} and have been unsubscribed from SMS notifications."
       banner_body_html: "To receive SMS notifications again, <strong>text START to (413)845-8807</strong> from your phone (ending in %{last4}). Once you do, the unsubscribe will be lifted automatically."

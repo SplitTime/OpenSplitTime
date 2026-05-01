@@ -103,17 +103,24 @@ RSpec.describe Users::SessionsController do
         expect { post user_session_path, params: params }.not_to change(Subscription, :count)
       end
 
-      it "responds with a visit stream pointing at the SMS settings page with subscribe_to preserved" do
+      it "responds with a visit stream pointing at the SMS settings page with the subscribable re-encoded for the downstream purpose" do
         post user_session_path, params: params
         expect(response.body).to include(%(action="visit"))
 
-        # Extract the visit stream's href and assert it points at SMS settings carrying the SGID.
+        # Extract the visit stream's href and assert it points at SMS settings.
         doc = Nokogiri::HTML.fragment(response.body)
         visit_node = doc.css("turbo-stream[action=visit]").first
         expect(visit_node).not_to be_nil
         visit_uri = URI.parse(visit_node["href"])
         expect(visit_uri.path).to eq(user_settings_sms_messaging_path)
-        expect(Rack::Utils.parse_nested_query(visit_uri.query)["subscribe_to"]).to eq(effort_sgid)
+
+        # The SGID handed off must decode for the SMS opt-in flow's purpose,
+        # not the login flow's purpose. UserSettingsController#pending_subscribable
+        # uses "sms_opt_in_subscribe"; if we forwarded the inbound SGID unchanged
+        # (which was signed for "subscribe_after_signin"), it would fail to
+        # locate downstream and the streamlined opt-in flow would dead-end.
+        handoff_sgid = Rack::Utils.parse_nested_query(visit_uri.query)["subscribe_to"]
+        expect(GlobalID::Locator.locate_signed(handoff_sgid, for: "sms_opt_in_subscribe")).to eq(effort)
       end
     end
 

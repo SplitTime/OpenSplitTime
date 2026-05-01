@@ -110,6 +110,46 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     expect(page).to have_field("Phone")
   end
 
+  scenario "Anonymous user clicks SMS subscribe, logs in as a not-opted-in user, completes phone+consent, and ends up subscribed on the effort" do
+    admin = users(:admin_user)
+    admin.update!(phone: nil, phone_confirmed_at: nil)
+
+    visit_page
+
+    # Step 1: anonymous click on SMS "text" subscribe -> login modal opens.
+    within("##{dom_id(effort, :sms)}") { click_link("text") }
+
+    # Step 2: log in inside the modal.
+    within("#form_modal") do
+      fill_in "Email", with: admin.email
+      fill_in "Password", with: "password"
+      click_button "Log in"
+    end
+
+    # Step 3: SessionsController#create hands off to the streamlined SMS opt-in
+    # flow because admin isn't sms_opted_in?. Lands on the SMS settings page
+    # carrying subscribe_to (re-encoded for the sms_opt_in_subscribe purpose).
+    expect(page).to have_current_path(/\A#{Regexp.escape(user_settings_sms_messaging_path)}\?subscribe_to=/)
+
+    # Step 4: page-load warning explains what's still missing for this specific
+    # subscribable. (Proves the SGID decoded successfully on this side — if the
+    # purpose mismatch hadn't been fixed, pending_subscribable would be nil and
+    # this warning wouldn't render.)
+    expect(page).to have_content(I18n.t("sms.consent.subscribe_pending_phone_and_consent", name: effort.full_name))
+
+    # Step 5: fill in phone + consent and save.
+    fill_in "Phone", with: "303-555-1212"
+    check "user_sms_consent"
+    click_button "Save Changes"
+
+    # Step 6: streamlined opt-in flow completes — back on the effort page,
+    # both flashes set, SMS subscription created.
+    expect(page).to have_current_path(effort_path(effort))
+    expect(page).to have_content(I18n.t("sms.consent.opted_in"))
+    expect(page).to have_content("You have subscribed to sms notifications for #{effort.full_name}")
+    expect(admin.subscriptions.where(subscribable: effort, protocol: :sms)).to exist
+  end
+
   def visit_page
     visit effort_path(effort)
   end

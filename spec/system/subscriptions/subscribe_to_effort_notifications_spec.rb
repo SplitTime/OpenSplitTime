@@ -22,7 +22,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     visit_page
 
     page.accept_confirm("You must be signed in to subscribe to notifications") do
-      within("##{dom_id(effort, :sms)}") { click_button("sms") }
+      within("##{dom_id(effort, :sms)}") { click_button("text") }
     end
 
     expect(page).to have_current_path(effort_path(effort))

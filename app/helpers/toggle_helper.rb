@@ -129,7 +129,7 @@ module ToggleHelper
         link_to_toggle_subscription(args)
       end
     else
-      button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
+      button_to_sign_in(icon: args[:icon_name], label: args[:button_text])
     end
   end
 
@@ -189,7 +189,7 @@ module ToggleHelper
     end
   end
 
-  def button_to_sign_in(icon:, protocol:)
+  def button_to_sign_in(icon:, label:)
     url = "#"
     html_options = {
       method: :get,
@@ -199,6 +199,6 @@ module ToggleHelper
       }
     }
 
-    button_to(url, html_options) { fa_icon(icon, text: protocol.to_s) }
+    button_to(url, html_options) { fa_icon(icon, text: label, type: :regular) }
   end
 end

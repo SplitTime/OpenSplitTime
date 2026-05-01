@@ -192,7 +192,7 @@ module ToggleHelper
   def button_to_sign_in(icon:, label:, subscribable:, protocol:)
     url = new_user_session_path(
       reason: "subscribe",
-      subscribe_to: subscribable.to_signed_global_id(for: "subscribe_after_signin").to_s,
+      subscribe_to: subscribable.to_signed_global_id(for: ::Users::SessionsController::SUBSCRIBE_GID_PURPOSE).to_s,
       notification_protocol: protocol,
     )
 

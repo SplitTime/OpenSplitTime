@@ -17,7 +17,7 @@ production:
     class: SweepOrphanedBlobsJob
     queue: default
     schedule: at 8am every day
-  sweepers_effort_subscriptions_and_topics:
+  sweep_effort_subscriptions_and_topics:
     class: Sweepers::EffortSubscriptionsAndTopicsJob
     queue: default
     schedule: every Sunday at 4am

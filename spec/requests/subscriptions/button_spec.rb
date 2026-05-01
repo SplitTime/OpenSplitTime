@@ -23,14 +23,14 @@ RSpec.describe "GET subscription_button" do
       expect(response.body).to include(%(id="#{dom_id(effort, :email)}"))
     end
 
-    it "renders the sign-in CTA as a link to new_user_session_path that loads into the form_modal turbo-frame" do
+    it "renders the sign-in CTA as a link to new_user_session_path with reason=subscribe that loads into the form_modal turbo-frame" do
       get effort_subscription_button_path(effort, notification_protocol: "email")
 
       expect(response).to have_http_status(:ok)
       doc = Nokogiri::HTML.fragment(response.body)
       link = doc.css(%(##{dom_id(effort, :email)} a)).first
       expect(link).not_to be_nil
-      expect(link["href"]).to eq(new_user_session_path)
+      expect(link["href"]).to eq(new_user_session_path(reason: "subscribe"))
       expect(link["data-turbo-frame"]).to eq("form_modal")
     end
   end

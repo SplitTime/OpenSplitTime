@@ -190,7 +190,7 @@ module ToggleHelper
   end
 
   def button_to_sign_in(icon:, label:)
-    link_to(new_user_session_path,
+    link_to(new_user_session_path(reason: "subscribe"),
             class: "btn btn-lg btn-outline-secondary",
             data: { turbo_frame: "form_modal" }) do
       fa_icon(icon, text: label, type: :regular)

@@ -1,6 +1,12 @@
 module Users
   class SessionsController < Devise::SessionsController
+    REASON_ALERTS = {
+      "subscribe" => "subscriptions.toggle.sign_in_required",
+    }.freeze
+
     def new
+      flash.now[:alert] = t(REASON_ALERTS[params[:reason]]) if REASON_ALERTS.key?(params[:reason])
+
       respond_to do |format|
         format.html { super }
         format.turbo_stream do
@@ -17,10 +23,10 @@ module Users
       scope = Devise::Mapping.find_scope!(resource_or_scope)
       resource ||= resource_or_scope
 
-      if sign_in(scope, resource)
-        clear_oauth_provider(resource) if resource.provider.present? || resource.uid.present?
-        render turbo_stream: turbo_stream.replace("ost_navbar", partial: "layouts/navigation")
-      end
+      return unless sign_in(scope, resource)
+
+      clear_oauth_provider(resource) if resource.provider.present? || resource.uid.present?
+      render turbo_stream: turbo_stream.replace("ost_navbar", partial: "layouts/navigation")
     end
 
     private
@@ -30,6 +36,5 @@ module Users
     def clear_oauth_provider(resource)
       resource.update(provider: nil, uid: nil)
     end
-
   end
 end

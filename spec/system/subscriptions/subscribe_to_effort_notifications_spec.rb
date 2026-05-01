@@ -12,7 +12,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     visit_page
 
     within("##{dom_id(effort, :email)}") do
-      expect(page).to have_link(href: new_user_session_path)
+      expect(page).to have_link(href: new_user_session_path(reason: "subscribe"))
     end
   end
 
@@ -20,7 +20,7 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     visit_page
 
     within("##{dom_id(effort, :sms)}") do
-      expect(page).to have_link(href: new_user_session_path)
+      expect(page).to have_link(href: new_user_session_path(reason: "subscribe"))
     end
   end
 

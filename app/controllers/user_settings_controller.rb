@@ -43,6 +43,7 @@ class UserSettingsController < ApplicationController
     if updated
       flash[:notice] = t("user_settings.update.email_change_requested") if current_user.unconfirmed_email.present?
       handle_sms_consent_change(sms_was_opted_in)
+      set_subscribe_failure_warning
       redirect_to(post_update_redirect_path)
     else
       redirect_to(request.referrer, notice: current_user.errors.full_messages.join("; "))
@@ -105,22 +106,50 @@ class UserSettingsController < ApplicationController
 
   # When the user lands on the SMS settings page from a subscribable's
   # "text" button, surface a flash explaining what they need to fill in
-  # to complete the subscription.
+  # to complete the subscription. Skipped if a more specific warning
+  # (e.g., the post-save failure warning from `update`) is already present.
   def set_pending_subscribable_warning
     subscribable = pending_subscribable
     return if subscribable.nil?
     return if current_user.sms_opted_in?
+    return if flash[:warning].present?
 
-    locale_key = if current_user.phone.blank?
-                   "sms.consent.subscribe_pending_phone_and_consent"
-                 else
-                   "sms.consent.subscribe_pending_consent_only"
-                 end
-    flash.now[:warning] = t(locale_key, name: subscribable.name)
+    flash.now[:warning] = t(subscribe_pending_locale_key, name: subscribable.name)
+  end
+
+  # Set after the form is submitted: if the user came from a subscribable
+  # but didn't end up opted in, the subscription was not created. Tell them
+  # what's still missing so they can fix it without leaving the page.
+  def set_subscribe_failure_warning
+    subscribable = pending_subscribable
+    return if subscribable.nil?
+    return if current_user.sms_opted_in?
+
+    flash[:warning] = t(subscribe_failed_locale_key, name: subscribable.name) # rubocop:disable Rails/ActionControllerFlashBeforeRender
+  end
+
+  def subscribe_pending_locale_key
+    if current_user.phone.blank?
+      "sms.consent.subscribe_pending_phone_and_consent"
+    else
+      "sms.consent.subscribe_pending_consent_only"
+    end
+  end
+
+  def subscribe_failed_locale_key
+    if current_user.phone.blank?
+      "sms.consent.subscribe_failed_phone_and_consent"
+    else
+      "sms.consent.subscribe_failed_consent_only"
+    end
   end
 
   def post_update_redirect_path
-    pending_subscribable&.then { |s| polymorphic_path(s) } || request.referrer
+    if pending_subscribable && current_user.sms_opted_in?
+      polymorphic_path(pending_subscribable)
+    else
+      request.referrer || user_settings_sms_messaging_path
+    end
   end
 
   def settings_update_params

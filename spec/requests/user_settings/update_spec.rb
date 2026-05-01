@@ -164,6 +164,60 @@ RSpec.describe "UserSettings#update" do
     end
   end
 
+  context "when the form is saved without phone or consent and a pending subscribable is present" do
+    let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
+    let(:params) do
+      {
+        user: { phone: "", sms_consent: "0" },
+        subscribe_to_type: "Effort",
+        subscribe_to_id: effort.to_param,
+      }
+    end
+
+    before { effort.update!(topic_resource_key: "arn:aws:sns:us-west-2:123:fake-effort-topic") }
+
+    it "sets a warning flash that the subscription could not be created and asks for both phone and consent" do
+      make_request
+      expect(flash[:warning]).to eq(I18n.t("sms.consent.subscribe_failed_phone_and_consent", name: effort.name))
+    end
+
+    it "does not create a subscription" do
+      expect { make_request }.not_to change(Subscription, :count)
+    end
+
+    it "redirects back to the SMS settings page so the user can correct and retry" do
+      make_request
+      expect(response).to redirect_to(user_settings_sms_messaging_path)
+    end
+  end
+
+  context "when the form is saved with a phone but no consent and a pending subscribable is present" do
+    let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
+    let(:params) do
+      {
+        user: { phone: "303-555-1212", sms_consent: "0" },
+        subscribe_to_type: "Effort",
+        subscribe_to_id: effort.to_param,
+      }
+    end
+
+    before { effort.update!(topic_resource_key: "arn:aws:sns:us-west-2:123:fake-effort-topic") }
+
+    it "sets a warning flash that the subscription could not be created and asks only for consent" do
+      make_request
+      expect(flash[:warning]).to eq(I18n.t("sms.consent.subscribe_failed_consent_only", name: effort.name))
+    end
+
+    it "does not create a subscription" do
+      expect { make_request }.not_to change(Subscription, :count)
+    end
+
+    it "redirects back to the SMS settings page so the user can correct and retry" do
+      make_request
+      expect(response).to redirect_to(user_settings_sms_messaging_path)
+    end
+  end
+
   context "when the user is already subscribed to the pending subscribable by SMS" do
     let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
     let(:params) do

@@ -178,7 +178,7 @@ module ToggleHelper
   def link_to_sms_opt_in(icon:, label:, subscribable: nil)
     url = if subscribable
             user_settings_sms_messaging_path(
-              subscribe_to: subscribable.to_signed_global_id(for: "sms_opt_in_subscribe").to_s,
+              subscribe_to: subscribable.to_signed_global_id(for: ::UserSettingsController::SUBSCRIBE_GID_PURPOSE).to_s,
             )
           else
             user_settings_sms_messaging_path

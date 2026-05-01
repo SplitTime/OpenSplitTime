@@ -166,13 +166,13 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
     end
   end
 
-  describe "Pass 3 — sweep orphan AWS topics" do
+  describe "Pass 3 — sweep orphaned AWS topics" do
     let(:live_arn) { "arn:aws:sns:us-west-2:123:t-follow-live-effort" }
-    let(:orphan_arn) { "arn:aws:sns:us-west-2:123:t-follow-orphan" }
+    let(:orphaned_arn) { "arn:aws:sns:us-west-2:123:t-follow-orphan" }
     let(:foreign_arn) { "arn:aws:sns:us-west-2:123:something-unrelated" }
 
     it "deletes topics that match the OST naming pattern but no live resource" do
-      # Recent + unfinished so Pass 2 skips it; only Pass 3 should act, and only on the orphan.
+      # Recent + unfinished so Pass 2 skips it; only Pass 3 should act, and only on the orphaned topic.
       effort_active_unfinished.update_columns(
         finished: false,
         scheduled_start_time: 1.day.ago,
@@ -181,11 +181,11 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
 
       sns_client.stub_responses(
         :list_topics,
-        topics: [{ topic_arn: live_arn }, { topic_arn: orphan_arn }, { topic_arn: foreign_arn }],
+        topics: [{ topic_arn: live_arn }, { topic_arn: orphaned_arn }, { topic_arn: foreign_arn }],
         next_token: nil,
       )
 
-      expect(sns_client).to receive(:delete_topic).with(topic_arn: orphan_arn).and_call_original
+      expect(sns_client).to receive(:delete_topic).with(topic_arn: orphaned_arn).and_call_original
 
       described_class.perform_now
     end
@@ -233,27 +233,27 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
     end
 
     it "re-checks the DB for an ARN before deleting (concurrent-creation guard)" do
-      sns_client.stub_responses(:list_topics, topics: [{ topic_arn: orphan_arn }], next_token: nil)
+      sns_client.stub_responses(:list_topics, topics: [{ topic_arn: orphaned_arn }], next_token: nil)
 
       # Simulate a resource grabbing this ARN between list_topics and delete by
       # making the per-ARN re-check report it as live. Inject the stub via a
       # job instance so we can avoid allow_any_instance_of.
       job = described_class.new
-      allow(job).to receive(:any_topic_resource_key_exists?).with(orphan_arn).and_return(true)
+      allow(job).to receive(:any_topic_resource_key_exists?).with(orphaned_arn).and_return(true)
 
       expect(sns_client).not_to receive(:delete_topic)
 
       job.perform
     end
 
-    it "raises OrphanTopicDriftError when orphan count exceeds threshold" do
-      stub_const("Sweepers::EffortSubscriptionsAndTopicsJob::ORPHAN_DRIFT_THRESHOLD", 2)
+    it "raises OrphanedTopicDriftError when orphaned count exceeds threshold" do
+      stub_const("Sweepers::EffortSubscriptionsAndTopicsJob::ORPHANED_DRIFT_THRESHOLD", 2)
 
-      orphans = (1..5).map { |i| { topic_arn: "arn:aws:sns:us-west-2:123:t-follow-orphan-#{i}" } }
-      sns_client.stub_responses(:list_topics, topics: orphans, next_token: nil)
+      orphaned = (1..5).map { |i| { topic_arn: "arn:aws:sns:us-west-2:123:t-follow-orphaned-#{i}" } }
+      sns_client.stub_responses(:list_topics, topics: orphaned, next_token: nil)
 
       expect { described_class.perform_now }
-        .to raise_error(Sweepers::EffortSubscriptionsAndTopicsJob::OrphanTopicDriftError, /5 orphan/)
+        .to raise_error(Sweepers::EffortSubscriptionsAndTopicsJob::OrphanedTopicDriftError, /5 orphaned/)
     end
   end
 
@@ -280,12 +280,12 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
 
   describe "dry-run mode" do
     let(:topic_arn) { "arn:aws:sns:us-west-2:123:t-follow-dry-run" }
-    let(:orphan_arn) { "arn:aws:sns:us-west-2:123:t-follow-dry-orphan" }
+    let(:orphaned_arn) { "arn:aws:sns:us-west-2:123:t-follow-dry-orphan" }
 
     it "performs no destruction and no AWS deletes" do
       effort_old_finished.update_columns(finished: true, scheduled_start_time: 11.days.ago, topic_resource_key: topic_arn)
       sub = make_subscription(effort_old_finished)
-      sns_client.stub_responses(:list_topics, topics: [{ topic_arn: orphan_arn }], next_token: nil)
+      sns_client.stub_responses(:list_topics, topics: [{ topic_arn: orphaned_arn }], next_token: nil)
 
       expect(SnsTopicManager).not_to receive(:delete)
       expect(sns_client).not_to receive(:delete_topic)

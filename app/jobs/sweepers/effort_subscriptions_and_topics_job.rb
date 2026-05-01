@@ -5,27 +5,26 @@ module Sweepers
     SUBSCRIPTION_FINISHED_CUTOFF = 10.days
     SUBSCRIPTION_ABSOLUTE_CUTOFF = 3.months
     TOPIC_AGE_CUTOFF = 30.days
-    ORPHAN_DRIFT_THRESHOLD = 100
+    ORPHANED_DRIFT_THRESHOLD = 100
 
-    class OrphanTopicDriftError < StandardError; end
+    class OrphanedTopicDriftError < StandardError; end
 
     def perform(dry_run: false)
       @dry_run = dry_run
       @start_time = Time.current
       @report = +""
-      @orphan_arns = []
+      @orphaned_arns = []
       banner = "Started Sweepers::EffortSubscriptionsAndTopicsJob for #{OstConfig.app_name} at #{@start_time}"
       banner += " (DRY RUN — no deletions will be performed)" if dry_run
       append(banner)
 
       sweep_stale_effort_subscriptions
       sweep_topics_on_stale_efforts
-      sweep_orphan_aws_topics
-
+      sweep_orphaned_aws_topics
       append("Finished job in #{(Time.current - @start_time).round(1)} seconds at #{Time.current}")
       AdminMailer.job_report(self.class, @report).deliver_now
 
-      raise_on_orphan_drift
+      raise_on_orphaned_drift
     end
 
     private
@@ -103,8 +102,8 @@ module Sweepers
       append("  Failed on #{problem_ids.size} Effort(s): #{problem_ids.join(', ')}") if problem_ids.present?
     end
 
-    def sweep_orphan_aws_topics
-      append("\n[Pass 3] Sweeping orphan AWS topics (defense-in-depth)")
+    def sweep_orphaned_aws_topics
+      append("\n[Pass 3] Sweeping orphaned AWS topics (defense-in-depth)")
 
       ost_arns = list_ost_topic_arns
       append("  Found #{ost_arns.size} OST-namespace topic(s) in AWS")
@@ -112,17 +111,17 @@ module Sweepers
       live_keys = collect_live_topic_resource_keys
       append("  Found #{live_keys.size} live topic_resource_key(s) in DB")
 
-      @orphan_arns = ost_arns - live_keys
-      append("  Identified #{@orphan_arns.size} orphan(s)")
-      return if @orphan_arns.empty?
+      @orphaned_arns = ost_arns - live_keys
+      append("  Identified #{@orphaned_arns.size} orphaned topic(s)")
+      return if @orphaned_arns.empty?
 
-      return append("  DRY RUN — skipping orphan deletions") if dry_run
+      return append("  DRY RUN — skipping orphaned-topic deletions") if dry_run
 
       deleted_count = 0
       problem_arns = []
       live_keys_set = live_keys.to_set
 
-      @orphan_arns.each do |arn|
+      @orphaned_arns.each do |arn|
         # Re-check the DB right before deleting in case a new resource grabbed this ARN
         # between listing and deleting (concurrent-creation race).
         next if live_keys_set.include?(arn) || any_topic_resource_key_exists?(arn)
@@ -135,7 +134,7 @@ module Sweepers
         end
       end
 
-      append("  Deleted #{deleted_count} orphan topic(s)")
+      append("  Deleted #{deleted_count} orphaned topic(s)")
       append("  Failed on #{problem_arns.size}: #{problem_arns.join(', ')}") if problem_arns.present?
     end
 
@@ -190,11 +189,11 @@ module Sweepers
       /\A#{Regexp.escape(prefix)}follow-/
     end
 
-    def raise_on_orphan_drift
-      return if @orphan_arns.size <= ORPHAN_DRIFT_THRESHOLD
+    def raise_on_orphaned_drift
+      return if @orphaned_arns.size <= ORPHANED_DRIFT_THRESHOLD
 
-      raise OrphanTopicDriftError,
-            "Found #{@orphan_arns.size} orphan AWS topics, exceeding threshold of #{ORPHAN_DRIFT_THRESHOLD}. " \
+      raise OrphanedTopicDriftError,
+            "Found #{@orphaned_arns.size} orphaned AWS topics, exceeding threshold of #{ORPHANED_DRIFT_THRESHOLD}. " \
             "The Subscribable lifecycle may be dropping deletes."
     end
 

@@ -17,10 +17,10 @@ production:
     class: SweepOrphanedBlobsJob
     queue: default
     schedule: at 8am every day
-  sweep_subscriptions:
-    class: SweepSubscriptionsJob
+  sweep_effort_subscriptions_and_topics:
+    class: Sweepers::EffortSubscriptionsAndTopicsJob
     queue: default
-    schedule: every month on the 1st at 7am
+    schedule: every Sunday at 4am
   reconcile_sms_carrier_opt_outs:
     class: ReconcileSmsCarrierOptOutsJob
     queue: default

@@ -23,6 +23,13 @@ RSpec.describe "GET subscription_button" do
       expect(response.body).to include(%(id="#{dom_id(effort, :email)}"))
       expect(response.body).to include("You must be signed in")
     end
+
+    it "renders the sign-in CTA with data-turbo-frame=_top so the click breaks out of the lazy frame" do
+      get effort_subscription_button_path(effort, notification_protocol: "email")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<button[^>]*data-turbo-frame=["']_top["']/)
+    end
   end
 
   context "when signed in" do

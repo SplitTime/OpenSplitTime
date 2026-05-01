@@ -196,6 +196,7 @@ module ToggleHelper
       class: "btn btn-lg btn-outline-secondary",
       data: {
         turbo_confirm: t("subscriptions.toggle.sign_in_required"),
+        turbo_frame: "_top",
       }
     }
 

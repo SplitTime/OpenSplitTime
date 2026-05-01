@@ -149,13 +149,12 @@ module Sweepers
     end
 
     def delete_topic_for(effort)
-      # Subscribable#unassign_topic_resource calls SnsTopicManager.delete and clears the
-      # attribute in memory; follow up with update_column to persist (we aren't destroying
-      # the Effort, just giving up its topic).
       effort.unassign_topic_resource
-      effort.update_column(:topic_resource_key, nil)
+      effort.save!
       true
-    rescue SnsTopicManager::TopicNotDeletedError, Aws::SNS::Errors::ServiceError => e
+    rescue SnsTopicManager::TopicNotDeletedError,
+           Aws::SNS::Errors::ServiceError,
+           ActiveRecord::RecordInvalid => e
       Rails.logger.warn("  Topic delete failed for Effort##{effort.id}: #{e.class.name}: #{e.message}")
       false
     end

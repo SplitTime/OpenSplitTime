@@ -1,5 +1,5 @@
 class UserSettingsController < ApplicationController
-  ALLOWED_SUBSCRIBABLE_TYPES = %w[Effort Person].freeze
+  SUBSCRIBE_GID_PURPOSE = "sms_opt_in_subscribe".freeze
 
   before_action :authenticate_user!
   before_action :authorize_action
@@ -94,14 +94,9 @@ class UserSettingsController < ApplicationController
   end
 
   def pending_subscribable
-    type = params[:subscribe_to_type]
-    id = params[:subscribe_to_id]
-    return nil if type.blank? || id.blank?
-    return nil unless ALLOWED_SUBSCRIBABLE_TYPES.include?(type)
+    return nil if params[:subscribe_to].blank?
 
-    type.constantize.friendly.find(id)
-  rescue ActiveRecord::RecordNotFound
-    nil
+    GlobalID::Locator.locate_signed(params[:subscribe_to], for: SUBSCRIBE_GID_PURPOSE)
   end
 
   # When the user lands on the SMS settings page from a subscribable's

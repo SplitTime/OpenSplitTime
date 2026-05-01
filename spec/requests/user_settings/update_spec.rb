@@ -94,8 +94,7 @@ RSpec.describe "UserSettings#update" do
     let(:params) do
       {
         user: { phone: "303-555-1212", sms_consent: "1" },
-        subscribe_to_type: "Effort",
-        subscribe_to_id: effort.to_param,
+        subscribe_to: effort.to_signed_global_id(for: "sms_opt_in_subscribe").to_s,
       }
     end
 
@@ -125,12 +124,11 @@ RSpec.describe "UserSettings#update" do
     end
   end
 
-  context "when the opt-in transition carries a non-existent subscribable id" do
+  context "when the opt-in transition carries a tampered or invalid signed GID" do
     let(:params) do
       {
         user: { phone: "303-555-1212", sms_consent: "1" },
-        subscribe_to_type: "Effort",
-        subscribe_to_id: "does-not-exist",
+        subscribe_to: "obviously-not-a-real-signed-gid",
       }
     end
 
@@ -149,16 +147,16 @@ RSpec.describe "UserSettings#update" do
     end
   end
 
-  context "when the opt-in transition carries a disallowed subscribable type" do
+  context "when the signed GID was issued for a different purpose" do
+    let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
     let(:params) do
       {
         user: { phone: "303-555-1212", sms_consent: "1" },
-        subscribe_to_type: "User",
-        subscribe_to_id: "1",
+        subscribe_to: effort.to_signed_global_id(for: "some_other_purpose").to_s,
       }
     end
 
-    it "ignores the subscribable params and completes the opt-in" do
+    it "ignores the subscribable param and completes the opt-in without subscribing" do
       expect { make_request }.not_to change(Subscription, :count)
       expect(user.reload.sms_opted_in?).to be true
     end
@@ -169,8 +167,7 @@ RSpec.describe "UserSettings#update" do
     let(:params) do
       {
         user: { phone: "", sms_consent: "0" },
-        subscribe_to_type: "Effort",
-        subscribe_to_id: effort.to_param,
+        subscribe_to: effort.to_signed_global_id(for: "sms_opt_in_subscribe").to_s,
       }
     end
 
@@ -196,8 +193,7 @@ RSpec.describe "UserSettings#update" do
     let(:params) do
       {
         user: { phone: "303-555-1212", sms_consent: "0" },
-        subscribe_to_type: "Effort",
-        subscribe_to_id: effort.to_param,
+        subscribe_to: effort.to_signed_global_id(for: "sms_opt_in_subscribe").to_s,
       }
     end
 
@@ -223,8 +219,7 @@ RSpec.describe "UserSettings#update" do
     let(:params) do
       {
         user: { phone: "303-555-1212", sms_consent: "1" },
-        subscribe_to_type: "Effort",
-        subscribe_to_id: effort.to_param,
+        subscribe_to: effort.to_signed_global_id(for: "sms_opt_in_subscribe").to_s,
       }
     end
 

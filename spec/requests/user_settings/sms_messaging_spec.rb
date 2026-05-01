@@ -25,7 +25,7 @@ RSpec.describe "GET /user_settings/sms_messaging" do
   end
 
   context "with a pending subscribable for a user who has no phone" do
-    let(:query_params) { { subscribe_to_type: "Effort", subscribe_to_id: effort.to_param } }
+    let(:query_params) { { subscribe_to: effort.to_signed_global_id(for: "sms_opt_in_subscribe").to_s } }
 
     before { user.update!(phone: nil, phone_confirmed_at: nil) }
 
@@ -36,7 +36,7 @@ RSpec.describe "GET /user_settings/sms_messaging" do
   end
 
   context "with a pending subscribable for a user who has a phone but is not opted in" do
-    let(:query_params) { { subscribe_to_type: "Effort", subscribe_to_id: effort.to_param } }
+    let(:query_params) { { subscribe_to: effort.to_signed_global_id(for: "sms_opt_in_subscribe").to_s } }
 
     before { user.update!(phone: "+13035551212", phone_confirmed_at: nil) }
 
@@ -47,7 +47,7 @@ RSpec.describe "GET /user_settings/sms_messaging" do
   end
 
   context "with a pending subscribable for a user who is already opted in" do
-    let(:query_params) { { subscribe_to_type: "Effort", subscribe_to_id: effort.to_param } }
+    let(:query_params) { { subscribe_to: effort.to_signed_global_id(for: "sms_opt_in_subscribe").to_s } }
 
     before { user.update!(phone: "+13035551212", phone_confirmed_at: 1.day.ago) }
 
@@ -57,23 +57,23 @@ RSpec.describe "GET /user_settings/sms_messaging" do
     end
   end
 
-  context "with a pending subscribable type that is not allowed" do
-    let(:query_params) { { subscribe_to_type: "User", subscribe_to_id: "1" } }
+  context "with a tampered or invalid signed GID" do
+    let(:query_params) { { subscribe_to: "obviously-not-a-real-signed-gid" } }
 
     before { user.update!(phone: nil, phone_confirmed_at: nil) }
 
-    it "ignores the params and does not set a warning flash" do
+    it "ignores the param and does not set a warning flash" do
       make_request
       expect(flash[:warning]).to be_nil
     end
   end
 
-  context "with a pending subscribable id that does not exist" do
-    let(:query_params) { { subscribe_to_type: "Effort", subscribe_to_id: "does-not-exist" } }
+  context "with a signed GID issued for a different purpose" do
+    let(:query_params) { { subscribe_to: effort.to_signed_global_id(for: "some_other_purpose").to_s } }
 
     before { user.update!(phone: nil, phone_confirmed_at: nil) }
 
-    it "does not set a warning flash" do
+    it "rejects the param and does not set a warning flash" do
       make_request
       expect(flash[:warning]).to be_nil
     end

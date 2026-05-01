@@ -74,8 +74,7 @@ class UserSettingsController < ApplicationController
   # confirmation SMS without a follow-up click.
   def create_pending_sms_subscription
     subscribable = pending_subscribable
-    return if subscribable.nil?
-    return if subscribable.subscriptions.exists?(user: current_user, protocol: :sms)
+    return if subscribable.nil? || subscribable.subscriptions.exists?(user: current_user, protocol: :sms)
 
     subscription = subscribable.subscriptions.new(
       user: current_user,
@@ -85,8 +84,6 @@ class UserSettingsController < ApplicationController
 
     return unless subscription.save
 
-    # `update` redirects after this method returns, so `flash` (not `flash.now`)
-    # is correct — the message needs to persist across the redirect.
     flash[:success] = t("subscriptions.create.success", # rubocop:disable Rails/ActionControllerFlashBeforeRender
                         protocol: "sms",
                         name: subscribable.name,
@@ -105,9 +102,7 @@ class UserSettingsController < ApplicationController
   # (e.g., the post-save failure warning from `update`) is already present.
   def set_pending_subscribable_warning
     subscribable = pending_subscribable
-    return if subscribable.nil?
-    return if current_user.sms_opted_in?
-    return if flash[:warning].present?
+    return if subscribable.nil? || current_user.sms_opted_in? || flash[:warning].present?
 
     flash.now[:warning] = t(subscribe_pending_locale_key, name: subscribable.name)
   end
@@ -117,8 +112,7 @@ class UserSettingsController < ApplicationController
   # what's still missing so they can fix it without leaving the page.
   def set_subscribe_failure_warning
     subscribable = pending_subscribable
-    return if subscribable.nil?
-    return if current_user.sms_opted_in?
+    return if subscribable.nil? || current_user.sms_opted_in?
 
     flash[:warning] = t(subscribe_failed_locale_key, name: subscribable.name) # rubocop:disable Rails/ActionControllerFlashBeforeRender
   end

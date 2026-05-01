@@ -54,6 +54,45 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     end
   end
 
+  scenario "Anonymous user clicking the SMS subscribe CTA opens the login modal with the warning message and a working form" do
+    visit_page
+
+    within("##{dom_id(effort, :sms)}") { click_link("text") }
+
+    within("#form_modal") do
+      expect(page).to have_content(I18n.t("subscriptions.toggle.sign_in_required"))
+      expect(page).to have_field("Email")
+      expect(page).to have_field("Password")
+      expect(page).to have_button("Log in")
+    end
+  end
+
+  scenario "Anonymous user logs in via the modal and the subscribe buttons reflect their logged-in state" do
+    admin = users(:admin_user)
+    admin.update!(phone: nil, phone_confirmed_at: nil)
+
+    visit_page
+
+    within("##{dom_id(effort, :sms)}") { click_link("text") }
+
+    within("#form_modal") do
+      fill_in "Email", with: admin.email
+      fill_in "Password", with: "password"
+      click_button "Log in"
+    end
+
+    expect(page).to have_current_path(effort_path(effort))
+    expect(page).to have_content(admin.email)
+
+    within("##{dom_id(effort, :email)}") do
+      expect(page).to have_button("email")
+    end
+
+    within("##{dom_id(effort, :sms)}") do
+      expect(page).to have_link(href: %r{/user_settings/sms_messaging})
+    end
+  end
+
   def visit_page
     visit effort_path(effort)
   end

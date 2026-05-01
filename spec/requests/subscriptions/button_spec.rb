@@ -23,15 +23,33 @@ RSpec.describe "GET subscription_button" do
       expect(response.body).to include(%(id="#{dom_id(effort, :email)}"))
     end
 
-    it "renders the sign-in CTA as a link to new_user_session_path with reason=subscribe that loads into the form_modal turbo-frame" do
+    it "renders the sign-in CTA as a link to new_user_session_path that loads into the form_modal turbo-frame and carries the subscribe intent" do
       get effort_subscription_button_path(effort, notification_protocol: "email")
 
       expect(response).to have_http_status(:ok)
       doc = Nokogiri::HTML.fragment(response.body)
       link = doc.css(%(##{dom_id(effort, :email)} a)).first
       expect(link).not_to be_nil
-      expect(link["href"]).to eq(new_user_session_path(reason: "subscribe"))
+
+      uri = URI.parse(link["href"])
+      query = Rack::Utils.parse_nested_query(uri.query)
+      expect(uri.path).to eq(new_user_session_path)
+      expect(query["reason"]).to eq("subscribe")
+      expect(query["notification_protocol"]).to eq("email")
+      expect(query["subscribe_to"]).to be_present
+
       expect(link["data-turbo-frame"]).to eq("form_modal")
+    end
+
+    it "encodes the subscribable as a signed Global ID with the subscribe_after_signin purpose" do
+      get effort_subscription_button_path(effort, notification_protocol: "email")
+
+      doc = Nokogiri::HTML.fragment(response.body)
+      link = doc.css(%(##{dom_id(effort, :email)} a)).first
+      query = Rack::Utils.parse_nested_query(URI.parse(link["href"]).query)
+
+      located = GlobalID::Locator.locate_signed(query["subscribe_to"], for: "subscribe_after_signin")
+      expect(located).to eq(effort)
     end
   end
 

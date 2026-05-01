@@ -129,7 +129,7 @@ module ToggleHelper
         link_to_toggle_subscription(args)
       end
     else
-      button_to_sign_in(icon: args[:icon_name], label: args[:label])
+      button_to_sign_in(icon: args[:icon_name], label: args[:label], subscribable: subscribable, protocol: protocol)
     end
   end
 
@@ -178,7 +178,7 @@ module ToggleHelper
   def link_to_sms_opt_in(icon:, label:, subscribable: nil)
     url = if subscribable
             user_settings_sms_messaging_path(
-              subscribe_to: subscribable.to_signed_global_id(for: "sms_opt_in_subscribe").to_s,
+              subscribe_to: subscribable.to_signed_global_id(for: ::UserSettingsController::SUBSCRIBE_GID_PURPOSE).to_s,
             )
           else
             user_settings_sms_messaging_path
@@ -189,10 +189,14 @@ module ToggleHelper
     end
   end
 
-  def button_to_sign_in(icon:, label:)
-    link_to(new_user_session_path(reason: "subscribe"),
-            class: "btn btn-lg btn-outline-secondary",
-            data: { turbo_frame: "form_modal" }) do
+  def button_to_sign_in(icon:, label:, subscribable:, protocol:)
+    url = new_user_session_path(
+      reason: "subscribe",
+      subscribe_to: subscribable.to_signed_global_id(for: ::Users::SessionsController::SUBSCRIBE_GID_PURPOSE).to_s,
+      notification_protocol: protocol,
+    )
+
+    link_to(url, class: "btn btn-lg btn-outline-secondary", data: { turbo_frame: "form_modal" }) do
       fa_icon(icon, text: label, type: :regular)
     end
   end

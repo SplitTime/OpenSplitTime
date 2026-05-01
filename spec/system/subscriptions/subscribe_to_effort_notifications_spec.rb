@@ -71,13 +71,13 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     expect(page).to have_content("SMS temporarily out of service")
   end
 
-  scenario "Admin without SMS opt-in sees Enable texts link" do
+  scenario "Admin without SMS opt-in sees an opt-in link in the SMS frame" do
     admin.update_columns(phone_confirmed_at: nil)
     login_as admin, scope: :user
     visit_page
 
     within("##{dom_id(effort, :sms)}") do
-      expect(page).to have_link("Enable texts")
+      expect(page).to have_link(href: %r{/user_settings/sms_messaging})
     end
   end
 

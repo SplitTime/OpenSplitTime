@@ -23,6 +23,7 @@ class UserSettingsController < ApplicationController
   # GET /user_settings/sms_messaging
   def sms_messaging
     flash.keep
+    set_pending_subscribable_warning
   end
 
   # GET /user_settings/credentials_new_service
@@ -66,7 +67,7 @@ class UserSettingsController < ApplicationController
     end
   end
 
-  # If the user arrived from a subscribe-button "Enable texts" link, the form
+  # If the user arrived from a subscribe-button SMS opt-in link, the form
   # carries the originating subscribable so we can create the subscription
   # in the same round trip and surface the second flash + send the per-effort
   # confirmation SMS without a follow-up click.
@@ -100,6 +101,22 @@ class UserSettingsController < ApplicationController
     type.constantize.friendly.find(id)
   rescue ActiveRecord::RecordNotFound
     nil
+  end
+
+  # When the user lands on the SMS settings page from a subscribable's
+  # "text" button, surface a flash explaining what they need to fill in
+  # to complete the subscription.
+  def set_pending_subscribable_warning
+    subscribable = pending_subscribable
+    return if subscribable.nil?
+    return if current_user.sms_opted_in?
+
+    locale_key = if current_user.phone.blank?
+                   "sms.consent.subscribe_pending_phone_and_consent"
+                 else
+                   "sms.consent.subscribe_pending_consent_only"
+                 end
+    flash.now[:warning] = t(locale_key, name: subscribable.name)
   end
 
   def post_update_redirect_path

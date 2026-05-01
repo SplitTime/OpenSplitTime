@@ -5,7 +5,9 @@ RSpec.describe SmsOptInWelcomeSender do
   let(:client) { instance_double(Aws::PinpointSMSVoiceV2::Client, send_text_message: nil) }
 
   before do
-    allow(Aws::PinpointSMSVoiceV2::Client).to receive(:new).and_return(client)
+    # Reference the factory so its `require "aws-sdk-pinpointsmsvoicev2"` runs
+    # before the `instance_double(Aws::PinpointSMSVoiceV2::Client)` above resolves.
+    allow(PinpointSmsClientFactory).to receive(:client).and_return(client)
     allow(::OstConfig).to receive_messages(aws_sms_origination_number: "+14138458807", aws_sms_welcome_enabled?: true)
     user.update!(phone: "+13035551212", phone_confirmed_at: Time.current, sms_carrier_opted_out_at: nil)
   end

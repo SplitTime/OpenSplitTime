@@ -1,5 +1,3 @@
-require "aws-sdk-pinpointsmsvoicev2"
-
 class SmsOptInWelcomeSender
   def self.deliver(user)
     new(user).deliver
@@ -40,6 +38,6 @@ class SmsOptInWelcomeSender
   end
 
   def client
-    @client ||= Aws::PinpointSMSVoiceV2::Client.new(region: ::OstConfig.aws_region)
+    @client ||= PinpointSmsClientFactory.client
   end
 end

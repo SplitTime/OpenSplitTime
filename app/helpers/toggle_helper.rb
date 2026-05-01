@@ -106,12 +106,12 @@ module ToggleHelper
 
     args = case protocol
            when "email"
-             { button_text: "email",
+             { label: "email",
                icon_name: "envelope",
                subscribe_alert: t("subscriptions.toggle.subscribe_email", update_type: update_type, name: name),
                unsubscribe_alert: unsubscribe_alert }
            when "sms"
-             { button_text: "text",
+             { label: "text",
                icon_name: "message-sms",
                subscribe_alert: t("subscriptions.toggle.subscribe_sms", update_type: update_type, name: name),
                unsubscribe_alert: unsubscribe_alert }
@@ -124,12 +124,12 @@ module ToggleHelper
     args.merge!(subscribable: subscribable, protocol: protocol)
     if current_user
       if protocol == "sms" && !current_user.sms_opted_in?
-        link_to_sms_opt_in(icon: args[:icon_name], label: args[:button_text], subscribable: subscribable)
+        link_to_sms_opt_in(icon: args[:icon_name], label: args[:label], subscribable: subscribable)
       else
         link_to_toggle_subscription(args)
       end
     else
-      button_to_sign_in(icon: args[:icon_name], label: args[:button_text])
+      button_to_sign_in(icon: args[:icon_name], label: args[:label])
     end
   end
 
@@ -139,7 +139,7 @@ module ToggleHelper
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
-    label = args[:button_text]
+    label = args[:label]
     existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
 
     if existing_subscription&.confirmed?

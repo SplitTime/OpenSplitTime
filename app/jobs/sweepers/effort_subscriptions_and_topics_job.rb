@@ -18,9 +18,9 @@ module Sweepers
       banner += " (DRY RUN — no deletions will be performed)" if dry_run
       append(banner)
 
-      pass_1_sweep_stale_effort_subscriptions
-      pass_2_sweep_topics_on_stale_efforts
-      pass_3_sweep_orphan_aws_topics
+      sweep_stale_effort_subscriptions
+      sweep_topics_on_stale_efforts
+      sweep_orphan_aws_topics
 
       append("Finished job in #{(Time.current - @start_time).round(1)} seconds at #{Time.current}")
       AdminMailer.job_report(self.class, @report).deliver_now
@@ -32,7 +32,7 @@ module Sweepers
 
     attr_reader :dry_run
 
-    def pass_1_sweep_stale_effort_subscriptions
+    def sweep_stale_effort_subscriptions
       append("\n[Pass 1] Sweeping stale Effort subscriptions")
 
       stale_effort_ids = stale_effort_ids_for_subscription_sweep
@@ -59,7 +59,7 @@ module Sweepers
       end
     end
 
-    def pass_2_sweep_topics_on_stale_efforts
+    def sweep_topics_on_stale_efforts
       append("\n[Pass 2] Sweeping topics on stale finished Efforts")
 
       candidates = Effort.joins(:event)
@@ -103,7 +103,7 @@ module Sweepers
       append("  Failed on #{problem_ids.size} Effort(s): #{problem_ids.join(', ')}") if problem_ids.present?
     end
 
-    def pass_3_sweep_orphan_aws_topics
+    def sweep_orphan_aws_topics
       append("\n[Pass 3] Sweeping orphan AWS topics (defense-in-depth)")
 
       ost_arns = list_ost_topic_arns

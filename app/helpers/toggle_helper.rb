@@ -174,6 +174,7 @@ module ToggleHelper
                      class: "#{protocol}-sub btn btn-lg #{button_class}",
                      data: {
                        turbo_confirm: confirm_text,
+                       turbo_frame: "_top",
                        turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
                      } }
     button_to(url, html_options) { fa_icon(icon_name, text: label, type: :regular) }

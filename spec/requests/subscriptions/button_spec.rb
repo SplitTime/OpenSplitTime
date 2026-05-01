@@ -37,6 +37,13 @@ RSpec.describe "GET subscription_button" do
       expect(response.body).to include("email")
     end
 
+    it "renders the subscribe button with data-turbo-frame=_top so the form submission breaks out of the lazy frame" do
+      get effort_subscription_button_path(effort, notification_protocol: "email")
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to match(/<button[^>]*data-turbo-frame=["']_top["']/)
+    end
+
     it "renders the email subscription button for a person inside a turbo-frame" do
       get person_subscription_button_path(person, notification_protocol: "email")
 

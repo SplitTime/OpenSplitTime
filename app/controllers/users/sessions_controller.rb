@@ -76,10 +76,10 @@ module Users
         else
           # Hand off to the streamlined SMS opt-in flow built in PR #1974.
           # That flow's UserSettingsController#pending_subscribable expects the
-          # SGID to be signed for "sms_opt_in_subscribe", whereas the inbound
-          # `params[:subscribe_to]` here was signed for "subscribe_after_signin".
+          # SGID to be signed for its own purpose, whereas the inbound
+          # `params[:subscribe_to]` here was signed for SUBSCRIBE_GID_PURPOSE.
           # Re-encode for the downstream purpose so the locator there resolves.
-          handoff_sgid = subscribable.to_signed_global_id(for: "sms_opt_in_subscribe").to_s
+          handoff_sgid = subscribable.to_signed_global_id(for: ::UserSettingsController::SUBSCRIBE_GID_PURPOSE).to_s
           navbar_stream + visit_stream(user_settings_sms_messaging_path(subscribe_to: handoff_sgid))
         end
       else

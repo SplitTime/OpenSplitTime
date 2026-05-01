@@ -129,7 +129,7 @@ module ToggleHelper
       end
     elsif current_user
       if protocol == "sms" && !current_user.sms_opted_in?
-        link_to_sms_opt_in(icon: args[:icon_name])
+        link_to_sms_opt_in(icon: args[:icon_name], subscribable: subscribable)
       else
         link_to_toggle_subscription(args)
       end
@@ -180,10 +180,17 @@ module ToggleHelper
     button_to(url, html_options) { fa_icon(icon_name, text: label, type: :regular) }
   end
 
-  def link_to_sms_opt_in(icon:)
-    link_to(user_settings_sms_messaging_path,
-            class: "btn btn-lg btn-outline-secondary",
-            data: { turbo_frame: "_top" }) do
+  def link_to_sms_opt_in(icon:, subscribable: nil)
+    url = if subscribable
+            user_settings_sms_messaging_path(
+              subscribe_to_type: subscribable.class.name,
+              subscribe_to_id: subscribable.to_param,
+            )
+          else
+            user_settings_sms_messaging_path
+          end
+
+    link_to(url, class: "btn btn-lg btn-outline-secondary", data: { turbo_frame: "_top" }) do
       fa_icon(icon, text: t("subscriptions.toggle.enable_sms"))
     end
   end

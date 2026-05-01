@@ -122,12 +122,7 @@ module ToggleHelper
     return if subscribable.topic_resource_key.blank?
 
     args.merge!(subscribable: subscribable, protocol: protocol)
-    if protocol == "sms" && !current_user&.admin?
-      content_tag(:span, class: "mx-3") do
-        safe_join([t("subscriptions.toggle.sms_out_of_service"), tag.br,
-                   t("subscriptions.toggle.sms_please_use_email")])
-      end
-    elsif current_user
+    if current_user
       if protocol == "sms" && !current_user.sms_opted_in?
         link_to_sms_opt_in(icon: args[:icon_name], label: args[:button_text], subscribable: subscribable)
       else

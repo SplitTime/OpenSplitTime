@@ -4,23 +4,11 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
   include ActionView::RecordIdentifier
 
   let(:user) { users(:third_user) }
-  let(:admin) { users(:admin_user) }
   let(:effort) { efforts(:sum_100k_progress_cascade) }
 
   before { effort.update!(topic_resource_key: "anything") }
 
-  scenario "The user is not logged in and subscribes to sms" do
-    pending "SMS is admin-only pending 10DLC campaign approval"
-    visit_page
-
-    page.accept_confirm("You must be signed in to subscribe to notifications") do
-      within("##{dom_id(effort, :sms)}") { click_button("sms") }
-    end
-
-    expect(page).to have_current_path(effort_path(effort))
-  end
-
-  scenario "The user is not logged in and subscribes to email" do
+  scenario "The user is not logged in and clicks the email subscribe button" do
     visit_page
 
     page.accept_confirm("You must be signed in to subscribe to notifications") do
@@ -30,7 +18,17 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     expect(page).to have_current_path(effort_path(effort))
   end
 
-  scenario "The user is logged in and subscribes to email" do
+  scenario "The user is not logged in and clicks the SMS subscribe button" do
+    visit_page
+
+    page.accept_confirm("You must be signed in to subscribe to notifications") do
+      within("##{dom_id(effort, :sms)}") { click_button("sms") }
+    end
+
+    expect(page).to have_current_path(effort_path(effort))
+  end
+
+  scenario "The logged-in user subscribes to email" do
     login_as user, scope: :user
     visit_page
 
@@ -41,39 +39,8 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     expect(page).to have_content("You have subscribed to email notifications for #{effort.full_name}.")
   end
 
-  scenario "The user is logged in and subscribes to sms without a phone number" do
-    pending "SMS is admin-only pending 10DLC campaign approval"
+  scenario "Logged-in user without SMS opt-in sees the opt-in link in the SMS frame" do
     login_as user, scope: :user
-    visit_page
-
-    within("##{dom_id(effort, :sms)}") { click_button("sms") }
-    accept_confirm
-    expect(page).to have_current_path(user_settings_preferences_path)
-    expect(page).to have_content("Please add a mobile phone number to receive sms text notifications.")
-  end
-
-  scenario "The user is logged in and subscribes to sms with a phone number" do
-    pending "SMS is admin-only pending 10DLC campaign approval"
-    user.update_columns(phone: "1234567890")
-    login_as user, scope: :user
-    visit_page
-
-    within("##{dom_id(effort, :sms)}") { click_button("sms") }
-    accept_confirm
-    expect(page).to have_current_path(effort_path(effort))
-    expect(page).to have_content("You have subscribed to sms notifications for #{effort.full_name}.")
-  end
-
-  scenario "Non-admin user sees SMS out of service message" do
-    login_as user, scope: :user
-    visit_page
-
-    expect(page).to have_content("SMS temporarily out of service")
-  end
-
-  scenario "Admin without SMS opt-in sees an opt-in link in the SMS frame" do
-    admin.update_columns(phone_confirmed_at: nil)
-    login_as admin, scope: :user
     visit_page
 
     within("##{dom_id(effort, :sms)}") do
@@ -81,8 +48,9 @@ RSpec.describe "User subscribes to an effort's progress notifications", :js, typ
     end
   end
 
-  scenario "Admin with SMS opt-in sees SMS subscribe button" do
-    login_as admin, scope: :user
+  scenario "Logged-in user with SMS opt-in sees the SMS subscribe button" do
+    user.update!(phone: "+13035551212", phone_confirmed_at: 1.day.ago)
+    login_as user, scope: :user
     visit_page
 
     within("##{dom_id(effort, :sms)}") do

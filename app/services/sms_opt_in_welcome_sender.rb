@@ -25,8 +25,7 @@ class SmsOptInWelcomeSender
   attr_reader :user
 
   def deliverable?
-    ::OstConfig.aws_sms_welcome_enabled? &&
-      ::OstConfig.aws_sms_origination_number.present? &&
+    ::OstConfig.aws_sms_origination_number.present? &&
       user.phone.present? &&
       !user.sms_carrier_opted_out?
   end

@@ -1,8 +1,9 @@
 <%# locals: (raw_time:, multiple_events:, multiple_sub_splits:, multiple_laps:, monitor_pacers:, home_time_zone:) -%>
 
 <tr id="<%= dom_id(raw_time) %>"
-    data-controller="highlight"
-    data-highlight-timestamp-value="<%= raw_time.updated_at.to_i %>">
+    data-controller="highlight raw-time-filter"
+    data-highlight-timestamp-value="<%= raw_time.updated_at.to_i %>"
+    data-raw-time-filter-parameterized-split-name-value="<%= raw_time.parameterized_split_name %>">
   <td><%= raw_time.bib_number %></td>
   <% if multiple_events %>
     <td><%= raw_time.event&.guaranteed_short_name || "--" %></td>

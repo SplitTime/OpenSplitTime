@@ -150,7 +150,7 @@ module Sweepers
 
     def delete_topic_for(effort)
       effort.unassign_topic_resource
-      effort.save!
+      effort.save!(validate: false) # Disregard validations; this operation isn't making it worse
       true
     rescue SnsTopicManager::TopicNotDeletedError,
            Aws::SNS::Errors::ServiceError,

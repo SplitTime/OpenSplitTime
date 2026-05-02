@@ -1,6 +1,24 @@
+// Register --bs-table-bg-state as a <color> so it can be transitioned. Without
+// this, custom-property values change instantaneously and the cell-level inset
+// box-shadow that uses this variable would snap rather than fade.
+@property --bs-table-bg-state {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: transparent;
+}
+
 .bg-highlight-faded {
     transition: background 4s linear;
 }
+.bg-highlight-faded > td,
+.bg-highlight-faded > th {
+    transition: box-shadow 4s linear;
+}
+
 .bg-highlight-faded-fast {
     transition: background 1s linear;
+}
+.bg-highlight-faded-fast > td,
+.bg-highlight-faded-fast > th {
+    transition: box-shadow 1s linear;
 }

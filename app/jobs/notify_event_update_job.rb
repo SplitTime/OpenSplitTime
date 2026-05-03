@@ -5,7 +5,7 @@ class NotifyEventUpdateJob < ApplicationJob
     @event_id = event_id
     return unless event_id.present? && event.present?
 
-    response = EventUpdateNotifier.publish(topic_arn: topic_resource_key, event: event)
+    response = EventUpdateNotifier.publish(topic_arn: topic_resource_key, event: event, subscribable: event)
 
     return if response.successful?
 

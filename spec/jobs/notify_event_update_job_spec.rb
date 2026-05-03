@@ -19,7 +19,8 @@ RSpec.describe NotifyEventUpdateJob do
     before { allow(EventUpdateNotifier).to receive(:publish).and_return(successful_response) }
 
     it "sends a message to EventUpdateNotifier" do
-      expect(EventUpdateNotifier).to receive(:publish).with(topic_arn: event.topic_resource_key, event: event)
+      expect(EventUpdateNotifier).to receive(:publish)
+        .with(topic_arn: event.topic_resource_key, event: event, subscribable: event)
       perform_notification
     end
   end

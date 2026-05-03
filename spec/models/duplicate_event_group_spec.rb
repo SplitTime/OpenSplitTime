@@ -52,6 +52,22 @@ RSpec.describe DuplicateEventGroup, type: :model do
       end
     end
 
+    context "when the source events hold topic_resource_keys" do
+      before do
+        event_group.events.each_with_index do |event, i|
+          event.update_column(:topic_resource_key, "arn:aws:sns:us-west-2:000:follow-source-#{i}")
+        end
+      end
+
+      it "does not carry forward topic_resource_key onto the duplicated events" do
+        # Without this reset, every duplicated event would inherit its source's ARN and
+        # never get a fresh topic from the Subscribable callback (regression for #1988).
+        subject.new_event_group.events.each do |new_event|
+          expect(new_event.topic_resource_key).to be_nil
+        end
+      end
+    end
+
     context "with a blank name" do
       let(:new_name) { "" }
 

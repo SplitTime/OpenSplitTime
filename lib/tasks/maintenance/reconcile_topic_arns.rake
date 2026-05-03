@@ -1,11 +1,10 @@
+# Reconciles Subscribable topic_resource_key values against AWS SNS. Reports drift
+# (rows whose topic name doesn't match the row's slug) and splits into "topic still
+# exists in AWS" (harmless slug renames) vs "topic missing in AWS" (dangling
+# pointers — the cause of repeated NotifyEventUpdateJob etc. failures).
+# Pass APPLY=true to nil out topic_resource_key on the dangling rows.
 namespace :maintenance do
-  desc <<~DESC.squish
-    Reconciles Subscribable topic_resource_key values against AWS SNS. Reports drift
-    (rows whose topic name doesn't match the row's slug) and split into "topic still
-    exists in AWS" (harmless slug renames) vs "topic missing in AWS" (dangling
-    pointers — the cause of repeated NotifyEventUpdateJob etc. failures).
-    Pass APPLY=true to nil out topic_resource_key on the dangling rows.
-  DESC
+  desc "Reports drifted topic_resource_keys; APPLY=true to nil dangling pointers"
   task reconcile_topic_arns: :environment do
     apply = ENV["APPLY"] == "true"
     klasses = [::Event, ::Effort, ::Person]
@@ -75,7 +74,6 @@ def reconcile_class(klass, sns_client, apply:)
   end
   puts
 end
-# rubocop:enable Metrics/MethodLength
 
 def collect_drift(klass)
   klass.where.not(topic_resource_key: nil).find_each.reject do |record|

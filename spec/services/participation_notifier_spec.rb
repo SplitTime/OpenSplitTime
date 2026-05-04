@@ -14,8 +14,36 @@ RSpec.describe ParticipationNotifier do
   end
 
   describe "#publish" do
-    context "when the SNS client returns an error" do
+    context "when the SNS client returns NotFound and a subscribable is provided" do
+      subject do
+        described_class.new(topic_arn: topic_arn, effort: effort, subscribable: person, sns_client: sns_client)
+      end
+
+      let(:person) { effort.person }
+
+      before do
+        person.update_column(:topic_resource_key, topic_arn)
+        sns_client.stub_responses(:publish, "NotFound")
+      end
+
+      it "self-heals by clearing topic_resource_key on the subscribable" do
+        response = subject.publish
+        expect(response).to be_successful
+        expect(person.reload.topic_resource_key).to be_nil
+      end
+    end
+
+    context "when the SNS client returns NotFound and no subscribable is provided" do
       before { sns_client.stub_responses(:publish, "NotFound") }
+
+      it "returns a successful no-op response without raising" do
+        response = subject.publish
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the SNS client returns a non-NotFound error" do
+      before { sns_client.stub_responses(:publish, "AuthorizationError") }
 
       it "rescues and returns a descriptive error" do
         response = subject.publish

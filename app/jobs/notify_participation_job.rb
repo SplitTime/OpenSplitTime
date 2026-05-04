@@ -7,7 +7,7 @@ class NotifyParticipationJob < ApplicationJob
     return unless effort_id.present? && effort.present? && person.present? && event.present?
     return if notification_exists?
 
-    response = ParticipationNotifier.publish(topic_arn: topic_resource_key, event: event)
+    response = ParticipationNotifier.publish(topic_arn: topic_resource_key, effort: effort, subscribable: person)
 
     return unless response.successful?
 

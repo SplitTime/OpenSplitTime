@@ -54,8 +54,4 @@ class EffortRow < SimpleDelegator
 
     "Birthday #{text}"
   end
-
-  def birthday_today?
-    days_away_from_birthday&.zero? == true
-  end
 end

@@ -35,7 +35,7 @@
           <% end %>
           <hr>
           <% if (notice = effort.birthday_notice) %>
-            <h4 class="card-text <%= "text-warning fw-bold" if effort.birthday_today? %>"><%= notice %></h4>
+            <h4 class="card-text"><span class="badge bg-success"><%= notice %></span></h4>
           <% end %>
           <h4 class="card-text"><%= effort.comments %></h4>
         </div>

@@ -217,30 +217,4 @@ RSpec.describe EffortRow, type: :model do
       it { expect(effort_row.birthday_notice).to be_nil }
     end
   end
-
-  describe "#birthday_today?" do
-    subject(:effort_row) { described_class.new(test_effort) }
-
-    let(:test_effort) { build_stubbed(:effort, birthdate: birthdate) }
-
-    before do
-      allow(test_effort).to receive(:home_time_zone).and_return("Arizona")
-      travel_to "2020-12-15 12:00:00"
-    end
-
-    context "when the birthday is today" do
-      let(:birthdate) { "1980-12-15" }
-      it { expect(effort_row.birthday_today?).to be(true) }
-    end
-
-    context "when the birthday is tomorrow" do
-      let(:birthdate) { "1980-12-16" }
-      it { expect(effort_row.birthday_today?).to be(false) }
-    end
-
-    context "when birthdate is nil" do
-      let(:birthdate) { nil }
-      it { expect(effort_row.birthday_today?).to be(false) }
-    end
-  end
 end

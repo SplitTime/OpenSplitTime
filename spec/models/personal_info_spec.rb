@@ -2,7 +2,13 @@ require "rails_helper"
 
 RSpec.describe PersonalInfo, type: :module do
   describe "birthday methods" do
-    subject(:effort) { build_stubbed(:effort, birthdate: birthdate) }
+    # Effort overrides these methods to anchor on its scheduled_start_time —
+    # see app/models/effort.rb. Force a nil race-day anchor here so the
+    # override falls back to Time.current and we exercise the concern's
+    # default behavior, which is what other PersonalInfo includers rely on.
+    subject(:effort) do
+      build_stubbed(:effort, birthdate: birthdate, scheduled_start_time: nil, event: nil)
+    end
 
     before do
       allow(effort).to receive(:home_time_zone).and_return("Arizona") # rubocop:disable RSpec/SubjectStub

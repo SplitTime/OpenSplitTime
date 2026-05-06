@@ -688,4 +688,94 @@ RSpec.describe Effort, type: :model do
       end
     end
   end
+
+  describe "birthday methods (race-day-anchored)" do
+    describe "#birthday_notice anchored on the effort's race day" do
+      let(:event) { build_stubbed(:event, scheduled_start_time: Time.zone.parse("2026-05-09 08:00:00")) }
+      let(:effort) do
+        build_stubbed(:effort,
+                      event: event,
+                      scheduled_start_time: Time.zone.parse("2026-05-09 08:00:00"),
+                      birthdate: birthdate)
+      end
+
+      before { allow(effort).to receive(:home_time_zone).and_return("Mountain Time (US & Canada)") }
+
+      context "when birthday is the same day as the race" do
+        let(:birthdate) { Date.new(1980, 5, 9) }
+
+        it "returns 'Birthday today'" do
+          expect(effort.birthday_notice).to eq("Birthday today")
+        end
+
+        it "reports birthday_today? as true" do
+          expect(effort.birthday_today?).to be(true)
+        end
+      end
+
+      context "when birthday is one day after the race" do
+        let(:birthdate) { Date.new(1980, 5, 10) }
+        it { expect(effort.birthday_notice).to eq("Birthday tomorrow") }
+      end
+
+      context "when birthday is one day before the race" do
+        let(:birthdate) { Date.new(1980, 5, 8) }
+        it { expect(effort.birthday_notice).to eq("Birthday yesterday") }
+      end
+
+      context "when birthday is 3 days after the race (race Saturday → birthday Tuesday)" do
+        let(:birthdate) { Date.new(1980, 5, 12) }
+        it { expect(effort.birthday_notice).to eq("Birthday next Tuesday") }
+      end
+
+      context "when birthday is 4 days before the race (race Saturday → birthday Tuesday)" do
+        let(:birthdate) { Date.new(1980, 5, 5) }
+        it { expect(effort.birthday_notice).to eq("Birthday last Tuesday") }
+      end
+
+      context "when birthday is 6 days from the race day" do
+        let(:birthdate) { Date.new(1980, 5, 15) }
+        it "falls back to numeric phrasing for the model (the view gates display)" do
+          expect(effort.birthday_notice).to eq("Birthday 6 days from now")
+        end
+      end
+    end
+
+    describe "multi-day events" do
+      let(:event) { build_stubbed(:event, scheduled_start_time: Time.zone.parse("2026-05-09 08:00:00")) }
+      let(:friday_effort) do
+        build_stubbed(:effort, event: event,
+                               scheduled_start_time: Time.zone.parse("2026-05-08 08:00:00"),
+                               birthdate: Date.new(1980, 5, 9))
+      end
+      let(:saturday_effort) do
+        build_stubbed(:effort, event: event,
+                               scheduled_start_time: Time.zone.parse("2026-05-09 08:00:00"),
+                               birthdate: Date.new(1980, 5, 9))
+      end
+
+      before do
+        allow(friday_effort).to receive(:home_time_zone).and_return("Mountain Time (US & Canada)")
+        allow(saturday_effort).to receive(:home_time_zone).and_return("Mountain Time (US & Canada)")
+      end
+
+      it "produces different relative phrasing for the same birthday across efforts with different start days" do
+        expect(friday_effort.birthday_notice).to eq("Birthday tomorrow")
+        expect(saturday_effort.birthday_notice).to eq("Birthday today")
+      end
+    end
+
+    describe "fallback when neither effort nor event has a scheduled_start_time" do
+      let(:event) { build_stubbed(:event, scheduled_start_time: nil) }
+      let(:effort) do
+        build_stubbed(:effort, event: event, scheduled_start_time: nil, birthdate: Date.current)
+      end
+
+      before { allow(effort).to receive(:home_time_zone).and_return("Mountain Time (US & Canada)") }
+
+      it "anchors on Time.current and still produces the right phrase" do
+        expect(effort.birthday_notice).to eq("Birthday today")
+      end
+    end
+  end
 end

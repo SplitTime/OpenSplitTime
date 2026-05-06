@@ -86,12 +86,12 @@ class ProjectedArrivalsAtSplit < ::ApplicationQuery
                          left join grouped_projected_percentages using (completed_lap, completed_split_id, completed_bitkey)
                 order by cs.effort_id)
 
-      select efforts.id as effort_id, 
-                           first_name, 
-                           last_name, 
-                           bib_number, 
-                           projected_time, 
-                           completed, 
+      select efforts.id as effort_id,#{' '}
+                           first_name,#{' '}
+                           last_name,#{' '}
+                           bib_number,#{' '}
+                           projected_time,#{' '}
+                           completed,#{' '}
                            stopped,
                            short_name as event_short_name
       from efforts
@@ -108,4 +108,13 @@ class ProjectedArrivalsAtSplit < ::ApplicationQuery
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  # The query result has no link to a Person, so the obscure-name preference
+  # isn't reachable here. Define the non-obscured variants explicitly so
+  # callers (e.g. FinishLineHelper) can use the same `_non_obscured` naming
+  # convention as PersonalInfo includers and have it be unambiguous that the
+  # privacy filter is intentionally bypassed.
+  alias display_full_name_non_obscured full_name
+  alias_attribute :display_first_name_non_obscured, :first_name
+  alias_attribute :display_last_name_non_obscured, :last_name
 end

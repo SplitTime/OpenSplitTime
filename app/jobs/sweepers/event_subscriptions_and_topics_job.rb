@@ -92,7 +92,7 @@ module Sweepers
 
     def delete_topic_for(event)
       event.unassign_topic_resource
-      event.save!
+      event.save!(validate: false) # Disregard validations; this operation isn't making it worse
       true
     rescue SnsTopicManager::TopicNotDeletedError,
            Aws::SNS::Errors::ServiceError,

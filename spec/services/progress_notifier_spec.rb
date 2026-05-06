@@ -46,6 +46,25 @@ RSpec.describe ProgressNotifier do
       end
     end
 
+    context "when the SNS client returns NotFound and the effort is provided as subscribable" do
+      subject do
+        described_class.new(topic_arn: topic_arn, effort_data: effort_data, subscribable: effort, sns_client: sns_client)
+      end
+
+      let(:effort) { efforts(:hardrock_2014_finished_first) }
+
+      before do
+        effort.update_column(:topic_resource_key, topic_arn)
+        sns_client.stub_responses(:publish, "NotFound")
+      end
+
+      it "self-heals by clearing topic_resource_key on the effort" do
+        response = subject.publish
+        expect(response).to be_successful
+        expect(effort.reload.topic_resource_key).to be_nil
+      end
+    end
+
     context "when an SMS origination number is configured" do
       let(:origination_number) { "+13035551212" }
       let(:expected_message_attributes) do

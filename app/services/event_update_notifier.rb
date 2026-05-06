@@ -3,21 +3,13 @@ class EventUpdateNotifier < BaseNotifier
     @event = args[:event]
   end
 
-  def publish
-    sns_response = sns_client.publish(
-      topic_arn: topic_arn,
-      subject: subject,
-      message: message,
-      message_structure: "json"
-    )
-    Interactors::Response.new([], "Published", response: sns_response, subject: subject, notice_text: message)
-  rescue Aws::SNS::Errors::ServiceError => e
-    Interactors::Response.new([aws_sns_error(e)], e.message, {})
-  end
-
   private
 
   attr_reader :event
+
+  def publish_params
+    super.merge(message_structure: "json")
+  end
 
   def subject
     "Update for #{event.name} from OpenSplitTime"

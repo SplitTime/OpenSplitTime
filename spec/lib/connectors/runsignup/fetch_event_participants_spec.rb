@@ -342,7 +342,7 @@ RSpec.describe ::Connectors::Runsignup::FetchEventParticipants do
               { question_id: 101, question_text: "Emergency Contact Phone", response: "303-555-1212" },
               { question_id: 200, question_text: "Is this your first attempt?", response: response_first_attempt },
               { question_id: 201, question_text: "Bib Name", response: "Joany" },
-              { question_id: 202, question_text: "Fun fact", response: "Lifelong cyclist (they/them)" },
+              { question_id: 202, question_text: "Fun fact", response: "Lifelong cyclist (she/her)" },
               { question_id: 999, question_text: "Unmapped", response: "Should be ignored" },
             ],
           }],
@@ -377,7 +377,7 @@ RSpec.describe ::Connectors::Runsignup::FetchEventParticipants do
 
       it "concatenates comments-destination questions in mapping order" do
         participant = subject.perform.first
-        expect(participant.comments).to eq("First Attempt, Joany, Lifelong cyclist (they/them)")
+        expect(participant.comments).to eq("First Attempt, Joany, Lifelong cyclist (she/her)")
       end
 
       context "when the suppressed value matches" do
@@ -385,7 +385,7 @@ RSpec.describe ::Connectors::Runsignup::FetchEventParticipants do
 
         it "drops the suppressed question without affecting the rest" do
           participant = subject.perform.first
-          expect(participant.comments).to eq("Joany, Lifelong cyclist (they/them)")
+          expect(participant.comments).to eq("Joany, Lifelong cyclist (she/her)")
         end
       end
 

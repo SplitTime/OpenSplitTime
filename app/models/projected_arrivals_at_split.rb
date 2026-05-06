@@ -86,12 +86,12 @@ class ProjectedArrivalsAtSplit < ::ApplicationQuery
                          left join grouped_projected_percentages using (completed_lap, completed_split_id, completed_bitkey)
                 order by cs.effort_id)
 
-      select efforts.id as effort_id,#{' '}
-                           first_name,#{' '}
-                           last_name,#{' '}
-                           bib_number,#{' '}
-                           projected_time,#{' '}
-                           completed,#{' '}
+      select efforts.id as effort_id,
+                           first_name,
+                           last_name,
+                           bib_number,
+                           projected_time,
+                           completed,
                            stopped,
                            short_name as event_short_name
       from efforts

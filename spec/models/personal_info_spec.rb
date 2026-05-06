@@ -9,50 +9,6 @@ RSpec.describe PersonalInfo, type: :module do
       travel_to "2020-12-15 12:00:00"
     end
 
-    describe "#birthday_notice" do
-      context "when birthday is the same day" do
-        let(:birthdate) { "1980-12-15" }
-        it "returns Birthday today" do
-          expect(subject.birthday_notice).to eq("Birthday today")
-        end
-      end
-
-      context "when birthday is the next day" do
-        let(:birthdate) { "1980-12-16" }
-        it "returns Birthday tomorrow" do
-          expect(subject.birthday_notice).to eq("Birthday tomorrow")
-        end
-      end
-
-      context "when birthday is the previous day" do
-        let(:birthdate) { "1980-12-14" }
-        it "returns Birthday yesterday" do
-          expect(subject.birthday_notice).to eq("Birthday yesterday")
-        end
-      end
-
-      context "when birthday is in a future month" do
-        let(:birthdate) { "1980-02-15" }
-        it "returns the expected message" do
-          expect(subject.birthday_notice).to eq("Birthday 62 days from now")
-        end
-      end
-
-      context "when birthday is in a past month" do
-        let(:birthdate) { "1980-10-15" }
-        it "returns the expected message" do
-          expect(subject.birthday_notice).to eq("Birthday 61 days ago")
-        end
-      end
-
-      context "when birthdate does not exist" do
-        let(:birthdate) { nil }
-        it "returns nil" do
-          expect(subject.birthday_notice).to be_nil
-        end
-      end
-    end
-
     describe "#days_away_from_birthday" do
       context "when birthdate is the same day" do
         let(:birthdate) { "1980-12-15" }

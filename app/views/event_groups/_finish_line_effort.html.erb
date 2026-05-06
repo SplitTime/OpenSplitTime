@@ -34,9 +34,8 @@
             <h4 class="card-text"><%= "#{effort.overall_rank.ordinalize} Overall, #{effort.gender_rank.ordinalize} #{effort.gender.titleize}" %></h4>
           <% end %>
           <hr>
-          <% days = effort.days_away_from_birthday %>
-          <% if days.present? && days.abs < 3 %>
-            <h4 class="card-text"><%= effort.birthday_notice %></h4>
+          <% if (notice = effort.birthday_notice) %>
+            <h4 class="card-text"><span class="badge bg-success"><%= notice %></span></h4>
           <% end %>
           <h4 class="card-text"><%= effort.comments %></h4>
         </div>

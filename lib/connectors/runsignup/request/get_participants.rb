@@ -20,13 +20,14 @@ module Connectors
           "/race/#{race_id}/participants"
         end
 
-        # @return [Hash{Symbol->Symbol | Integer}]
+        # @return [Hash{Symbol->Symbol | Integer | String}]
         def specific_params
           {
             event_id: event_id,
             page: page,
             results_per_page: BATCH_SIZE,
             sort: "registration_id ASC",
+            include_questions: "T",
           }
         end
       end

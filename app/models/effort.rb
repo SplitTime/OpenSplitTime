@@ -357,49 +357,7 @@ class Effort < ApplicationRecord
     ordered_split_times.rfind(&:stopped_here)
   end
 
-  # Override PersonalInfo defaults so finish-line phrasing anchors on the
-  # participant's race day rather than the calendar moment of rendering.
-  def days_away_from_birthday
-    return nil if birthdate.blank?
-
-    anchor = race_day_anchor || super_anchor
-    anniversary = birthdate.closest_anniversary(anchor)
-    (anniversary - anchor).to_i
-  end
-
-  def birthday_notice
-    days = days_away_from_birthday
-    return nil if days.blank?
-
-    anchor = race_day_anchor || super_anchor
-    text = case days
-           when 0 then "today"
-           when 1 then "tomorrow"
-           when -1 then "yesterday"
-           when 2..5 then "next #{(anchor + days).strftime('%A')}"
-           when -5..-2 then "last #{(anchor + days).strftime('%A')}"
-           when 6..Float::INFINITY then "#{days} days from now"
-           else "#{days.abs} days ago"
-           end
-
-    "Birthday #{text}"
-  end
-
-  def birthday_today?
-    days_away_from_birthday&.zero? == true
-  end
-
   private
-
-  def race_day_anchor
-    (scheduled_start_time || event&.scheduled_start_time)
-      &.in_time_zone(home_time_zone)
-      &.to_date
-  end
-
-  def super_anchor
-    Time.current.in_time_zone(home_time_zone).to_date
-  end
 
   def broadcast_update
     broadcast_render_later_to event_group, partial: "efforts/updated", locals: { effort: self }

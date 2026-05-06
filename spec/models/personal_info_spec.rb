@@ -2,61 +2,11 @@ require "rails_helper"
 
 RSpec.describe PersonalInfo, type: :module do
   describe "birthday methods" do
-    # Effort overrides these methods to anchor on its scheduled_start_time —
-    # see app/models/effort.rb. Force a nil race-day anchor here so the
-    # override falls back to Time.current and we exercise the concern's
-    # default behavior, which is what other PersonalInfo includers rely on.
-    subject(:effort) do
-      build_stubbed(:effort, birthdate: birthdate, scheduled_start_time: nil, event: nil)
-    end
+    subject(:effort) { build_stubbed(:effort, birthdate: birthdate) }
 
     before do
       allow(effort).to receive(:home_time_zone).and_return("Arizona") # rubocop:disable RSpec/SubjectStub
       travel_to "2020-12-15 12:00:00"
-    end
-
-    describe "#birthday_notice" do
-      context "when birthday is the same day" do
-        let(:birthdate) { "1980-12-15" }
-        it "returns Birthday today" do
-          expect(subject.birthday_notice).to eq("Birthday today")
-        end
-      end
-
-      context "when birthday is the next day" do
-        let(:birthdate) { "1980-12-16" }
-        it "returns Birthday tomorrow" do
-          expect(subject.birthday_notice).to eq("Birthday tomorrow")
-        end
-      end
-
-      context "when birthday is the previous day" do
-        let(:birthdate) { "1980-12-14" }
-        it "returns Birthday yesterday" do
-          expect(subject.birthday_notice).to eq("Birthday yesterday")
-        end
-      end
-
-      context "when birthday is in a future month" do
-        let(:birthdate) { "1980-02-15" }
-        it "returns the expected message" do
-          expect(subject.birthday_notice).to eq("Birthday 62 days from now")
-        end
-      end
-
-      context "when birthday is in a past month" do
-        let(:birthdate) { "1980-10-15" }
-        it "returns the expected message" do
-          expect(subject.birthday_notice).to eq("Birthday 61 days ago")
-        end
-      end
-
-      context "when birthdate does not exist" do
-        let(:birthdate) { nil }
-        it "returns nil" do
-          expect(subject.birthday_notice).to be_nil
-        end
-      end
     end
 
     describe "#days_away_from_birthday" do

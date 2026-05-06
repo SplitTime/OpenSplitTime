@@ -8,7 +8,7 @@ module Connectors
       # @param [User] user
       # @param [Array<Hash>] field_mappings — see Connection#field_mappings
       # @return [Array<::Connectors::Runsignup::Models::Participant>]
-      def self.perform(race_id:, event_id:, user:, field_mappings: [])
+      def self.perform(race_id:, event_id:, user:, field_mappings:)
         new(race_id: race_id, event_id: event_id, user: user, field_mappings: field_mappings).perform
       end
 

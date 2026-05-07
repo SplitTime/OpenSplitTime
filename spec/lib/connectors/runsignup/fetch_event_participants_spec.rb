@@ -322,5 +322,94 @@ RSpec.describe ::Connectors::Runsignup::FetchEventParticipants do
 
       it { expect { result }.to raise_error ::Connectors::Errors::NotFound }
     end
+
+    context "when field_mappings are configured" do
+      subject do
+        described_class.new(race_id: race_id, event_id: event_id, user: user, field_mappings: field_mappings)
+      end
+
+      let(:race_response_body) do
+        '{"race":{"race_id":85675,"name":"R","next_date":"02/10/2023","events":[{"event_id":661702,"start_time":"2/10/2023 18:00"}]}}'
+      end
+      let(:page_1_body) do
+        {
+          participants: [{
+            user: { first_name: "Joan", last_name: "Smith", dob: "1980-01-01", gender: "F",
+                    address: { city: "Boulder", state: "CO", country_code: "US" } },
+            bib_num: 7,
+            question_responses: [
+              { question_id: 100, question_text: "Emergency Contact Name", response: "Pat Smith" },
+              { question_id: 101, question_text: "Emergency Contact Phone", response: "303-555-1212" },
+              { question_id: 200, question_text: "Is this your first attempt?", response: response_first_attempt },
+              { question_id: 201, question_text: "Bib Name", response: "Joany" },
+              { question_id: 202, question_text: "Fun fact", response: "Lifelong cyclist (she/her)" },
+              { question_id: 999, question_text: "Unmapped", response: "Should be ignored" },
+            ],
+          }],
+        }.to_json
+      end
+      let(:response_first_attempt) { "Yes" }
+      let(:field_mappings) do
+        [
+          { "source_question_id" => 100, "destination" => "emergency_contact" },
+          { "source_question_id" => 101, "destination" => "emergency_phone" },
+          { "source_question_id" => 200, "destination" => "comments", "suppress_when" => "No",
+            "value_when_present" => "First Attempt" },
+          { "source_question_id" => 201, "destination" => "comments" },
+          { "source_question_id" => 202, "destination" => "comments" },
+        ]
+      end
+      let(:page_2_empty) { '{"participants":[]}' }
+      let(:page_3_empty) { '{"participants":[]}' }
+
+      before do
+        allow(client).to receive(:get_race).with(race_id).and_return(race_response_body)
+        allow(client).to receive(:get_participants).with(race_id, event_id, 1).and_return(page_1_body)
+        allow(client).to receive(:get_participants).with(race_id, event_id, 2).and_return(page_2_empty)
+        allow(client).to receive(:get_participants).with(race_id, event_id, 3).and_return(page_3_empty)
+      end
+
+      it "routes question responses to dedicated columns" do
+        participant = subject.perform.first
+        expect(participant.emergency_contact).to eq("Pat Smith")
+        expect(participant.emergency_phone).to eq("303-555-1212")
+      end
+
+      it "concatenates comments-destination questions in mapping order" do
+        participant = subject.perform.first
+        expect(participant.comments).to eq("First Attempt, Joany, Lifelong cyclist (she/her)")
+      end
+
+      context "when the suppressed value matches" do
+        let(:response_first_attempt) { "No" }
+
+        it "drops the suppressed question without affecting the rest" do
+          participant = subject.perform.first
+          expect(participant.comments).to eq("Joany, Lifelong cyclist (she/her)")
+        end
+      end
+
+      context "when no field_mappings are configured" do
+        let(:field_mappings) { [] }
+
+        it "leaves the new comments / emergency columns nil" do
+          participant = subject.perform.first
+          expect(participant.comments).to be_nil
+          expect(participant.emergency_contact).to be_nil
+          expect(participant.emergency_phone).to be_nil
+        end
+      end
+
+      context "when a participant has no question_responses key" do
+        let(:page_1_body) do
+          { participants: [{ user: { first_name: "X", last_name: "Y" }, bib_num: 1 }] }.to_json
+        end
+
+        it "still produces a struct with the comments slot nil" do
+          participant = subject.perform.first
+          expect(participant.comments).to be_nil
+        end
+      end
+    end
   end
 end

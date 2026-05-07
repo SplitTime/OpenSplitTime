@@ -12,11 +12,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Capture runner image fingerprint for cache key
+        id: runner-image
+        run: echo "fingerprint=${ImageOS}-${ImageVersion}" >> "$GITHUB_OUTPUT"
+
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          cache-version: ${{ env.ImageOS }}-${{ env.ImageVersion }}
+          cache-version: ${{ steps.runner-image.outputs.fingerprint }}
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -154,11 +158,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Capture runner image fingerprint for cache key
+        id: runner-image
+        run: echo "fingerprint=${ImageOS}-${ImageVersion}" >> "$GITHUB_OUTPUT"
+
       - name: Setup Ruby and install gems
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          cache-version: ${{ env.ImageOS }}-${{ env.ImageVersion }}
+          cache-version: ${{ steps.runner-image.outputs.fingerprint }}
 
       - name: Install libvips
         run: sudo apt-get install -y --no-install-recommends libvips42

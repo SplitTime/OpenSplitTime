@@ -95,8 +95,8 @@ module Connectors
           response_obj = responses_by_id[mapping["source_question_id"]]
           next if response_obj.blank?
 
-          raw_value = response_obj["response"].presence ||
-                      Array(response_obj["responses"]).compact_blank.join(", ").presence
+          raw_value = (response_obj["response"].presence ||
+                       Array(response_obj["responses"]).compact_blank.join(", ").presence)&.strip
           next if raw_value.blank?
           next if mapping["suppress_when"].present? && raw_value == mapping["suppress_when"]
 

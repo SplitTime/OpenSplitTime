@@ -410,6 +410,34 @@ RSpec.describe ::Connectors::Runsignup::FetchEventParticipants do
           expect(participant.comments).to be_nil
         end
       end
+
+      context "when responses have leading or trailing whitespace" do
+        let(:page_1_body) do
+          {
+            participants: [{
+              user: { first_name: "Risa", last_name: "K", dob: "1980-01-01", gender: "F",
+                      address: { city: "Boulder", state: "CO", country_code: "US" } },
+              bib_num: 7,
+              question_responses: [
+                { question_id: 100, question_text: "Emergency Contact Name", response: "  Pat Smith  " },
+                { question_id: 200, question_text: "Is this your first attempt?", response: " Yes " },
+                { question_id: 201, question_text: "Bib Name", response: "Risa " },
+                { question_id: 202, question_text: "Fun fact", response: " This is my first time! (she/her)" },
+              ],
+            }],
+          }.to_json
+        end
+
+        it "strips each response value before concatenating into comments" do
+          participant = subject.perform.first
+          expect(participant.comments).to eq("First Attempt, Risa, This is my first time! (she/her)")
+        end
+
+        it "strips dedicated-column values too" do
+          participant = subject.perform.first
+          expect(participant.emergency_contact).to eq("Pat Smith")
+        end
+      end
     end
   end
 end

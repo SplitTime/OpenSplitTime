@@ -116,6 +116,9 @@ Rails.application.routes.draw do
 
   resources :event_groups, only: [:index, :show] do
     resources :connect_service, only: [:show], module: "event_groups"
+    patch "connect_service/:service_identifier/field_mappings",
+          to: "event_groups/field_mappings#update",
+          as: :connect_service_field_mappings
     resources :connections, only: [:index, :new, :create, :destroy], module: "event_groups"
 
     resources :events, except: [:index, :show] do

@@ -78,6 +78,44 @@ class ConnectServicePresenter < BasePresenter
     end
   end
 
+  # Catalog of distinct registration questions configured on the connected
+  # Runsignup race. Used by the field-mappings UI to render one row per
+  # question. Empty when no event-level Runsignup Connection exists yet
+  # (since the catalog is fetched via /participants and needs an event_id).
+  def race_questions
+    return @race_questions if defined?(@race_questions)
+
+    @race_questions =
+      if service_identifier == "runsignup" && runsignup_race_id.present? && first_runsignup_event_source_id.present?
+        ::Connectors::Runsignup::FetchRaceQuestions.perform(
+          race_id: runsignup_race_id,
+          event_id: first_runsignup_event_source_id,
+          user: current_user,
+        )
+      else
+        []
+      end
+  rescue ::Connectors::Errors::Base => e
+    @error_message ||= e.message
+    @race_questions = []
+  end
+
+  # Returns the array of mapping hashes currently configured on event-level
+  # Connections under this EventGroup. All event Connections are kept in sync
+  # by the field-mappings controller, so we read from any non-empty one.
+  def field_mappings
+    @field_mappings ||= event_level_connections.lazy
+                                               .map(&:field_mappings)
+                                               .find(&:present?) || []
+  end
+
+  # Lookup helper for the form: returns the existing mapping hash for a given
+  # question_id, or nil if none configured. Drives per-row pre-selection of
+  # destination and value-override fields.
+  def field_mapping_for(question_id)
+    field_mappings.find { |m| m["source_question_id"] == question_id }
+  end
+
   private
 
   attr_reader :view_context
@@ -142,6 +180,16 @@ class ConnectServicePresenter < BasePresenter
 
   def runsignup_race_id
     event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
+  end
+
+  def event_level_connections
+    event_group.events.flat_map do |event|
+      event.connections.from_service(service_identifier).where(source_type: event_source_type).to_a
+    end
+  end
+
+  def first_runsignup_event_source_id
+    event_level_connections.first&.source_id
   end
 
   def event_group_source_type

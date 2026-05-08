@@ -122,4 +122,76 @@ RSpec.describe ConnectServicePresenter do
       it { expect(result).to eq([]) }
     end
   end
+
+  describe "Runsignup field mappings" do
+    let(:event_group) { event_groups(:rufa_2017) }
+    let!(:event_connection) do
+      Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "1080834",
+                         destination: event, field_mappings: persisted_mappings)
+    end
+    let(:persisted_mappings) do
+      [
+        { "source_question_id" => 100, "destination" => "emergency_contact" },
+        { "source_question_id" => 200, "destination" => "comments", "value_when_present" => "First Attempt" },
+      ]
+    end
+    let(:service) { ::Connectors::Service::BY_IDENTIFIER[:runsignup] }
+    let(:event) { event_group.events.first }
+    before do
+      Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "174571", destination: event_group)
+    end
+
+    describe "#field_mappings" do
+      it "returns the array stored on the first non-empty event-level Connection" do
+        expect(presenter.field_mappings).to eq(persisted_mappings)
+      end
+
+      context "when no event Connection has a non-empty field_mappings" do
+        let(:persisted_mappings) { [] }
+
+        it "returns an empty array" do
+          expect(presenter.field_mappings).to eq([])
+        end
+      end
+    end
+
+    describe "#field_mapping_for(question_id)" do
+      it "returns the mapping hash matching the given question_id" do
+        expect(presenter.field_mapping_for(100)).to eq(persisted_mappings.first)
+      end
+
+      it "returns nil when no mapping matches" do
+        expect(presenter.field_mapping_for(9999)).to be_nil
+      end
+    end
+
+    describe "#race_questions" do
+      let(:question_struct) do
+        ::Connectors::Runsignup::Models::Question.new(id: 100, text: "Q")
+      end
+
+      it "delegates to FetchRaceQuestions with the race_id and an event source_id" do
+        allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform).and_return([question_struct])
+
+        expect(presenter.race_questions).to eq([question_struct])
+        expect(::Connectors::Runsignup::FetchRaceQuestions).to have_received(:perform)
+          .with(race_id: "174571", event_id: "1080834", user: user)
+      end
+
+      it "memoizes the result" do
+        allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform).and_return([question_struct])
+        2.times { presenter.race_questions }
+        expect(::Connectors::Runsignup::FetchRaceQuestions).to have_received(:perform).once
+      end
+
+      context "when no event-level Runsignup Connection exists yet" do
+        before { event_connection.destroy! }
+
+        it "returns an empty array without hitting the API" do
+          expect(::Connectors::Runsignup::FetchRaceQuestions).not_to receive(:perform)
+          expect(presenter.race_questions).to eq([])
+        end
+      end
+    end
+  end
 end

@@ -97,6 +97,9 @@ application.register("notifications", NotificationsController)
 import PopoverController from "./popover_controller"
 application.register("popover", PopoverController)
 
+import RawTimeFilterController from "./raw_time_filter_controller"
+application.register("raw-time-filter", RawTimeFilterController)
+
 import RawTimesPushController from "./raw_times_push_controller"
 application.register("raw-times-push", RawTimesPushController)
 

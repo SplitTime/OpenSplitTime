@@ -100,13 +100,10 @@ class ConnectServicePresenter < BasePresenter
     @race_questions = []
   end
 
-  # Returns the array of mapping hashes currently configured on event-level
-  # Connections under this EventGroup. All event Connections are kept in sync
-  # by the field-mappings controller, so we read from any non-empty one.
+  # Returns the array of mapping hashes currently configured on the Race-level
+  # Connection (the canonical store; questions are race-level on Runsignup).
   def field_mappings
-    @field_mappings ||= event_level_connections.lazy
-                                               .map(&:field_mappings)
-                                               .find(&:present?) || []
+    @field_mappings ||= race_connection&.field_mappings || []
   end
 
   # Lookup helper for the form: returns the existing mapping hash for a given
@@ -179,13 +176,14 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def runsignup_race_id
-    event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
+    race_connection&.source_id
   end
 
-  def event_level_connections
-    event_group.events.flat_map do |event|
-      event.connections.from_service(service_identifier).where(source_type: event_source_type).to_a
-    end
+  def race_connection
+    return @race_connection if defined?(@race_connection)
+
+    @race_connection = event_group.connections.from_service(service_identifier)
+                                  .find_by(source_type: event_group_source_type)
   end
 
   def event_group_source_type

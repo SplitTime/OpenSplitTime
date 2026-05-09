@@ -1,8 +1,9 @@
 module EventGroups
-  # Persists per-Runsignup-question → Effort-attribute mappings configured via
-  # the connection management UI. The same mapping is written to every
-  # event-level Connection under the EventGroup (questions are race-level on
-  # Runsignup, so a single configuration applies to all events).
+  # Persists Runsignup-question → Effort-attribute mappings configured via the
+  # connection management UI. The mapping is stored on the EventGroup-level
+  # Race Connection (questions are race-level on Runsignup, so one mapping per
+  # race; the Race Connection always exists once the user has entered a race
+  # ID, even before they've toggled on the per-event connection switches).
   class FieldMappingsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_event_group
@@ -13,8 +14,10 @@ module EventGroups
     def update
       authorize @event_group, :setup?
 
-      mappings = normalized_mappings
-      event_level_connections.each { |conn| conn.update!(field_mappings: mappings) }
+      conn = race_connection
+      raise ActiveRecord::RecordNotFound if conn.blank?
+
+      conn.update!(field_mappings: normalized_mappings)
 
       respond_to do |format|
         format.turbo_stream do
@@ -39,6 +42,11 @@ module EventGroups
       raise ActiveRecord::RecordNotFound if @service.blank?
     end
 
+    def race_connection
+      @event_group.connections.from_service(@service.identifier)
+                  .find_by(source_type: @service.resource_map[EventGroup])
+    end
+
     def normalized_mappings
       raw = params.fetch(:field_mappings, {})
       rows = raw.is_a?(ActionController::Parameters) ? raw.to_unsafe_h.values : raw
@@ -58,12 +66,6 @@ module EventGroups
         mapping["suppress_when"] = suppress_when if suppress_when.present?
         mapping["value_when_present"] = value_when_present if value_when_present.present?
         mapping
-      end
-    end
-
-    def event_level_connections
-      @event_group.events.flat_map do |event|
-        event.connections.from_service(@service.identifier).where(source_type: @service.resource_map[Event]).to_a
       end
     end
   end

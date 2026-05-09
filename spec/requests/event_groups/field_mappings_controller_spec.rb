@@ -17,23 +17,18 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:service_ide
     }
   end
   let(:event_group) { event_groups(:rufa_2017) }
-  let(:event_1) { event_group.events.first }
-  let(:event_2) { event_group.events.second }
-  let!(:event_1_connection) do
-    Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "1001", destination: event_1)
-  end
-  let!(:event_2_connection) do
-    Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "1002", destination: event_2)
+  let!(:race_connection) do
+    Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "174571", destination: event_group)
   end
 
   before { login_as user, scope: :user }
   after { Warden.test_reset! }
 
-  it "writes the normalized mapping to every event-level Connection under the EventGroup" do
+  it "writes the normalized mapping to the EventGroup-level Race Connection" do
     patch event_group_connect_service_field_mappings_path(event_group, "runsignup"),
           params: valid_params, headers: turbo_headers
 
-    [event_1_connection, event_2_connection].each(&:reload)
+    race_connection.reload
 
     expected = [
       { "source_question_id" => 100, "destination" => "emergency_contact" },
@@ -41,16 +36,27 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:service_ide
         "suppress_when" => "No", "value_when_present" => "First Attempt" },
       { "source_question_id" => 300, "destination" => "comments" },
     ]
-    expect(event_1_connection.field_mappings).to eq(expected)
-    expect(event_2_connection.field_mappings).to eq(expected)
+    expect(race_connection.field_mappings).to eq(expected)
+  end
+
+  it "does not require any per-event Connection to exist" do
+    event_level_count = event_group.events.flat_map { |e| e.connections.from_service(:runsignup).to_a }.size
+    expect(event_level_count).to eq(0)
+
+    expect do
+      patch event_group_connect_service_field_mappings_path(event_group, "runsignup"),
+            params: valid_params, headers: turbo_headers
+    end.not_to raise_error
+
+    expect(race_connection.reload.field_mappings).not_to be_empty
   end
 
   it "coerces source_question_id strings into integers" do
     patch event_group_connect_service_field_mappings_path(event_group, "runsignup"),
           params: valid_params, headers: turbo_headers
 
-    event_1_connection.reload
-    expect(event_1_connection.field_mappings.first["source_question_id"]).to eq(100)
+    race_connection.reload
+    expect(race_connection.field_mappings.first["source_question_id"]).to eq(100)
   end
 
   it "drops rows whose destination is blank or unknown" do
@@ -64,9 +70,9 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:service_ide
     patch event_group_connect_service_field_mappings_path(event_group, "runsignup"),
           params: params, headers: turbo_headers
 
-    event_1_connection.reload
-    expect(event_1_connection.field_mappings.size).to eq(1)
-    expect(event_1_connection.field_mappings.first["source_question_id"]).to eq(100)
+    race_connection.reload
+    expect(race_connection.field_mappings.size).to eq(1)
+    expect(race_connection.field_mappings.first["source_question_id"]).to eq(100)
   end
 
   it "omits empty suppress_when / value_when_present from the persisted mapping" do
@@ -79,8 +85,8 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:service_ide
     patch event_group_connect_service_field_mappings_path(event_group, "runsignup"),
           params: params, headers: turbo_headers
 
-    event_1_connection.reload
-    expect(event_1_connection.field_mappings.first.keys).to contain_exactly("source_question_id", "destination")
+    race_connection.reload
+    expect(race_connection.field_mappings.first.keys).to contain_exactly("source_question_id", "destination")
   end
 
   it "renders the field_mappings_card turbo_stream replace" do
@@ -92,6 +98,15 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:service_ide
     expect(response.media_type).to eq("text/vnd.turbo-stream.html")
     expect(response.body).to include("turbo-stream action=\"replace\"")
     expect(response.body).to include("field_mappings_card")
+  end
+
+  it "raises RecordNotFound when no Race Connection exists for the EventGroup" do
+    race_connection.destroy!
+
+    expect do
+      patch event_group_connect_service_field_mappings_path(event_group, "runsignup"),
+            params: valid_params, headers: turbo_headers
+    end.to raise_error(ActiveRecord::RecordNotFound)
   end
 
   it "raises RecordNotFound for an unknown service_identifier" do

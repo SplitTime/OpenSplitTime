@@ -125,28 +125,24 @@ RSpec.describe ConnectServicePresenter do
 
   describe "Runsignup field mappings" do
     let(:event_group) { event_groups(:rufa_2017) }
-    let!(:event_connection) do
-      Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "1080834",
-                         destination: event, field_mappings: persisted_mappings)
-    end
+    let(:service) { ::Connectors::Service::BY_IDENTIFIER[:runsignup] }
     let(:persisted_mappings) do
       [
         { "source_question_id" => 100, "destination" => "emergency_contact" },
         { "source_question_id" => 200, "destination" => "comments", "value_when_present" => "First Attempt" },
       ]
     end
-    let(:service) { ::Connectors::Service::BY_IDENTIFIER[:runsignup] }
-    let(:event) { event_group.events.first }
     before do
-      Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "174571", destination: event_group)
+      Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "174571",
+                         destination: event_group, field_mappings: persisted_mappings)
     end
 
     describe "#field_mappings" do
-      it "returns the array stored on the first non-empty event-level Connection" do
+      it "returns the array stored on the EventGroup-level Race Connection" do
         expect(presenter.field_mappings).to eq(persisted_mappings)
       end
 
-      context "when no event Connection has a non-empty field_mappings" do
+      context "when the Race Connection has no field_mappings configured" do
         let(:persisted_mappings) { [] }
 
         it "returns an empty array" do
@@ -185,7 +181,7 @@ RSpec.describe ConnectServicePresenter do
       end
 
       it "does not require any event-level Connection to fetch the catalog" do
-        event_connection.destroy!
+        # No event Connection setup needed — only the Race Connection is required.
         allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform).and_return([question_struct])
 
         expect(presenter.race_questions).to eq([question_struct])
@@ -193,7 +189,6 @@ RSpec.describe ConnectServicePresenter do
 
       context "when no Runsignup Race connection is set" do
         before do
-          event_connection.destroy!
           event_group.connections.from_service(:runsignup).where(source_type: "Race").destroy_all
         end
 

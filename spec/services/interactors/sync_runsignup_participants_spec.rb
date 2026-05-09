@@ -4,13 +4,6 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
   subject(:sync) { described_class.perform!(event, current_user) }
 
   let(:event_group) { event_groups(:rufa_2017) }
-  let(:event) { events(:rufa_2017_24h) }
-  let(:current_user) { users(:admin_user) }
-
-  let!(:event_connection) do
-    Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "24", destination: event)
-  end
-
   let(:participant) do
     Connectors::Runsignup::Models::Participant.new(
       first_name: "Last",
@@ -26,7 +19,6 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
       scheduled_start_time_local: event.scheduled_start_time_local,
     )
   end
-
   let!(:effort) do
     create(:effort,
            event: event,
@@ -35,8 +27,11 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
            birthdate: participant.birthdate,
            bib_number: ost_bib_number,)
   end
+  let(:event) { events(:rufa_2017_24h) }
+  let(:current_user) { users(:admin_user) }
 
   before do
+    Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "24", destination: event)
     Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "123", destination: event_group)
     allow(Connectors::Runsignup::FetchEventParticipants).to receive(:perform).and_return([participant])
   end
@@ -95,11 +90,13 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
     end
 
     before do
-      event_connection.update!(field_mappings: field_mappings)
+      # Mapping lives on the Race-level Connection (the canonical store).
+      race_conn = event_group.connections.from_service(:runsignup).find_by(source_type: "Race")
+      race_conn.update!(field_mappings: field_mappings)
       allow(Connectors::Runsignup::FetchEventParticipants).to receive(:perform).and_return([returned_participant])
     end
 
-    it "passes the per-event-connection field_mappings into FetchEventParticipants" do
+    it "passes the Race-level field_mappings into FetchEventParticipants" do
       sync
       expect(Connectors::Runsignup::FetchEventParticipants).to have_received(:perform).with(
         hash_including(field_mappings: field_mappings),

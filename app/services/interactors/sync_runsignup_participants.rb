@@ -69,7 +69,7 @@ module Interactors
           race_id: runsignup_race_id,
           event_id: connection.source_id,
           user: current_user,
-          field_mappings: connection.field_mappings,
+          field_mappings: field_mappings,
         )
       rescue ::Connectors::Errors::Base => e
         errors << connectors_base_error(e)
@@ -102,6 +102,11 @@ module Interactors
     def runsignup_event_connections
       @runsignup_event_connections ||=
         event.connections.from_service(:runsignup).where(source_type: "Event")
+    end
+
+    def field_mappings
+      @field_mappings ||=
+        event_group.connections.from_service(:runsignup).find_by(source_type: "Race")&.field_mappings || []
     end
 
     def runsignup_race_id

@@ -1,0 +1,5 @@
+<%# locals: (event_group_setup_presenter:, connect_service_presenter:) %>
+
+<%= turbo_stream.replace(dom_id(connect_service_presenter.event_group, :field_mappings_card),
+                         partial: "event_groups/connect_service/runsignup/field_mappings_card",
+                         locals: { connect_service_presenter: connect_service_presenter }) %>

@@ -21,7 +21,10 @@
         <% else %>
           <%= link_to "Remove",
                       event_group_connection_path(connection.destination, connection),
-                      data: { turbo_method: :delete },
+                      data: {
+                        turbo_method: :delete,
+                        turbo_confirm: t(".remove_confirm"),
+                      },
                       class: "btn btn-outline-danger" %>
         <% end %>
       </div>

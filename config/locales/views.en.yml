@@ -6,6 +6,8 @@ en:
           main_text: "Using Connections in OpenSplitTime"
           detail_paragraph_1: "Connections provide a simple way to keep your data synchronized with an outside source (like Runsignup) or an internal source (like an OpenSplitTime Lottery)."
           detail_paragraph_2: "You can manage connections for your Event Group from this page."
+      form:
+        remove_confirm: "Remove this connection? Any event connections and field mappings will be discarded."
     connect_service:
       internal_lottery:
         event_group_card:

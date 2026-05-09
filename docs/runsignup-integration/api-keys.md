@@ -34,6 +34,8 @@ Once you have the API key and secret:
 1. Add a RunSignup credential set, pasting the **api_key** and **api_secret** values from RunSignup.
 1. Save.
 
+With your credentials saved, head to [Event Construction → Add Entrants](../getting-started/event-construction/#add-entrants) to connect your RunSignup race to an Event Group.
+
 ## References
 
 - [RunSignup API Documentation](https://runsignup.com/API){:target="_blank"}

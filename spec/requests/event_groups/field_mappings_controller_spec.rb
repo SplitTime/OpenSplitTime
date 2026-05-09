@@ -83,10 +83,22 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:connect_ser
     expect(race_connection.field_mappings.first.keys).to contain_exactly("source_question_id", "destination")
   end
 
-  it "redirects back to the connect_service page on success" do
+  it "redirects back to the connect_service page on an HTML request" do
     patch event_group_connect_service_field_mappings_path(event_group, "runsignup"), params: valid_params
 
     expect(response).to redirect_to(event_group_connect_service_path(event_group, "runsignup"))
+  end
+
+  it "renders a turbo_stream replace of the field_mappings_card on a turbo request" do
+    allow_any_instance_of(ConnectServicePresenter).to receive(:race_questions).and_return([]) # rubocop:disable RSpec/AnyInstance
+    turbo_headers = { "Accept" => "text/vnd.turbo-stream.html" }
+
+    patch event_group_connect_service_field_mappings_path(event_group, "runsignup"),
+          params: valid_params, headers: turbo_headers
+
+    expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+    expect(response.body).to include("turbo-stream action=\"replace\"")
+    expect(response.body).to include("field_mappings_card")
   end
 
   it "raises RecordNotFound when no Race Connection exists for the EventGroup" do

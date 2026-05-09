@@ -19,7 +19,16 @@ module EventGroups
 
       conn.update!(field_mappings: normalized_mappings)
 
-      redirect_to event_group_connect_service_path(@event_group, @service.identifier)
+      respond_to do |format|
+        format.turbo_stream do
+          render "event_groups/field_mappings/update",
+                 locals: {
+                   event_group_setup_presenter: EventGroupSetupPresenter.new(@event_group, view_context),
+                   connect_service_presenter: ConnectServicePresenter.new(@event_group, @service, view_context),
+                 }
+        end
+        format.html { redirect_to event_group_connect_service_path(@event_group, @service.identifier) }
+      end
     end
 
     private

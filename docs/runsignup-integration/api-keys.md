@@ -30,13 +30,11 @@ If you time multiple races, you can use one set of permanent credentials instead
 
 Once you have the API key and secret:
 
-1. In OpenSplitTime, open the user menu and go to **Settings → Credentials**.
+1. In OpenSplitTime, log in, click on the email address to access the user dropdown menu, and go to **Settings → Credentials**.
 1. Add a RunSignup credential set, pasting the **api_key** and **api_secret** values from RunSignup.
 1. Save.
-1. Open the Event Group you want to connect, choose **Connect Service**, and pick **RunSignup**. Enter the RunSignup race ID to link the two.
 
 ## References
 
 - [RunSignup API Documentation](https://runsignup.com/API){:target="_blank"}
 - [RunSignup API – Getting Started](https://runsignup.com/API/GettingStarted){:target="_blank"} — describes permanent keys for timers, partners, and affiliates
-- OpenSplitTime issue [#1159](https://github.com/SplitTime/OpenSplitTime/issues/1159){:target="_blank"} — original walkthrough of finding a race's API Keys accordion

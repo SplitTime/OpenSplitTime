@@ -3,8 +3,10 @@ module Connectors
     module Request
       class GetRace
         # @param [String] race_id
-        def initialize(race_id:)
+        # @param [Boolean] include_questions
+        def initialize(race_id:, include_questions: false)
           @race_id = race_id
+          @include_questions = include_questions
         end
 
         attr_reader :race_id
@@ -16,7 +18,7 @@ module Connectors
 
         # @return [Hash]
         def specific_params
-          {}
+          @include_questions ? { include_questions: "T" } : {}
         end
       end
     end

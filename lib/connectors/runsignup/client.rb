@@ -13,8 +13,9 @@ module Connectors
         verify_credentials_present!
       end
 
-      def get_race(race_id)
-        self.request = Connectors::Runsignup::Request::GetRace.new(race_id: race_id)
+      def get_race(race_id, include_questions: false)
+        self.request = Connectors::Runsignup::Request::GetRace.new(race_id: race_id,
+                                                                   include_questions: include_questions)
         make_request
       end
 

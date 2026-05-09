@@ -78,20 +78,18 @@ class ConnectServicePresenter < BasePresenter
     end
   end
 
-  # Catalog of distinct registration questions configured on the connected
-  # Runsignup race. Used by the field-mappings UI to render one row per
-  # question. The Runsignup /participants endpoint requires an event_id, so
-  # we use the first event_id reachable from the race — preferring an
-  # already-configured per-event Connection's source_id, falling back to the
-  # first Runsignup event under the race when no event Connection exists yet.
+  # Catalog of registration questions configured on the connected Runsignup
+  # race. Used by the field-mappings UI to render one row per question.
+  # Hits the dedicated /Rest/race/{race_id}?include_questions=T endpoint,
+  # which returns the question definitions directly (no participant
+  # enumeration needed).
   def race_questions
     return @race_questions if defined?(@race_questions)
 
     @race_questions =
-      if service_identifier == "runsignup" && runsignup_race_id.present? && questions_event_id.present?
+      if service_identifier == "runsignup" && runsignup_race_id.present?
         ::Connectors::Runsignup::FetchRaceQuestions.perform(
           race_id: runsignup_race_id,
-          event_id: questions_event_id,
           user: current_user,
         )
       else
@@ -188,10 +186,6 @@ class ConnectServicePresenter < BasePresenter
     event_group.events.flat_map do |event|
       event.connections.from_service(service_identifier).where(source_type: event_source_type).to_a
     end
-  end
-
-  def questions_event_id
-    event_level_connections.first&.source_id || all_sources.first&.id
   end
 
   def event_group_source_type

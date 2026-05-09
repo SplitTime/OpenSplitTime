@@ -170,12 +170,12 @@ RSpec.describe ConnectServicePresenter do
         ::Connectors::Runsignup::Models::Question.new(id: 100, text: "Q")
       end
 
-      it "delegates to FetchRaceQuestions with the race_id and an event source_id" do
+      it "delegates to FetchRaceQuestions with just the race_id" do
         allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform).and_return([question_struct])
 
         expect(presenter.race_questions).to eq([question_struct])
         expect(::Connectors::Runsignup::FetchRaceQuestions).to have_received(:perform)
-          .with(race_id: "174571", event_id: "1080834", user: user)
+          .with(race_id: "174571", user: user)
       end
 
       it "memoizes the result" do
@@ -184,26 +184,17 @@ RSpec.describe ConnectServicePresenter do
         expect(::Connectors::Runsignup::FetchRaceQuestions).to have_received(:perform).once
       end
 
-      context "when no event-level Runsignup Connection exists yet" do
-        before do
-          event_connection.destroy!
-          allow(::Connectors::Runsignup::FetchRaceEvents).to receive(:perform)
-            .and_return([::Connectors::Runsignup::Models::Event.new(id: "9876", name: "X", start_time: Time.current.iso8601)])
-        end
+      it "does not require any event-level Connection to fetch the catalog" do
+        event_connection.destroy!
+        allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform).and_return([question_struct])
 
-        it "falls back to the first Runsignup event under the race for the question fetch" do
-          allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform).and_return([question_struct])
-
-          expect(presenter.race_questions).to eq([question_struct])
-          expect(::Connectors::Runsignup::FetchRaceQuestions).to have_received(:perform)
-            .with(race_id: "174571", event_id: "9876", user: user)
-        end
+        expect(presenter.race_questions).to eq([question_struct])
       end
 
-      context "when the Runsignup race has no events at all" do
+      context "when no Runsignup Race connection is set" do
         before do
           event_connection.destroy!
-          allow(::Connectors::Runsignup::FetchRaceEvents).to receive(:perform).and_return([])
+          event_group.connections.from_service(:runsignup).where(source_type: "Race").destroy_all
         end
 
         it "returns an empty array without hitting FetchRaceQuestions" do

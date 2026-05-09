@@ -115,7 +115,9 @@ Rails.application.routes.draw do
   resources :duplicate_event_groups, only: [:new, :create]
 
   resources :event_groups, only: [:index, :show] do
-    resources :connect_service, only: [:show], module: "event_groups"
+    resources :connect_service, only: [:show], module: "event_groups" do
+      resource :field_mappings, only: [:update]
+    end
     resources :connections, only: [:index, :new, :create, :destroy], module: "event_groups"
 
     resources :events, except: [:index, :show] do

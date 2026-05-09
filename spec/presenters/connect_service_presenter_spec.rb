@@ -185,11 +185,31 @@ RSpec.describe ConnectServicePresenter do
       end
 
       context "when no event-level Runsignup Connection exists yet" do
-        before { event_connection.destroy! }
+        before do
+          event_connection.destroy!
+          allow(::Connectors::Runsignup::FetchRaceEvents).to receive(:perform)
+            .and_return([::Connectors::Runsignup::Models::Event.new(id: "9876", name: "X", start_time: Time.current.iso8601)])
+        end
 
-        it "returns an empty array without hitting the API" do
-          expect(::Connectors::Runsignup::FetchRaceQuestions).not_to receive(:perform)
+        it "falls back to the first Runsignup event under the race for the question fetch" do
+          allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform).and_return([question_struct])
+
+          expect(presenter.race_questions).to eq([question_struct])
+          expect(::Connectors::Runsignup::FetchRaceQuestions).to have_received(:perform)
+            .with(race_id: "174571", event_id: "9876", user: user)
+        end
+      end
+
+      context "when the Runsignup race has no events at all" do
+        before do
+          event_connection.destroy!
+          allow(::Connectors::Runsignup::FetchRaceEvents).to receive(:perform).and_return([])
+        end
+
+        it "returns an empty array without hitting FetchRaceQuestions" do
+          allow(::Connectors::Runsignup::FetchRaceQuestions).to receive(:perform)
           expect(presenter.race_questions).to eq([])
+          expect(::Connectors::Runsignup::FetchRaceQuestions).not_to have_received(:perform)
         end
       end
     end

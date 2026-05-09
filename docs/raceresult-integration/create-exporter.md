@@ -10,9 +10,15 @@ nav_order: 3
 
 In OpenSplitTime, make sure you are logged in and go to your Event Group. Click **Admin** → **Construction** → **Status**.
 
-Make sure Live Entry is enabled — the **RaceResult RFID Integration** card will only appear when Live Entry is active. If it is not enabled, click **Enable Live Entry** on the same page.
+![OST instruction to Admin/Construction tab](/assets/images/docs/race_result/race_result_doc_5.png)
+
+![OST status icon](/assets/images/docs/race_result/race_result_doc_6.png)
+
+Make sure [Live Entry is enabled](../confirm-data-flow/) — the **RaceResult RFID Integration** card will only appear when Live Entry is active. If it is not enabled, click **Enable Live Entry** on the same page.
 
 In the **RaceResult RFID Integration** card, if a webhook token has not yet been generated, click **Set Token** to generate one. Once a token exists, the **Webhook URL** field will be displayed. You will need this URL in the next step.
+
+![OST get webhook token](/assets/images/docs/race_result/race_result_doc_8.png)
 
 ## 2. Create an exporter
 
@@ -23,7 +29,7 @@ In the left panel of RaceResult, go to **Timing** → **Settings** → **Exporte
 - **Filter**: Leave this field blank
 - **Destination**: `HTTP(S) Post`, then copy the **Webhook URL** from the OpenSplitTime **Admin** → **Construction** → **Status** page into the next field. Do not use the example below — always copy your actual URL from OpenSplitTime, as it contains a unique token and Event Group identifier.
 
-  Example: `https://opensplittime.org/webhooks/raceresult?token=abc123def456&event_group_name=my-event-group`
+  Example: `https://www.opensplittime.org/webhooks/raceresult?token=abc123def456&event_group_name=my-event-group`
 
 - **Export Data**: Select `Raw Data Record JSON` from the dropdown
 - **LineEnd**: `CRLF`

@@ -1,4 +1,6 @@
 class EffortAutoReconciler
+  include ActionView::Helpers::TextHelper
+
   def self.reconcile(parent, options = {})
     reconciler = new(parent, options)
     reconciler.reconcile
@@ -28,7 +30,7 @@ class EffortAutoReconciler
   attr_accessor :auto_matched_count, :auto_created_count
 
   def matched_hash
-    @matched_hash ||= exact_matches.map { |effort, person| [effort.id, person.id] }.to_h
+    @matched_hash ||= exact_matches.to_h { |effort, person| [effort.id, person.id] }
   end
 
   def not_matched_array
@@ -37,14 +39,14 @@ class EffortAutoReconciler
 
   def exact_matches
     @exact_matches ||= unreconciled_efforts
-        .map { |effort| [effort, effort.exact_matching_person] }.to_h.compact
+                       .index_with(&:exact_matching_person).compact
   end
 
   def close_matches
     @close_matches ||= unreconciled_efforts
-        .map { |effort| [effort, effort.suggest_close_match] }
-        .select { |_, person| person }
-        .reject { |effort, _| exact_matched_efforts.include?(effort) }.to_h
+                       .map { |effort| [effort, effort.suggest_close_match] }
+                       .select { |_, person| person }
+                       .reject { |effort, _| exact_matched_efforts.include?(effort) }.to_h # rubocop:disable Style/HashExcept
   end
 
   def exact_matched_efforts
@@ -64,24 +66,25 @@ class EffortAutoReconciler
   end
 
   def matched_report
-    if auto_matched_count > 0
-      "We found #{auto_matched_count} people that matched our database. "
+    if auto_matched_count.positive?
+      "We found #{pluralize(auto_matched_count, 'person')} that matched our database. "
     else
       "No people matched our database exactly. "
     end
   end
 
   def created_report
-    if auto_created_count > 0
-      "We created #{auto_created_count} people from efforts that had no close matches. "
+    if auto_created_count.positive?
+      "We created #{pluralize(auto_created_count, 'person')} from efforts that had no close matches. "
     else
       ""
     end
   end
 
   def unreconciled_report
-    if close_matched_count > 0
-      "We found #{close_matched_count} people that may or may not match our database. Please reconcile them now. "
+    if close_matched_count.positive?
+      "We found #{pluralize(close_matched_count,
+                            'person')} that may or may not match our database. Please reconcile them now. "
     else
       "All efforts for #{parent.name} have been reconciled. "
     end

@@ -11,10 +11,10 @@
         Read the <%= link_to "full documentation", docs_url("raceresult-integration"), target: "_blank", rel: "noopener" %>
         for a detailed explanation of how to set up this integration.</p>
       <% if presenter.webhook_token? %>
-        <p class="text-muted"><%= t("event_groups.setup.webhook_token_active_detail") %></p>
+        <p class="text-body-secondary"><%= t("event_groups.setup.webhook_token_active_detail") %></p>
         <%= render "shared/copyable_field", label: "Webhook URL", value: webhooks_raceresult_url(token: presenter.webhook_token, event_group_name: presenter.event_group.slug), field_id: "webhook_url" %>
       <% else %>
-        <p class="text-muted mb-0"><%= t("event_groups.setup.webhook_token_inactive_detail") %></p>
+        <p class="text-body-secondary mb-0"><%= t("event_groups.setup.webhook_token_inactive_detail") %></p>
       <% end %>
     </div>
   </div>

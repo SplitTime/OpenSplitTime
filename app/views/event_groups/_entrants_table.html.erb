@@ -1,0 +1,35 @@
+<%# locals: (presenter:) %>
+
+<div class="row">
+  <div class="col-xs-8">
+    <%= render "entrants_count", presenter: presenter %>
+  </div>
+  <div class="col-xs-4 text-end">
+  </div>
+</div>
+
+<table class="table table-centered table-fixed-sm">
+  <thead>
+  <tr>
+    <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", presenter.existing_sort) %></th>
+    <% if presenter.multiple_events? %>
+      <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", presenter.existing_sort) %></th>
+    <% end %>
+    <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", presenter.existing_sort) %></th>
+    <th class="text-center"><%= link_to_reversing_sort_heading("Bib#", "bib_number", presenter.existing_sort) %></th>
+    <th><%= link_to_reversing_sort_heading("Category", "gender,age", presenter.existing_sort) %></th>
+    <th><%= link_to_reversing_sort_heading("From", "state_code", presenter.existing_sort) %></th>
+    <th>Scheduled Start</th>
+    <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", presenter.existing_sort) %></th>
+    <th class="text-center">Actions</th>
+  </tr>
+  </thead>
+  <tbody id="entrants">
+  <%= render partial: "efforts/entrant_for_setup",
+             collection: presenter.filtered_efforts,
+             as: :effort,
+             locals: { presenter: presenter } %>
+  </tbody>
+</table>
+
+<%= render "shared/pager", next_page_url: presenter.next_page_url %>

@@ -27,7 +27,7 @@
       <div class="card-header">
         <%= fa_icon("exclamation-triangle", type: :regular, class: "text-danger", size: "2x") %>
         <span class="h3 fw-bold mx-2">Mismatched Entrants</span>
-        <span class="h5 text-muted">Fix these before drawing tickets</span>
+        <span class="h5 text-body-secondary">Fix these before drawing tickets</span>
       </div>
       <div class="card-body">
         <table class="table">
@@ -41,7 +41,7 @@
           <tbody>
           <% presenter.mismatched_entrants.each do |entrant| %>
           <tr>
-            <td><%= entrant.full_name %></td>
+            <td><%= entrant.display_full_name_non_obscured %></td>
             <td class="text-center"><%= entrant.number_of_tickets %></td>
             <td class="text-center"><%= entrant.generated_tickets_count %></td>
           </tr>

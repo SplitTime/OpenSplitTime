@@ -12,7 +12,10 @@ class FinishHistoryPresenter < BasePresenter
   end
 
   def effort_rows
-    @effort_rows ||= efforts.map { |effort| EffortRow.new(effort) }
+    @effort_rows ||= efforts.map do |effort|
+      effort.person = indexed_people[effort.person_id]
+      EffortRow.new(effort)
+    end
   end
 
   def history_for(row)
@@ -30,6 +33,10 @@ class FinishHistoryPresenter < BasePresenter
 
   def efforts
     @efforts ||= event.efforts.ranking_subquery
+  end
+
+  def indexed_people
+    @indexed_people ||= Person.where(id: efforts.map(&:person_id).compact).index_by(&:id)
   end
 
   # @return [Array<FinishHistory>]

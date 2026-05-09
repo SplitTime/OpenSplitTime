@@ -7,7 +7,7 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1><strong>Edit Times - <%= @presenter.full_name %></strong></h1>
+          <h1><strong>Edit Times - <%= @presenter.display_full_name_non_obscured %></strong></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event.event_group.organization.name, organization_path(@presenter.event.event_group.organization) %></li>
@@ -15,7 +15,7 @@
               <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <% end %>
             <li class="breadcrumb-item"><%= link_to @presenter.event.guaranteed_short_name, event_path(@presenter.event) %></li>
-            <li class="breadcrumb-item"><%= link_to @presenter.full_name, effort_path(@presenter.effort) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.display_full_name_non_obscured, effort_path(@presenter.effort) %></li>
             <li class="breadcrumb-item active">Edit Times</li>
           </ul>
         </div>

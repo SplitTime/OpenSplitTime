@@ -20,6 +20,10 @@ class UserSettingsPolicy < ApplicationPolicy
     credentials?
   end
 
+  def sms_messaging?
+    user.present?
+  end
+
   def update?
     preferences?
   end

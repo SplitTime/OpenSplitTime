@@ -27,7 +27,7 @@
                data-dropzone-accepted-files=".gpx"
                data-action="dropzone:success->form-disable-submit#enableSubmitButton">
             <%= f.file_field :gpx, direct_upload: true, data: { "dropzone-target" => "input" } %>
-            <div class="dropzone-msg dz-message needsclick text-muted">
+            <div class="dropzone-msg dz-message needsclick text-body-secondary">
               <h3 class="dropzone-msg-title">Drag here to upload or click here to browse</h3>
               <span class="dropzone-msg-desc text-sm">1 MB file size maximum. File must be a gpx file.</span>
             </div>

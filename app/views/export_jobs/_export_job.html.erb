@@ -11,7 +11,7 @@
               <span class="mx-2"><%= badge_with_text("New", color: "success") %></span>
             <% end %>
           </h5>
-          <h6 class="fs-6 text-muted"><%= "Created #{time_ago_in_words(export_job.created_at)} ago" %></h6>
+          <h6 class="fs-6 text-body-secondary"><%= "Created #{time_ago_in_words(export_job.created_at)} ago" %></h6>
         </div>
         <div class="col text-end">
           <%= render "export_jobs/actions_kebab", export_job: export_job %>

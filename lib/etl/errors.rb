@@ -171,6 +171,13 @@ module Etl
         detail: { row_index: row_index, messages: ["Transform failed: #{error_text}"] } }
     end
 
+    def unsupported_record_type_error(parent_class, record_type, suggested_parent: nil)
+      messages = ["#{parent_class} imports do not accept #{record_type} records."]
+      messages << "Use the #{suggested_parent} import endpoint instead." if suggested_parent.present?
+      { title: "Record type not supported for this parent",
+        detail: { messages: messages } }
+    end
+
     def value_not_permitted_error(option, permitted_values, provided_value)
       {
         title: "Argument value is not permitted",

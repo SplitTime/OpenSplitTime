@@ -45,7 +45,9 @@ module Interactors
     end
 
     def matching_record(split_time, time_record)
-      (split_time.split_id == time_record.split_id) &&
+      time_record.effort_id.present? &&
+        (split_time.effort_id == time_record.effort_id) &&
+        (split_time.split_id == time_record.split_id) &&
         (split_time.bitkey == time_record.bitkey) &&
         time_record.matchable_bib_number.present? &&
         (split_time.bib_number == time_record.matchable_bib_number) &&

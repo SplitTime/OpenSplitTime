@@ -20,6 +20,6 @@ export default class extends Controller {
 
   onClickDelete() {
     this.deleteButtonTarget.classList.add("disabled", "saving")
-    this.deleteButtonTarget.value = "Deleting ..."
+    this.deleteButtonTarget.value = "Processing..."
   }
 }

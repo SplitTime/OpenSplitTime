@@ -1,19 +1,17 @@
 require "rails_helper"
 
-RSpec.describe "manage entrant service form upload and download", js: true do
+RSpec.describe "manage entrant service form upload and download", :js do
   let(:user) { users(:fourth_user) }
 
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:organization) { lottery.organization }
   let(:entrant) { lottery_entrants(:lottery_entrant_0004) }
-  let(:download_path) { Rails.root.join("tmp/downloads") }
-
   before do
     entrant.update!(email: user.email)
     lottery.update!(status: :finished)
   end
 
-  context "service form not available" do
+  context "when service form not available" do
     scenario "user visits the page" do
       login_as user, scope: :user
       visit_page
@@ -23,7 +21,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
     end
   end
 
-  context "service form is available" do
+  context "when service form is available" do
     before do
       lottery.service_form.attach(
         io: File.open(file_fixture("service_form.pdf")),
@@ -32,21 +30,13 @@ RSpec.describe "manage entrant service form upload and download", js: true do
       )
     end
 
-    scenario "user downloads the service form", :local_only do
+    scenario "user sees a link to download the service form" do
       login_as user, scope: :user
       visit_page
 
       expect(page).to have_current_path(page_path)
       expect(page).to have_text("Download a blank service form")
-
-      click_link "Download"
-      downloaded_file = download_path.join("service_form.pdf")
-
-      # Wait for download to complete (async operation)
-      wait_for_download(downloaded_file)
-
-      expect(File.exist?(downloaded_file)).to be true
-      expect(page).to have_current_path(page_path)
+      expect(page).to have_link("Download", href: download_service_form_organization_lottery_path(organization, lottery))
     end
 
     scenario "user uploads a completed service form pdf" do
@@ -59,7 +49,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
       expect(page).to have_text("Under review")
     end
 
-    context "completed form is attached and has been rejected" do
+    context "when completed form is attached and has been rejected" do
       before do
         entrant.create_service_detail
         entrant.service_detail.completed_form.attach(
@@ -69,7 +59,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
         )
       end
 
-      context "and has been accepted" do
+      context "when it has been accepted" do
         before { entrant.service_detail.update!(form_accepted_at: Time.zone.now, form_accepted_comments: "Thank you for your service", completed_date: 2.days.ago) }
 
         scenario "user sees feedback" do
@@ -82,7 +72,7 @@ RSpec.describe "manage entrant service form upload and download", js: true do
         end
       end
 
-      context "and has been rejected" do
+      context "when it has been rejected" do
         before { entrant.service_detail.update!(form_rejected_at: Time.zone.now, form_rejected_comments: "This is a potato") }
 
         scenario "user sees feedback and removes the form" do

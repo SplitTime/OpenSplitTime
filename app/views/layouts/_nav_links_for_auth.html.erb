@@ -6,7 +6,7 @@
         <%= current_user.email %><%= " (admin)" if current_user.admin? %>
         <span class="caret"></span>
       </a>
-      <div class="dropdown-menu dropdown-menu-dark" aria-labelledby="nav-dropdown-auth">
+      <div class="dropdown-menu" data-bs-theme="dark" aria-labelledby="nav-dropdown-auth">
         <%= link_to "Settings", user_settings_preferences_path, class: "dropdown-item" %>
         <% if current_user&.admin? %>
           <div class="dropdown-divider"></div>

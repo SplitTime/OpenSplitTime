@@ -82,6 +82,8 @@ $fa-var-circle-dot: \f192;
 $fa-var-dot-circle: \f192;
 $fa-var-circle-down: \f358;
 $fa-var-arrow-alt-circle-down: \f358;
+$fa-var-circle-envelope: \e10c;
+$fa-var-envelope-circle: \e10c;
 $fa-var-circle-exclamation: \f06a;
 $fa-var-exclamation-circle: \f06a;
 $fa-var-circle-info: \f05a;
@@ -102,6 +104,7 @@ $fa-var-cloud-plus: \e35e;
 $fa-var-download: \f019;
 $fa-var-ellipsis: \f141;
 $fa-var-ellipsis-h: \f141;
+$fa-var-envelope: \f0e0;
 $fa-var-equals: \3d;
 $fa-var-eye: \f06e;
 $fa-var-eye-slash: \f070;
@@ -141,6 +144,7 @@ $fa-var-map-marked-alt: \f5a0;
 $fa-var-masks-theater: \f630;
 $fa-var-theater-masks: \f630;
 $fa-var-memo-circle-check: \e1d9;
+$fa-var-message-sms: \e1e5;
 $fa-var-minus: \f068;
 $fa-var-subtract: \f068;
 $fa-var-not-equal: \f53e;
@@ -225,6 +229,8 @@ $fa-icons: (
   "dot-circle": $fa-var-dot-circle,
   "circle-down": $fa-var-circle-down,
   "arrow-alt-circle-down": $fa-var-arrow-alt-circle-down,
+  "circle-envelope": $fa-var-circle-envelope,
+  "envelope-circle": $fa-var-envelope-circle,
   "circle-exclamation": $fa-var-circle-exclamation,
   "exclamation-circle": $fa-var-exclamation-circle,
   "circle-info": $fa-var-circle-info,
@@ -245,6 +251,7 @@ $fa-icons: (
   "download": $fa-var-download,
   "ellipsis": $fa-var-ellipsis,
   "ellipsis-h": $fa-var-ellipsis-h,
+  "envelope": $fa-var-envelope,
   "equals": $fa-var-equals,
   "eye": $fa-var-eye,
   "eye-slash": $fa-var-eye-slash,
@@ -284,6 +291,7 @@ $fa-icons: (
   "masks-theater": $fa-var-masks-theater,
   "theater-masks": $fa-var-theater-masks,
   "memo-circle-check": $fa-var-memo-circle-check,
+  "message-sms": $fa-var-message-sms,
   "minus": $fa-var-minus,
   "subtract": $fa-var-subtract,
   "not-equal": $fa-var-not-equal,

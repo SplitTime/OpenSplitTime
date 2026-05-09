@@ -1,5 +1,9 @@
 @import "../variables";
 
 .bg-highlight {
+    // Bootstrap 5 .table cells paint over the <tr> background via an inset box-shadow
+    // driven by --bs-table-bg-state, so set that variable too — otherwise rows in
+    // .table-striped contexts (e.g. raw_times list) never visibly highlight.
+    --bs-table-bg-state: #{lighten($yellow, 20%)};
     background: lighten($yellow, 20%) !important;
 }

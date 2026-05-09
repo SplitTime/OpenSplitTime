@@ -1,0 +1,54 @@
+<% content_for :title do %>SMS Text Message Notifications
+<% end %>
+
+<article class="ost-article container">
+  <h1>SMS Text Message Notifications</h1>
+
+  <p>OpenSplitTime offers optional SMS text message notifications so friends, family, and followers can receive live progress
+    updates when a participant passes through aid station checkpoints during an endurance event.</p>
+
+  <h2>What Messages Will I Receive?</h2>
+  <p>If you opt in and subscribe to follow a participant in a specific event, you will receive text messages
+    for that event with:</p>
+  <ul>
+    <li>Live progress updates as the participant passes through aid stations (split name, distance, time of day, and
+      elapsed time)</li>
+    <li>A link to view full results on OpenSplitTime</li>
+  </ul>
+
+  <h2>How to Opt In</h2>
+  <ol>
+    <li>Create an account and sign in to OpenSplitTime.</li>
+    <li>Go to your <%= link_to "SMS Messaging settings", user_settings_sms_messaging_path %> page.</li>
+    <li>Enter your mobile phone number.</li>
+    <li>Read the SMS disclosure and check the consent box agreeing to receive text messages.</li>
+    <li>Click "Save Changes."</li>
+    <li>Once opted in, SMS subscribe buttons will appear on participant and event pages. Click the SMS button on any
+      participant you want to follow.</li>
+  </ol>
+
+  <h2>SMS Terms and Conditions</h2>
+  <p>Before receiving any text messages, you must check a consent box on your
+    <%= link_to "SMS Messaging settings", user_settings_sms_messaging_path %> page agreeing to the following:</p>
+  <blockquote class="p-3 bg-light border rounded">
+    <p class="mb-0"><%= t("sms.consent.disclosure") %></p>
+  </blockquote>
+  <p class="mt-3">Additionally:</p>
+  <ul>
+    <li>Reply <strong>STOP</strong> to any message to cancel and stop receiving all text messages from OpenSplitTime.</li>
+    <li>Reply <strong>HELP</strong> for help, or contact us at the email address below.</li>
+  </ul>
+
+  <h2>How to Opt Out</h2>
+  <p>You can stop receiving SMS messages at any time by:</p>
+  <ul>
+    <li>Replying <strong>STOP</strong> to any message from OpenSplitTime, or</li>
+    <li>Unchecking the SMS consent box on your <%= link_to "SMS Messaging settings", user_settings_sms_messaging_path %> page.</li>
+  </ul>
+
+  <h2>More Information</h2>
+  <p>For questions or support, email
+    <a href="mailto:mark@opensplittime.org">mark@opensplittime.org</a>.</p>
+  <p>See our <%= link_to "Privacy Policy", privacy_policy_path(anchor: "sms") %> and
+    <%= link_to "Terms of Service", terms_path %> for additional details.</p>
+</article>

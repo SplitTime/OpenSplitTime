@@ -48,7 +48,7 @@ class Event < ApplicationRecord
       .left_joins(:efforts).left_joins(:event_group)
       .group("events.id, event_groups.id")
   }
-  scope :standard_includes, -> { includes(:splits, :efforts, :event_group) }
+  scope :standard_includes, -> { includes(:splits, :event_group, efforts: :person) }
   scope :with_policy_scope_attributes, lambda {
     from(select("events.*, event_groups.organization_id, event_groups.concealed").joins(:event_group), :events)
   }

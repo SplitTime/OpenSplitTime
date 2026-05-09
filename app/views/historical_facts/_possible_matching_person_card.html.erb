@@ -5,7 +5,7 @@
     <div class="row">
     <div class="col-auto">
         <span><%= badge_with_text(person.id, color: :secondary) %></span>
-        <span class="h5 fw-bold"><%= person.full_name %></span>
+        <span class="h5 fw-bold"><%= person.display_full_name_non_obscured %></span>
         <span><%= "(#{person.bio})" %></span>
       </div>
       <div class="col text-end">

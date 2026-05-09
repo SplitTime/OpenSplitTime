@@ -75,7 +75,8 @@ class LotteriesController < ApplicationController
       Lotteries::SyncCalculationsJob.perform_later(@lottery, current_user: current_user)
       redirect_to setup_organization_lottery_path(@organization, @lottery), notice: "Sync in progress"
     else
-      redirect_to setup_organization_lottery_path(@organization, @lottery), alert: "Lottery does not have a calculations_class"
+      redirect_to setup_organization_lottery_path(@organization, @lottery),
+                  alert: "Lottery does not have a calculations_class"
     end
   end
 
@@ -103,39 +104,44 @@ class LotteriesController < ApplicationController
         case export_format
         when :all_entrants
           entrants = @lottery.entrants.includes(:division_ranking)
-          filename = "#{@lottery.name}-export-all-entrants-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "lotteries/results/all_entrants", formats: :csv, locals: { records: entrants })
+          filename = "#{@lottery.name}-export-all-entrants-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "lotteries/results/all_entrants", formats: :csv,
+                                        locals: { records: entrants })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         when :in_divisions
-          filename = "#{@lottery.name}-export-in-divisions-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "lotteries/results/in_divisions", formats: :csv, locals: { lottery: @lottery })
+          filename = "#{@lottery.name}-export-in-divisions-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "lotteries/results/in_divisions", formats: :csv,
+                                        locals: { lottery: @lottery })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         when :ultrasignup
           entrants = @lottery.divisions.flat_map(&:accepted_entrants)
-          filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "lotteries/results/ultrasignup", formats: :csv, locals: { records: entrants })
+          filename = "#{@lottery.name}-export-for-ultrasignup-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "lotteries/results/ultrasignup", formats: :csv,
+                                        locals: { records: entrants })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         when :ultrasignup_with_waitlist
           # Get accepted and waitlisted entrants in true draw order (by division_rank)
           entrants = @lottery.entrants
-            .includes(:division_ranking)
-            .where(lotteries_division_rankings: { draw_status: [:accepted, :waitlisted] })
-            .ordered
-          filename = "#{@lottery.name}-export-for-ultrasignup-with-waitlist-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          csv_stream = render_to_string(partial: "lotteries/results/ultrasignup_with_waitlist", formats: :csv, locals: { records: entrants })
+                             .includes(:division_ranking)
+                             .where(lotteries_division_rankings: { draw_status: [:accepted, :waitlisted] })
+                             .ordered
+          filename = "#{@lottery.name}-export-for-ultrasignup-with-waitlist-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
+          csv_stream = render_to_string(partial: "lotteries/results/ultrasignup_with_waitlist", formats: :csv,
+                                        locals: { records: entrants })
 
           send_data(csv_stream, type: "text/csv", filename: filename)
         else
           entrants = @lottery.entrants.ordered_for_export.where(prepared_params[:filter])
           builder = ::CsvBuilder.new(::LotteryEntrant, entrants)
           filename = if prepared_params[:filter] == { "id" => "0" }
-            "lottery-entrants-template.csv"
-          else
-            "#{prepared_params[:filter].to_param}-#{builder.model_class_name}-#{Time.now.strftime('%Y-%m-%d')}.csv"
-          end
+                       "lottery-entrants-template.csv"
+                     else
+                       filter_param = prepared_params[:filter].to_param
+                       "#{filter_param}-#{builder.model_class_name}-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
+                     end
 
           send_data(builder.full_string, type: "text/csv", filename: filename)
         end
@@ -155,6 +161,15 @@ class LotteriesController < ApplicationController
     end
   end
 
+  # POST /organizations/:organization_id/lotteries/:id/draw_all
+  def draw_all
+    division = @lottery.divisions.find(params[:division_id])
+    Lotteries::DrawAllTicketsJob.perform_later(division)
+
+    redirect_to draw_tickets_organization_lottery_path(@organization, @lottery),
+                notice: "Drawing all remaining tickets for #{division.name}..."
+  end
+
   # DELETE /organizations/:organization_id/lotteries/:id/delete_draws
   def delete_draws
     if @lottery.delete_all_draws! && @lottery.entrants.update_all(withdrawn: false)
@@ -170,8 +185,8 @@ class LotteriesController < ApplicationController
   def delete_entrants
     begin
       if @lottery.delete_all_draws! &&
-        @lottery.tickets.delete_all &&
-        @lottery.divisions.each { |division| division.entrants.delete_all }
+         @lottery.tickets.delete_all &&
+         @lottery.divisions.each { |division| division.entrants.delete_all }
         flash[:success] = "Deleted all lottery entrants, tickets, and draws"
       else
         flash[:danger] = "Unable to delete all lottery entrants, tickets, and draws"

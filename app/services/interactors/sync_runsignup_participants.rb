@@ -14,6 +14,9 @@ module Interactors
       "email",
       "phone",
       "scheduled_start_time_local",
+      "comments",
+      "emergency_contact",
+      "emergency_phone",
     ].freeze
 
     def self.perform!(event, current_user)
@@ -54,20 +57,22 @@ module Interactors
 
     attr_reader :event, :current_user, :response, :time
     attr_accessor :preview_only
+
     delegate :errors, :resources, to: :response, private: true
     delegate :event_group, to: :event, private: true
 
     def find_and_create_entrants
-      participants = runsignup_event_ids.flat_map do |runsignup_event_id|
+      participants = runsignup_event_connections.flat_map do |connection|
         next if errors.present?
 
         ::Connectors::Runsignup::FetchEventParticipants.perform(
           race_id: runsignup_race_id,
-          event_id: runsignup_event_id,
+          event_id: connection.source_id,
           user: current_user,
+          field_mappings: field_mappings,
         )
-      rescue ::Connectors::Errors::Base => error
-        errors << connectors_base_error(error)
+      rescue ::Connectors::Errors::Base => e
+        errors << connectors_base_error(e)
       end
 
       return if errors.present?
@@ -75,7 +80,8 @@ module Interactors
       participants.sort_by! { |participant| [participant.last_name, participant.first_name] }
 
       participants.each do |participant|
-        effort = event.efforts.where("first_name ilike ? and last_name ilike ?", participant.first_name, participant.last_name)
+        effort = event.efforts.where("first_name ilike ? and last_name ilike ?", participant.first_name,
+                                     participant.last_name)
                       .where(birthdate: participant.birthdate)
                       .first_or_initialize
 
@@ -93,9 +99,14 @@ module Interactors
       end
     end
 
-    def runsignup_event_ids
-      @runsignup_event_ids ||=
-        event.connections.from_service(:runsignup).where(source_type: "Event").pluck(:source_id)
+    def runsignup_event_connections
+      @runsignup_event_connections ||=
+        event.connections.from_service(:runsignup).where(source_type: "Event")
+    end
+
+    def field_mappings
+      @field_mappings ||=
+        event_group.connections.from_service(:runsignup).find_by(source_type: "Race")&.field_mappings || []
     end
 
     def runsignup_race_id
@@ -140,16 +151,18 @@ module Interactors
     end
 
     def validate_setup
-      errors << event_not_linked_error unless event.connections.from_service(:runsignup).where(source_type: "Event").exists?
+      return if event.connections.from_service(:runsignup).exists?(source_type: "Event")
+
+      errors << event_not_linked_error
     end
 
     def set_response_message
       response.message = if errors.present?
-                            "Sync completed with errors"
-                          elsif preview_only
-                            "Preview completed successfully"
-                          else
-                            "Sync completed successfully"
+                           "Sync completed with errors"
+                         elsif preview_only
+                           "Preview completed successfully"
+                         else
+                           "Sync completed successfully"
                          end
     end
 

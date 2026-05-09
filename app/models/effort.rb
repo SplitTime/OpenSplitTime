@@ -33,6 +33,8 @@ class Effort < ApplicationRecord
   belongs_to :event, counter_cache: true, touch: true
   belongs_to :person, optional: true
 
+  scope :standard_includes, -> { includes(:person) }
+
   # effort_segments are destroyed when the associated split_times are destroyed.
   # This is accomplished by the :dependent option on the has_many :split_times association.
   # Do not add a dependent: :destroy option to the has_many :effort_segments association
@@ -115,10 +117,10 @@ class Effort < ApplicationRecord
 
   def slug_candidates
     [
-      [:event_name, :full_name],
-      [:event_name, :full_name, :state_and_country],
-      [:event_name, :full_name, :state_and_country, Time.zone.today.to_s],
-      [:event_name, :full_name, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]
+      [:event_name, :name_for_slug],
+      [:event_name, :name_for_slug, :state_and_country],
+      [:event_name, :name_for_slug, :state_and_country, Time.zone.today.to_s],
+      [:event_name, :name_for_slug, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]
     ]
   end
 
@@ -294,6 +296,30 @@ class Effort < ApplicationRecord
     return unless age.present? && calculated_start_time.present?
 
     @current_age_approximate ||= age && (((Time.current - calculated_start_time) / 1.year) + age).round
+  end
+
+  def bio_historic
+    return gender&.titlecase if hide_age_applied?
+
+    bio_historic_non_obscured
+  end
+
+  def bio_historic_conditionally_obscured(user)
+    return gender&.titlecase if hide_age_applied_for?(user)
+
+    bio_historic_non_obscured
+  end
+
+  def display_age
+    hide_age_applied? ? nil : display_age_non_obscured
+  end
+
+  def display_age_non_obscured
+    age
+  end
+
+  def display_age_conditionally_obscured(user)
+    hide_age_applied_for?(user) ? nil : display_age_non_obscured
   end
 
   def unreconciled?

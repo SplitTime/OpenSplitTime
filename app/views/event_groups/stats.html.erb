@@ -131,7 +131,7 @@
           <% @presenter.noticed_efforts_with_count.each do |effort| %>
             <tr>
               <td><%= effort.bib_number %></td>
-              <td><%= effort.full_name %></td>
+              <td><%= effort.display_full_name_non_obscured %></td>
               <td class="text-center"><%= effort.notifications_count %></td>
             </tr>
           <% end %>

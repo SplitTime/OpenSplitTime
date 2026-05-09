@@ -1,0 +1,8 @@
+<%# locals: (subscription:) %>
+<% person = subscription.subscribable %>
+<p>
+  You're now subscribed to follow <strong><%= person.full_name %></strong>.
+</p>
+<p>
+  We'll send you an email when <%= person.first_name %> is registered for upcoming events on OpenSplitTime, so you can subscribe to live progress updates for those efforts.
+</p>

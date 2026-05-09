@@ -1,2 +1,2 @@
 <%= turbo_stream.replace "flash", partial: "layouts/flash" %>
-<%= turbo_stream.remove(@raw_time) %>
+<turbo-stream action="remove_tr_with_fade" target="<%= dom_id(@raw_time) %>"></turbo-stream>

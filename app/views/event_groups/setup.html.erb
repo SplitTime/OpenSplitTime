@@ -2,6 +2,7 @@
   <% "OpenSplitTime: Setup Event Group - #{@presenter.event_group.name}" %>
 <% end %>
 
+<%= turbo_stream_from @presenter.event_group %>
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
 <%= render "setup_header", presenter: @presenter, breadcrumbs: [] %>
 

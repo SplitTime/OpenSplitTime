@@ -7,15 +7,30 @@ class ProgressNotifier < BaseNotifier
 
   attr_reader :effort_data
 
+  def publish_params
+    params = super
+    params[:message_attributes] = sms_message_attributes if ::OstConfig.aws_sms_origination_number
+    params
+  end
+
+  def sms_message_attributes
+    {
+      "AWS.MM.SMS.OriginationNumber" => {
+        data_type: "String",
+        string_value: ::OstConfig.aws_sms_origination_number,
+      },
+    }
+  end
+
   def subject
     "Update for #{effort_data[:full_name]} at #{effort_data[:event_name]} from OpenSplitTime"
   end
 
   def message
     <<~MESSAGE
-      #{effort_data[:full_name]} made progress at #{effort_data[:event_name]}:
+      OpenSplitTime: #{effort_data[:full_name]} made progress at #{effort_data[:event_name]}:
       #{times_text}
-      Results on OpenSplitTime: #{shortened_url}
+      Results: #{shortened_url}
     MESSAGE
   end
 
@@ -36,10 +51,10 @@ class ProgressNotifier < BaseNotifier
   end
 
   def follower_update_body_text(split_time_data)
-    "#{split_time_data[:split_name]} " +
-      "(Mile #{(split_time_data[:split_distance] / UnitConversions::METERS_PER_MILE).round(1)}), " +
-      "#{split_time_data[:absolute_time_local]} " +
-      "(+#{split_time_data[:elapsed_time]})" +
+    "#{split_time_data[:split_name]} " \
+    "(Mile #{(split_time_data[:split_distance] / UnitConversions::METERS_PER_MILE).round(1)}), " \
+    "#{split_time_data[:absolute_time_local]} " \
+    "(+#{split_time_data[:elapsed_time]})" +
       (split_time_data[:stopped_here] ? " and stopped there" : "").to_s
   end
 end

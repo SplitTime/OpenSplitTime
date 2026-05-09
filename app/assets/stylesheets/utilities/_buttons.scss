@@ -29,7 +29,7 @@
 }
 
 .btn-input-group {
-    @include button-outline-variant($input-group-addon-border-color);
+    @include button-outline-variant($gray-400);
 }
 
 .dropdown-toggle {

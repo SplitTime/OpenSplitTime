@@ -13,17 +13,12 @@ Rails.application.configure do
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
 
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :mailgun
   config.action_mailer.default_url_options = { host: "opensplittime.org", protocol: "https" }
 
-  config.action_mailer.smtp_settings = {
-    address: "smtp.sendgrid.net",
-    port: "2525",
-    authentication: :plain,
-    user_name: "apikey",
-    password: ::OstConfig.sendgrid_api_key,
-    domain: "heroku.com",
-    enable_starttls_auto: true
+  config.action_mailer.mailgun_settings = {
+    api_key: ::OstConfig.mailgun_api_key,
+    domain: ::OstConfig.mailgun_domain,
   }
 
   # Full error reports are disabled and caching is turned on.

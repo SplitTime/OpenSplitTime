@@ -11,7 +11,7 @@ module FinishLineHelper
   end
 
   def bib_effort_name_and_event_name(effort, multiple_events)
-    bib_and_name = "##{effort.bib_number} #{effort.full_name}"
+    bib_and_name = "##{effort.bib_number} #{effort.display_full_name_non_obscured}"
     event_string = multiple_events ? effort.event_short_name : nil
     [bib_and_name, event_string].compact.join(" - ")
   end

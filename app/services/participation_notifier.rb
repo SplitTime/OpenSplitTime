@@ -1,6 +1,7 @@
 class ParticipationNotifier < BaseNotifier
-  VERBS = {unstarted: "will be participating", in_progress: "is in progress", stopped: "recently participated"}.freeze
-  RESULTS_DESCRIPTORS = {unstarted: "Watch for results", in_progress: "Follow along", stopped: "See full results"}.freeze
+  VERBS = { unstarted: "will be participating", in_progress: "is in progress", stopped: "recently participated" }.freeze
+  RESULTS_DESCRIPTORS = { unstarted: "Watch for results", in_progress: "Follow along",
+                          stopped: "See full results" }.freeze
 
   def post_initialize(args)
     @effort = args[:effort]
@@ -13,16 +14,16 @@ class ParticipationNotifier < BaseNotifier
   delegate :event, :person, to: :effort
 
   def subject
-    "#{person.full_name} #{verb} at #{event.name}"
+    "#{person.display_full_name} #{verb} at #{event.name}"
   end
 
   def message
     <<~MESSAGE
-      Your friend #{person.full_name} #{verb} at #{event.name}!
+      OpenSplitTime: Your friend #{person.display_full_name} #{verb} at #{event.name}!
       #{results_descriptor} here: #{::OstConfig.base_uri}/efforts/#{effort.id}
       #{live_update_message}
       Thank you for using OpenSplitTime!
-      You are receiving this message because you signed up on OpenSplitTime and asked to follow #{person.first_name}. 
+      You are receiving this message because you signed up on OpenSplitTime and asked to follow #{person.display_first_name}.
       To change your preferences, go to #{::OstConfig.base_uri}/people/#{person.id}, then log in and click to unfollow.
     MESSAGE
   end
@@ -36,7 +37,9 @@ class ParticipationNotifier < BaseNotifier
   end
 
   def live_update_message
-    effort_status == :stopped ? nil : "Click the link and sign in to receive live updates for #{effort.first_name}."
+    return nil if effort_status == :stopped
+
+    "Click the link and sign in to receive live updates for #{effort.display_first_name}."
   end
 
   def effort_status

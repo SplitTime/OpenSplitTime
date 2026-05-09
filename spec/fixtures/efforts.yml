@@ -4531,7 +4531,7 @@ sum_55k_slow_finisher:
   created_by: 1
   first_name: Slow
   last_name: Finisher
-  gender: 2
+  gender: 0
   country_code:
   birthdate: 1953-03-03
   data_status: 2

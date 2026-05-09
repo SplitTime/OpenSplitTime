@@ -12,7 +12,10 @@ module Connectors
         :country_code,
         :email,
         :phone,
-        :scheduled_start_time_local
+        :scheduled_start_time_local,
+        :comments,
+        :emergency_contact,
+        :emergency_phone,
       )
     end
   end

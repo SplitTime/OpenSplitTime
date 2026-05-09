@@ -13,10 +13,11 @@ module BreadcrumbHelper
       concat content_tag(:li, link_to(presenter.event.guaranteed_short_name, event_path(presenter.event)),
                          class: "breadcrumb-item")
       if title.present?
-        concat content_tag(:li, link_to(presenter.full_name, effort_path(presenter.effort)), class: "breadcrumb-item")
+        concat content_tag(:li, link_to(presenter.display_full_name, effort_path(presenter.effort)),
+                           class: "breadcrumb-item")
         concat content_tag(:li, title, class: "breadcrumb-item active")
       else
-        concat content_tag(:li, presenter.full_name, class: "breadcrumb-item")
+        concat content_tag(:li, presenter.display_full_name, class: "breadcrumb-item")
       end
     end
   end

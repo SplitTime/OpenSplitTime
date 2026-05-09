@@ -1,6 +1,7 @@
 module Interactors
   class AssignPeopleToEfforts
     include Interactors::Errors
+
     PERSONAL_ATTRIBUTES = [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo].freeze
 
     def self.perform!(id_hash)
@@ -8,9 +9,9 @@ module Interactors
     end
 
     def initialize(id_hash)
-      @id_hash = id_hash.transform_keys(&:to_i).transform_values { |person_id| person_id.to_i if person_id }
+      @id_hash = id_hash.transform_keys(&:to_i).transform_values { |person_id| person_id&.to_i }
       @errors = []
-      @resources = {saved: [], unsaved: []}
+      @resources = { saved: [], unsaved: [] }
     end
 
     def perform!
@@ -43,20 +44,41 @@ module Interactors
 
     def save_and_categorize(modified_resources)
       ActiveRecord::Base.transaction do
-        if modified_resources.values.all? { |resource| resource.save }
+        if modified_resources.values.all?(&:save)
           resources[:saved] << modified_resources
+          broadcast_reconcile_removal(modified_resources[:effort])
         else
           resources[:unsaved] << modified_resources
-          modified_resources.values.select(&:invalid?).each { |invalid_resource| errors << resource_error_object(invalid_resource) }
+          modified_resources.values.select(&:invalid?).each do |invalid_resource|
+            errors << resource_error_object(invalid_resource)
+          end
           raise ActiveRecord::Rollback
         end
       end
     end
 
+    def broadcast_reconcile_removal(effort)
+      event_group = effort.event_group
+
+      Turbo::StreamsChannel.broadcast_action_to(
+        event_group,
+        action: "remove_tr_with_fade",
+        target: ActionView::RecordIdentifier.dom_id(effort, :reconcile_row)
+      )
+
+      count = event_group.unreconciled_efforts.count
+      Turbo::StreamsChannel.broadcast_replace_to(
+        event_group,
+        target: "unreconciled_efforts_count",
+        html: "<h3 id=\"unreconciled_efforts_count\">" \
+              "#{count} unreconciled #{'effort'.pluralize(count)} remaining for #{event_group.name}</h3>"
+      )
+    end
+
     def response_message
       if errors.present?
         [attempted_message, succeeded_message, failed_message].join
-      elsif id_hash.size == 0
+      elsif id_hash.empty?
         "No pairs were provided. "
       else
         succeeded_message
@@ -83,7 +105,8 @@ module Interactors
       when 0
         "No records failed to reconcile. "
       when 1
-        "Could not reconcile #{resources[:unsaved].first[:person].full_name} with #{resources[:unsaved].first[:effort].full_name}. "
+        unsaved = resources[:unsaved].first
+        "Could not reconcile #{unsaved[:person].full_name} with #{unsaved[:effort].full_name}. "
       else
         "#{resources[:unsaved].size} efforts could not be reconciled. "
       end

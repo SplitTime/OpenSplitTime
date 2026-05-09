@@ -1,7 +1,9 @@
 class EffortProgressRow
   attr_reader :effort
 
-  delegate :bib_number, :full_name, :bio_historic, to: :effort
+  delegate :bib_number, :full_name, :bio_historic,
+           :display_full_name_non_obscured, :bio_historic_non_obscured,
+           to: :effort
 
   def initialize(args)
     @effort = args[:effort]
@@ -26,7 +28,7 @@ class EffortProgressRow
   end
 
   def extract_attributes(*attributes)
-    attributes.map { |attribute| [attribute, send(attribute)] }.to_h
+    attributes.index_with { |attribute| send(attribute) }
   end
 
   private
@@ -98,6 +100,6 @@ class EffortProgressRow
   end
 
   def absolute_times_local(split_times)
-    split_times.map { |st| st.absolute_time_local if st }
+    split_times.map { |st| st&.absolute_time_local }
   end
 end

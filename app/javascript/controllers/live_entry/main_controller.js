@@ -945,7 +945,11 @@ export default class extends Controller {
                   liveEntry.timeRowsTable.removeTimeRowsIfReady(dataTableIndexes);
                 }
               })
-              trElement.classList.add('fade');
+              trElement.classList.add('bg-highlight');
+              setTimeout(() => {
+                trElement.classList.remove('bg-highlight');
+                trElement.classList.add('fade');
+              }, 100);
             }
           })
           liveEntry.timeRowsTable.removeTimeRowsIfReady(dataTableIndexes);

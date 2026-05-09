@@ -16,10 +16,10 @@
       <% @presenter.events.each do |event| %>
         <div class="row mx-3 py-3 border-bottom">
           <div class="col-12">
-            <span class="h4"><%= event.guaranteed_short_name %></span><span class="h5 text-muted ms-2"><%= pluralize(event.efforts.count, "entrant") %></span>
+            <span class="h4"><%= event.guaranteed_short_name %></span><span class="h5 text-body-secondary ms-2"><%= pluralize(event.efforts.count, "entrant") %></span>
           </div>
           <div class="col-12">
-            <span class="h5"><%= "Course: #{event.course.name}" %></span><span class="h5 text-muted ms-2"><%= pluralize(event.course.splits.count, "split") %></span>
+            <span class="h5"><%= "Course: #{event.course.name}" %></span><span class="h5 text-body-secondary ms-2"><%= pluralize(event.course.splits.count, "split") %></span>
           </div>
         </div>
       <% end %>
@@ -28,7 +28,7 @@
 
   <div class="card my-3">
     <div class="card-header">
-      <span class="h4">Entrants</span><span class="h4 text-muted ms-2"><%= pluralize(@presenter.event_group.efforts.count, "entrant") %></span>
+      <span class="h4">Entrants</span><span class="h4 text-body-secondary ms-2"><%= pluralize(@presenter.event_group.efforts.count, "entrant") %></span>
     </div>
     <div class="card-body">
       <table class="table table-sm">

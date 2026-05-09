@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://runsignup.com/Rest/race/85675/participants?api_key=1234&api_secret=2345&event_id=661702&format=json&page=1&results_per_page=200&sort=registration_id%20ASC
+    uri: https://runsignup.com/Rest/race/85675/participants?api_key=1234&api_secret=2345&event_id=661702&format=json&include_questions=T&page=1&results_per_page=200&sort=registration_id%20ASC
     body:
       encoding: US-ASCII
       string: ''

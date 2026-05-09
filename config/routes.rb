@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "photo_credits", to: "visitors#photo_credits"
   get "about", to: "visitors#about"
   get "privacy_policy", to: "visitors#privacy_policy"
+  get "sms_info", to: "visitors#sms_info"
   get "terms", to: "visitors#terms"
   get "donations", to: "visitors#donations"
   get "bitcoin_donations", to: "visitors#bitcoin_donations"
@@ -49,7 +50,8 @@ Rails.application.routes.draw do
   end
 
   namespace :webhooks do
-    resources :sendgrid_events, only: [:create]
+    resources :mailgun_events, only: [:create]
+    resources :sns_inbound, only: [:create]
     post "raceresult", to: "raceresult#receive"
   end
 
@@ -58,6 +60,7 @@ Rails.application.routes.draw do
     get :password
     get :credentials
     get :credentials_new_service
+    get :sms_messaging
     put :update
   end
 
@@ -79,6 +82,10 @@ Rails.application.routes.draw do
 
   resources :efforts do
     resources :subscriptions, only: [:create, :destroy], module: "efforts"
+    get "subscription_button/:notification_protocol",
+        to: "efforts/subscriptions#button",
+        as: :subscription_button,
+        constraints: { notification_protocol: /email|sms/ }
     collection do
       get :subregion_options
       post :mini_table
@@ -108,7 +115,9 @@ Rails.application.routes.draw do
   resources :duplicate_event_groups, only: [:new, :create]
 
   resources :event_groups, only: [:index, :show] do
-    resources :connect_service, only: [:show], module: "event_groups"
+    resources :connect_service, only: [:show], module: "event_groups" do
+      resource :field_mappings, only: [:update]
+    end
     resources :connections, only: [:index, :new, :create, :destroy], module: "event_groups"
 
     resources :events, except: [:index, :show] do
@@ -239,6 +248,7 @@ Rails.application.routes.draw do
       member { get :manage_entrants }
       member { post :sync_calculations }
       member { post :draw }
+      member { post :draw_all }
       member { post :generate_entrants }
       member { post :generate_tickets }
       member { patch :attach_service_form }
@@ -264,6 +274,10 @@ Rails.application.routes.draw do
 
   resources :people, only: [:index, :show, :edit, :update, :destroy] do
     resources :subscriptions, only: [:create, :destroy], module: "people"
+    get "subscription_button/:notification_protocol",
+        to: "people/subscriptions#button",
+        as: :subscription_button,
+        constraints: { notification_protocol: /email|sms/ }
     collection { get :subregion_options }
     member { patch :avatar_claim }
     member { get :merge }

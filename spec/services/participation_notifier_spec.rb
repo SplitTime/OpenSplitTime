@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe ParticipationNotifier do
-  subject { ParticipationNotifier.new(topic_arn: topic_arn, effort: effort, sns_client: sns_client) }
+  subject { described_class.new(topic_arn: topic_arn, effort: effort, sns_client: sns_client) }
+
   let(:topic_arn) { "arn:aws:sns:us-west-2:998989370925:d-follow_rufa-2017-12h-progress-lap2" }
   let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
   let(:sns_client) { Aws::SNS::Client.new(stub_responses: true) }
@@ -13,8 +14,36 @@ RSpec.describe ParticipationNotifier do
   end
 
   describe "#publish" do
-    context "when the SNS client returns an error" do
+    context "when the SNS client returns NotFound and a subscribable is provided" do
+      subject do
+        described_class.new(topic_arn: topic_arn, effort: effort, subscribable: person, sns_client: sns_client)
+      end
+
+      let(:person) { effort.person }
+
+      before do
+        person.update_column(:topic_resource_key, topic_arn)
+        sns_client.stub_responses(:publish, "NotFound")
+      end
+
+      it "self-heals by clearing topic_resource_key on the subscribable" do
+        response = subject.publish
+        expect(response).to be_successful
+        expect(person.reload.topic_resource_key).to be_nil
+      end
+    end
+
+    context "when the SNS client returns NotFound and no subscribable is provided" do
       before { sns_client.stub_responses(:publish, "NotFound") }
+
+      it "returns a successful no-op response without raising" do
+        response = subject.publish
+        expect(response).to be_successful
+      end
+    end
+
+    context "when the SNS client returns a non-NotFound error" do
+      before { sns_client.stub_responses(:publish, "AuthorizationError") }
 
       it "rescues and returns a descriptive error" do
         response = subject.publish
@@ -26,65 +55,91 @@ RSpec.describe ParticipationNotifier do
     context "when the SNS client returns a successful response" do
       before { sns_client.stub_data(:publish) }
 
-      context "for an effort in progress" do
+      context "when the effort is in progress" do
         let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
 
         it "sends a message to an SNS client containing the expected information" do
-          stubbed_response = OpenStruct.new(successful?: true)
+          stubbed_response = Struct.new(:successful?).new(true)
           expected_subject = "#{effort.full_name} is in progress at #{effort.event.name}"
           expected_message = <<~MESSAGE
-            Your friend #{effort.full_name} is in progress at #{effort.event.name}!
+            OpenSplitTime: Your friend #{effort.full_name} is in progress at #{effort.event.name}!
             Follow along here: #{::OstConfig.base_uri}/efforts/#{effort.id}
             Click the link and sign in to receive live updates for #{effort.first_name}.
             Thank you for using OpenSplitTime!
-            You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}. 
+            You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}.
             To change your preferences, go to #{::OstConfig.base_uri}/people/#{effort.person.id}, then log in and click to unfollow.
           MESSAGE
-          expect(sns_client).to receive(:publish)
-              .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
-              .and_return(stubbed_response)
+          expect(sns_client).to receive(:publish) # rubocop:disable RSpec/StubbedMock
+            .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
+            .and_return(stubbed_response)
           subject.publish
         end
 
-        context "for an unstarted effort" do
+        context "when the effort is unstarted" do
           let(:effort) { efforts(:rufa_2017_12h_not_started) }
 
           it "sends a message to an SNS client containing the expected information" do
-            stubbed_response = OpenStruct.new(successful?: true)
+            stubbed_response = Struct.new(:successful?).new(true)
             expected_subject = "#{effort.full_name} will be participating at #{effort.event.name}"
             expected_message = <<~MESSAGE
-              Your friend #{effort.full_name} will be participating at #{effort.event.name}!
+              OpenSplitTime: Your friend #{effort.full_name} will be participating at #{effort.event.name}!
               Watch for results here: #{::OstConfig.base_uri}/efforts/#{effort.id}
               Click the link and sign in to receive live updates for #{effort.first_name}.
               Thank you for using OpenSplitTime!
-              You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}. 
+              You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}.
               To change your preferences, go to #{::OstConfig.base_uri}/people/#{effort.person.id}, then log in and click to unfollow.
             MESSAGE
-            expect(sns_client).to receive(:publish)
-                .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
-                .and_return(stubbed_response)
+            expect(sns_client).to receive(:publish) # rubocop:disable RSpec/StubbedMock
+              .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
+              .and_return(stubbed_response)
             subject.publish
           end
         end
 
-        context "for a finished effort" do
+        context "when the effort is finished" do
           let(:effort) { efforts(:rufa_2017_12h_finished_first) }
 
           it "sends a message to an SNS client containing the expected information" do
-            stubbed_response = OpenStruct.new(successful?: true)
+            stubbed_response = Struct.new(:successful?).new(true)
             expected_subject = "#{effort.full_name} recently participated at #{effort.event.name}"
             expected_message = <<~MESSAGE
-              Your friend #{effort.full_name} recently participated at #{effort.event.name}!
+              OpenSplitTime: Your friend #{effort.full_name} recently participated at #{effort.event.name}!
               See full results here: #{::OstConfig.base_uri}/efforts/#{effort.id}
 
               Thank you for using OpenSplitTime!
-              You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}. 
+              You are receiving this message because you signed up on OpenSplitTime and asked to follow #{effort.first_name}.
               To change your preferences, go to #{::OstConfig.base_uri}/people/#{effort.person.id}, then log in and click to unfollow.
             MESSAGE
-            expect(sns_client).to receive(:publish)
-                .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
-                .and_return(stubbed_response)
+            expect(sns_client).to receive(:publish) # rubocop:disable RSpec/StubbedMock
+              .with(topic_arn: topic_arn, subject: expected_subject, message: expected_message)
+              .and_return(stubbed_response)
             subject.publish
+          end
+        end
+
+        context "when the linked person prefers an obscured name" do
+          let(:effort) { efforts(:rufa_2017_12h_progress_lap2) }
+
+          before do
+            effort.person.update!(first_name: "Distinct", last_name: "Surname", obscure_name: true)
+          end
+
+          it "uses initials in the subject and message and does not leak the full name or first name" do
+            stubbed_response = Struct.new(:successful?).new(true)
+            captured = {}
+            allow(sns_client).to receive(:publish) do |args|
+              captured = args
+              stubbed_response
+            end
+
+            subject.publish
+
+            expect(captured[:subject]).to include("D. S.")
+            expect(captured[:subject]).not_to include("Distinct")
+            expect(captured[:subject]).not_to include("Surname")
+            expect(captured[:message]).to include("D. S.")
+            expect(captured[:message]).not_to include("Distinct")
+            expect(captured[:message]).not_to include("Surname")
           end
         end
       end

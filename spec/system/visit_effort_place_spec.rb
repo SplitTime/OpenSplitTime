@@ -9,7 +9,7 @@ RSpec.describe "visit an effort place page" do
   let(:unstarted_effort) { efforts(:hardrock_2014_not_started) }
   let(:popover_effort) { efforts(:hardrock_2014_keith_metz) }
 
-  context "When the effort is finished" do
+  context "when the effort is finished" do
     let(:effort) { completed_effort }
 
     scenario "Visit the page" do
@@ -42,7 +42,7 @@ RSpec.describe "visit an effort place page" do
   context "when an effort has peers" do
     let(:effort) { popover_effort }
 
-    scenario "Click a popover button", js: true do
+    scenario "Click a popover button", :js do
       split = splits(:hardrock_cw_telluride)
 
       visit place_effort_path(effort)
@@ -56,6 +56,18 @@ RSpec.describe "visit an effort place page" do
           expect(page).to have_content("Rachelle Eichmann")
           expect(page).to have_content("Irvin Corkery")
         end
+      end
+    end
+
+    context "when the linked person prefers an obscured name" do
+      before { effort.person.update!(obscure_name: true) }
+
+      scenario "the popover trigger advertises the obscured name in its title" do
+        visit place_effort_path(effort.reload)
+
+        trigger = find("#lap_1_split_#{splits(:hardrock_cw_telluride).id} [data-controller='popover']", match: :first)
+        expect(trigger["data-bs-title"]).to include("K. M.")
+        expect(trigger["data-bs-title"]).not_to include("Keith Metz")
       end
     end
   end

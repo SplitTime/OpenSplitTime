@@ -26,7 +26,7 @@
   <tbody>
   <% view_object.ranked_effort_rows.each do |effort_row| %>
     <td><%= "#{effort_row.display_overall_rank}/#{effort_row.display_gender_rank}" %></td>
-    <td><%= effort_row.full_name %></td>
+    <td><%= effort_row.display_full_name %></td>
     <td><%= effort_row.bib_number %></td>
     <td><%= effort_row.bio_historic %></td>
     <td><%= effort_row.flexible_geolocation %></td>

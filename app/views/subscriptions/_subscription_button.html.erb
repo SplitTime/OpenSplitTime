@@ -1,5 +1,6 @@
 <%# locals: (subscribable:, protocol:) -%>
 
-<%= content_tag :span, id: dom_id(subscribable, protocol), class: "mx-1" do %>
-  <%= link_to_subscription(subscribable, protocol) %>
-<% end %>
+<%= turbo_frame_tag dom_id(subscribable, protocol),
+                    src: polymorphic_path([subscribable, :subscription_button], notification_protocol: protocol),
+                    loading: :eager,
+                    class: "mx-2" %>

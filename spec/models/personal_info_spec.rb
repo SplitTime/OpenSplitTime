@@ -2,54 +2,11 @@ require "rails_helper"
 
 RSpec.describe PersonalInfo, type: :module do
   describe "birthday methods" do
-    subject { build_stubbed(:effort, birthdate: birthdate) }
+    subject(:effort) { build_stubbed(:effort, birthdate: birthdate) }
 
-    before { allow(subject).to receive(:home_time_zone).and_return("Arizona") }
-    before { travel_to "2020-12-15 12:00:00" }
-    after { travel_back }
-
-    describe "#birthday_notice" do
-      context "when birthday is the same day" do
-        let(:birthdate) { "1980-12-15" }
-        it "returns Birthday today" do
-          expect(subject.birthday_notice).to eq("Birthday today")
-        end
-      end
-
-      context "when birthday is the next day" do
-        let(:birthdate) { "1980-12-16" }
-        it "returns Birthday tomorrow" do
-          expect(subject.birthday_notice).to eq("Birthday tomorrow")
-        end
-      end
-
-      context "when birthday is the previous day" do
-        let(:birthdate) { "1980-12-14" }
-        it "returns Birthday yesterday" do
-          expect(subject.birthday_notice).to eq("Birthday yesterday")
-        end
-      end
-
-      context "when birthday is in a future month" do
-        let(:birthdate) { "1980-02-15" }
-        it "returns the expected message" do
-          expect(subject.birthday_notice).to eq("Birthday 62 days from now")
-        end
-      end
-
-      context "when birthday is in a past month" do
-        let(:birthdate) { "1980-10-15" }
-        it "returns the expected message" do
-          expect(subject.birthday_notice).to eq("Birthday 61 days ago")
-        end
-      end
-
-      context "when birthdate does not exist" do
-        let(:birthdate) { nil }
-        it "returns nil" do
-          expect(subject.birthday_notice).to be_nil
-        end
-      end
+    before do
+      allow(effort).to receive(:home_time_zone).and_return("Arizona") # rubocop:disable RSpec/SubjectStub
+      travel_to "2020-12-15 12:00:00"
     end
 
     describe "#days_away_from_birthday" do
@@ -109,7 +66,7 @@ RSpec.describe PersonalInfo, type: :module do
     end
 
     context "when birthdate is present" do
-      let(:birthdate) { Date.today - 20.years - 6.months }
+      let(:birthdate) { Time.zone.today - 20.years - 6.months }
 
       it "calculates and returns the age" do
         expect(subject.current_age_from_birthdate).to eq(20)
@@ -210,6 +167,74 @@ RSpec.describe PersonalInfo, type: :module do
       it "returns the city with the state code" do
         expect(effort_1.flexible_geolocation).to eq("Louisville, CO")
         expect(effort_2.flexible_geolocation).to eq("Calgary, AB")
+      end
+    end
+  end
+
+  describe "conditionally obscured name methods" do
+    let(:effort) { build_stubbed(:effort, first_name: "Mark", last_name: "Oveson", person: person) }
+    let(:person) { build_stubbed(:person, first_name: "Mark", last_name: "Oveson", obscure_name: obscure_name) }
+    let(:authorized_user) { instance_double(User) }
+    let(:unauthorized_user) { instance_double(User) }
+
+    before do
+      allow(authorized_user).to receive(:authorized_to_edit?).with(effort).and_return(true)
+      allow(unauthorized_user).to receive(:authorized_to_edit?).with(effort).and_return(false)
+    end
+
+    context "when obscure_name is false" do
+      let(:obscure_name) { false }
+
+      it "returns the real name regardless of viewer" do
+        expect(effort.display_full_name_conditionally_obscured(nil)).to eq("Mark Oveson")
+        expect(effort.display_full_name_conditionally_obscured(authorized_user)).to eq("Mark Oveson")
+        expect(effort.display_full_name_conditionally_obscured(unauthorized_user)).to eq("Mark Oveson")
+        expect(effort.display_first_name_conditionally_obscured(unauthorized_user)).to eq("Mark")
+        expect(effort.display_last_name_conditionally_obscured(unauthorized_user)).to eq("Oveson")
+      end
+    end
+
+    context "when obscure_name is true" do
+      let(:obscure_name) { true }
+
+      it "returns initials for an unauthenticated viewer" do
+        expect(effort.display_full_name_conditionally_obscured(nil)).to eq("M. O.")
+        expect(effort.display_first_name_conditionally_obscured(nil)).to eq("M.")
+        expect(effort.display_last_name_conditionally_obscured(nil)).to eq("O.")
+      end
+
+      it "returns initials for an unauthorized viewer" do
+        expect(effort.display_full_name_conditionally_obscured(unauthorized_user)).to eq("M. O.")
+        expect(effort.display_first_name_conditionally_obscured(unauthorized_user)).to eq("M.")
+        expect(effort.display_last_name_conditionally_obscured(unauthorized_user)).to eq("O.")
+      end
+
+      it "returns the real name for an authorized viewer" do
+        expect(effort.display_full_name_conditionally_obscured(authorized_user)).to eq("Mark Oveson")
+        expect(effort.display_first_name_conditionally_obscured(authorized_user)).to eq("Mark")
+        expect(effort.display_last_name_conditionally_obscured(authorized_user)).to eq("Oveson")
+      end
+    end
+  end
+
+  describe "non-conditional display_last_name family" do
+    let(:effort) { build_stubbed(:effort, last_name: "Oveson", person: person) }
+
+    context "when the linked person has obscure_name set" do
+      let(:person) { build_stubbed(:person, last_name: "Oveson", obscure_name: true) }
+
+      it "obscures via display_last_name and reveals via display_last_name_non_obscured" do
+        expect(effort.display_last_name).to eq("O.")
+        expect(effort.display_last_name_non_obscured).to eq("Oveson")
+      end
+    end
+
+    context "when the linked person has obscure_name unset" do
+      let(:person) { build_stubbed(:person, last_name: "Oveson", obscure_name: false) }
+
+      it "returns the real last_name from both methods" do
+        expect(effort.display_last_name).to eq("Oveson")
+        expect(effort.display_last_name_non_obscured).to eq("Oveson")
       end
     end
   end

@@ -9,23 +9,35 @@ module Api
                             :emergency_contact,
                             :emergency_phone].freeze
 
-      attributes :age,
-                 :beacon_url,
+      attributes :beacon_url,
                  :bib_number,
                  :city,
                  :country_code,
                  :event_id,
-                 :first_name,
                  :flexible_geolocation,
-                 :full_name,
                  :gender,
                  :id,
-                 :last_name,
                  :participant_id,
                  :person_id,
                  :report_url,
                  :scheduled_start_time,
                  :state_code
+
+      attribute :first_name do |effort, params|
+        effort.display_first_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :last_name do |effort, params|
+        effort.display_last_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :full_name do |effort, params|
+        effort.display_full_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :age do |effort, params|
+        effort.display_age_conditionally_obscured(params[:current_user])
+      end
 
       PRIVATE_ATTRIBUTES.each do |att|
         attribute att, if: proc { |effort, params|

@@ -21,13 +21,17 @@ class CourseGroupBestEffortsDisplay < BasePresenter
       limit: per_page,
       page: page
     )
+
+    indexed_people = Person.where(id: @filtered_segments.map(&:person_id).compact).index_by(&:id)
+    @filtered_segments.each { |segment| segment.person = indexed_people[segment.person_id] }
+
     @filtered_segments
   end
 
   def filtered_segments_unpaginated
     ::BestEffortSegment.from(ranked_segments, :best_effort_segments)
-      .where(effort: filtered_efforts)
-      .order(:overall_rank)
+                       .where(effort: filtered_efforts)
+                       .order(:overall_rank)
   end
 
   def filtered_segments_count
@@ -53,15 +57,15 @@ class CourseGroupBestEffortsDisplay < BasePresenter
   end
 
   def earliest_event_date
-    events.last.scheduled_start_time.to_date.to_formatted_s(:long)
+    events.last.scheduled_start_time.to_date.to_fs(:long)
   end
 
   def most_recent_event_date
-    most_recent_event && most_recent_event.scheduled_start_time.to_date.to_formatted_s(:long)
+    most_recent_event && most_recent_event.scheduled_start_time.to_date.to_fs(:long)
   end
 
   def most_recent_event
-    events.select { |event| event.scheduled_start_time < Time.now }.max_by(&:scheduled_start_time)
+    events.select { |event| event.scheduled_start_time < Time.current }.max_by(&:scheduled_start_time)
   end
 
   def relevant_genders
@@ -87,9 +91,9 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   def events
     @events ||= course_group.events
-                  .includes(:event_group)
-                  .order(scheduled_start_time: :desc)
-                  .select(&:visible?)
+                            .includes(:event_group)
+                            .order(scheduled_start_time: :desc)
+                            .select(&:visible?)
   end
 
   def all_efforts
@@ -106,6 +110,6 @@ class CourseGroupBestEffortsDisplay < BasePresenter
 
   def ranked_segments
     ::BestEffortSegment.from(all_segments, :best_effort_segments)
-      .with_overall_gender_age_and_event_rank
+                       .with_overall_gender_age_and_event_rank
   end
 end

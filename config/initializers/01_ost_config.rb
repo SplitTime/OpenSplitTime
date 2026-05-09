@@ -23,6 +23,30 @@ module OstConfig
     Rails.application.credentials.dig(:aws, :secret_access_key)
   end
 
+  def self.aws_sms_origination_number
+    Rails.application.credentials.dig(:aws, :sms_origination_number)
+  end
+
+  # Whether AWS SDK clients should return stubbed responses instead of making
+  # real network calls. Always stubbed in test. In production (real prod, the
+  # most strict definition: Rails.env.production? without an explicit
+  # CREDENTIALS_ENV=staging override) never stubbed, regardless of any
+  # credential value. In development and explicit staging deploys, defaults to
+  # stubbed unless the aws.stub_responses credential is set to a falsey value.
+  def self.aws_stub_responses?
+    return true if Rails.env.test?
+
+    if credentials_env == "staging"
+      value = Rails.application.credentials.dig(:aws, :stub_responses)
+      return value.nil? || cast_to_boolean(value)
+    end
+
+    return false if Rails.env.production?
+
+    value = Rails.application.credentials.dig(:aws, :stub_responses)
+    value.nil? || cast_to_boolean(value)
+  end
+
   def self.base_uri
     ENV.fetch("BASE_URI", "localhost:3000")
   end
@@ -124,12 +148,16 @@ module OstConfig
     ENV.fetch("SCOUT_APM_SAMPLE_RATE", nil)&.to_f || 1.0
   end
 
-  def self.sendgrid_api_key
-    Rails.application.credentials.dig(:sendgrid, :api_key)
+  def self.mailgun_api_key
+    Rails.application.credentials.dig(:mailgun, :api_key)
   end
 
-  def self.sendgrid_webhook_verification_key
-    Rails.application.credentials.dig(:sendgrid, :webhook_verification_key)
+  def self.mailgun_domain
+    Rails.application.credentials.dig(:mailgun, :domain)
+  end
+
+  def self.mailgun_webhook_signing_key
+    Rails.application.credentials.dig(:mailgun, :webhook_signing_key)
   end
 
   def self.shortened_uri

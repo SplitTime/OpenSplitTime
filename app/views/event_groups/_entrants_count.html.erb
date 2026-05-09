@@ -1,0 +1,7 @@
+<%# locals: (presenter:) %>
+
+<h4 id="entrants_count">
+  <% if presenter.event_group_efforts_count.positive? %>
+    <%= filter_count_text(presenter.filtered_efforts_total_count, presenter.event_group_efforts_count, "entrant") %>
+  <% end %>
+</h4>

@@ -8,14 +8,26 @@ module Api
                             :birthdate].freeze
 
       attributes :id,
-                 :first_name,
-                 :last_name,
-                 :full_name,
                  :gender,
-                 :current_age,
                  :city,
                  :state_code,
                  :country_code
+
+      attribute :first_name do |person, params|
+        person.display_first_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :last_name do |person, params|
+        person.display_last_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :full_name do |person, params|
+        person.display_full_name_conditionally_obscured(params[:current_user])
+      end
+
+      attribute :current_age do |person, params|
+        person.current_age_conditionally_obscured(params[:current_user])
+      end
 
       PRIVATE_ATTRIBUTES.each do |att|
         attribute att, if: proc { |effort, params|

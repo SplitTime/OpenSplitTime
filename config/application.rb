@@ -53,6 +53,13 @@ module OpenSplitTime
     require_relative "../lib/middleware/reject_invalid_utf8"
     config.middleware.insert_before 0, Middleware::RejectInvalidUtf8
 
+    # Swallow ActionController::BadRequest raised from known Rack parser errors
+    # (empty multipart bodies, malformed query params) so they don't pollute
+    # error reporting. Must sit OUTSIDE ActionDispatch so it can rescue errors
+    # raised by the Rails param-normalization chain.
+    require_relative "../lib/middleware/reject_malformed_request"
+    config.middleware.insert_before 0, Middleware::RejectMalformedRequest
+
     Rails.root.glob("lib/core_ext/**/*.rb").each { |file| require file }
   end
 end

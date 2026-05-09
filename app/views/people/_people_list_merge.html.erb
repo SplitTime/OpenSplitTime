@@ -11,7 +11,7 @@
   <tbody>
   <% @person_merge.possible_matches.each do |possible_match| %>
       <tr>
-        <td><strong><%= link_to possible_match.full_name, person_path(possible_match) %></strong></td>
+        <td><strong><%= link_to possible_match.display_full_name_non_obscured, person_path(possible_match) %></strong></td>
         <td><%= possible_match.bio %></td>
         <td><%= possible_match.state_and_country %></td>
         <td><%= pluralize(@person_merge.effort_counts[possible_match.id], "effort") %></td>

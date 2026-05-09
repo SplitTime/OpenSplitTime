@@ -25,12 +25,6 @@ RSpec.describe "Visitor signs up" do
     expect(page).to have_content(:all, "Email is invalid")
   end
 
-  scenario "with invalid phone number" do
-    sign_up_with "Joe", "Example", "valid@example.com", "password", "1234"
-
-    expect(page).to have_content(:all, "Phone must be a valid US or Canada phone number")
-  end
-
   scenario "with blank password" do
     sign_up_with "Joe", "Example", "valid@example.com", ""
 
@@ -50,14 +44,13 @@ RSpec.describe "Visitor signs up" do
     expect(page).to have_current_path(new_user_confirmation_path)
   end
 
-  def sign_up_with(first_name, last_name, email, password, phone = nil)
+  def sign_up_with(first_name, last_name, email, password)
     visit_page
 
     within(".ost-article") do
       fill_in "First name", with: first_name
       fill_in "Last name", with: last_name
       fill_in "Email", with: email
-      fill_in "US or Canada mobile number", with: phone
       fill_in "Password", with: password
       fill_in "Password confirmation", with: password
       click_button "Sign up"

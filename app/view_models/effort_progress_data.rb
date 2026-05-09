@@ -12,7 +12,7 @@ class EffortProgressData
   end
 
   def effort_data
-    @effort_data ||= { full_name: full_name,
+    @effort_data ||= { full_name: display_full_name,
                        event_name: event_name,
                        split_times_data: split_times_data,
                        effort_id: effort.id,
@@ -21,7 +21,7 @@ class EffortProgressData
 
   private
 
-  delegate :full_name, :event_name, to: :effort
+  delegate :display_full_name, :event_name, to: :effort
 
   def split_times_data
     split_times.sort_by(&:absolute_time).map do |split_time|

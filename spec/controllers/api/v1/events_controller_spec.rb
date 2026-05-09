@@ -461,6 +461,29 @@ RSpec.describe Api::V1::EventsController do
           end
         end
       end
+
+      context "when payload contains raw_time records (which belong to event_group, not event)" do
+        let(:request_params) { { id: event.id, data_format: "jsonapi_batch", data: data } }
+        let(:data) do
+          [
+            { type: "raw_time",
+              attributes: { bib_number: "101", split_name: "Aid 1", sub_split_kind: "in",
+                            entered_time: "08:00:00", source: "ost-test" } },
+          ]
+        end
+
+        it "rejects the request with a 422 and a descriptive error" do
+          allow(ProcessImportedRawTimesJob).to receive(:perform_later)
+          expect { make_request }.not_to change(RawTime, :count)
+          expect(response.status).to eq(422)
+          error_titles = parsed_response["errors"].pluck("title")
+          expect(error_titles).to include("Record type not supported for this parent")
+          messages = parsed_response["errors"].flat_map { |err| err["detail"]["messages"] }
+          expect(messages).to include(a_string_matching(/Event imports do not accept raw_time records/))
+          expect(messages).to include(a_string_matching(/event_group import endpoint/))
+          expect(ProcessImportedRawTimesJob).not_to have_received(:perform_later)
+        end
+      end
     end
   end
 end

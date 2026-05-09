@@ -7,7 +7,7 @@ class NotifyProgressJob < ApplicationJob
     return unless split_time_ids.compact.present? && split_times.present? && effort.present?
     return if effort_not_notifiable? || notification_not_timely? || farther_notification_exists?
 
-    response = ProgressNotifier.publish(topic_arn: topic_resource_key, effort_data: progress_data)
+    response = ProgressNotifier.publish(topic_arn: topic_resource_key, effort_data: progress_data, subscribable: effort)
 
     if response.successful?
       notification = Notification.new(
@@ -44,7 +44,7 @@ class NotifyProgressJob < ApplicationJob
   end
 
   def followers
-    @followers ||= effort.followers
+    @followers ||= effort.followers.distinct
   end
 
   def effort_not_notifiable?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_06_220407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -54,6 +54,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.index ["split_id"], name: "index_aid_stations_on_split_id"
   end
 
+  create_table "analytics_email_events", force: :cascade do |t|
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "event"
+    t.string "event_type"
+    t.string "ip"
+    t.string "provider_event_id"
+    t.string "provider_message_id"
+    t.string "reason"
+    t.string "response"
+    t.string "smtp_id"
+    t.string "status"
+    t.datetime "timestamp"
+    t.string "type", null: false
+    t.datetime "updated_at", null: false
+    t.string "useragent"
+  end
+
   create_table "analytics_file_downloads", force: :cascade do |t|
     t.string "byte_size", null: false
     t.datetime "created_at", null: false
@@ -67,10 +86,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.index ["user_id"], name: "index_analytics_file_downloads_on_user_id"
   end
 
+  create_table "analytics_sms_inbound_messages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "destination_number", null: false
+    t.string "inbound_message_id"
+    t.string "keyword"
+    t.string "message_body", null: false
+    t.string "origination_number", null: false
+    t.datetime "received_at", null: false
+    t.string "sns_message_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["origination_number"], name: "index_analytics_sms_inbound_messages_on_origination_number"
+    t.index ["received_at"], name: "index_analytics_sms_inbound_messages_on_received_at"
+    t.index ["sns_message_id"], name: "index_analytics_sms_inbound_messages_on_sns_message_id", unique: true
+  end
+
   create_table "connections", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "destination_id", null: false
     t.string "destination_type", null: false
+    t.jsonb "field_mappings", default: [], null: false
     t.string "service_identifier", null: false
     t.string "source_id", null: false
     t.string "source_type", null: false
@@ -108,6 +143,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.string "slug", null: false
     t.json "track_points"
     t.datetime "updated_at", precision: nil, null: false
+    t.index "organization_id, lower((name)::text)", name: "index_courses_on_organization_id_and_lower_name", unique: true
     t.index ["organization_id"], name: "index_courses_on_organization_id"
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
@@ -510,7 +546,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.string "email"
     t.string "first_name", limit: 32, null: false
     t.integer "gender", null: false
+    t.boolean "hide_age", default: false, null: false
     t.string "last_name", limit: 64, null: false
+    t.boolean "obscure_name", default: false, null: false
     t.string "phone"
     t.string "slug", null: false
     t.string "state_code"
@@ -620,24 +658,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.string "slug", null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["organization_id"], name: "index_results_templates_on_organization_id"
-  end
-
-  create_table "sendgrid_events", force: :cascade do |t|
-    t.string "category"
-    t.datetime "created_at", null: false
-    t.string "email"
-    t.string "event"
-    t.string "event_type"
-    t.string "ip"
-    t.string "reason"
-    t.string "response"
-    t.string "sg_event_id"
-    t.string "sg_message_id"
-    t.string "smtp_id"
-    t.string "status"
-    t.datetime "timestamp"
-    t.datetime "updated_at", null: false
-    t.string "useragent"
   end
 
   create_table "shortened_urls", id: :serial, force: :cascade do |t|
@@ -892,7 +912,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "exports_viewed_at"
-    t.string "first_name", limit: 32, null: false
+    t.string "first_name", limit: 64, null: false
     t.string "http_endpoint"
     t.string "https_endpoint"
     t.string "last_name", limit: 64, null: false
@@ -911,6 +931,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.integer "role"
     t.integer "sign_in_count", default: 0, null: false
     t.string "slug", null: false
+    t.datetime "sms_carrier_opted_out_at"
     t.string "uid"
     t.string "unconfirmed_email"
     t.datetime "updated_at", precision: nil, null: false
@@ -918,6 +939,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_031815) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_users_on_slug", unique: true
+    t.index ["sms_carrier_opted_out_at"], name: "index_users_on_sms_carrier_opted_out_at"
   end
 
   create_table "versions", force: :cascade do |t|

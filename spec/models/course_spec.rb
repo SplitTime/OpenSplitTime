@@ -25,14 +25,27 @@ RSpec.describe Course, type: :model do
     it "is invalid without an organization" do
       course = build_stubbed(:course, organization: nil)
       expect(course).not_to be_valid
-      expect(course.errors[:organization]).to include("can't be blank")
+      expect(course.errors[:organization]).to include("must exist")
     end
 
-    it "does not allow duplicate names" do
-      create(:course, name: "Hard Time 100")
-      course = build(:course, name: "Hard Time 100")
+    it "does not allow duplicate names within the same organization" do
+      existing = create(:course, name: "Hard Time 100")
+      course = build(:course, name: "Hard Time 100", organization: existing.organization)
       expect(course).not_to be_valid
       expect(course.errors[:name]).to include("has already been taken")
+    end
+
+    it "does not allow duplicate names with different case within the same organization" do
+      existing = create(:course, name: "Hard Time 100")
+      course = build(:course, name: "hard time 100", organization: existing.organization)
+      expect(course).not_to be_valid
+      expect(course.errors[:name]).to include("has already been taken")
+    end
+
+    it "allows duplicate names across different organizations" do
+      create(:course, name: "Hard Time 100")
+      course = build(:course, name: "Hard Time 100")
+      expect(course).to be_valid
     end
   end
 
@@ -52,12 +65,24 @@ RSpec.describe Course, type: :model do
 
   describe "#average_finish_seconds" do
     let(:result) { course.average_finish_seconds }
-    let(:course) { courses(:hardrock_ccw) }
 
-    before { EffortSegment.set_all }
+    context "with a complete course that has finished efforts" do
+      let(:course) { courses(:hardrock_ccw) }
 
-    it "returns the average finish time in seconds for the course" do
-      expect(result).to eq(139039)
+      before { EffortSegment.set_all }
+
+      it "returns the average finish time in seconds for the course" do
+        expect(result).to eq(139039)
+      end
+    end
+
+    context "when the course is missing start or finish splits" do
+      let(:course) { create(:course) }
+
+      it "returns nil without raising" do
+        expect { result }.not_to raise_error
+        expect(result).to be_nil
+      end
     end
   end
 
@@ -82,8 +107,8 @@ RSpec.describe Course, type: :model do
 
         it "returns an array of that number of ordered TimePoints for the event" do
           expect(lap_splits.size).to eq(number)
-          expect(lap_splits.map(&:lap)).to eq([1] * 3 + [2] * 3 + [3] * 2)
-          expect(lap_splits.map(&:split_id)).to eq(split_ids * 2 + split_ids.first(2))
+          expect(lap_splits.map(&:lap)).to eq(([1] * 3) + ([2] * 3) + ([3] * 2))
+          expect(lap_splits.map(&:split_id)).to eq((split_ids * 2) + split_ids.first(2))
         end
       end
     end
@@ -104,7 +129,7 @@ RSpec.describe Course, type: :model do
 
         it "returns an array of lap_splits through the provided lap number" do
           expect(lap_splits.size).to eq(laps * splits.size)
-          expect(lap_splits.map(&:lap)).to eq([1] * 3 + [2] * 3)
+          expect(lap_splits.map(&:lap)).to eq(([1] * 3) + ([2] * 3))
           expect(lap_splits.map(&:split_id)).to eq(split_ids * 2)
         end
       end
@@ -132,8 +157,8 @@ RSpec.describe Course, type: :model do
 
         it "returns an array of that number of ordered TimePoints for the event" do
           expect(time_points.size).to eq(number)
-          expect(time_points.map(&:lap)).to eq([1] * 3 + [2] * 3 + [3] * 2)
-          expect(time_points.map(&:split_id)).to eq(split_ids * 2 + split_ids.first(2))
+          expect(time_points.map(&:lap)).to eq(([1] * 3) + ([2] * 3) + ([3] * 2))
+          expect(time_points.map(&:split_id)).to eq((split_ids * 2) + split_ids.first(2))
           expect(time_points.map(&:bitkey)).to all eq(in_bitkey)
         end
       end
@@ -155,7 +180,7 @@ RSpec.describe Course, type: :model do
 
         it "returns an array of ordered TimePoints for that number of laps" do
           expect(time_points.size).to eq(laps * 3)
-          expect(time_points.map(&:lap)).to eq([1] * 3 + [2] * 3)
+          expect(time_points.map(&:lap)).to eq(([1] * 3) + ([2] * 3))
           expect(time_points.map(&:split_id)).to eq(split_ids * 2)
           expect(time_points.map(&:bitkey)).to all eq(in_bitkey)
         end
@@ -226,6 +251,7 @@ RSpec.describe Course, type: :model do
 
   describe "#simple?" do
     subject { course.simple? }
+
     let(:course) { build_stubbed(:course, splits: splits) }
 
     context "when the course has only a start and finish split" do

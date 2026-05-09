@@ -14,7 +14,7 @@ bruno_fadel:
   user_id:
   concealed: false
   slug: bruno-fadel
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stevie-ansell
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-stevie-ansell
   state_name: California
   country_name: United States
 robby_gerlach:
@@ -32,7 +32,7 @@ robby_gerlach:
   user_id:
   concealed: false
   slug: robby-gerlach
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_steve-barge
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-steve-barge
   state_name: Virginia
   country_name: United States
 brinda_fisher:
@@ -50,7 +50,7 @@ brinda_fisher:
   user_id:
   concealed: false
   slug: brinda-fisher
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_liz-bauer
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-liz-bauer
   state_name: South Carolina
   country_name: United States
 bad_status:
@@ -68,7 +68,7 @@ bad_status:
   user_id:
   concealed: false
   slug: bad-status
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_drew-brazier
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-drew-brazier
   state_name: Colorado
   country_name: United States
 willis_murray:
@@ -86,7 +86,7 @@ willis_murray:
   user_id:
   concealed: false
   slug: willis-murray
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-brockmeier
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-scott-brockmeier
   state_name: Florida
   country_name: United States
 finished_with_stop:
@@ -104,7 +104,7 @@ finished_with_stop:
   user_id:
   concealed: false
   slug: finished-with-stop
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jared-campbell
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jared-campbell
   state_name: Utah
   country_name: United States
 garry_kuhlman:
@@ -122,7 +122,7 @@ garry_kuhlman:
   user_id:
   concealed: false
   slug: garry-kuhlman
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-davis
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-kevin-davis
   state_name: Montana
   country_name: United States
 donn_mckenzie:
@@ -140,7 +140,7 @@ donn_mckenzie:
   user_id:
   concealed: false
   slug: donn-mckenzie
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_aaron-denberg
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-aaron-denberg
   state_name: Wyoming
   country_name: United States
 gilberto_mckenzie:
@@ -158,7 +158,7 @@ gilberto_mckenzie:
   user_id:
   concealed: false
   slug: gilberto-mckenzie
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kevin-douglas
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-kevin-douglas
   state_name: Washington
   country_name: United States
 benedict_davis:
@@ -176,7 +176,7 @@ benedict_davis:
   user_id:
   concealed: false
   slug: benedict-davis
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bogie-dumitrescu
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-bogie-dumitrescu
   state_name: Colorado
   country_name: United States
 erich_larson:
@@ -194,7 +194,7 @@ erich_larson:
   user_id:
   concealed: false
   slug: erich-larson
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-foote
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-mike-foote
   state_name: Montana
   country_name: United States
 lavon_paucek:
@@ -212,7 +212,7 @@ lavon_paucek:
   user_id:
   concealed: false
   slug: lavon-paucek
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_anna-frost
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-anna-frost
   state_name: Arkansas
   country_name: United States
 irvin_harber:
@@ -230,7 +230,7 @@ irvin_harber:
   user_id:
   concealed: false
   slug: irvin-harber
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brett-gosney
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-brett-gosney
   state_name: Colorado
   country_name: United States
 santa_green:
@@ -248,7 +248,7 @@ santa_green:
   user_id:
   concealed: false
   slug: santa-green
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_missy-gosney
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-missy-gosney
   state_name: Colorado
   country_name: United States
 carmine_adams:
@@ -266,7 +266,7 @@ carmine_adams:
   user_id:
   concealed: false
   slug: carmine-adams
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adam-hewey
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-adam-hewey
   state_name: Washington
   country_name: United States
 vesta_borer:
@@ -284,7 +284,7 @@ vesta_borer:
   user_id:
   concealed: false
   slug: vesta-borer
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_meghan-hicks
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-meghan-hicks
   state_name: Utah
   country_name: United States
 susanna_abshire:
@@ -302,7 +302,7 @@ susanna_abshire:
   user_id:
   concealed: false
   slug: susanna-abshire
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sheila-huss
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-sheila-huss
   state_name: Colorado
   country_name: United States
 pat_schaden:
@@ -320,7 +320,7 @@ pat_schaden:
   user_id:
   concealed: false
   slug: pat-schaden
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeff-jones
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jeff-jones
   state_name: Arizona
   country_name: United States
 tuan_jacobs:
@@ -338,7 +338,7 @@ tuan_jacobs:
   user_id:
   concealed: false
   slug: tuan-jacobs
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kilian-jornet
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-kilian-jornet
   state_name:
   country_name: Spain
 rachelle_eichmann:
@@ -356,7 +356,7 @@ rachelle_eichmann:
   user_id:
   concealed: false
   slug: rachelle-eichmann
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-kalmeyer
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-betsy-kalmeyer
   state_name: Colorado
   country_name: United States
 leif_carter:
@@ -374,7 +374,7 @@ leif_carter:
   user_id:
   concealed: false
   slug: leif-carter
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_iker-karrera
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-iker-karrera
   state_name:
   country_name: Spain
 leroy_leffler:
@@ -392,7 +392,7 @@ leroy_leffler:
   user_id:
   concealed: false
   slug: leroy-leffler
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristen-kern
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-kristen-kern
   state_name: New Mexico
   country_name: United States
 cassondra_nienow:
@@ -410,7 +410,7 @@ cassondra_nienow:
   user_id:
   concealed: false
   slug: cassondra-nienow
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kim-love-ottobre
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-kim-love-ottobre
   state_name: Ohio
   country_name: United States
 gus_walker:
@@ -428,7 +428,7 @@ gus_walker:
   user_id:
   concealed: false
   slug: gus-walker
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_joey-luther
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-joey-luther
   state_name: Colorado
   country_name: United States
 donte_spencer:
@@ -446,7 +446,7 @@ donte_spencer:
   user_id:
   concealed: false
   slug: donte-spencer
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-martin
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-shane-martin
   state_name: Utah
   country_name: United States
 ken_bradtke:
@@ -464,7 +464,7 @@ ken_bradtke:
   user_id:
   concealed: false
   slug: ken-bradtke
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-martin
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-ryan-martin
   state_name: Colorado
   country_name: United States
 darius_jacobson:
@@ -482,7 +482,7 @@ darius_jacobson:
   user_id:
   concealed: false
   slug: darius-jacobson
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jeason-murphy
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jeason-murphy
   state_name: Colorado
   country_name: United States
 chris_rempel:
@@ -500,7 +500,7 @@ chris_rempel:
   user_id:
   concealed: false
   slug: chris-rempel
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_doug-newton
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-doug-newton
   state_name: Colorado
   country_name: United States
 samara_vandervort:
@@ -518,7 +518,7 @@ samara_vandervort:
   user_id:
   concealed: false
   slug: samara-vandervort
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_betsy-nye
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-betsy-nye
   state_name: California
   country_name: United States
 douglas_vandervort:
@@ -536,7 +536,7 @@ douglas_vandervort:
   user_id:
   concealed: false
   slug: douglas-vandervort
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-oliver
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jason-oliver
   state_name: Colorado
   country_name: United States
 leandro_cole:
@@ -554,7 +554,7 @@ leandro_cole:
   user_id:
   concealed: false
   slug: leandro-cole
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_raymond-overson
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-raymond-overson
   state_name: Utah
   country_name: United States
 elden_morissette:
@@ -572,7 +572,7 @@ elden_morissette:
   user_id:
   concealed: false
   slug: elden-morissette
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_garrett-peltonen
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-garrett-peltonen
   state_name: Wisconsin
   country_name: United States
 raphael_swift:
@@ -590,7 +590,7 @@ raphael_swift:
   user_id:
   concealed: false
   slug: raphael-swift
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_george-peterka
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-george-peterka
   state_name: Arkansas
   country_name: United States
 vern_buckridge:
@@ -608,7 +608,7 @@ vern_buckridge:
   user_id:
   concealed: false
   slug: vern-buckridge
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_brian-ricketts
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-brian-ricketts
   state_name: Texas
   country_name: United States
 cedric_windler:
@@ -626,7 +626,7 @@ cedric_windler:
   user_id:
   concealed: false
   slug: cedric-windler
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_billy-simpson
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-billy-simpson
   state_name: Tennessee
   country_name: United States
 clarence_goyette:
@@ -644,7 +644,7 @@ clarence_goyette:
   user_id:
   concealed: false
   slug: clarence-goyette
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_julian-smith
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-julian-smith
   state_name: Colorado
   country_name: United States
 vince_willms:
@@ -662,7 +662,7 @@ vince_willms:
   user_id:
   concealed: false
   slug: vince-willms
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_clark-sundahl
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-clark-sundahl
   state_name: Colorado
   country_name: United States
 eddy_goldner:
@@ -680,7 +680,7 @@ eddy_goldner:
   user_id:
   concealed: false
   slug: eddy-goldner
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-varner
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-james-varner
   state_name: Washington
   country_name: United States
 demetrius_moen:
@@ -698,7 +698,7 @@ demetrius_moen:
   user_id:
   concealed: false
   slug: demetrius-moen
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-ward
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-ken-ward
   state_name: Oregon
   country_name: United States
 robt_wintheiser:
@@ -716,7 +716,7 @@ robt_wintheiser:
   user_id:
   concealed: false
   slug: robt-wintheiser
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_phil-wiley
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-phil-wiley
   state_name: Colorado
   country_name: United States
 mervin_smitham:
@@ -734,7 +734,7 @@ mervin_smitham:
   user_id:
   concealed: false
   slug: mervin-smitham
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_neil-blake
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-neil-blake
   state_name: New Mexico
   country_name: United States
 without_start:
@@ -752,7 +752,7 @@ without_start:
   user_id:
   concealed: false
   slug: without-start
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rich-desimone
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rich-desimone
   state_name: Montana
   country_name: United States
 humberto_adams:
@@ -770,7 +770,7 @@ humberto_adams:
   user_id:
   concealed: false
   slug: humberto-adams
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ken-gordon
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-ken-gordon
   state_name: New Mexico
   country_name: United States
 omer_yundt:
@@ -788,7 +788,7 @@ omer_yundt:
   user_id:
   concealed: false
   slug: omer-yundt
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-hodges
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rick-hodges
   state_name: Colorado
   country_name: United States
 drop_ouray:
@@ -806,7 +806,7 @@ drop_ouray:
   user_id:
   concealed: false
   slug: drop-ouray
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_kristina-irvin
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-kristina-irvin
   state_name: California
   country_name: United States
 charlie_mueller:
@@ -824,7 +824,7 @@ charlie_mueller:
   user_id:
   concealed: false
   slug: charlie-mueller
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-larsen
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-david-larsen
   state_name: Oregon
   country_name: United States
 kendall_koch:
@@ -842,7 +842,7 @@ kendall_koch:
   user_id:
   concealed: false
   slug: kendall-koch
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_scott-snyder
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-scott-snyder
   state_name: Colorado
   country_name: United States
 dropped_grouse:
@@ -860,7 +860,7 @@ dropped_grouse:
   user_id:
   concealed: false
   slug: dropped-grouse
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nick-clark
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-nick-clark
   state_name: Colorado
   country_name: United States
 hoyt_macejkovic:
@@ -878,7 +878,7 @@ hoyt_macejkovic:
   user_id:
   concealed: false
   slug: hoyt-macejkovic
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-ficke
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-james-ficke
   state_name: Texas
   country_name: United States
 progress_sherman_colorado_us:
@@ -896,7 +896,7 @@ progress_sherman_colorado_us:
   user_id:
   concealed: false
   slug: progress-sherman-colorado-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rick-pearcy
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rick-pearcy
   state_name: Colorado
   country_name: United States
 finished_second_montana_us:
@@ -914,7 +914,7 @@ finished_second_montana_us:
   user_id:
   concealed: false
   slug: finished-second-montana-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lisa-ledet
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-lisa-ledet
   state_name:
   country_name:
 start_only_2019_02_01:
@@ -932,7 +932,7 @@ start_only_2019_02_01:
   user_id:
   concealed: false
   slug: start-only-2019-02-01
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alexa-mcnaul
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-alexa-mcnaul
   state_name:
   country_name:
 finished_first_2019_02_01:
@@ -950,7 +950,7 @@ finished_first_2019_02_01:
   user_id:
   concealed: false
   slug: finished-first-2019-02-01
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stefan-griebel
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-stefan-griebel
   state_name:
   country_name:
 not_started_2019_02_01:
@@ -968,7 +968,7 @@ not_started_2019_02_01:
   user_id:
   concealed: false
   slug: not-started-2019-02-01
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jon-riebkes
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jon-riebkes
   state_name:
   country_name:
 shad_hirthe:
@@ -986,7 +986,7 @@ shad_hirthe:
   user_id:
   concealed: false
   slug: shad-hirthe
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_allen-hadley
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-allen-hadley
   state_name: Colorado
   country_name: United States
 finished_without_stop:
@@ -1004,7 +1004,7 @@ finished_without_stop:
   user_id:
   concealed: false
   slug: finished-without-stop
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-jurynec
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-mick-jurynec
   state_name: Utah
   country_name: United States
 progress_sherman:
@@ -1022,7 +1022,7 @@ progress_sherman:
   user_id:
   concealed: false
   slug: progress-sherman
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_andy-jones-wilkins
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-andy-jones-wilkins
   state_name: Idaho
   country_name: United States
 finished_first_japan:
@@ -1040,7 +1040,7 @@ finished_first_japan:
   user_id:
   concealed: false
   slug: finished-first-japan
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tsuyoshi-kaburaki
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-tsuyoshi-kaburaki
   state_name:
   country_name: Japan
 claudio_wunsch:
@@ -1058,7 +1058,7 @@ claudio_wunsch:
   user_id:
   concealed: false
   slug: claudio-wunsch
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_stuart-air
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-stuart-air
   state_name:
   country_name: United States
 keith_metz:
@@ -1076,7 +1076,7 @@ keith_metz:
   user_id:
   concealed: false
   slug: keith-metz
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ryan-mcdermott
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-ryan-mcdermott
   state_name: Utah
   country_name: United States
 major_green:
@@ -1094,7 +1094,7 @@ major_green:
   user_id:
   concealed: false
   slug: major-green
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-dirito
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-david-dirito
   state_name: North Carolina
   country_name: United States
 irvin_corkery:
@@ -1112,7 +1112,7 @@ irvin_corkery:
   user_id:
   concealed: false
   slug: irvin-corkery
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_josh-dickson
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-josh-dickson
   state_name: District of Columbia
   country_name: United States
 multiple_stops:
@@ -1130,7 +1130,7 @@ multiple_stops:
   user_id:
   concealed: false
   slug: multiple-stops
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_rosie-warfield
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rosie-warfield
   state_name: Hawaii
   country_name: United States
 not_started:
@@ -1148,7 +1148,7 @@ not_started:
   user_id:
   concealed: false
   slug: not-started
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-clark
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-david-clark
   state_name: Colorado
   country_name: United States
 start_only_maine_us:
@@ -1166,7 +1166,7 @@ start_only_maine_us:
   user_id:
   concealed: false
   slug: start-only-maine-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_craig-wilson
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-craig-wilson
   state_name: Maine
   country_name: United States
 junior_lesch:
@@ -1184,7 +1184,7 @@ junior_lesch:
   user_id:
   concealed: false
   slug: junior-lesch
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jason-halladay
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jason-halladay
   state_name: New Mexico
   country_name: United States
 finished_first_utah_us:
@@ -1202,7 +1202,7 @@ finished_first_utah_us:
   user_id:
   concealed: false
   slug: finished-first-utah-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shalise-morgan
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-shalise-morgan
   state_name: Utah
   country_name: United States
 progress_lap6:
@@ -1220,7 +1220,7 @@ progress_lap6:
   user_id:
   concealed: false
   slug: progress-lap6
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_shane-hughes
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-shane-hughes
   state_name: Utah
   country_name: United States
 multiple_stops_utah_us:
@@ -1238,7 +1238,7 @@ multiple_stops_utah_us:
   user_id:
   concealed: false
   slug: multiple-stops-utah-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_tara-warren
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-tara-warren
   state_name: Utah
   country_name: United States
 finished_last:
@@ -1256,7 +1256,7 @@ finished_last:
   user_id:
   concealed: false
   slug: finished-last
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mick-garrison
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-mick-garrison
   state_name: Utah
   country_name: United States
 progress_lap1:
@@ -1274,7 +1274,7 @@ progress_lap1:
   user_id:
   concealed: false
   slug: progress-lap1
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_keith-sanders
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-keith-sanders
   state_name: Utah
   country_name: United States
 kory_kulas:
@@ -1292,7 +1292,7 @@ kory_kulas:
   user_id:
   concealed: false
   slug: kory-kulas
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_bill-clements
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-bill-clements
   state_name: California
   country_name: United States
 benito_moen:
@@ -1310,7 +1310,7 @@ benito_moen:
   user_id:
   concealed: false
   slug: benito-moen
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-peterman
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-david-peterman
   state_name: Ohio
   country_name: United States
 rene_mclaughlin:
@@ -1328,7 +1328,7 @@ rene_mclaughlin:
   user_id:
   concealed: false
   slug: rene-mclaughlin
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_david-brown
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-david-brown
   state_name: Texas
   country_name: United States
 start_only_colorado_us_2019_02_01:
@@ -1346,7 +1346,7 @@ start_only_colorado_us_2019_02_01:
   user_id:
   concealed: false
   slug: start-only-colorado-us-2019-02-01
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_hewitt-gaynor
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-hewitt-gaynor
   state_name: Colorado
   country_name: United States
 drop_bandera:
@@ -1364,7 +1364,7 @@ drop_bandera:
   user_id:
   concealed: false
   slug: drop-bandera
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_lynn-hall
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-lynn-hall
   state_name: Colorado
   country_name: United States
 progress_rolling:
@@ -1382,7 +1382,7 @@ progress_rolling:
   user_id:
   concealed: false
   slug: progress-rolling
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nicole-honda
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-nicole-honda
   state_name: California
   country_name: United States
 not_started_colorado_us_2019_02_01:
@@ -1400,7 +1400,7 @@ not_started_colorado_us_2019_02_01:
   user_id:
   concealed: false
   slug: not-started-colorado-us-2019-02-01
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_glenda-lainis
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-glenda-lainis
   state_name: Colorado
   country_name: United States
 finished_first_colorado_us:
@@ -1418,7 +1418,7 @@ finished_first_colorado_us:
   user_id:
   concealed: false
   slug: finished-first-colorado-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_james-oury
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-james-oury
   state_name: Colorado
   country_name: United States
 drop_aid4:
@@ -1436,7 +1436,7 @@ drop_aid4:
   user_id:
   concealed: false
   slug: drop-aid4
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_nathan-evans
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-nathan-evans
   state_name:
   country_name:
 progress_aid3:
@@ -1454,7 +1454,7 @@ progress_aid3:
   user_id:
   concealed: false
   slug: progress-aid3
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_mike-hefti
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-mike-hefti
   state_name:
   country_name:
 drop_anvil:
@@ -1472,7 +1472,7 @@ drop_anvil:
   user_id:
   concealed: false
   slug: drop-anvil
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_ian-cropper
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-ian-cropper
   state_name:
   country_name:
 progress_cascade:
@@ -1490,7 +1490,7 @@ progress_cascade:
   user_id:
   concealed: false
   slug: progress-cascade
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_abram-early
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-abram-early
   state_name: Utah
   country_name: United States
 not_started_colorado_us:
@@ -1508,7 +1508,7 @@ not_started_colorado_us:
   user_id:
   concealed: false
   slug: not-started-colorado-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_marybeth-wittenbach
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-marybeth-wittenbach
   state_name: Colorado
   country_name: United States
 finished_second_colorado_us:
@@ -1526,7 +1526,7 @@ finished_second_colorado_us:
   user_id:
   concealed: false
   slug: finished-second-colorado-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_sierra-horton
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-sierra-horton
   state_name: Colorado
   country_name: United States
 start_only_colorado_us:
@@ -1544,7 +1544,7 @@ start_only_colorado_us:
   user_id:
   concealed: false
   slug: start-only-colorado-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_christina-gille
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-christina-gille
   state_name: Colorado
   country_name: United States
 finished_first_france:
@@ -1562,7 +1562,7 @@ finished_first_france:
   user_id:
   concealed: false
   slug: finished-first-france
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_adrien-seguret
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-adrien-seguret
   state_name:
   country_name: France
 start_only_2019_02_01_07_19_53:
@@ -1580,7 +1580,7 @@ start_only_2019_02_01_07_19_53:
   user_id:
   concealed: false
   slug: start-only-2019-02-01-07-19-53
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_caolan-macmahon
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-caolan-macmahon
   state_name:
   country_name:
 progress_aid4:
@@ -1598,7 +1598,7 @@ progress_aid4:
   user_id:
   concealed: false
   slug: progress-aid4
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_alyson-wiedenheft
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-alyson-wiedenheft
   state_name:
   country_name:
 bad_finish:
@@ -1616,7 +1616,7 @@ bad_finish:
   user_id:
   concealed: false
   slug: bad-finish
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jimmy-picard
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jimmy-picard
   state_name:
   country_name:
 progress_lap5_partial:
@@ -1634,7 +1634,7 @@ progress_lap5_partial:
   user_id:
   concealed: false
   slug: progress-lap5-partial
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jactest-cartest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jactest-cartest
   state_name: Utah
   country_name: United States
 finished_first:
@@ -1652,7 +1652,7 @@ finished_first:
   user_id:
   concealed: false
   slug: finished-first
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_jamtest-coutest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-jamtest-coutest
   state_name: Arizona
   country_name: United States
 finished_lap6:
@@ -1670,7 +1670,7 @@ finished_lap6:
   user_id:
   concealed: false
   slug: finished-lap6
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_contest-eldtest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-contest-eldtest
   state_name: Utah
   country_name: United States
 progress_lap2:
@@ -1688,7 +1688,7 @@ progress_lap2:
   user_id:
   concealed: false
   slug: progress-lap2
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_coltest-fortest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-coltest-fortest
   state_name: Utah
   country_name: United States
 not_started_utah_us:
@@ -1706,7 +1706,7 @@ not_started_utah_us:
   user_id:
   concealed: false
   slug: not-started-utah-us
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_cartest-gletest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-cartest-gletest
   state_name: Utah
   country_name: United States
 start_only:
@@ -1724,7 +1724,7 @@ start_only:
   user_id:
   concealed: false
   slug: start-only
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_davtest-hentest
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-davtest-hentest
   state_name: Utah
   country_name: United States
 on_dst_change:
@@ -1742,7 +1742,7 @@ on_dst_change:
   user_id:
   concealed: false
   slug: on-dst-change
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_on-dst-change
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-on-dst-change
   state_name:
   country_name:
 across_dst_change:
@@ -1760,7 +1760,7 @@ across_dst_change:
   user_id:
   concealed: false
   slug: across-dst-change
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_across-dst-change
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-across-dst-change
   state_name:
   country_name:
 un_started:
@@ -1778,7 +1778,7 @@ un_started:
   user_id:
   concealed: false
   slug: un-started
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_un-started
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-un-started
   state_name: Colorado
   country_name: United States
 series_finisher:
@@ -1796,7 +1796,7 @@ series_finisher:
   user_id:
   concealed: false
   slug: series-finisher
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_series-finisher
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-series-finisher
   state_name: Colorado
   country_name: United States
 slow_finisher:
@@ -1814,7 +1814,7 @@ slow_finisher:
   user_id:
   concealed: false
   slug: slow-finisher
-  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow_slow-finisher
+  topic_resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-slow-finisher
   state_name: Utah
   country_name: United States
 antony_grady:

@@ -1,7 +1,8 @@
 require "rails_helper"
 
 RSpec.describe PreparedParams do
-  subject { PreparedParams.new(params, permitted, permitted_query) }
+  subject { described_class.new(params, permitted, permitted_query) }
+
   let(:permitted) { [] }
   let(:permitted_query) { [] }
 
@@ -18,7 +19,7 @@ RSpec.describe PreparedParams do
     let(:permitted) { [:name, :age] }
 
     context "when provided with params[:data] in jsonapi format" do
-      let(:data_params) { {id: 123, attributes: {name: "John Doe", age: 50}} }
+      let(:data_params) { { id: 123, attributes: { name: "John Doe", age: 50 } } }
 
       it "returns a hash containing the attributes" do
         expected = ActionController::Parameters.new("name" => "John Doe", "age" => 50)
@@ -33,7 +34,7 @@ RSpec.describe PreparedParams do
     end
 
     context "when provided with non-permitted attributes" do
-      let(:data_params) { {id: 123, attributes: {name: "John Doe", age: 50, role: "admin"}} }
+      let(:data_params) { { id: 123, attributes: { name: "John Doe", age: 50, role: "admin" } } }
 
       it "returns a hash containing only the permitted attributes" do
         expected = ActionController::Parameters.new("name" => "John Doe", "age" => 50)
@@ -65,7 +66,7 @@ RSpec.describe PreparedParams do
     let(:params) { ActionController::Parameters.new(filter: filter_params) }
 
     context "when provided with a [:filter][:editable] key as true" do
-      let(:filter_params) { {"editable" => "true", "state_code" => "", "country_code" => "US"} }
+      let(:filter_params) { { "editable" => "true", "state_code" => "", "country_code" => "US" } }
 
       it "returns true" do
         expected = true
@@ -74,7 +75,7 @@ RSpec.describe PreparedParams do
     end
 
     context "when provided with a [:filter][:editable] key as false" do
-      let(:filter_params) { {"editable" => "false", "state_code" => "", "country_code" => "US"} }
+      let(:filter_params) { { "editable" => "false", "state_code" => "", "country_code" => "US" } }
 
       it "returns false" do
         expected = false
@@ -83,7 +84,7 @@ RSpec.describe PreparedParams do
     end
 
     context "when no [:filter][:editable] key is present" do
-      let(:filter_params) { {"state_code" => "", "country_code" => "US"} }
+      let(:filter_params) { { "state_code" => "", "country_code" => "US" } }
 
       it "returns nil" do
         expected = nil
@@ -99,6 +100,15 @@ RSpec.describe PreparedParams do
         validate_param("editable", expected)
       end
     end
+
+    context "when [:filter] is a scalar string" do
+      let(:filter_params) { "female" }
+
+      it "returns nil without raising" do
+        expected = nil
+        validate_param("editable", expected)
+      end
+    end
   end
 
   describe "#fields" do
@@ -106,10 +116,10 @@ RSpec.describe PreparedParams do
     let(:permitted_query) { [:name, :age] }
 
     context "when provided with fields for a single model in jsonapi format" do
-      let(:field_params) { {"courses" => "name,description"} }
+      let(:field_params) { { "courses" => "name,description" } }
 
       it "returns a hash with the model name as the key and an array of fields as the value" do
-        expected = {"courses" => [:name, :description]}
+        expected = { "courses" => [:name, :description] }
         validate_param("fields", expected)
       end
 
@@ -120,40 +130,40 @@ RSpec.describe PreparedParams do
     end
 
     context "when provided with camelCased field names in jsonapi format" do
-      let(:field_params) { {"split_times" => "subSplitBitkey,countryCode"} }
+      let(:field_params) { { "split_times" => "subSplitBitkey,countryCode" } }
 
       it "returns a hash with the model name as the key and an array of fields as the value" do
-        expected = {"split_times" => [:subSplitBitkey, :countryCode]}
+        expected = { "split_times" => [:subSplitBitkey, :countryCode] }
         validate_param("fields", expected)
       end
     end
 
     context "when provided with underscored field names in jsonapi format" do
-      let(:field_params) { {"split_times" => "sub_split_bitkey,country_code"} }
+      let(:field_params) { { "split_times" => "sub_split_bitkey,country_code" } }
 
       it "returns a hash with the model name as the key and an array of fields as the value" do
-        expected = {"split_times" => [:subSplitBitkey, :countryCode]}
+        expected = { "split_times" => [:subSplitBitkey, :countryCode] }
         validate_param("fields", expected)
       end
     end
 
     context "when provided with fields for multiple models in jsonapi format" do
       let(:field_params) do
-        {"courses" => "name,description",
-         "splits" => "latitude,longitude,distance_from_start"}
+        { "courses" => "name,description",
+          "splits" => "latitude,longitude,distance_from_start" }
       end
 
       it "returns a hash with the model names as the keys and arrays of fields as the values" do
-        expected = {"courses" => [:name, :description], "splits" => [:latitude, :longitude, :distanceFromStart]}
+        expected = { "courses" => [:name, :description], "splits" => [:latitude, :longitude, :distanceFromStart] }
         validate_param("fields", expected)
       end
     end
 
     context "when provided with a single model and empty string in jsonapi format" do
-      let(:field_params) { {"courses" => ""} }
+      let(:field_params) { { "courses" => "" } }
 
       it "returns a hash with the model name as the key and an empty array as the value" do
-        expected = {"courses" => []}
+        expected = { "courses" => [] }
         validate_param("fields", expected)
       end
     end
@@ -182,10 +192,10 @@ RSpec.describe PreparedParams do
     let(:permitted_query) { [:state_code, :country_code] }
 
     context "when provided with a single field and value" do
-      let(:filter_params) { {"state_code" => "NM"} }
+      let(:filter_params) { { "state_code" => "NM" } }
 
       it "returns the field and the value" do
-        expected = {"state_code" => "NM"}
+        expected = { "state_code" => "NM" }
         validate_param("filter", expected)
       end
 
@@ -201,61 +211,61 @@ RSpec.describe PreparedParams do
     end
 
     context "when provided with a single field and a list of values" do
-      let(:filter_params) { {"state_code" => "NM,AZ,NY"} }
+      let(:filter_params) { { "state_code" => "NM,AZ,NY" } }
 
       it "converts the list to an array" do
-        expected = {"state_code" => %w[NM AZ NY]}
+        expected = { "state_code" => %w[NM AZ NY] }
         validate_param("filter", expected)
       end
     end
 
     context "when provided with a single field and an array of values" do
-      let(:filter_params) { {"state_code" => %w[NM AZ NY]} }
+      let(:filter_params) { { "state_code" => %w[NM AZ NY] } }
 
       it "preserves the array" do
-        expected = {"state_code" => %w[NM AZ NY]}
+        expected = { "state_code" => %w[NM AZ NY] }
         validate_param("filter", expected)
       end
     end
 
     context "when provided with multiple fields and lists of values" do
-      let(:filter_params) { {"state_code" => "NM,AZ,BC", "country_code" => "US,CA"} }
+      let(:filter_params) { { "state_code" => "NM,AZ,BC", "country_code" => "US,CA" } }
 
       it "converts the lists to arrays" do
-        expected = {"state_code" => %w[NM AZ BC], "country_code" => %w[US CA]}
+        expected = { "state_code" => %w[NM AZ BC], "country_code" => %w[US CA] }
         validate_param("filter", expected)
       end
 
       it "works correctly when used as the argument in an ActiveRecord #where method" do
         relation = Effort.where(subject[:filter])
         expect(relation.to_sql)
-            .to include("WHERE \"efforts\".\"state_code\" IN ('NM', 'AZ', 'BC') AND \"efforts\".\"country_code\" IN ('US', 'CA')")
+          .to include("WHERE \"efforts\".\"state_code\" IN ('NM', 'AZ', 'BC') AND \"efforts\".\"country_code\" IN ('US', 'CA')")
       end
     end
 
     context 'when provided with multiple fields combined with "editable" and "search" keys' do
-      let(:filter_params) { {"state_code" => "NM,AZ,BC", "country_code" => "US,CA", "search" => "colorado", "editable" => "true"} }
+      let(:filter_params) { { "state_code" => "NM,AZ,BC", "country_code" => "US,CA", "search" => "colorado", "editable" => "true" } }
 
       it 'ignores the "search" and "editable" keys' do
-        expected = {"state_code" => %w[NM AZ BC], "country_code" => %w[US CA]}
+        expected = { "state_code" => %w[NM AZ BC], "country_code" => %w[US CA] }
         validate_param("filter", expected)
       end
     end
 
     context "when provided with a field having an empty string for its value" do
-      let(:filter_params) { {"state_code" => "", "country_code" => "US"} }
+      let(:filter_params) { { "state_code" => "", "country_code" => "US" } }
 
       it "returns the field with nil as its value" do
-        expected = {"state_code" => nil, "country_code" => "US"}
+        expected = { "state_code" => nil, "country_code" => "US" }
         validate_param("filter", expected)
       end
     end
 
     context "when provided with a field having nil as its value" do
-      let(:filter_params) { {"state_code" => nil, "country_code" => "US"} }
+      let(:filter_params) { { "state_code" => nil, "country_code" => "US" } }
 
       it "returns the field with nil as its value" do
-        expected = {"state_code" => nil, "country_code" => "US"}
+        expected = { "state_code" => nil, "country_code" => "US" }
         validate_param("filter", expected)
       end
     end
@@ -268,10 +278,19 @@ RSpec.describe PreparedParams do
         validate_param("filter", expected)
       end
     end
+
+    context "when filter is a scalar string instead of a hash" do
+      let(:filter_params) { "female" }
+
+      it "returns an empty hash without raising" do
+        expected = {}
+        validate_param("filter", expected)
+      end
+    end
   end
 
   describe "#filter[:gender]" do
-    let(:params) { ActionController::Parameters.new(filter: {gender: gender_param}) }
+    let(:params) { ActionController::Parameters.new(filter: { gender: gender_param }) }
     let(:permitted_query) { [:gender] }
     let(:gender) { params.dig("filter", "gender") }
 
@@ -279,7 +298,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { "male" }
 
       it "returns an array containing [0]" do
-        expected = {"gender" => [0]}
+        expected = { "gender" => [0] }
         validate_param("filter", expected)
       end
     end
@@ -288,7 +307,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { "female" }
 
       it "returns an array containing [1]" do
-        expected = {"gender" => [1]}
+        expected = { "gender" => [1] }
         validate_param("filter", expected)
       end
     end
@@ -297,7 +316,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { "male,female" }
 
       it "returns an array containing numeric values for both genders" do
-        expected = {"gender" => [0, 1]}
+        expected = { "gender" => [0, 1] }
         validate_param("filter", expected)
       end
     end
@@ -306,7 +325,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { "male,female,nonbinary" }
 
       it "returns an array containing numeric values for both genders" do
-        expected = {"gender" => [0, 1, 2]}
+        expected = { "gender" => [0, 1, 2] }
         validate_param("filter", expected)
       end
     end
@@ -315,7 +334,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { "combined" }
 
       it "returns an array containing numeric values for all genders" do
-        expected = {"gender" => [0, 1, 2]}
+        expected = { "gender" => [0, 1, 2] }
         validate_param("filter", expected)
       end
     end
@@ -324,7 +343,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { "0" }
 
       it "returns an array containing [0]" do
-        expected = {"gender" => [0]}
+        expected = { "gender" => [0] }
         validate_param("filter", expected)
       end
     end
@@ -333,7 +352,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { "1" }
 
       it "returns an array containing [1]" do
-        expected = {"gender" => [1]}
+        expected = { "gender" => [1] }
         validate_param("filter", expected)
       end
     end
@@ -342,7 +361,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { %w[0 1] }
 
       it "returns an array containing numeric values for those genders" do
-        expected = {"gender" => [0, 1]}
+        expected = { "gender" => [0, 1] }
         validate_param("filter", expected)
       end
     end
@@ -351,7 +370,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { [] }
 
       it "returns an array containing numeric values for both genders" do
-        expected = {"gender" => [0, 1, 2]}
+        expected = { "gender" => [0, 1, 2] }
         validate_param("filter", expected)
       end
     end
@@ -360,7 +379,7 @@ RSpec.describe PreparedParams do
       let(:gender_param) { nil }
 
       it "returns an array containing numeric values for all genders" do
-        expected = {"gender" => [0, 1, 2]}
+        expected = { "gender" => [0, 1, 2] }
         validate_param("filter", expected)
       end
     end
@@ -398,7 +417,7 @@ RSpec.describe PreparedParams do
   end
 
   describe "#original_params" do
-    let(:params) { ActionController::Parameters.new(filter: {search: "john", state_code: "CO"}, include: "efforts", sort: "last_name") }
+    let(:params) { ActionController::Parameters.new(filter: { search: "john", state_code: "CO" }, include: "efforts", sort: "last_name") }
 
     it "returns the provided params" do
       expected = params
@@ -451,7 +470,7 @@ RSpec.describe PreparedParams do
     end
 
     context "when page contains non-numeric characters" do
-      let(:page) { "3' ORDER BY 1-- sxXD"}
+      let(:page) { "3' ORDER BY 1-- sxXD" }
       it "uses standard Ruby logic to convert to an integer" do
         expect(result).to eq(3)
       end
@@ -459,7 +478,7 @@ RSpec.describe PreparedParams do
   end
 
   describe "#search" do
-    let(:params) { ActionController::Parameters.new(filter: {search: search_param}) }
+    let(:params) { ActionController::Parameters.new(filter: { search: search_param }) }
 
     context "when search param contains a string" do
       let(:search_param) { "john doe co" }
@@ -496,6 +515,15 @@ RSpec.describe PreparedParams do
         validate_param("search", expected)
       end
     end
+
+    context "when filter param is a scalar string" do
+      let(:params) { ActionController::Parameters.new(filter: "female") }
+
+      it "returns nil without raising" do
+        expected = nil
+        validate_param("search", expected)
+      end
+    end
   end
 
   describe "#sort" do
@@ -507,7 +535,7 @@ RSpec.describe PreparedParams do
       let(:event) { events(:sum_55k) }
 
       it "returns a hash containing the given data" do
-        expected = {"last_name" => :asc, "age" => :desc}
+        expected = { "last_name" => :asc, "age" => :desc }
         validate_param("sort", expected)
       end
 
@@ -530,7 +558,7 @@ RSpec.describe PreparedParams do
       let(:sort_string) { "lastName,-countryCode" }
 
       it "returns a hash containing the given data" do
-        expected = {"last_name" => :asc, "country_code" => :desc}
+        expected = { "last_name" => :asc, "country_code" => :desc }
         validate_param("sort", expected)
       end
     end
@@ -539,7 +567,7 @@ RSpec.describe PreparedParams do
       let(:sort_string) { "last_name,-age,role" }
 
       it "returns a hash containing only the permitted attributes" do
-        expected = {"last_name" => :asc, "age" => :desc}
+        expected = { "last_name" => :asc, "age" => :desc }
         validate_param("sort", expected)
       end
     end

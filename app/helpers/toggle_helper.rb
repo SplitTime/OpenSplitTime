@@ -94,24 +94,27 @@ module ToggleHelper
 
     update_type = case subscribable.class.name
                   when "Effort"
-                    "live progress"
+                    t("subscriptions.toggle.effort_update_type")
                   when "Person"
-                    "future event sign-up"
+                    t("subscriptions.toggle.person_update_type")
                   else
                     raise ArgumentError, "Unknown subscribable class: #{subscribable.class.name}"
                   end
 
+    name = subscribable.full_name
+    unsubscribe_alert = t("subscriptions.toggle.unsubscribe", update_type: update_type, name: name)
+
     args = case protocol
            when "email"
-             { icon_name: "envelope",
-               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}? " \
-                                "(You will need to click a link in a confirmation email that will be sent to you " \
-                                "from AWS Notifications.)",
-               unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?" }
+             { label: "email",
+               icon_name: "envelope",
+               subscribe_alert: t("subscriptions.toggle.subscribe_email", update_type: update_type, name: name),
+               unsubscribe_alert: unsubscribe_alert }
            when "sms"
-             { icon_name: "mobile-alt",
-               subscribe_alert: "Receive #{update_type} updates for #{subscribable.full_name}?",
-               unsubscribe_alert: "Stop receiving #{update_type} updates for #{subscribable.full_name}?" }
+             { label: "text",
+               icon_name: "message-sms",
+               subscribe_alert: t("subscriptions.toggle.subscribe_sms", update_type: update_type, name: name),
+               unsubscribe_alert: unsubscribe_alert }
            else
              {}
            end
@@ -120,9 +123,13 @@ module ToggleHelper
 
     args.merge!(subscribable: subscribable, protocol: protocol)
     if current_user
-      link_to_toggle_subscription(args)
+      if protocol == "sms" && !current_user.sms_opted_in?
+        link_to_sms_opt_in(icon: args[:icon_name], label: args[:label], subscribable: subscribable)
+      else
+        link_to_toggle_subscription(args)
+      end
     else
-      button_to_sign_in(icon: args[:icon_name], protocol: args[:protocol])
+      button_to_sign_in(icon: args[:icon_name], label: args[:label], subscribable: subscribable, protocol: protocol)
     end
   end
 
@@ -132,39 +139,65 @@ module ToggleHelper
     protocol = args[:protocol]
     subscribe_alert = args[:subscribe_alert]
     unsubscribe_alert = args[:unsubscribe_alert]
+    label = args[:label]
     existing_subscription = subscribable.subscriptions.find_by(user: current_user, protocol: protocol)
 
-    if existing_subscription
+    if existing_subscription&.confirmed?
       url = polymorphic_path([subscribable, existing_subscription])
-      html_options = { method: :delete,
-                       class: "#{protocol}-sub btn btn-lg btn-primary",
-                       data: {
-                         turbo_confirm: unsubscribe_alert,
-                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
-                       } }
+      button_class = "btn-primary"
+      confirm_text = unsubscribe_alert
+      method = :delete
+    elsif existing_subscription&.pending?
+      # Delay long enough for the browser to establish its ActionCable WebSocket
+      # subscription before the job's broadcast fires. Without the delay, the
+      # broadcasts are pub-subbed before any subscriber is listening, the
+      # messages are dropped, and the user has to reload manually.
+      RefreshPendingSubscriptionJob.set(wait: 1.second).perform_later(existing_subscription.id)
+      url = polymorphic_path([subscribable, existing_subscription])
+      button_class = "btn-outline-primary"
+      confirm_text = unsubscribe_alert
+      method = :delete
+      label = "#{label} #{t('subscriptions.toggle.pending_suffix')}"
     else
       url = polymorphic_path([subscribable, :subscriptions], subscription: { protocol: protocol })
-      html_options = { method: :post,
-                       class: "#{protocol}-sub btn btn-lg btn-outline-secondary",
-                       data: {
-                         turbo_confirm: subscribe_alert,
-                         turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
-                       } }
+      button_class = "btn-outline-secondary"
+      confirm_text = subscribe_alert
+      method = :post
     end
 
-    button_to(url, html_options) { fa_icon(icon_name, text: protocol) }
+    html_options = { method: method,
+                     class: "#{protocol}-sub btn btn-lg #{button_class}",
+                     data: {
+                       turbo_confirm: confirm_text,
+                       turbo_frame: "_top",
+                       turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: protocol),
+                     } }
+    button_to(url, html_options) { fa_icon(icon_name, text: label, type: :regular) }
   end
 
-  def button_to_sign_in(icon:, protocol:)
-    url = "#"
-    html_options = {
-      method: :get,
-      class: "btn btn-lg btn-outline-secondary",
-      data: {
-        turbo_confirm: "You must be signed in to subscribe to notifications.",
-      }
-    }
+  def link_to_sms_opt_in(icon:, label:, subscribable: nil)
+    url = if subscribable
+            user_settings_sms_messaging_path(
+              subscribe_to: subscribable.to_signed_global_id(for: ::UserSettingsController::SUBSCRIBE_GID_PURPOSE).to_s,
+            )
+          else
+            user_settings_sms_messaging_path
+          end
 
-    button_to(url, html_options) { fa_icon(icon, text: protocol.to_s) }
+    link_to(url, class: "btn btn-lg btn-outline-secondary", data: { turbo_frame: "_top" }) do
+      fa_icon(icon, text: label, type: :regular)
+    end
+  end
+
+  def button_to_sign_in(icon:, label:, subscribable:, protocol:)
+    url = new_user_session_path(
+      reason: "subscribe",
+      subscribe_to: subscribable.to_signed_global_id(for: ::Users::SessionsController::SUBSCRIBE_GID_PURPOSE).to_s,
+      notification_protocol: protocol,
+    )
+
+    link_to(url, class: "btn btn-lg btn-outline-secondary", data: { turbo_frame: "form_modal" }) do
+      fa_icon(icon, text: label, type: :regular)
+    end
   end
 end

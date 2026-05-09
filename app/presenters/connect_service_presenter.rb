@@ -2,7 +2,10 @@ class ConnectServicePresenter < BasePresenter
   DEFAULT_CANDIDATE_SEPARATION_LIMIT = 7.days
   INTERNAL_SERVICES = [
     "internal_lottery",
-  ]
+  ].freeze
+  FIELD_MAPPING_SERVICES = [
+    "runsignup",
+  ].freeze
 
   def initialize(event_group, service, view_context)
     @event_group = event_group
@@ -18,8 +21,8 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def error_message
-    # Ensure that all_sources has been called so that @error_message is set.
-    set_all_sources
+    # Trigger lazy load so @error_message is set if an API call fails
+    all_sources
     @error_message
   end
 
@@ -49,7 +52,8 @@ class ConnectServicePresenter < BasePresenter
 
   def connections_with_blanks(event)
     sources_for_event(event).map do |source_struct|
-      connection = event.connections.find_or_initialize_by(service_identifier: service_identifier, source_id: source_struct.id) do |connection|
+      connection = event.connections.find_or_initialize_by(service_identifier: service_identifier,
+                                                           source_id: source_struct.id) do |connection|
         connection.source_type = event_source_type
       end
 
@@ -71,40 +75,60 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def connection
-    @connection ||= event_group.connections.find_or_initialize_by(service_identifier: service_identifier) do |connection|
+    @connection ||= event_group.connections
+                               .find_or_initialize_by(service_identifier: service_identifier) do |connection|
       connection.source_type = event_group_source_type
     end
+  end
+
+  def field_mappings_supported?
+    service_identifier.in?(FIELD_MAPPING_SERVICES)
+  end
+
+  # @return [Array<::Connectors::Runsignup::Models::Question>]
+  def race_questions
+    return [] if runsignup_race_id.blank?
+
+    ::Connectors::Runsignup::FetchRaceQuestions.perform(race_id: runsignup_race_id, user: current_user)
+  rescue ::Connectors::Errors::Base
+    []
+  end
+
+  # @return [Array<Hash{String => Object}>]
+  def field_mappings
+    @field_mappings ||= race_connection&.field_mappings || []
+  end
+
+  # @param [Integer] question_id
+  # @return [Hash{String => Object}, nil]
+  def field_mapping_for(question_id)
+    field_mappings.find { |m| m["source_question_id"] == question_id }
   end
 
   private
 
   attr_reader :view_context
+
   delegate :current_user, to: :view_context, private: true
   delegate :organization, to: :event_group, private: true
 
   def all_sources
-    # Ensure that set_all_sources has been called so that @all_sources is set.
-    set_all_sources
-    @all_sources
-  end
-
-  def set_all_sources
     return @all_sources if defined?(@all_sources)
 
     @all_sources = [] and return unless some_credentials_present?
 
     @all_sources = case service_identifier.to_sym
-                  when :internal_lottery
-                    all_internal_lotteries
-                  when :rattlesnake_ramble
-                    all_rattlesnake_ramble_events
-                  when :runsignup
-                    all_runsignup_events
-                  else
-                    []
-                  end
-  rescue ::Connectors::Errors::Base => error
-    @error_message = error.message
+                   when :internal_lottery
+                     all_internal_lotteries
+                   when :rattlesnake_ramble
+                     all_rattlesnake_ramble_events
+                   when :runsignup
+                     all_runsignup_events
+                   else
+                     []
+                   end
+  rescue ::Connectors::Errors::Base => e
+    @error_message = e.message
   ensure
     @all_sources ||= []
   end
@@ -119,7 +143,7 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def some_credentials_present?
-    internal_service? || current_user.has_credentials_for?(service_identifier)
+    internal_service? || current_user.credentials_for?(service_identifier)
   end
 
   def internal_service?
@@ -144,7 +168,14 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def runsignup_race_id
-    event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
+    race_connection&.source_id
+  end
+
+  def race_connection
+    return @race_connection if defined?(@race_connection)
+
+    @race_connection = event_group.connections.from_service(service_identifier)
+                                  .find_by(source_type: event_group_source_type)
   end
 
   def event_group_source_type

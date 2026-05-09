@@ -10,11 +10,10 @@ module EffortsHelper
   end
 
   def last_reported_location(effort_row)
-    if effort_row.started?
-      "#{effort_row.final_lap_split_name} (#{pdu('singular')} #{d(effort_row.final_distance)})"
-    else
-      "--"
-    end
+    return "--" unless effort_row.started?
+    return effort_row.final_lap_split_name.to_s if effort_row.final_distance.nil?
+
+    "#{effort_row.final_lap_split_name} (#{pdu('singular')} #{d(effort_row.final_distance)})"
   end
 
   def last_reported_time_of_day(effort_row)

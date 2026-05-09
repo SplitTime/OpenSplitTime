@@ -15,8 +15,8 @@ RSpec.describe "Visit the course group finishers page" do
     organization.stewards << steward
   end
 
-  before(:all) { EffortSegment.set_all }
-  after(:all) { EffortSegment.delete_all }
+  before(:all) { EffortSegment.set_all } # rubocop:disable RSpec/BeforeAfterAll
+  after(:all) { EffortSegment.delete_all } # rubocop:disable RSpec/BeforeAfterAll
 
   scenario "Admin visits the page" do
     login_as admin, scope: :user
@@ -50,6 +50,15 @@ RSpec.describe "Visit the course group finishers page" do
     visit_page
     verify_public_content_present
     verify_private_content_absent
+  end
+
+  scenario "A visitor sees initials for finishers whose person has obscure_name set" do
+    finisher = CourseGroupFinisher.for_course_groups(course_group).first
+    finisher.person.update!(obscure_name: true)
+
+    visit_page
+    expect(page).to have_content("#{finisher.first_name[0]}. #{finisher.last_name[0]}.")
+    expect(page).not_to have_content("#{finisher.first_name} #{finisher.last_name}")
   end
 
   def visit_page

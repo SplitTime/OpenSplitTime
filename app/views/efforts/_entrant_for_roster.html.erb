@@ -10,9 +10,9 @@
   <% if multiple_events %>
     <td><%= effort.event.guaranteed_short_name %></td>
   <% end %>
-  <td><strong><%= link_to effort.full_name, effort_path(effort) %></strong></td>
+  <td><strong><%= link_to effort.display_full_name_non_obscured, effort_path(effort) %></strong></td>
   <td><%= effort.bib_number %></td>
-  <td><%= effort.bio_historic %></td>
+  <td><%= effort.bio_historic_non_obscured %></td>
   <td><%= effort.flexible_geolocation %></td>
   <td><%= "#{day_time_military_format(effort.assumed_start_time_local)} (#{offset_format_xxhyym(effort.scheduled_start_offset)})" %></td>
   <td><%= day_time_military_format(effort.actual_start_time_local) %></td>

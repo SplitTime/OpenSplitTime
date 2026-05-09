@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Analyze effort - #{@presenter.full_name} - #{@presenter.event_name}" %>
+  <% "OpenSplitTime: Analyze effort - #{@presenter.display_full_name} - #{@presenter.event_name}" %>
 <% end %>
 
 <%= render "effort_header", view_object: @presenter, title: "Analyze" %>

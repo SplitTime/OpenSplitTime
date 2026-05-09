@@ -44,7 +44,7 @@
               <div class="card-body px-3 py-2">
                 <div class="row">
                   <div class="col-4">
-                    <span><%= "#{effort.full_name} ##{effort.bib_number}" %></span>
+                    <span><%= "#{effort.display_full_name_non_obscured} ##{effort.bib_number}" %></span>
                   </div>
                   <div class="col-4">
                     <span><%= l(effort.assumed_start_time_local, format: :datetime_input) %></span>

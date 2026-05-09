@@ -31,7 +31,7 @@ class Person < ApplicationRecord
   scope :with_age_and_effort_count, lambda {
     from(select(SQL[:age_and_effort_count]).left_joins(efforts: :event).group("people.id"), :people)
   }
-  scope :standard_includes, -> { includes(:efforts).with_age_and_effort_count }
+  scope :standard_includes, -> { includes(efforts: :person).with_age_and_effort_count }
 
   SQL = {
     age_and_effort_count: "people.*, COUNT(efforts.id) as effort_count, " \
@@ -46,6 +46,9 @@ class Person < ApplicationRecord
   validates :phone, allow_blank: true, format: { with: VALID_PHONE_REGEX }
   validates :user_id, uniqueness: true, allow_blank: true
   validates_with BirthdateValidator
+
+  after_update_commit :touch_related_events, if: :visibility_flags_changed?
+  after_update_commit :regenerate_slugs_for_obscure_name, if: :saved_change_to_obscure_name?
 
   # This method needs to extract ids and run a new search to remain compatible
   # with the scope `.with_age_and_effort_count`.
@@ -73,16 +76,27 @@ class Person < ApplicationRecord
   end
 
   def slug_candidates
-    [:full_name, [:full_name, :state_and_country], [:full_name, :state_and_country, Time.zone.today.to_s],
-     [:full_name, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]]
+    [:name_for_slug,
+     [:name_for_slug, :state_and_country],
+     [:name_for_slug, :state_and_country, Time.zone.today.to_s],
+     [:name_for_slug, :state_and_country, Time.zone.today.to_s, Time.current.strftime("%H:%M:%S")]]
   end
 
   def should_generate_new_friendly_id?
-    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? || country_code_changed?
+    slug.blank? || first_name_changed? || last_name_changed? || state_code_changed? ||
+      country_code_changed? || obscure_name_changed?
   end
 
   def current_age_approximate
     Person.where(id: id).with_age_and_effort_count.order(:id).first&.current_age_from_efforts
+  end
+
+  def current_age
+    hide_age? ? nil : current_age_non_obscured
+  end
+
+  def current_age_conditionally_obscured(user)
+    hide_age_applied_for?(user) ? nil : current_age_non_obscured
   end
 
   def unclaimed?
@@ -98,6 +112,33 @@ class Person < ApplicationRecord
   end
 
   private
+
+  # Invalidate cached public views (e.g. events/spread) that key on event.
+  # Touch events directly rather than efforts because Effort#after_touch
+  # triggers an expensive performance-data recalc we don't need here.
+  def touch_related_events
+    Event.where(id: efforts.select(:event_id)).touch_all
+  end
+
+  def visibility_flags_changed?
+    saved_change_to_hide_age? || saved_change_to_obscure_name?
+  end
+
+  # When obscure_name toggles, the slug built from full_name becomes
+  # privacy-sensitive (enabling) or outdated (disabling). Regenerate the
+  # person's slug and all linked effort slugs. When enabling, also purge
+  # friendly_id history so the previous revealing slug no longer resolves.
+  def regenerate_slugs_for_obscure_name
+    slugs.delete_all if obscure_name?
+    self.slug = nil
+    save!
+
+    efforts.find_each do |effort|
+      effort.slugs.delete_all if obscure_name?
+      effort.slug = nil
+      effort.save!
+    end
+  end
 
   def generate_new_topic_resource?
     true

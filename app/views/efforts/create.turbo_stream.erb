@@ -1,5 +1,17 @@
 <%# locals: (effort:, presenter:) %>
 
+<%= turbo_stream.replace("unreconciled_callout",
+                         partial: "event_groups/unreconciled_callout",
+                         locals: { presenter: presenter }) %>
+
+<%= turbo_stream.replace("entrants_callout",
+                         partial: "event_groups/entrants_callout",
+                         locals: { presenter: presenter }) %>
+
+<%= turbo_stream.replace("entrants_count",
+                         partial: "event_groups/entrants_count",
+                         locals: { presenter: presenter }) %>
+
 <%= turbo_stream.prepend("entrants",
                          partial: "efforts/entrant_for_setup",
                          locals: { presenter: presenter, effort: effort }) %>

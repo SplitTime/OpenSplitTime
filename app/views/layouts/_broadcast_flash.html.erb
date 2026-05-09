@@ -1,0 +1,8 @@
+<%# locals: (level:, message:) -%>
+
+<div id="flash" class="flash">
+  <div class="alert alert-<%= level %> alert-dismissible text-center fade show mb-0" role="alert">
+    <%= message %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>

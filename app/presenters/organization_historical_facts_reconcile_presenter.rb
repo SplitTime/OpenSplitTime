@@ -7,7 +7,9 @@ class OrganizationHistoricalFactsReconcilePresenter < OrganizationPresenter
   end
 
   attr_reader :personal_info_hash
-  delegate :bio, :email, :flexible_geolocation, :full_name, :phone, :possible_matching_people, to: :master_fact, allow_nil: true
+
+  delegate :bio, :email, :flexible_geolocation, :full_name, :display_full_name_non_obscured,
+           :phone, :possible_matching_people, to: :master_fact, allow_nil: true
 
   # @return [ActiveRecord::Relation<HistoricalFact>]
   def relevant_historical_facts
@@ -16,12 +18,14 @@ class OrganizationHistoricalFactsReconcilePresenter < OrganizationPresenter
 
   # @return [String, nil]
   def previous_personal_info_hash
-    historical_facts.unreconciled.where("id < ?", lowest_relevant_historical_fact_id).order(id: :desc).first&.personal_info_hash
+    historical_facts.unreconciled.where("id < ?",
+                                        lowest_relevant_historical_fact_id).order(id: :desc).first&.personal_info_hash
   end
 
   # @return [String, nil]
   def next_personal_info_hash
-    historical_facts.unreconciled.where("id > ?", highest_relevant_historical_fact_id).order(id: :asc).first&.personal_info_hash
+    historical_facts.unreconciled.where("id > ?",
+                                        highest_relevant_historical_fact_id).order(id: :asc).first&.personal_info_hash
   end
 
   private

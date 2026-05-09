@@ -6,6 +6,8 @@ en:
           main_text: "Using Connections in OpenSplitTime"
           detail_paragraph_1: "Connections provide a simple way to keep your data synchronized with an outside source (like Runsignup) or an internal source (like an OpenSplitTime Lottery)."
           detail_paragraph_2: "You can manage connections for your Event Group from this page."
+      form:
+        remove_confirm: "Remove this connection? Any event connections and field mappings will be discarded."
     connect_service:
       internal_lottery:
         event_group_card:
@@ -77,12 +79,47 @@ en:
       no_raw_times_detail_2: "When your Event Group has Live Entry enabled, you can use OST Remote to submit Raw Times from your iOS device or the Live Entry view to submit Raw Times from the website. If Live Entry is enabled for your Event Group, you will see the \"Live Updating\" indicator at the top of the page, meaning that Raw Times will appear here without a page refresh."
 
   subscriptions:
+    create:
+      success: "You have subscribed to %{protocol} notifications for %{name}. Messages will be sent to %{endpoint}."
+      pending_confirmation: "You have subscribed to %{protocol} notifications for %{name}. To activate, click the confirmation link sent to %{endpoint}."
+      sms_no_phone: "Please add a mobile phone number and opt in to SMS on your preferences page."
+      sms_not_opted_in: "Please opt in to SMS text messages on your preferences page."
+    confirmed: "Your subscription to %{protocol} notifications for %{name} is now active."
     tooltips:
       confirmed: "This subscription is confirmed."
       no_topic: "This subscription does not have a resource key. Click Actions > Refresh to attempt to generate one, or delete this subscription and create a new one."
       pending: "This subscription is pending confirmation. If you have confirmed the endpoint, click Actions > Refresh to change its status here."
+    toggle:
+      subscribe_email: "Receive %{update_type} updates for %{name}? (You will need to click a link in a confirmation email that will be sent to you from AWS Notifications.)"
+      subscribe_sms: "Receive %{update_type} updates for %{name}?"
+      unsubscribe: "Stop receiving %{update_type} updates for %{name}?"
+      sign_in_required: "You must be signed in to subscribe to notifications."
+      effort_update_type: "live progress"
+      person_update_type: "future event sign-up"
+      pending_suffix: "(pending)"
+
+  sms:
+    consent:
+      disclosure: "By checking the box below, you provide your express written consent to receive automated SMS text messages from OpenSplitTime with live race progress updates for participants you choose to follow. Each message reports the participant's name, event, aid station, distance, time of day, and elapsed time, plus a link to view full results. Message frequency varies. Msg & data rates may apply. Reply STOP to cancel or HELP for help. Consent is not required as a condition to use OpenSplitTime for any service or transaction. No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Opt-in data will not be shared with unauthorized third parties."
+      checkbox_label: "I consent to receive automated SMS text messages from OpenSplitTime"
+      view_terms: "View full SMS terms"
+      enabled_since: "SMS enabled since %{date}"
+      opted_in: "You have opted in to receive SMS text message updates from OpenSplitTime. Reply STOP to cancel. Reply HELP for help. Msg & data rates may apply."
+      opted_out: "You have opted out of SMS text message updates."
+      subscribe_pending_phone_and_consent: "To subscribe to %{name} via SMS, please add your mobile phone number below and check the consent box."
+      subscribe_pending_consent_only: "To subscribe to %{name} via SMS, please check the consent box below."
+      subscribe_failed_phone_and_consent: "Subscription to %{name} could not be created — please add your mobile phone number and check the consent box, then save again."
+      subscribe_failed_consent_only: "Subscription to %{name} could not be created — please check the consent box, then save again."
+    carrier_opted_out:
+      banner_title: "You replied STOP on %{date} and have been unsubscribed from SMS notifications."
+      banner_body_html: "To receive SMS notifications again, <strong>text START to (413)845-8807</strong> from your phone (ending in %{last4}). Once you do, the unsubscribe will be lifted automatically."
+      checkbox_disabled_note: "To re-enable SMS, text START as described in the banner above."
+    phone:
+      hint: "US or Canada mobile number only"
 
   user_settings:
+    update:
+      email_change_requested: "You have requested that your email address be changed. Please check your email to confirm your new address."
     credentials:
       credentials_callout:
         detail_paragraph_1: "Credentials are used to connect your OpenSplitTime resource (such as an Event Group or an Event) with an external service, like Runsignup. This makes it easy to sync data from the external service into OpenSplitTime."

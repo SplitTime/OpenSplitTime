@@ -7,14 +7,14 @@ class NotifyParticipationJob < ApplicationJob
     return unless effort_id.present? && effort.present? && person.present? && event.present?
     return if notification_exists?
 
-    response = ParticipationNotifier.publish(topic_arn: topic_resource_key, event: event)
+    response = ParticipationNotifier.publish(topic_arn: topic_resource_key, effort: effort, subscribable: person)
 
     return unless response.successful?
 
     notification = Notification.new(
       kind: :participation,
       effort: effort,
-      follower_ids: person.followers.ids,
+      follower_ids: person.followers.distinct.ids,
       subject: response.resources[:subject],
       notice_text: response.resources[:notice_text],
       topic_resource_key: topic_resource_key

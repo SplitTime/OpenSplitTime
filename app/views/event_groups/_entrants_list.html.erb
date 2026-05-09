@@ -43,69 +43,16 @@
   </aside>
 
   <article class="ost-article container">
-    <% if presenter.unreconciled_efforts.present? %>
-      <%= render partial: "shared/callout_with_link",
-                 locals: {
-                   callout_color: "warning",
-                   icon_color: "warning",
-                   icon_name: "exclamation-triangle",
-                   main_text: "Unreconciled efforts exist; please reconcile when you have a moment",
-                   link: link_to_reconcile_efforts(presenter.event_group),
-                 } %>
-    <% end %>
+    <%= render "unreconciled_callout", presenter: presenter %>
+    <%= render "entrants_callout", presenter: presenter %>
 
-    <% if presenter.filtered_efforts.exists? %>
-      <div class="row">
-        <div class="col-xs-8">
-          <h4><%= filter_count_text(presenter.filtered_efforts_total_count, presenter.event_group_efforts_count, "entrant") %></h4>
-        </div>
-        <div class="col-xs-4 text-end">
-        </div>
-      </div>
-
-      <table class="table table-centered table-fixed-sm">
-        <thead>
-        <tr>
-          <th class="text-center"><%= link_to_reversing_sort_heading("Reconciled?", "person_id,bib_number", presenter.existing_sort) %></th>
-          <% if presenter.multiple_events? %>
-            <th><%= link_to_reversing_sort_heading("Event", "event_id,bib_number", presenter.existing_sort) %></th>
-          <% end %>
-          <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", presenter.existing_sort) %></th>
-          <th class="text-center"><%= link_to_reversing_sort_heading("Bib#", "bib_number", presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("Category", "gender,age", presenter.existing_sort) %></th>
-          <th><%= link_to_reversing_sort_heading("From", "state_code", presenter.existing_sort) %></th>
-          <th>Scheduled Start</th>
-          <th><%= link_to_reversing_sort_heading("Emergency Contact", "emergency_contact", presenter.existing_sort) %></th>
-          <th class="text-center">Actions</th>
-        </tr>
-        </thead>
-        <tbody id="entrants">
-        <%= render partial: "efforts/entrant_for_setup",
-                   collection: presenter.filtered_efforts,
-                   as: :effort,
-                   locals: { presenter: presenter } %>
-        </tbody>
-      </table>
-
-      <%= render "shared/pager", next_page_url: presenter.next_page_url %>
-
-    <% elsif presenter.event_group_efforts.exists? %>
+    <% if presenter.filtered_efforts.exists? || !presenter.event_group_efforts.exists? %>
+      <%= render "entrants_table", presenter: presenter %>
+    <% else %>
       <div class="callout callout-info">
         <h5>No results match that search</h5>
         <p>Did you spell the search term correctly? Try again with a different search.</p>
       </div>
-    <% else %>
-      <%= render partial: "shared/callout_with_link",
-                 locals: {
-                   callout_color: "info",
-                   icon_color: "info",
-                   icon_name: "info-circle",
-                   main_text: "Add or Import Your Entrants",
-                   detail_paragraphs: [
-                     "Click the <strong>Add</strong> button to manually add an Entrant. Click the <strong>Import</strong> button to import Entrants from a CSV file.".html_safe,
-                     "To connect to an external service, click the <strong>Connections</strong> button.".html_safe
-                   ]
-                 } %>
     <% end %>
   </article>
 </div>

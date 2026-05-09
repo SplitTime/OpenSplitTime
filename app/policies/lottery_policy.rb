@@ -67,6 +67,10 @@ class LotteryPolicy < ApplicationPolicy
     new?
   end
 
+  def draw_all?
+    new?
+  end
+
   def delete_draws?
     new?
   end

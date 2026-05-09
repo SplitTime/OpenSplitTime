@@ -1,0 +1,6 @@
+<% case @subscribable
+   when Effort %>
+<%= render "welcome_effort", subscription: @subscription %>
+<% when Person %>
+<%= render "welcome_person", subscription: @subscription %>
+<% end %>

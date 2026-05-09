@@ -6,80 +6,37 @@ nav_order: 1
 
 # RunSignup API Keys
 
-To connect OpenSplitTime to RunSignup, you will need a RunSignup API key and API secret.
+To connect OpenSplitTime to RunSignup, you need a RunSignup **API key** and **API secret**. RunSignup exposes two kinds of credentials: keys tied to a specific race, and permanent keys tied to your account. The race-specific keys only authenticate against that one race; account-level (timer / partner / affiliate) keys work across every race your account is associated with.
 
-RunSignup supports more than one way to obtain API credentials. The right method depends on whether you are acting as a **race owner** for a specific event or as a **race timer** working across multiple client events.
+## Race-specific API keys
 
-## Which type of API key should I use?
-
-Use the option that matches your role:
-
-- **Race owner:** Use event-level credentials from the specific RunSignup race you want to connect to OpenSplitTime.
-- **Race timer:** Use timer-account credentials from your RunSignup timer account.
-
-The difference matters:
-
-- **Race owner keys** are intended for a single race or event.
-- **Race timer keys** can be reused across multiple races and events that the timer services.
-
-## For race owners
-
-If you manage a race in RunSignup and only need to connect that race to OpenSplitTime, use the API credentials attached to that specific race.
-
-### How to find event-level API credentials
+Most race directors will use the keys shown on their race's Info Sharing page:
 
 1. Sign in to RunSignup.
-1. Open the specific race or event you want to connect.
-1. Use the left sidebar search and search for **API**.
+1. Open the specific race you want to connect.
+1. Use the left sidebar search to search for **API**.
 1. Open the **Info Sharing** page.
 1. Scroll to the bottom of the page.
 1. Open the **API Keys** accordion.
-1. Copy the API key and API secret shown in the first plain-text credential area.
+1. Copy the API key and API secret from the first plain-text credential pair.
 
-### Important note for race owners
+RunSignup may also display generated v2 keys lower on the same page — ignore those. OpenSplitTime uses the plain-text key/secret pair only.
 
-RunSignup may also show other API-related credentials, including generated v2 keys. For OpenSplitTime, use the plain-text API key and API secret shown for the race, not a generated v2 key.
+## Account-level (timer) API keys
 
-Because these credentials belong to a specific race, they are generally appropriate when you are connecting OpenSplitTime to that one race only.
-
-## For race timers
-
-If you are a professional timer or timing company managing multiple events, use credentials from your RunSignup timer account.
-
-According to RunSignup's API documentation, permanent API keys are available for timers, and timer credentials are associated with the timer account rather than a single event. That makes them the better choice when you need credentials that work across multiple races.
-
-### How to obtain timer-level API credentials
-
-1. Sign in to RunSignup using the account associated with your timer account.
-1. Open your **Timer** account area in RunSignup.
-1. Locate the API access or API credentials section for the timer account.
-1. Copy the timer account API key and API secret.
-
-### Important note for race timers
-
-Timer credentials can be used across multiple events that your timer account services. If you time many races, this is usually the most efficient option.
+If you time multiple races, you can use one set of permanent credentials instead of pulling separate keys for every race. RunSignup documents this on its [Getting Started](https://runsignup.com/API/GettingStarted){:target="_blank"} page, which describes permanent API keys for timers (as well as for affiliates and partners).
 
 ## Entering the credentials into OpenSplitTime
 
-Once you have the correct RunSignup API key and API secret:
+Once you have the API key and secret:
 
-1. Open OpenSplitTime.
-1. Go to your user settings or credentials area.
-1. Enter the `api_key` value.
-1. Enter the `api_secret` value.
-1. Save your credentials.
-1. Connect the appropriate RunSignup race to your OpenSplitTime Event Group.
+1. In OpenSplitTime, open the user menu and go to **Settings → Credentials**.
+1. Add a RunSignup credential set, pasting the **api_key** and **api_secret** values from RunSignup.
+1. Save.
+1. Open the Event Group you want to connect, choose **Connect Service**, and pick **RunSignup**. Enter the RunSignup race ID to link the two.
 
-## Summary
+## References
 
-- Use **race owner credentials** when connecting one specific RunSignup race.
-- Use **timer credentials** when you need one set of credentials that can work across multiple races.
-- In either case, OpenSplitTime needs both an **API key** and an **API secret**.
-
-## Sources
-
-This page is based on:
-
-- the workflow documented in OpenSplitTime issue [#1159](https://github.com/SplitTime/OpenSplitTime/issues/1159){:target="_blank"}
-- RunSignup API documentation at [runsignup.com/API](https://runsignup.com/API){:target="_blank"}
-- RunSignup's getting started documentation for API access
+- [RunSignup API Documentation](https://runsignup.com/API){:target="_blank"}
+- [RunSignup API – Getting Started](https://runsignup.com/API/GettingStarted){:target="_blank"} — describes permanent keys for timers, partners, and affiliates
+- OpenSplitTime issue [#1159](https://github.com/SplitTime/OpenSplitTime/issues/1159){:target="_blank"} — original walkthrough of finding a race's API Keys accordion

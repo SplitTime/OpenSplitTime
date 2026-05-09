@@ -14,3 +14,11 @@
                         locals: {
                           connect_service_presenter: connect_service_presenter,
                         }) %>
+
+<% if connection.service_identifier == "runsignup" && connect_service_presenter.successful_connection? %>
+  <%= turbo_stream.update(dom_id(event_group, :field_mappings_card_slot),
+                          partial: "event_groups/connect_service/runsignup/field_mappings_card",
+                          locals: {
+                            connect_service_presenter: connect_service_presenter,
+                          }) %>
+<% end %>

@@ -3,6 +3,9 @@ class ConnectServicePresenter < BasePresenter
   INTERNAL_SERVICES = [
     "internal_lottery",
   ].freeze
+  FIELD_MAPPING_SERVICES = [
+    "runsignup",
+  ].freeze
 
   def initialize(event_group, service, view_context)
     @event_group = event_group
@@ -78,6 +81,30 @@ class ConnectServicePresenter < BasePresenter
     end
   end
 
+  def field_mappings_supported?
+    service_identifier.in?(FIELD_MAPPING_SERVICES)
+  end
+
+  # @return [Array<::Connectors::Runsignup::Models::Question>]
+  def race_questions
+    return [] if runsignup_race_id.blank?
+
+    ::Connectors::Runsignup::FetchRaceQuestions.perform(race_id: runsignup_race_id, user: current_user)
+  rescue ::Connectors::Errors::Base
+    []
+  end
+
+  # @return [Array<Hash{String => Object}>]
+  def field_mappings
+    @field_mappings ||= race_connection&.field_mappings || []
+  end
+
+  # @param [Integer] question_id
+  # @return [Hash{String => Object}, nil]
+  def field_mapping_for(question_id)
+    field_mappings.find { |m| m["source_question_id"] == question_id }
+  end
+
   private
 
   attr_reader :view_context
@@ -141,7 +168,14 @@ class ConnectServicePresenter < BasePresenter
   end
 
   def runsignup_race_id
-    event_group.connections.from_service(:runsignup).where(source_type: "Race").first&.source_id
+    race_connection&.source_id
+  end
+
+  def race_connection
+    return @race_connection if defined?(@race_connection)
+
+    @race_connection = event_group.connections.from_service(service_identifier)
+                                  .find_by(source_type: event_group_source_type)
   end
 
   def event_group_source_type

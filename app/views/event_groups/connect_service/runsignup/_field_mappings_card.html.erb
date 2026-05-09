@@ -1,0 +1,83 @@
+<%# locals: (connect_service_presenter:) %>
+
+<%= turbo_frame_tag dom_id(connect_service_presenter.event_group, :field_mappings_card) do %>
+  <div class="card my-3">
+    <div class="card-header">
+      <h4 class="mt-1">Field Mappings</h4>
+      <p class="text-muted small mb-0">
+        Map registration question responses to fields on each Effort. Multiple questions
+        mapped to <em>comments</em> are concatenated in mapping order.
+      </p>
+    </div>
+    <div class="card-body">
+      <% if connect_service_presenter.race_questions.empty? %>
+        <p class="text-muted mb-0">
+          No registration questions configured on this RunSignup race.
+        </p>
+      <% else %>
+        <%= form_with(
+              url: event_group_connect_service_field_mappings_path(connect_service_presenter.event_group, connect_service_presenter.service_identifier),
+              method: :patch,
+              data: { controller: "form-disable-submit" },
+            ) do |form| %>
+          <table class="table table-sm align-middle">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th style="width: 200px;">Destination</th>
+                <th>Override / Suppress (comments only)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% connect_service_presenter.race_questions.each_with_index do |question, index| %>
+                <% existing = connect_service_presenter.field_mapping_for(question.id) %>
+                <% destination = existing&.dig("destination") %>
+                <tr data-controller="field-mapping-row" data-field-mapping-row-comments-only-class-value="d-none">
+                  <td>
+                    <%= question.text %>
+                    <%= form.hidden_field "field_mappings[#{index}][source_question_id]", value: question.id %>
+                  </td>
+                  <td>
+                    <%= form.select "field_mappings[#{index}][destination]",
+                                    [
+                                      ["(don't sync)", ""],
+                                      ["comments", "comments"],
+                                      ["emergency_contact", "emergency_contact"],
+                                      ["emergency_phone", "emergency_phone"],
+                                    ],
+                                    { selected: destination },
+                                    {
+                                      class: "form-select form-select-sm",
+                                      data: { field_mapping_row_target: "destination", action: "change->field-mapping-row#destinationChanged" },
+                                    } %>
+                  </td>
+                  <td data-field-mapping-row-target="commentsOnly" class="<%= destination == "comments" ? "" : "d-none" %>">
+                    <div class="row g-2">
+                      <div class="col">
+                        <%= form.text_field "field_mappings[#{index}][value_when_present]",
+                                            value: existing&.dig("value_when_present"),
+                                            placeholder: "Override text (optional)",
+                                            class: "form-control form-control-sm" %>
+                      </div>
+                      <div class="col">
+                        <%= form.text_field "field_mappings[#{index}][suppress_when]",
+                                            value: existing&.dig("suppress_when"),
+                                            placeholder: "Suppress when response equals…",
+                                            class: "form-control form-control-sm" %>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <div class="text-end">
+            <%= form.button "Save mappings",
+                            class: "btn btn-primary",
+                            data: { turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: "Saving") } %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -5,7 +5,7 @@ export default class extends Controller {
   connect() {
     const controller = this
     const form = this.element
-    this._submitButton = form.querySelector("input[type='submit']")
+    this._submitButton = form.querySelector("input[type='submit'], button[type='submit']")
     if (!this._submitButton) { return }
 
     this.disableSubmitButton()

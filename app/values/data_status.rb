@@ -39,6 +39,7 @@ class DataStatus
 
   def self.reason_for(limits, seconds)
     return nil unless limits.present? && seconds
+    return "segment time is negative" if seconds.negative?
     return "segment time too fast" if seconds < limits[:low_questionable]
     return "segment time too slow" if seconds > limits[:high_questionable]
 

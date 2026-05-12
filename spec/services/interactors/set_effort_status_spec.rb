@@ -106,6 +106,17 @@ RSpec.describe Interactors::SetEffortStatus do
       end
     end
 
+    context "when a split_time arrives before its predecessor (negative segment time)" do
+      let(:split_time) { subject_split_times.second }
+      before { split_time.update(absolute_time: effort.event_start_time - 1.minute) }
+
+      it 'records status_reason "segment time is negative"' do
+        subject.perform
+        expect(split_time.data_status).to eq("bad")
+        expect(split_time.status_reason).to eq("segment time is negative")
+      end
+    end
+
     context "when a split_time arrives much later than expected" do
       let(:split_time) { subject_split_times.second }
       before { split_time.update(absolute_time: split_time.absolute_time + 24.hours) }

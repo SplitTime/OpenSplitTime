@@ -176,6 +176,10 @@ RSpec.describe DataStatus do
       expect(described_class.reason_for(limits, 50)).to eq("segment time too fast")
     end
 
+    it 'returns "segment time is negative" for a negative time' do
+      expect(described_class.reason_for(limits, -10)).to eq("segment time is negative")
+    end
+
     it 'returns "segment time too slow" for a questionable-high time' do
       expect(described_class.reason_for(limits, 350)).to eq("segment time too slow")
     end

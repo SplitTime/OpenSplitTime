@@ -35,6 +35,10 @@ class TimePredictor
     DataStatus.determine(limits, seconds)
   end
 
+  def data_status_reason(seconds)
+    DataStatus.reason_for(limits, seconds)
+  end
+
   private
 
   attr_reader :segment, :effort, :lap_splits, :completed_split_time, :calc_model, :similar_effort_ids, :times_container

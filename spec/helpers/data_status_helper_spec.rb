@@ -58,5 +58,23 @@ RSpec.describe DataStatusHelper do
         expect(result).to have_css("i[data-bs-original-title='Pace Appears Bad']")
       end
     end
+
+    context "when a reason option is provided" do
+      let(:status) { :questionable }
+      let(:options) { { reason: "segment time too slow" } }
+
+      it "appends the reason to the tooltip" do
+        expect(result).to have_css("i[data-bs-original-title='Time Appears Questionable: Segment Time Too Slow']")
+      end
+    end
+
+    context "when the reason option is blank" do
+      let(:status) { :bad }
+      let(:options) { { reason: "" } }
+
+      it "renders the tooltip without a trailing colon" do
+        expect(result).to have_css("i[data-bs-original-title='Time Appears Bad']")
+      end
+    end
   end
 end

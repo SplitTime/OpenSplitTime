@@ -9,13 +9,15 @@ module DataStatusHelper
     return time if attributes.nil?
 
     data_type = options[:data_type] || :time
-    tooltip_title = "#{data_type} appears #{status}".titleize
+    reason = options[:reason]
+    tooltip_title = "#{data_type} appears #{status}"
+    tooltip_title += ": #{reason}" if reason.present?
 
     content_tag(:span, class: "text-nowrap") do
       fa_icon(attributes[:icon],
               class: attributes[:class],
               text: time,
-              data: { controller: :tooltip, bs_original_title: tooltip_title })
+              data: { controller: :tooltip, bs_original_title: tooltip_title.titleize })
     end
   end
 end

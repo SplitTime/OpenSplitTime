@@ -77,6 +77,11 @@ RSpec.describe Interactors::SetEffortStatus do
         expect(subject_split_times.map(&:data_status)).to eq(%w[good questionable] + (["good"] * 10))
         expect(effort.data_status).to eq("questionable")
       end
+
+      it "records a status_reason on the questionable split_time" do
+        subject.perform
+        expect(split_time.status_reason).to eq("segment time too fast")
+      end
     end
 
     context "when one split_time is questionable and one is bad" do
@@ -93,6 +98,34 @@ RSpec.describe Interactors::SetEffortStatus do
         expect(subject_split_times.map(&:data_status)).to eq(%w[good bad questionable] + (["good"] * 9))
         expect(effort.data_status).to eq("bad")
       end
+
+      it "records the appropriate status_reason for each flagged split_time" do
+        subject.perform
+        expect(split_time_1.status_reason).to eq("segment time too fast")
+        expect(split_time_2.status_reason).to eq("segment time too fast")
+      end
+    end
+
+    context "when a split_time arrives before its predecessor (negative segment time)" do
+      let(:split_time) { subject_split_times.second }
+      before { split_time.update(absolute_time: effort.event_start_time - 1.minute) }
+
+      it 'records status_reason "segment time is negative"' do
+        subject.perform
+        expect(split_time.data_status).to eq("bad")
+        expect(split_time.status_reason).to eq("segment time is negative")
+      end
+    end
+
+    context "when a split_time arrives much later than expected" do
+      let(:split_time) { subject_split_times.second }
+      before { split_time.update(absolute_time: split_time.absolute_time + 24.hours) }
+
+      it 'records status_reason "segment time too slow"' do
+        subject.perform
+        expect(split_time.data_status).to be_in(%w[bad questionable])
+        expect(split_time.status_reason).to eq("segment time too slow")
+      end
     end
 
     context "when a split_time has stopped_here: true" do
@@ -102,6 +135,11 @@ RSpec.describe Interactors::SetEffortStatus do
         subject.perform
         expect(subject_split_times.map(&:data_status)).to eq(%w[good good good] + (["questionable"] * 9))
         expect(effort.data_status).to eq("questionable")
+      end
+
+      it 'records status_reason "recorded after stop flag" on the post-stop split_times' do
+        subject.perform
+        expect(subject_split_times.map(&:status_reason)).to eq([nil, nil, nil] + (["recorded after stop flag"] * 9))
       end
     end
 

@@ -30,13 +30,18 @@ module Interactors
 
     def set_split_time_status(split_time)
       set_subject_attributes(split_time)
-      subject_split_time.data_status = if beyond_drop?
-                                         "questionable"
-                                       elsif subject_segment.zero_start?
-                                         "good"
-                                       else
-                                         time_predictor.data_status(subject_segment_time)
-                                       end
+
+      if beyond_drop?
+        subject_split_time.data_status = "questionable"
+        subject_split_time.status_reason = "recorded after stop flag"
+      elsif subject_segment.zero_start?
+        subject_split_time.data_status = "good"
+        subject_split_time.status_reason = nil
+      else
+        predictor = time_predictor
+        subject_split_time.data_status = predictor.data_status(subject_segment_time)
+        subject_split_time.status_reason = predictor.data_status_reason(subject_segment_time)
+      end
     end
 
     def set_effort_status

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_06_220407) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_12_213336) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -840,6 +840,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_06_220407) do
     t.boolean "pacer"
     t.string "remarks"
     t.integer "split_id", null: false
+    t.string "status_reason"
     t.boolean "stopped_here", default: false
     t.integer "sub_split_bitkey", null: false
     t.datetime "updated_at", precision: nil, null: false

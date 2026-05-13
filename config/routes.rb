@@ -207,6 +207,8 @@ Rails.application.routes.draw do
     collection { get :csv_templates }
   end
 
+  resources :organization_usages, only: [:index, :show], path: "organization-usage"
+
   resources :organizations do
     resources :course_groups, except: [:index] do
       resources :best_efforts, only: [:index], controller: "course_group_best_efforts" do

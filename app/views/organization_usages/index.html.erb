@@ -1,0 +1,62 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Organization usage" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <div class="h1 fw-bold">Organization Usage</div>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item active">Organization Usage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <p class="text-muted">
+    Organizations with at least one real event — public event group containing at least one started effort.
+    Sorted by total real efforts (descending).
+  </p>
+
+  <% [["For-Profit", @presenter.for_profit_rows], ["Non-Profit", @presenter.non_profit_rows]].each do |heading, rows| %>
+    <section class="mb-5">
+      <h2 class="h4 fw-bold mt-4"><%= heading %> <span class="text-muted">(<%= rows.size %>)</span></h2>
+
+      <% if rows.empty? %>
+        <p class="text-muted fst-italic">No organizations in this category.</p>
+      <% else %>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Organization</th>
+              <th class="text-end">Event Groups</th>
+              <th class="text-end">Events</th>
+              <th class="text-end">Efforts</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% rows.each do |row| %>
+              <tr>
+                <td class="fw-bold">
+                  <%= link_to row.organization.name, organization_usage_path(row.organization) %>
+                </td>
+                <td class="text-end"><%= row.event_group_count %></td>
+                <td class="text-end"><%= row.event_count %></td>
+                <td class="text-end fw-bold"><%= row.effort_count %></td>
+                <td class="text-muted">
+                  <%= row.organization.owner_full_name.presence || row.organization.owner_email %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </section>
+  <% end %>
+</article>

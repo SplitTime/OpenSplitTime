@@ -135,7 +135,7 @@ jobs:
               "spec/system/{devise,event_group_construction,course_groups,courses,effort_audit,effort_edit_split_times,effort_show,event_group_roster,event_groups,imports,organization,raw_times,results,subscriptions,user_settings}/**/*_spec.rb"
     services:
       postgres:
-        image: postgres:17
+        image: postgres:17-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres

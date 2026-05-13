@@ -49,6 +49,26 @@ RSpec.describe OrganizationUsageShowPresenter do
     end
   end
 
+  describe "#sorted_years" do
+    it "returns the sorted union of all years that have efforts" do
+      presenter = described_class.new(hardrock)
+
+      expect(presenter.sorted_years).to eq(presenter.sorted_years.sort.uniq)
+      expect(presenter.sorted_years).to all(be_an(Integer))
+    end
+  end
+
+  describe "#course_rows" do
+    it "returns one row per course with a year_counts hash and a total" do
+      presenter = described_class.new(hardrock)
+
+      presenter.course_rows.each do |row|
+        expect(row).to include(:name, :year_counts, :total)
+        expect(row[:total]).to eq(row[:year_counts].values.sum)
+      end
+    end
+  end
+
   describe "#total_efforts" do
     it "counts only started efforts" do
       Effort.joins(event: :event_group)

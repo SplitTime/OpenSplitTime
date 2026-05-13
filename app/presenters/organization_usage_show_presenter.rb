@@ -21,8 +21,11 @@ class OrganizationUsageShowPresenter
     breakdown.values.sum { |years| years.values.sum }
   end
 
+  def sorted_years
+    @sorted_years ||= breakdown.values.flat_map(&:keys).uniq.sort
+  end
+
   def chart_series
-    sorted_years = breakdown.values.flat_map(&:keys).uniq.sort
     breakdown.map do |(_course_id, course_name), years|
       data = sorted_years.to_h { |year| [year.to_s, years.fetch(year, 0)] }
       { name: course_name, data: data }
@@ -31,7 +34,7 @@ class OrganizationUsageShowPresenter
 
   def course_rows
     breakdown.map do |(_course_id, course_name), years|
-      { name: course_name, years: years.sort.to_h, total: years.values.sum }
+      { name: course_name, year_counts: years, total: years.values.sum }
     end
   end
 

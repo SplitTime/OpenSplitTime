@@ -60,26 +60,33 @@
     </div>
 
     <h2 class="h4 fw-bold">Breakdown by course</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Course</th>
-          <th>Year &times; Efforts</th>
-          <th class="text-end">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @presenter.course_rows.each do |row| %>
+    <div class="table-responsive">
+      <table class="table table-striped table-sm align-middle">
+        <thead>
           <tr>
-            <td class="fw-bold"><%= row[:name] %></td>
-            <td class="text-muted small">
-              <%= row[:years].map { |year, count| "#{year}: #{count}" }.join(" • ") %>
-            </td>
-            <td class="text-end fw-bold"><%= row[:total] %></td>
+            <th class="sticky-start bg-body">Course</th>
+            <% @presenter.sorted_years.each do |year| %>
+              <th class="text-end"><%= year %></th>
+            <% end %>
+            <th class="text-end">Total</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% @presenter.course_rows.each do |row| %>
+            <tr>
+              <td class="fw-bold sticky-start bg-body"><%= row[:name] %></td>
+              <% @presenter.sorted_years.each do |year| %>
+                <% count = row[:year_counts][year] %>
+                <td class="text-end <%= "text-muted" if count.nil? || count.zero? %>">
+                  <%= count.to_i.positive? ? count : "–" %>
+                </td>
+              <% end %>
+              <td class="text-end fw-bold"><%= row[:total] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% else %>
     <p class="text-muted fst-italic">No real efforts recorded for this organization.</p>
   <% end %>

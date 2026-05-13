@@ -4,7 +4,7 @@ RSpec.describe OrganizationUsageShowPresenter do
   let(:hardrock) { organizations(:hardrock) }
 
   describe "#chart_series" do
-    it "groups counts by event group and year" do
+    it "groups counts by course and year" do
       presenter = described_class.new(hardrock)
 
       expect(presenter.chart_series).not_to be_empty
@@ -13,6 +13,21 @@ RSpec.describe OrganizationUsageShowPresenter do
         expect(series[:data]).not_to be_empty
         series[:data].each_key { |year| expect(year).to be_an(Integer) }
       end
+    end
+
+    it "names each series after the course" do
+      presenter = described_class.new(hardrock)
+      course_names = hardrock.event_groups.flat_map { |eg| eg.events.map { |e| e.course.name } }.uniq
+
+      expect(presenter.chart_series.pluck(:name)).to all(be_in(course_names))
+    end
+
+    it "combines multiple years of the same course into one series" do
+      presenter = described_class.new(hardrock)
+
+      # Hardrock CW course runs in both 2014 and 2016 under the same Course record
+      multi_year_series = presenter.chart_series.find { |s| s[:data].keys.size >= 2 }
+      expect(multi_year_series).not_to be_nil
     end
 
     it "is empty when all event groups are concealed" do

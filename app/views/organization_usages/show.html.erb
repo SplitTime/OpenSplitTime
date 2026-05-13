@@ -59,17 +59,17 @@
       <%= line_chart @presenter.chart_series, library: { plugins: { legend: { position: "bottom" } } } %>
     </div>
 
-    <h2 class="h4 fw-bold">Breakdown</h2>
+    <h2 class="h4 fw-bold">Breakdown by course</h2>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Event Group</th>
+          <th>Course</th>
           <th>Year &times; Efforts</th>
           <th class="text-end">Total</th>
         </tr>
       </thead>
       <tbody>
-        <% @presenter.event_group_rows.each do |row| %>
+        <% @presenter.course_rows.each do |row| %>
           <tr>
             <td class="fw-bold"><%= row[:name] %></td>
             <td class="text-muted small">

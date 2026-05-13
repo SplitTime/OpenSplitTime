@@ -95,6 +95,25 @@ RSpec.describe "OrganizationUsagesController" do
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("No real efforts recorded")
       end
+
+      it "renders the donations section with recorded donations" do
+        get organization_usage_path(hardrock)
+
+        expect(response.body).to include("Donations")
+        expect(response.body).to include("Total Donated")
+        # hardrock_check_2025 fixture: 500.00 check
+        expect(response.body).to include("$500.00")
+        expect(response.body).to include("Check")
+      end
+
+      it "renders the donations empty state with a link to madmin" do
+        org_without_donations = organizations(:rattlesnake_ramble)
+
+        get organization_usage_path(org_without_donations)
+
+        expect(response.body).to include("No donations recorded")
+        expect(response.body).to include(madmin_monetary_donations_path)
+      end
     end
   end
 end

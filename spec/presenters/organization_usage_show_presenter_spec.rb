@@ -86,4 +86,37 @@ RSpec.describe OrganizationUsageShowPresenter do
       expect(presenter.total_efforts).to eq(chart_sum)
     end
   end
+
+  describe "#donations" do
+    it "returns the org's monetary_donations sorted by received_on descending" do
+      presenter = described_class.new(hardrock)
+
+      expect(presenter.donations).to eq(hardrock.monetary_donations.order(received_on: :desc))
+      expect(presenter.donations.map(&:received_on)).to eq(presenter.donations.map(&:received_on).sort.reverse)
+    end
+
+    it "is empty for an organization with no donations" do
+      orphan_org = Organization.create!(name: "No Donations Org", created_by: users(:admin_user).id, concealed: false)
+      presenter = described_class.new(orphan_org)
+
+      expect(presenter.donations).to be_empty
+    end
+  end
+
+  describe "#total_donated" do
+    it "sums the donation amounts" do
+      presenter = described_class.new(hardrock)
+      expected = hardrock.monetary_donations.sum(:amount)
+
+      expect(presenter.total_donated).to eq(expected)
+      expect(expected).to be > 0
+    end
+
+    it "returns zero for an organization with no donations" do
+      orphan_org = Organization.create!(name: "No Donations Org", created_by: users(:admin_user).id, concealed: false)
+      presenter = described_class.new(orphan_org)
+
+      expect(presenter.total_donated).to eq(0)
+    end
+  end
 end

@@ -11,7 +11,8 @@ RSpec.describe OrganizationUsageShowPresenter do
       presenter.chart_series.each do |series|
         expect(series).to include(:name, :data)
         expect(series[:data]).not_to be_empty
-        series[:data].each_key { |year| expect(year).to be_an(Integer) }
+        # Years are stringified so Chart.js treats the x-axis as discrete categories.
+        series[:data].each_key { |year| expect(year).to match(/\A\d{4}\z/) }
       end
     end
 

@@ -22,7 +22,9 @@ class OrganizationUsageShowPresenter
   end
 
   def chart_series
-    breakdown.map { |(_course_id, course_name), years| { name: course_name, data: years.sort.to_h } }
+    breakdown.map do |(_course_id, course_name), years|
+      { name: course_name, data: years.sort.to_h.transform_keys(&:to_s) }
+    end
   end
 
   def course_rows

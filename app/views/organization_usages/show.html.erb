@@ -56,7 +56,7 @@
   <% if @presenter.chart_series.any? %>
     <h2 class="h4 fw-bold">Efforts by year</h2>
     <div class="mb-4">
-      <%= line_chart @presenter.chart_series, library: { plugins: { legend: { position: "bottom" } } } %>
+      <%= column_chart @presenter.chart_series, stacked: true, library: { plugins: { legend: { position: "bottom" } } } %>
     </div>
 
     <h2 class="h4 fw-bold">Breakdown by course</h2>

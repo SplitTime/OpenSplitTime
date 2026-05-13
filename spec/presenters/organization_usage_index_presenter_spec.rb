@@ -49,5 +49,16 @@ RSpec.describe OrganizationUsageIndexPresenter do
       expect(row).not_to be_nil
       expect(row.effort_count).to eq(total_started)
     end
+
+    it "exposes last_active_year as the most recent year of started efforts" do
+      hardrock = organizations(:hardrock)
+      expected_year = Event.joins(:event_group, :efforts)
+                           .where(event_groups: { organization_id: hardrock.id, concealed: false }, efforts: { started: true })
+                           .maximum("EXTRACT(YEAR FROM events.scheduled_start_time)")
+                           .to_i
+
+      row = presenter.for_profit_rows.find { |r| r.organization.id == hardrock.id }
+      expect(row.last_active_year).to eq(expected_year)
+    end
   end
 end

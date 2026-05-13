@@ -37,7 +37,9 @@
               <th class="text-end">Event Groups</th>
               <th class="text-end">Events</th>
               <th class="text-end">Efforts</th>
+              <th class="text-end">Last Active</th>
               <th>Owner</th>
+              <th>Owner Email</th>
             </tr>
           </thead>
           <tbody>
@@ -49,8 +51,12 @@
                 <td class="text-end"><%= row.event_group_count %></td>
                 <td class="text-end"><%= row.event_count %></td>
                 <td class="text-end fw-bold"><%= row.effort_count %></td>
+                <td class="text-end"><%= row.last_active_year %></td>
+                <td class="text-muted"><%= row.organization.owner_full_name %></td>
                 <td class="text-muted">
-                  <%= row.organization.owner_full_name.presence || row.organization.owner_email %>
+                  <% if row.organization.owner_email.present? %>
+                    <%= mail_to row.organization.owner_email %>
+                  <% end %>
                 </td>
               </tr>
             <% end %>

@@ -27,7 +27,7 @@
 
 <article class="ost-article container">
   <div class="row mb-4">
-    <div class="col">
+    <div class="col-md-3">
       <div class="card">
         <div class="card-body">
           <div class="text-muted small text-uppercase">Event Groups</div>
@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col-md-3">
       <div class="card">
         <div class="card-body">
           <div class="text-muted small text-uppercase">Events</div>
@@ -43,11 +43,19 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col-md-3">
       <div class="card">
         <div class="card-body">
           <div class="text-muted small text-uppercase">Started Efforts</div>
           <div class="h3 fw-bold mb-0"><%= @presenter.total_efforts %></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-muted small text-uppercase">Total Donated</div>
+          <div class="h3 fw-bold mb-0"><%= number_to_currency(@presenter.total_donated) %></div>
         </div>
       </div>
     </div>
@@ -84,5 +92,34 @@
     </table>
   <% else %>
     <p class="text-muted fst-italic">No real efforts recorded for this organization.</p>
+  <% end %>
+
+  <h2 class="h4 fw-bold mt-4">Donations</h2>
+  <% if @presenter.donations.any? %>
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th class="text-end">Amount</th>
+          <th>Source</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @presenter.donations.each do |donation| %>
+          <tr>
+            <td><%= donation.received_on.iso8601 %></td>
+            <td class="text-end fw-bold"><%= number_to_currency(donation.amount) %></td>
+            <td><span class="badge bg-secondary"><%= donation.source.humanize %></span></td>
+            <td class="text-muted small"><%= donation.note %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-muted fst-italic">
+      No donations recorded —
+      <%= link_to "record one in the admin area", madmin_monetary_donations_path %>.
+    </p>
   <% end %>
 </article>

@@ -15,6 +15,7 @@ class Organization < ApplicationRecord
   has_many :event_groups, dependent: :destroy
   has_many :historical_facts, dependent: :destroy
   has_many :lotteries, dependent: :destroy
+  has_many :monetary_donations, dependent: :destroy
   has_many :stewardships, dependent: :destroy
   has_many :stewards, through: :stewardships, source: :user
   has_many :event_series, dependent: :destroy
@@ -23,13 +24,17 @@ class Organization < ApplicationRecord
   scope :owned_by, ->(user) { where(created_by: user.id) }
   scope :authorized_for, lambda { |user|
     left_joins(:stewardships)
-        .where("organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
-        .distinct
+      .where("organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
+      .distinct
   }
   scope :visible_or_authorized_for, lambda { |user|
     left_joins(:stewardships)
-        .where("organizations.concealed is not true or organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
-        .distinct
+      .where(
+        "organizations.concealed is not true or organizations.created_by = ? or stewardships.user_id = ?",
+        user.id,
+        user.id,
+      )
+      .distinct
   }
   scope :with_visible_event_count, lambda {
     left_joins(event_groups: :events)
@@ -39,8 +44,8 @@ class Organization < ApplicationRecord
 
   alias_attribute :owner_id, :created_by
 
-  validates_presence_of :name
-  validates_uniqueness_of :name, case_sensitive: false
+  validates :name, presence: true
+  validates :name, uniqueness: { case_sensitive: false } # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates_with OwnerExistsValidator
 
   def to_s
@@ -56,7 +61,9 @@ class Organization < ApplicationRecord
   end
 
   def owner
-    @owner ||= User.find_by(id: owner_id)
+    return @owner if defined?(@owner)
+
+    @owner = User.find_by(id: owner_id)
   end
 
   def owner_full_name

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_13_152941) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_13_211837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -496,6 +496,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_152941) do
     t.index ["lottery_id", "reference_number"], name: "index_lottery_tickets_on_lottery_id_and_reference_number", unique: true
     t.index ["lottery_id"], name: "index_lottery_tickets_on_lottery_id"
     t.index ["reference_number"], name: "index_lottery_tickets_on_reference_number"
+  end
+
+  create_table "monetary_donations", force: :cascade do |t|
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.text "note"
+    t.bigint "organization_id", null: false
+    t.date "received_on", null: false
+    t.string "source", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "received_on"], name: "index_monetary_donations_on_organization_id_and_received_on"
+    t.index ["organization_id"], name: "index_monetary_donations_on_organization_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -989,6 +1001,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_152941) do
   add_foreign_key "lottery_simulations", "lottery_simulation_runs"
   add_foreign_key "lottery_tickets", "lotteries"
   add_foreign_key "lottery_tickets", "lottery_entrants"
+  add_foreign_key "monetary_donations", "organizations"
   add_foreign_key "notifications", "efforts"
   add_foreign_key "people", "users"
   add_foreign_key "projection_assessment_runs", "events"

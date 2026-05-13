@@ -1,0 +1,86 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: #{@organization.name} usage" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <div class="h1 fw-bold">
+            <%= @organization.name %>
+            <% if @organization.non_profit? %>
+              <span class="badge bg-success align-middle">Non-Profit</span>
+            <% else %>
+              <span class="badge bg-primary align-middle">For-Profit</span>
+            <% end %>
+          </div>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organization Usage", organization_usages_path %></li>
+            <li class="breadcrumb-item active"><%= @organization.name %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <div class="row mb-4">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-muted small text-uppercase">Event Groups</div>
+          <div class="h3 fw-bold mb-0"><%= @presenter.total_event_groups %></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-muted small text-uppercase">Events</div>
+          <div class="h3 fw-bold mb-0"><%= @presenter.total_events %></div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-muted small text-uppercase">Started Efforts</div>
+          <div class="h3 fw-bold mb-0"><%= @presenter.total_efforts %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @presenter.chart_series.any? %>
+    <h2 class="h4 fw-bold">Efforts by year</h2>
+    <div class="mb-4">
+      <%= line_chart @presenter.chart_series, library: { plugins: { legend: { position: "bottom" } } } %>
+    </div>
+
+    <h2 class="h4 fw-bold">Breakdown</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Event Group</th>
+          <th>Year &times; Efforts</th>
+          <th class="text-end">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @presenter.event_group_rows.each do |row| %>
+          <tr>
+            <td class="fw-bold"><%= row[:name] %></td>
+            <td class="text-muted small">
+              <%= row[:years].map { |year, count| "#{year}: #{count}" }.join(" • ") %>
+            </td>
+            <td class="text-end fw-bold"><%= row[:total] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-muted fst-italic">No real efforts recorded for this organization.</p>
+  <% end %>
+</article>

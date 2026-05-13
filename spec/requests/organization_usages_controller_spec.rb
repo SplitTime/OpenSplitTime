@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Madmin::OrganizationUsagesController" do
+RSpec.describe "OrganizationUsagesController" do
   include Warden::Test::Helpers
 
   let(:admin_user) { users(:admin_user) }
@@ -8,15 +8,24 @@ RSpec.describe "Madmin::OrganizationUsagesController" do
 
   after { Warden.test_reset! }
 
-  describe "GET /madmin/organization-usage" do
+  describe "GET /organization-usage" do
+    context "when not signed in" do
+      it "redirects away" do
+        get organization_usages_path
+
+        expect(response).to have_http_status(:redirect)
+        expect(response.location).not_to include("/organization-usage")
+      end
+    end
+
     context "when signed in as a non-admin" do
       before { login_as non_admin_user, scope: :user }
 
-      it "redirects with an unauthorized alert" do
-        get madmin_organization_usages_path
+      it "redirects with an access-denied alert" do
+        get organization_usages_path
 
-        expect(response).to redirect_to("/")
-        expect(flash[:alert]).to eq("Not authorized.")
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq("Access denied.")
       end
     end
 
@@ -24,18 +33,17 @@ RSpec.describe "Madmin::OrganizationUsagesController" do
       before { login_as admin_user, scope: :user }
 
       it "renders successfully" do
-        get madmin_organization_usages_path
+        get organization_usages_path
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("Organization Usage")
       end
 
       it "lists organizations under both For-Profit and Non-Profit headings" do
-        get madmin_organization_usages_path
+        get organization_usages_path
 
         expect(response.body).to include("For-Profit")
         expect(response.body).to include("Non-Profit")
-        # Running Up For Air is the lone non_profit: true fixture
         non_profit_half = response.body.split("Non-Profit", 2).last
         expect(non_profit_half).to include("Running Up For Air")
       end
@@ -47,24 +55,24 @@ RSpec.describe "Madmin::OrganizationUsagesController" do
           concealed: false,
         )
 
-        get madmin_organization_usages_path
+        get organization_usages_path
 
         expect(response.body).not_to include(empty_org.name)
       end
     end
   end
 
-  describe "GET /madmin/organization-usage/:id" do
+  describe "GET /organization-usage/:id" do
     let(:hardrock) { organizations(:hardrock) }
 
     context "when signed in as a non-admin" do
       before { login_as non_admin_user, scope: :user }
 
-      it "redirects with an unauthorized alert" do
-        get madmin_organization_usage_path(hardrock)
+      it "redirects with an access-denied alert" do
+        get organization_usage_path(hardrock)
 
-        expect(response).to redirect_to("/")
-        expect(flash[:alert]).to eq("Not authorized.")
+        expect(response).to redirect_to(root_path)
+        expect(flash[:alert]).to eq("Access denied.")
       end
     end
 
@@ -72,7 +80,7 @@ RSpec.describe "Madmin::OrganizationUsagesController" do
       before { login_as admin_user, scope: :user }
 
       it "renders the organization name and a chart" do
-        get madmin_organization_usage_path(hardrock)
+        get organization_usage_path(hardrock)
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("Hardrock")
@@ -82,7 +90,7 @@ RSpec.describe "Madmin::OrganizationUsagesController" do
       it "shows the empty-state message when the org has no real efforts" do
         hardrock.event_groups.update_all(concealed: true)
 
-        get madmin_organization_usage_path(hardrock)
+        get organization_usage_path(hardrock)
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("No real efforts recorded")

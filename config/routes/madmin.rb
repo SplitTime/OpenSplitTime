@@ -60,7 +60,6 @@ namespace :madmin do
   resources :results_categories
   resources :raw_times
   resources :courses
-  resources :organization_usages, only: [:index, :show], path: "organization-usage"
   get "dashboard/timeout", to: "dashboard#timeout"
   root to: "dashboard#show"
 end

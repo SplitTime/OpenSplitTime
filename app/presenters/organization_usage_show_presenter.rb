@@ -21,14 +21,6 @@ class OrganizationUsageShowPresenter
     breakdown.values.sum { |years| years.values.sum }
   end
 
-  def total_donated
-    donations.sum(:amount)
-  end
-
-  def donations
-    @donations ||= organization.monetary_donations.order(received_on: :desc)
-  end
-
   def sorted_years
     @sorted_years ||= breakdown.values.flat_map(&:keys).uniq.sort
   end

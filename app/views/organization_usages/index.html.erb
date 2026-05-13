@@ -38,6 +38,7 @@
               <th class="text-end">Events</th>
               <th class="text-end">Efforts</th>
               <th class="text-end">Last Active</th>
+              <th class="text-end">Total Donated</th>
               <th>Owner</th>
               <th>Owner Email</th>
             </tr>
@@ -52,6 +53,9 @@
                 <td class="text-end"><%= row.event_count %></td>
                 <td class="text-end fw-bold"><%= row.effort_count %></td>
                 <td class="text-end"><%= row.last_active_year %></td>
+                <td class="text-end <%= "text-muted" if row.total_donated.to_d.zero? %>">
+                  <%= number_to_currency(row.total_donated) %>
+                </td>
                 <td class="text-muted"><%= row.organization.owner_full_name %></td>
                 <td class="text-muted">
                   <% if row.organization.owner_email.present? %>

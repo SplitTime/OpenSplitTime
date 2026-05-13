@@ -60,5 +60,24 @@ RSpec.describe OrganizationUsageIndexPresenter do
       row = presenter.for_profit_rows.find { |r| r.organization.id == hardrock.id }
       expect(row.last_active_year).to eq(expected_year)
     end
+
+    it "exposes total_donated as the sum of monetary_donations amounts" do
+      hardrock = organizations(:hardrock)
+      expected_total = hardrock.monetary_donations.sum(:amount)
+
+      row = presenter.for_profit_rows.find { |r| r.organization.id == hardrock.id }
+      expect(row.total_donated).to eq(expected_total)
+      expect(expected_total).to be > 0
+    end
+
+    it "returns zero total_donated for an org with no donations" do
+      # rattlesnake_ramble has no fixture donations but no real efforts either,
+      # so confirm via dirty_30_running which has efforts but no donations.
+      dirty_30 = organizations(:dirty_30_running)
+      row = presenter.for_profit_rows.find { |r| r.organization.id == dirty_30.id }
+
+      expect(row).not_to be_nil
+      expect(row.total_donated).to eq(0)
+    end
   end
 end

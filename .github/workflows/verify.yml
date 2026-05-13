@@ -12,23 +12,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Capture runner image + CPU fingerprint for cache key
-        id: runner-image
-        # Some gems (notably smarter_csv 1.15+) compile their C extension with
-        # -march=native, baking in instruction-set extensions like AVX2/AVX512
-        # from the build host. GitHub's ubuntu-latest pool spans mixed Intel /
-        # AMD CPUs, so a binary cached on one runner can SIGILL on another with
-        # different flags. Including a hash of /proc/cpuinfo flags forces a
-        # rebuild whenever the CPU's instruction set changes.
-        run: |
-          cpu_flags=$(grep '^flags' /proc/cpuinfo | head -1 | sha256sum | cut -c1-8)
-          echo "fingerprint=${ImageOS}-${ImageVersion}-cpu${cpu_flags}" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-          cache-version: ${{ steps.runner-image.outputs.fingerprint }}
+      - name: Setup CI environment
+        uses: ./.github/actions/setup-ci
 
       - name: Setup Node
         uses: actions/setup-node@v5
@@ -150,7 +135,7 @@ jobs:
               "spec/system/{devise,event_group_construction,course_groups,courses,effort_audit,effort_edit_split_times,effort_show,event_group_roster,event_groups,imports,organization,raw_times,results,subscriptions,user_settings}/**/*_spec.rb"
     services:
       postgres:
-        image: postgres:17
+        image: postgres:17-alpine
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -166,26 +151,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Capture runner image + CPU fingerprint for cache key
-        id: runner-image
-        # Some gems (notably smarter_csv 1.15+) compile their C extension with
-        # -march=native, baking in instruction-set extensions like AVX2/AVX512
-        # from the build host. GitHub's ubuntu-latest pool spans mixed Intel /
-        # AMD CPUs, so a binary cached on one runner can SIGILL on another with
-        # different flags. Including a hash of /proc/cpuinfo flags forces a
-        # rebuild whenever the CPU's instruction set changes.
-        run: |
-          cpu_flags=$(grep '^flags' /proc/cpuinfo | head -1 | sha256sum | cut -c1-8)
-          echo "fingerprint=${ImageOS}-${ImageVersion}-cpu${cpu_flags}" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
+      - name: Setup CI environment
+        uses: ./.github/actions/setup-ci
         with:
-          bundler-cache: true
-          cache-version: ${{ steps.runner-image.outputs.fingerprint }}
-
-      - name: Install libvips
-        run: sudo apt-get install -y --no-install-recommends libvips42
+          install-libvips: 'true'
 
       - name: Download assets
         uses: actions/download-artifact@v8

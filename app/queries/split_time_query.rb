@@ -11,18 +11,18 @@ class SplitTimeQuery < BaseQuery
     end_bitkey = segment.end_bitkey.to_i
     focus_clause = effort_ids.present? ? "st1.effort_id IN (#{sql_safe_integer_list(effort_ids)})" : "true"
 
-    query = <<-SQL
+    query = <<~SQL.squish
       with segment_times as
            (select extract(epoch from(st2.absolute_time - st1.absolute_time)) as seconds
             from (select st.effort_id, st.absolute_time
-                 from split_times st 
+                 from split_times st
                  where st.lap = #{begin_lap}
                    and st.split_id = #{begin_id}
                    and st.sub_split_bitkey = #{begin_bitkey}
                    and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
                  as st1,
                  (select st.effort_id, st.absolute_time
-                 from split_times st 
+                 from split_times st
                  where st.lap = #{end_lap}
                    and st.split_id = #{end_id}
                    and st.sub_split_bitkey = #{end_bitkey}
@@ -34,19 +34,19 @@ class SplitTimeQuery < BaseQuery
           (select percentile_cont(0.25) within group (order by seconds) as q1,
                   percentile_cont(0.75) within group (order by seconds) as q3
           from segment_times),
-              
+
         iqr_stats as
           (select q1,
-                  q3, 
+                  q3,
                   q3 - q1 as iqr
           from quartiles),
-          
+
         bounds as
           (select q1 - (iqr * 1.5) as lower_bound,
                   q3 + (iqr * 1.5) as upper_bound
           from iqr_stats)
 
-      select count(seconds) as effort_count, 
+      select count(seconds) as effort_count,
              round(avg(seconds)) as average
       from segment_times
       where seconds between (select lower_bound from bounds) and (select upper_bound from bounds)
@@ -60,17 +60,17 @@ class SplitTimeQuery < BaseQuery
   def self.with_time_point_rank(existing_scope)
     existing_scope_subquery = sql_for_existing_scope(existing_scope)
 
-    <<-SQL.squish
+    <<~SQL.squish
       (with existing_scope as (#{existing_scope_subquery}),
 
-          split_times_scoped as 
+          split_times_scoped as
               (select split_times.*
                from split_times
                inner join existing_scope on existing_scope.id = split_times.id),
 
           event_ids as
-             (select distinct event_id 
-              from split_times_scoped 
+             (select distinct event_id
+              from split_times_scoped
                 join efforts on efforts.id = split_times_scoped.effort_id),
 
           start_times as
@@ -79,7 +79,7 @@ class SplitTimeQuery < BaseQuery
                   join efforts on efforts.id = split_times.effort_id
                   join splits on splits.id = split_times.split_id
                where efforts.event_id in (select event_id from event_ids)
-                 and split_times.lap = 1 
+                 and split_times.lap = 1
                  and splits.kind = #{Split.kinds[:start]}
                  and split_times.sub_split_bitkey = #{SubSplit::IN_BITKEY}),
 
@@ -91,14 +91,14 @@ class SplitTimeQuery < BaseQuery
                   join splits on splits.id = ast.split_id
                   join start_times on start_times.effort_id = ast.effort_id
                where efforts.event_id in (select event_id from event_ids)),
-            
+
           ranking_subquery as
               (select effort_id, lap, split_id, sub_split_bitkey, distance_from_start,
                   case when distance_from_start = 0 then null else
-                       row_number() over (partition by lap, split_id, sub_split_bitkey 
+                       row_number() over (partition by lap, split_id, sub_split_bitkey
                                           order by lap, distance_from_start, sub_split_bitkey, elapsed_time) end as time_point_rank,
                     case when distance_from_start = 0 then null else
-                       array_agg(effort_id) over (partition by lap, split_id, sub_split_bitkey 
+                       array_agg(effort_id) over (partition by lap, split_id, sub_split_bitkey
                                                   order by lap, distance_from_start, sub_split_bitkey, elapsed_time
                                                   rows between unbounded preceding and 1 preceding) end as effort_ids_ahead
                from elapsed_times)
@@ -117,7 +117,7 @@ class SplitTimeQuery < BaseQuery
     home_time_zone = args[:home_time_zone]
     time_zone = ActiveSupport::TimeZone.find_tzinfo(home_time_zone).identifier
 
-    query = <<~SQL
+    query = <<~SQL.squish
       set timezone='#{time_zone}';
 
       with start_split_times as
@@ -126,7 +126,7 @@ class SplitTimeQuery < BaseQuery
          inner join splits on splits.id = split_times.split_id
          where lap = 1 and kind = 0 and effort_id in (select id from efforts where #{scope})
          order by effort_id)
-     
+
       select st.id,
              st.effort_id,
              st.lap,
@@ -135,14 +135,15 @@ class SplitTimeQuery < BaseQuery
              st.stopped_here,
              st.pacer,
              st.data_status as data_status_numeric,
+             st.status_reason,
              st.absolute_time as absolute_time_string,
              trim(both '"' from to_json(st.absolute_time at time zone 'UTC')::text) as absolute_time_local_string,
              extract(epoch from (st.absolute_time - sst.absolute_time)) as time_from_start,
-             case 
-               when st.effort_id = lag(st.effort_id) over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey) 
-               then extract(epoch from(st.absolute_time - lag(st.absolute_time) 
-                      over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey))) 
-               else null 
+             case
+               when st.effort_id = lag(st.effort_id) over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey)
+               then extract(epoch from(st.absolute_time - lag(st.absolute_time)
+                      over (order by st.effort_id, st.lap, distance_from_start, st.sub_split_bitkey)))
+               else null
              end as segment_time
       from split_times st
       inner join splits on splits.id = st.split_id
@@ -150,7 +151,7 @@ class SplitTimeQuery < BaseQuery
       left join start_split_times sst on sst.effort_id = st.effort_id
       where #{scope}
     SQL
-    result = ActiveRecord::Base.connection.execute(query.squish).map { |row| SplitTimeData.new(row) }
+    result = ActiveRecord::Base.connection.execute(query.squish).map { |row| SplitTimeData.new(**row.symbolize_keys) }
     reset_database_timezone
     result
   end
@@ -159,18 +160,18 @@ class SplitTimeQuery < BaseQuery
     lap, split_id, bitkey = args[:time_point].values
     lowest_time = args[:time_range].begin
     highest_time = args[:time_range].end
-    finished_only = !!args[:finished_only]
+    finished_only = !args[:finished_only].nil?
     limit = args[:limit]
 
-    query = <<~SQL
+    query = <<~SQL.squish
       with
         split_times_scoped as
-          (select * 
+          (select *
            from split_times
            inner join efforts on efforts.id = split_times.effort_id
            inner join events on events.id = efforts.event_id
            inner join event_groups on event_groups.id = events.event_group_id
-           where lap = #{lap} and split_id = #{split_id} and sub_split_bitkey = #{bitkey} 
+           where lap = #{lap} and split_id = #{split_id} and sub_split_bitkey = #{bitkey}
              and event_groups.concealed = 'f'
              and (split_times.data_status in (2, 3) or split_times.data_status is null)),
 
@@ -189,8 +190,8 @@ class SplitTimeQuery < BaseQuery
            order by effort_id),
 
         main_subquery as
-          (select st.effort_id, 
-                  extract(epoch from(st.absolute_time - sst.absolute_time)) as time_from_start, 
+          (select st.effort_id,
+                  extract(epoch from(st.absolute_time - sst.absolute_time)) as time_from_start,
                   sst.absolute_time as start_time,
                   fe.effort_id is not null as finished
            from split_times_scoped st
@@ -211,7 +212,7 @@ class SplitTimeQuery < BaseQuery
   def self.starting_split_times(args)
     scope = where_string_from_hash(args[:scope])
 
-    query = <<~SQL
+    query = <<~SQL.squish
       left join (select effort_id, absolute_time
                  from split_times
                    inner join splits on splits.id = split_times.split_id
@@ -243,18 +244,18 @@ class SplitTimeQuery < BaseQuery
   end
 
   def self.shift_event_absolute_times(event, shift_seconds)
-    query = <<-SQL
-        with time_subquery as 
-           (select st.id, st.absolute_time + (#{shift_seconds} * interval '1 second') as computed_time
-            from split_times st
-              inner join efforts ef on ef.id = st.effort_id
-            where ef.event_id = #{event.id})
-          
-        update split_times
-        set absolute_time = computed_time,
-            updated_at = current_timestamp
-        from time_subquery
-        where split_times.id = time_subquery.id
+    query = <<~SQL.squish
+      with time_subquery as
+         (select st.id, st.absolute_time + (#{shift_seconds} * interval '1 second') as computed_time
+          from split_times st
+            inner join efforts ef on ef.id = st.effort_id
+          where ef.event_id = #{event.id})
+
+      update split_times
+      set absolute_time = computed_time,
+          updated_at = current_timestamp
+      from time_subquery
+      where split_times.id = time_subquery.id
     SQL
     query.squish
   end

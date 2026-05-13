@@ -25,7 +25,9 @@ BibTimeRow = Struct.new(
   end
 
   def split_times
-    @split_times ||= JSON.parse(guaranteed_string(split_times_attributes)).map { |row| SplitTimeData.new(row) }
+    @split_times ||= JSON.parse(guaranteed_string(split_times_attributes)).map do |row|
+      SplitTimeData.new(**row.symbolize_keys)
+    end
   end
 
   def problem?

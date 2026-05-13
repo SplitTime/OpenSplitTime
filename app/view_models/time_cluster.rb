@@ -52,6 +52,10 @@ class TimeCluster
     @time_data_statuses ||= split_times_data.map(&:data_status)
   end
 
+  def time_status_reasons
+    @time_status_reasons ||= split_times_data.map(&:status_reason)
+  end
+
   def pacer_flags
     @pacer_flags ||= split_times_data.map(&:pacer)
   end

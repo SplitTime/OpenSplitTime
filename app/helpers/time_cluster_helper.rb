@@ -7,10 +7,10 @@ module TimeClusterHelper
 
     content_tag(:span) do
       if with_status
-        time_array = formatted_times.zip(cluster.time_data_statuses)
+        time_array = formatted_times.zip(cluster.time_data_statuses, cluster.time_status_reasons)
 
-        time_array.map.with_index(1) do |(formatted_time, status), i|
-          concat text_with_status_indicator(formatted_time, status)
+        time_array.map.with_index(1) do |(formatted_time, status, reason), i|
+          concat text_with_status_indicator(formatted_time, status, reason: reason)
           concat " / " unless i == time_array.size
         end
       else

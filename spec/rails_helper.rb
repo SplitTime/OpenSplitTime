@@ -69,6 +69,7 @@ RSpec.configure do |config|
     :lottery_entrants,
     :lottery_simulation_runs,
     :lottery_tickets,
+    :monetary_donations,
     :notifications,
     :organizations,
     :partners,

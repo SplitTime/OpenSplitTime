@@ -1,0 +1,22 @@
+---
+hardrock_paypal_2024:
+  id: 1
+  organization_id: 4
+  received_on: 2024-09-12
+  amount: 250.00
+  source: paypal
+  note: PayPal transaction ABC123
+hardrock_check_2025:
+  id: 2
+  organization_id: 4
+  received_on: 2025-03-04
+  amount: 500.00
+  source: check
+  note: Check #4421
+running_up_for_air_bitpay_2025:
+  id: 3
+  organization_id: 14
+  received_on: 2025-02-15
+  amount: 100.00
+  source: bitpay
+  note:

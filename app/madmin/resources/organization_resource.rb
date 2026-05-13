@@ -7,6 +7,7 @@ class OrganizationResource < Madmin::Resource
   attribute :updated_at, form: false
   attribute :created_by
   attribute :concealed
+  attribute :non_profit
   attribute :slug
 
   # Associations

@@ -27,8 +27,17 @@ RSpec.describe OrganizationUsageShowPresenter do
       presenter = described_class.new(hardrock)
 
       # Hardrock CW course runs in both 2014 and 2016 under the same Course record
-      multi_year_series = presenter.chart_series.find { |s| s[:data].keys.size >= 2 }
+      multi_year_series = presenter.chart_series.find { |s| s[:data].values.count(&:positive?) >= 2 }
       expect(multi_year_series).not_to be_nil
+    end
+
+    it "aligns every series to the same sorted year axis" do
+      presenter = described_class.new(hardrock)
+      year_keys_per_series = presenter.chart_series.map { |s| s[:data].keys }
+
+      expect(year_keys_per_series.uniq.size).to eq(1)
+      years = year_keys_per_series.first
+      expect(years).to eq(years.sort)
     end
 
     it "is empty when all event groups are concealed" do

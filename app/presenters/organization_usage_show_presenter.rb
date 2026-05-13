@@ -22,8 +22,10 @@ class OrganizationUsageShowPresenter
   end
 
   def chart_series
+    sorted_years = breakdown.values.flat_map(&:keys).uniq.sort
     breakdown.map do |(_course_id, course_name), years|
-      { name: course_name, data: years.sort.to_h.transform_keys(&:to_s) }
+      data = sorted_years.to_h { |year| [year.to_s, years.fetch(year, 0)] }
+      { name: course_name, data: data }
     end
   end
 

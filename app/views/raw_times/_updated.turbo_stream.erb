@@ -10,3 +10,6 @@
                            monitor_pacers: event_group.monitor_pacers?,
                            home_time_zone: event_group.home_time_zone,
                          } %>
+
+<%= turbo_stream.replace :live_activity_dot,
+                         partial: "event_groups/live_activity_dot" %>

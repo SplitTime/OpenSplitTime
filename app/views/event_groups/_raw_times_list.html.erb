@@ -24,7 +24,10 @@
 <article class="ost-article container">
   <% if @presenter.event_group.available_live? %>
     <%= turbo_stream_from @presenter.event_group %>
-    <h6 class="text-center">Live updating</h6>
+    <h6 class="text-center">
+      Live updating
+      <%= render "event_groups/live_activity_dot" %>
+    </h6>
     <div class="back-and-forth-path">
       <span class="back-and-forth-shape trail"></span>
     </div>

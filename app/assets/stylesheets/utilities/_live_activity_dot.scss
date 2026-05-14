@@ -1,0 +1,27 @@
+.live-activity-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--bs-secondary, #6c757d);
+    opacity: 0.4;
+    vertical-align: middle;
+    margin-left: 0.4rem;
+}
+
+.live-activity-dot--pulsing {
+    animation: live-activity-pulse 600ms ease-out;
+}
+
+@keyframes live-activity-pulse {
+    0% {
+        background-color: var(--bs-success, #198754);
+        opacity: 1;
+        transform: scale(1.4);
+    }
+    100% {
+        background-color: var(--bs-secondary, #6c757d);
+        opacity: 0.4;
+        transform: scale(1);
+    }
+}

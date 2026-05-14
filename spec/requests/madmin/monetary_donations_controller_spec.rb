@@ -39,6 +39,18 @@ RSpec.describe "Madmin::MonetaryDonationsController" do
       expect(response.body).to include("Hardrock")
       expect(response.body).not_to match(/Organization #\d+/)
     end
+
+    it "renders the Organization dropdown sorted alphabetically by name" do
+      get "/madmin/monetary_donations/new"
+
+      select_html = response.body[%r{<select[^>]*name="monetary_donation\[organization_id\]".*?</select>}m]
+      expect(select_html).not_to be_nil
+
+      # Skip the "Please select" prompt option (rendered with an empty value attribute).
+      org_labels = select_html.scan(%r{<option[^>]*value="\d+"[^>]*>([^<]+)</option>}).map { |m| m[0].strip }
+      expect(org_labels).to eq(org_labels.sort)
+      expect(org_labels).to include("Hardrock", "Rattlesnake Ramble")
+    end
   end
 
   describe "GET /madmin/monetary_donations/:id" do

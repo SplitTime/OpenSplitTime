@@ -21,6 +21,9 @@
     </div>
   </div>
   <aside class="col-auto">
+    <% if current_user&.admin? %>
+      <%= link_to "Usage report", organization_usage_path(presenter.organization), class: "btn btn-outline-secondary" %>
+    <% end %>
     <% if current_user&.authorized_fully?(presenter.organization) %>
       <%= link_to "Edit this organization", edit_organization_path(presenter.organization), class: "btn btn-outline-secondary" %>
     <% end %>

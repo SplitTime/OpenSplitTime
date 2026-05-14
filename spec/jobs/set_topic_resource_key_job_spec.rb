@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe SetTopicResourceKeyJob do
   include ActiveJob::TestHelper
 
-  subject(:job) { described_class.perform_later(person) }
+  subject(:job) { described_class.perform_later(effort) }
 
-  let(:person) { people(:bruno_fadel) }
+  let(:effort) { efforts(:rufa_2017_12h_not_started) }
 
   after do
     clear_enqueued_jobs
@@ -17,11 +17,11 @@ RSpec.describe SetTopicResourceKeyJob do
   end
 
   it "assigns the topic resource and saves the record" do
-    # The job loads the person from the database,
-    # so it will be a different object if we don't stub it
-    allow(Person).to receive(:find).and_return(person)
-    expect(person).to receive(:assign_topic_resource)
-    expect(person).to receive(:save)
+    # The job loads the effort from the database, so it will be a different
+    # object than the let if we don't stub the lookup.
+    allow(Effort).to receive(:find).and_return(effort)
+    expect(effort).to receive(:assign_topic_resource)
+    expect(effort).to receive(:save)
     perform_enqueued_jobs { job }
   end
 end

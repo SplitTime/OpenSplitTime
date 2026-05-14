@@ -2,21 +2,16 @@ namespace :maintenance do
   desc "Destroy participant subscriptions and tear down their SNS topics (idempotent)"
   task remove_person_subscriptions: :environment do
     ActiveRecord::Base.logger.silence do
-      # Destroy per-user subscriptions first so Subscription#before_destroy can call
-      # SnsSubscriptionManager.delete cleanly. If we deleted the topic first, AWS
-      # auto-removes the subscription ARNs and the per-subscription cleanup would
-      # have nothing to address.
+      # delete_all skips Subscription#before_destroy :delete_resource_key. That callback
+      # makes a live sns_client.unsubscribe round-trip per subscription, which was
+      # taking ~30s+ apiece in production and would never reasonably finish for the
+      # full set. The topic-deletion phase below removes the SNS topic itself, which
+      # AWS responds to by auto-pruning every subscription attached to that topic
+      # server-side — so the per-row unsubscribe calls were redundant anyway.
       subscription_scope = Subscription.where(subscribable_type: "Person")
       destroyed = subscription_scope.count
-      puts "Destroying #{destroyed} Person subscriptions"
-
-      if destroyed.positive?
-        subscription_bar = ::ProgressBar.new(destroyed)
-        subscription_scope.find_each do |subscription|
-          subscription.destroy!
-          subscription_bar.increment!
-        end
-      end
+      puts "Deleting #{destroyed} Person subscriptions"
+      subscription_scope.delete_all if destroyed.positive?
 
       person_scope = Person.where.not(topic_resource_key: nil)
       topics_deleted = person_scope.count
@@ -31,7 +26,7 @@ namespace :maintenance do
         end
       end
 
-      puts "Done — destroyed #{destroyed} Person subscriptions, tore down #{topics_deleted} SNS topics."
+      puts "Done — deleted #{destroyed} Person subscriptions, tore down #{topics_deleted} SNS topics."
     end
   end
 end

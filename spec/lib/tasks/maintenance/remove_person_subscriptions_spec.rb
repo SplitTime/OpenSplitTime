@@ -13,9 +13,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
 
     # Stub AWS so the test doesn't reach for the network.
     allow(SnsTopicManager).to receive(:delete)
-    allow(SnsSubscriptionManager).to receive(:delete).and_return(
-      SnsSubscriptionManager::Response.new(subscription_arn: "arn:aws:sns:us-west-2:123:fake-subscription-arn"),
-    )
+    allow(SnsSubscriptionManager).to receive(:delete)
   end
 
   def silent_invoke
@@ -47,7 +45,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
       build_person_subscription(other_person)
     end
 
-    it "destroys all Person-typed subscriptions and nils out the topic_resource_key on every person" do
+    it "deletes all Person-typed subscriptions and nils out the topic_resource_key on every person" do
       expect { silent_invoke }
         .to change { Subscription.where(subscribable_type: "Person").count }.to(0)
         .and change { Person.where.not(topic_resource_key: nil).count }.to(0)
@@ -64,10 +62,10 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
       expect(SnsTopicManager).to have_received(:delete).exactly(affected_count).times
     end
 
-    it "fires Subscription#before_destroy so SnsSubscriptionManager.delete is called for confirmed ARNs" do
+    it "skips per-subscription SnsSubscriptionManager.delete (topic deletion auto-prunes ARNs server-side)" do
       silent_invoke
 
-      expect(SnsSubscriptionManager).to have_received(:delete).twice
+      expect(SnsSubscriptionManager).not_to have_received(:delete)
     end
 
     it "leaves Effort subscriptions alone" do
@@ -84,7 +82,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
 
       output = silent_invoke
 
-      expect(output).to include("destroyed 2 Person subscriptions")
+      expect(output).to include("deleted 2 Person subscriptions")
       expect(output).to include("tore down #{affected_count} SNS topics")
     end
 
@@ -94,7 +92,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
 
       output = silent_invoke
 
-      expect(output).to include("destroyed 0 Person subscriptions")
+      expect(output).to include("deleted 0 Person subscriptions")
       expect(output).to include("tore down 0 SNS topics")
     end
   end
@@ -108,7 +106,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
     it "runs cleanly and reports zeros" do
       output = silent_invoke
 
-      expect(output).to include("destroyed 0 Person subscriptions")
+      expect(output).to include("deleted 0 Person subscriptions")
       expect(output).to include("tore down 0 SNS topics")
     end
   end

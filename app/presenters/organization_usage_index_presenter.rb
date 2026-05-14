@@ -1,7 +1,24 @@
 class OrganizationUsageIndexPresenter
-  Row = Struct.new(:organization, :event_group_count, :event_count, :effort_count, :last_active_year, :total_donated)
+  Row = Struct.new(:organization, :event_group_count, :event_count, :effort_count, :last_active_year,
+                   :last_donation_year, :total_donated) do
+    # Returns:
+    #   nil       — org isn't active (no real events in the prior or current year)
+    #   :paid     — donated in the same year as the most recent event
+    #   :recent   — donated in the year before the most recent event
+    #   :overdue  — active but donation history doesn't match the above
+    def current_status
+      current_year = Date.current.year
+      return nil if last_active_year.nil? || last_active_year < current_year - 1
+      return :paid if last_donation_year == last_active_year
+      return :recent if last_donation_year == last_active_year - 1
 
-  # Correlated subquery rather than joining monetary_donations into the main aggregate —
+      :overdue
+    end
+  end
+
+  Totals = Struct.new(:event_group_count, :event_count, :effort_count, :total_donated)
+
+  # Correlated subqueries rather than joining monetary_donations into the main aggregate —
   # joining would multiply the effort counts by the donation row count.
   TOTAL_DONATED_SQL = <<~SQL.squish.freeze
     (
@@ -11,12 +28,29 @@ class OrganizationUsageIndexPresenter
     ) AS total_donated
   SQL
 
+  LAST_DONATION_YEAR_SQL = <<~SQL.squish.freeze
+    (
+      SELECT MAX(EXTRACT(YEAR FROM monetary_donations.received_on))::int
+      FROM monetary_donations
+      WHERE monetary_donations.organization_id = organizations.id
+    ) AS last_donation_year
+  SQL
+
   def for_profit_rows
     rows.reject { |row| row.organization.non_profit? }
   end
 
   def non_profit_rows
     rows.select { |row| row.organization.non_profit? }
+  end
+
+  def totals_for(rows)
+    Totals.new(
+      event_group_count: rows.sum(&:event_group_count),
+      event_count: rows.sum(&:event_count),
+      effort_count: rows.sum(&:effort_count),
+      total_donated: rows.sum { |row| row.total_donated.to_d },
+    )
   end
 
   private
@@ -33,6 +67,7 @@ class OrganizationUsageIndexPresenter
                 "COUNT(efforts.id)                                        AS real_effort_count",
                 "MAX(EXTRACT(YEAR FROM events.scheduled_start_time))::int AS last_active_year",
                 TOTAL_DONATED_SQL,
+                LAST_DONATION_YEAR_SQL,
               )
               .order(Arel.sql("COUNT(efforts.id) DESC"), :name)
               .map do |org|
@@ -42,6 +77,7 @@ class OrganizationUsageIndexPresenter
         event_count: org.real_event_count,
         effort_count: org.real_effort_count,
         last_active_year: org.last_active_year,
+        last_donation_year: org.last_donation_year,
         total_donated: org.total_donated,
       )
     end

@@ -79,5 +79,74 @@ RSpec.describe OrganizationUsageIndexPresenter do
       expect(row).not_to be_nil
       expect(row.total_donated).to eq(0)
     end
+
+    it "exposes last_donation_year as the most recent year of donations" do
+      hardrock = organizations(:hardrock)
+      expected_year = hardrock.monetary_donations.maximum(:received_on).year
+
+      row = presenter.for_profit_rows.find { |r| r.organization.id == hardrock.id }
+      expect(row.last_donation_year).to eq(expected_year)
+    end
+  end
+
+  describe "#totals_for" do
+    it "sums event_group_count, event_count, effort_count, and total_donated across the rows" do
+      rows = presenter.for_profit_rows
+      totals = presenter.totals_for(rows)
+
+      expect(totals.event_group_count).to eq(rows.sum(&:event_group_count))
+      expect(totals.event_count).to eq(rows.sum(&:event_count))
+      expect(totals.effort_count).to eq(rows.sum(&:effort_count))
+      expect(totals.total_donated).to eq(rows.sum { |r| r.total_donated.to_d })
+    end
+
+    it "returns zeros for an empty rows array" do
+      totals = presenter.totals_for([])
+
+      expect(totals.event_group_count).to eq(0)
+      expect(totals.event_count).to eq(0)
+      expect(totals.effort_count).to eq(0)
+      expect(totals.total_donated).to eq(0)
+    end
+  end
+
+  describe "Row#current_status" do
+    include ActiveSupport::Testing::TimeHelpers
+
+    def row(last_active:, last_donation:)
+      described_class::Row.new(
+        organization: nil,
+        event_group_count: 0,
+        event_count: 0,
+        effort_count: 0,
+        last_active_year: last_active,
+        last_donation_year: last_donation,
+        total_donated: 0,
+      )
+    end
+
+    before { travel_to Date.new(2026, 6, 1) }
+
+    it "returns nil when the org has no recent activity" do
+      # 2024 is two years before "current" 2026 — not in current or prior year.
+      expect(row(last_active: 2024, last_donation: 2024).current_status).to be_nil
+      expect(row(last_active: nil, last_donation: nil).current_status).to be_nil
+    end
+
+    it "returns :paid when last donation matches the most recent event year" do
+      expect(row(last_active: 2026, last_donation: 2026).current_status).to eq(:paid)
+      expect(row(last_active: 2025, last_donation: 2025).current_status).to eq(:paid)
+    end
+
+    it "returns :recent when last donation is the year before the most recent event" do
+      expect(row(last_active: 2026, last_donation: 2025).current_status).to eq(:recent)
+      expect(row(last_active: 2025, last_donation: 2024).current_status).to eq(:recent)
+    end
+
+    it "returns :overdue when the org is active but donations are stale or missing" do
+      expect(row(last_active: 2026, last_donation: 2023).current_status).to eq(:overdue)
+      expect(row(last_active: 2026, last_donation: nil).current_status).to eq(:overdue)
+      expect(row(last_active: 2025, last_donation: 2022).current_status).to eq(:overdue)
+    end
   end
 end

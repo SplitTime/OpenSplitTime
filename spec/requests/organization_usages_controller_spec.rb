@@ -59,6 +59,14 @@ RSpec.describe "OrganizationUsagesController" do
 
         expect(response.body).not_to include(empty_org.name)
       end
+
+      it "renders a Current column header and a totals footer for each section" do
+        get organization_usages_path
+
+        expect(response.body).to include("Current")
+        # tfoot row with "Total (N)" appears once per non-empty section
+        expect(response.body.scan(/Total \(\d+\)/).size).to be >= 1
+      end
     end
   end
 

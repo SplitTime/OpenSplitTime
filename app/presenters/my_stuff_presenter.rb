@@ -25,8 +25,8 @@ class MyStuffPresenter < BasePresenter
 
   def drawn_lottery_entrants
     LotteryEntrant.belonging_to_user(current_user)
-      .drawn
-      .includes(:service_detail, division: { lottery: :organization })
+                  .drawn
+                  .includes(:service_detail, division: { lottery: :organization })
   end
 
   def organizations
@@ -52,11 +52,8 @@ class MyStuffPresenter < BasePresenter
   def user_efforts
     return Effort.none unless avatar
 
-    @user_efforts ||= avatar.efforts.joins(:event).includes(event: :event_group).order("events.scheduled_start_time desc")
-  end
-
-  def interests
-    current_user.interests.distinct.order(:last_name)
+    @user_efforts ||= avatar.efforts.joins(:event).includes(event: :event_group)
+                            .order("events.scheduled_start_time desc")
   end
 
   def watch_efforts

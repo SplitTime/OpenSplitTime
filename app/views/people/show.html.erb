@@ -35,11 +35,6 @@
           <%= image_tag(@presenter.photo.variant(:small)) %>
         </div>
       <% end %>
-      <% if @presenter.participation_notifiable? %>
-        <div class="col">
-          <%= render "subscription_buttons", person: @presenter.person %>
-        </div>
-      <% end %>
     </div>
   </div>
 </header>

@@ -42,7 +42,6 @@ Rails.application.routes.draw do
     get "/", action: :index
     get :events
     get :event_series
-    get :interests
     get :live_updates
     get :organizations
     get :results
@@ -275,11 +274,6 @@ Rails.application.routes.draw do
   end
 
   resources :people, only: [:index, :show, :edit, :update, :destroy] do
-    resources :subscriptions, only: [:create, :destroy], module: "people"
-    get "subscription_button/:notification_protocol",
-        to: "people/subscriptions#button",
-        as: :subscription_button,
-        constraints: { notification_protocol: /email|sms/ }
     collection { get :subregion_options }
     member { patch :avatar_claim }
     member { get :merge }

@@ -17,11 +17,15 @@ class PersonPresenter < BasePresenter
                                     .order("events.scheduled_start_time desc")
   end
 
-  def participation_notifiable?
-    person.topic_resource_key.present?
+  def method_missing(method, ...)
+    if person.respond_to?(method)
+      person.send(method, ...)
+    else
+      super
+    end
   end
 
-  def method_missing(method)
-    person.send(method)
+  def respond_to_missing?(method, include_private = false)
+    person.respond_to?(method, include_private) || super
   end
 end

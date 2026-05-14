@@ -8,8 +8,6 @@ class Subscription < ApplicationRecord
   belongs_to :subscribable, polymorphic: true
 
   before_destroy :delete_resource_key
-  after_save :attempt_person_subscription, if: :effort_has_person?
-  after_save :attempt_effort_subscriptions, if: :type_is_person?
   after_create_commit :enqueue_sms_welcome, if: :sms?
   after_save :enqueue_email_welcome, if: :email_just_confirmed?
 
@@ -62,31 +60,6 @@ class Subscription < ApplicationRecord
 
   def required_data_present?
     subscribable&.topic_resource_key.present? && endpoint.present?
-  end
-
-  def attempt_person_subscription
-    person = subscribable.person
-    Subscription.find_or_create_by(subscribable: person, user: user, protocol: protocol)
-  rescue Aws::SNS::Errors::ServiceError => e
-    logger.warn "  Subscription for #{person.name} could not be created: #{e.message}"
-    true
-  end
-
-  def effort_has_person?
-    subscribable_type == "Effort" && subscribable.person&.topic_resource_key.present?
-  end
-
-  def attempt_effort_subscriptions
-    subscribable.efforts.select(&:topic_resource_key).each do |effort|
-      Subscription.find_or_create_by(subscribable: effort, user: user, protocol: protocol)
-    rescue Aws::SNS::Errors::ServiceError => e
-      logger.warn "  Subscription for #{effort.name} could not be created: #{e.message}"
-      true
-    end
-  end
-
-  def type_is_person?
-    subscribable_type == "Person"
   end
 
   def email_just_confirmed?

@@ -13,10 +13,6 @@ class MyStuffController < ApplicationController
     render partial: "event_series", locals: { presenter: @presenter }
   end
 
-  def interests
-    render partial: "interests", locals: { presenter: @presenter }
-  end
-
   def live_updates
     render partial: "live_updates", locals: { presenter: @presenter }
   end

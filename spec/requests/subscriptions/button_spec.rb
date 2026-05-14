@@ -6,11 +6,9 @@ RSpec.describe "GET subscription_button" do
 
   let(:user) { users(:third_user) }
   let(:effort) { efforts(:rufa_2017_12h_not_started) }
-  let(:person) { people(:progress_cascade) }
 
   before do
     effort.update!(topic_resource_key: "arn:aws:sns:us-west-2:123:fake-effort-topic")
-    person.update!(topic_resource_key: "arn:aws:sns:us-west-2:123:fake-person-topic")
   end
 
   after { Warden.test_reset! }
@@ -70,14 +68,6 @@ RSpec.describe "GET subscription_button" do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to match(/<button[^>]*data-turbo-frame=["']_top["']/)
-    end
-
-    it "renders the email subscription button for a person inside a turbo-frame" do
-      get person_subscription_button_path(person, notification_protocol: "email")
-
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include(%(id="#{dom_id(person, :email)}"))
-      expect(response.body).to include("turbo-frame")
     end
 
     it "rejects an unknown protocol via routing constraints" do

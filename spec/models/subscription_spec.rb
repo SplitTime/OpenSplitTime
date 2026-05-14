@@ -4,7 +4,7 @@ RSpec.describe Subscription, type: :model do
   subject(:subscription) { described_class.new(user: user, subscribable: subscribable, protocol: protocol, endpoint: endpoint) }
 
   let(:user) { users(:admin_user) }
-  let(:subscribable) { people(:tuan_jacobs) }
+  let(:subscribable) { efforts(:rufa_2017_12h_not_started) }
   let(:protocol) { :email }
   let(:endpoint) { user&.email }
 
@@ -45,7 +45,7 @@ RSpec.describe Subscription, type: :model do
     end
 
     let(:user_id) { user.id }
-    let(:subscribable_type) { "Person" }
+    let(:subscribable_type) { "Effort" }
     let(:subscribable_id) { subscribable.id }
 
     context "when all ids are valid" do

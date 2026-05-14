@@ -86,4 +86,51 @@ RSpec.describe OrganizationUsageShowPresenter do
       expect(presenter.total_efforts).to eq(chart_sum)
     end
   end
+
+  describe "donations" do
+    let(:presenter) { described_class.new(hardrock) }
+
+    it "returns the org's monetary_donations newest first" do
+      expect(presenter.donations).to eq(hardrock.monetary_donations.order(received_on: :desc))
+    end
+
+    it "totals the donation amounts" do
+      expect(presenter.total_donated).to eq(hardrock.monetary_donations.sum(:amount))
+      expect(presenter.total_donated).to be > 0
+    end
+
+    it "exposes the donation year range" do
+      expect(presenter.first_donation_year).to eq(hardrock.monetary_donations.minimum(:received_on).year)
+      expect(presenter.last_donation_year).to eq(hardrock.monetary_donations.maximum(:received_on).year)
+    end
+
+    it "returns nil donation years when the org has none" do
+      orphan = Organization.create!(name: "No Donations Org", created_by: users(:admin_user).id, concealed: false)
+      empty_presenter = described_class.new(orphan)
+
+      expect(empty_presenter.first_donation_year).to be_nil
+      expect(empty_presenter.last_donation_year).to be_nil
+      expect(empty_presenter.total_donated).to eq(0)
+      expect(empty_presenter.donations_by_year).to be_empty
+    end
+  end
+
+  describe "#donations_by_year" do
+    let(:presenter) { described_class.new(hardrock) }
+
+    it "buckets donation amounts by stringified year, sorted ascending" do
+      data = presenter.donations_by_year
+
+      expect(data).not_to be_empty
+      expect(data.keys).to all(match(/\A\d{4}\z/))
+      expect(data.keys).to eq(data.keys.sort)
+    end
+
+    it "sums donations within the same year" do
+      hardrock.monetary_donations.create!(received_on: Date.new(2024, 9, 12), amount: 100, source: "paypal")
+      hardrock.monetary_donations.create!(received_on: Date.new(2024, 11, 30), amount: 50, source: "paypal")
+
+      expect(presenter.donations_by_year["2024"]).to eq(hardrock.monetary_donations.where("EXTRACT(YEAR FROM received_on) = 2024").sum(:amount))
+    end
+  end
 end

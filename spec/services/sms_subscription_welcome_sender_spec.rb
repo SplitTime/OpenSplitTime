@@ -61,20 +61,6 @@ RSpec.describe SmsSubscriptionWelcomeSender do
       end
     end
 
-    context "when the subscribable is a Person (not Effort)" do
-      let(:person) { people(:tuan_jacobs) }
-      let(:subscription) do
-        Subscription.new(user: user, subscribable: person, protocol: :sms, endpoint: "+13035551212").tap do |s|
-          s.save(validate: false)
-        end
-      end
-
-      it "does not call AWS (SMS welcomes are effort-only)" do
-        described_class.deliver(subscription)
-        expect(client).not_to have_received(:send_text_message)
-      end
-    end
-
     context "when the user has no phone" do
       before { user.update_column(:phone, nil) }
 

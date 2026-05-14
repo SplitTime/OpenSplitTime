@@ -22,7 +22,6 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
     Subscription.delete_all
     Effort.update_all(topic_resource_key: nil)
     Event.update_all(topic_resource_key: nil)
-    Person.update_all(topic_resource_key: nil)
 
     allow(SnsClientFactory).to receive(:client).and_return(sns_client)
     sns_client.stub_responses(:list_topics, topics: [], next_token: nil)
@@ -86,20 +85,6 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
       described_class.perform_now
 
       expect(Subscription.exists?(sub.id)).to be(false)
-    end
-
-    it "does not touch Person subscriptions" do
-      person = people(:progress_cascade)
-      person_sub = Subscription.create!(
-        user: user,
-        subscribable: person,
-        protocol: :email,
-        endpoint: user.email,
-      )
-
-      described_class.perform_now
-
-      expect(Subscription.exists?(person_sub.id)).to be(true)
     end
   end
 
@@ -198,16 +183,13 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
       described_class.perform_now
     end
 
-    it "treats Event and Person topic_resource_keys as live too" do
+    it "treats Event topic_resource_keys as live too" do
       event = events(:hardrock_2014)
-      person = people(:progress_cascade)
       event_arn = "arn:aws:sns:us-west-2:123:t-follow-live-event"
-      person_arn = "arn:aws:sns:us-west-2:123:t-follow-live-person"
 
       event.update_column(:topic_resource_key, event_arn)
-      person.update_column(:topic_resource_key, person_arn)
 
-      sns_client.stub_responses(:list_topics, topics: [{ topic_arn: event_arn }, { topic_arn: person_arn }], next_token: nil)
+      sns_client.stub_responses(:list_topics, topics: [{ topic_arn: event_arn }], next_token: nil)
 
       expect(sns_client).not_to receive(:delete_topic)
 

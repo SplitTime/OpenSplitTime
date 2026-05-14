@@ -65,20 +65,6 @@ RSpec.describe Sweepers::EventSubscriptionsAndTopicsJob, type: :job do
 
       expect(Subscription.exists?(effort_sub.id)).to be(true)
     end
-
-    it "does not touch Person subscriptions" do
-      person = people(:progress_cascade)
-      person_sub = Subscription.create!(
-        user: user,
-        subscribable: person,
-        protocol: :email,
-        endpoint: user.email,
-      )
-
-      described_class.perform_now
-
-      expect(Subscription.exists?(person_sub.id)).to be(true)
-    end
   end
 
   describe "Pass 2 — sweep topics on stale Events" do

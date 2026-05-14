@@ -177,13 +177,13 @@ module Sweepers
     end
 
     def collect_live_topic_resource_keys
-      [Effort, Event, Person].flat_map do |klass|
+      [Effort, Event].flat_map do |klass|
         klass.where.not(topic_resource_key: nil).pluck(:topic_resource_key)
       end.compact
     end
 
     def any_topic_resource_key_exists?(arn)
-      [Effort, Event, Person].any? { |klass| klass.exists?(topic_resource_key: arn) }
+      [Effort, Event].any? { |klass| klass.exists?(topic_resource_key: arn) }
     end
 
     def ost_topic_name_pattern

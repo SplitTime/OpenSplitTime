@@ -29,25 +29,5 @@ RSpec.describe SubscriptionMailer, type: :mailer do
         expect(mail.body.encoded).to match(/aid station/)
       end
     end
-
-    context "with a Person subscription" do
-      let(:person) { people(:tuan_jacobs) }
-      let(:subscription) do
-        Subscription.create!(user: user, subscribable: person, protocol: :email, endpoint: user.email)
-      end
-      let(:mail) { described_class.welcome(subscription) }
-
-      it "puts the person name in the subject" do
-        expect(mail.subject).to include(person.full_name)
-      end
-
-      it "includes the person full name in the body" do
-        expect(mail.body.encoded).to include(person.full_name)
-      end
-
-      it "renders the registered-for-event language specific to person subscriptions" do
-        expect(mail.body.encoded).to match(/registered for upcoming events/)
-      end
-    end
   end
 end

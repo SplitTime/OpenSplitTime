@@ -116,6 +116,13 @@ RSpec.describe "OrganizationUsagesController" do
         expect(response.body).to include("Efforts by year")
       end
 
+      it "links to the public organization page" do
+        get organization_usage_path(hardrock)
+
+        expect(response.body).to include("View public page")
+        expect(response.body).to include(organization_path(hardrock))
+      end
+
       it "shows the empty-state message when the org has no real efforts" do
         hardrock.event_groups.update_all(concealed: true)
 

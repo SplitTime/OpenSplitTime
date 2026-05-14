@@ -1,7 +1,6 @@
 class Person < ApplicationRecord
   include UrlAccessible
   include Matchable
-  include Subscribable
   include StateCountrySyncable
   include Searchable
   include PersonalInfo
@@ -138,9 +137,5 @@ class Person < ApplicationRecord
       effort.slug = nil
       effort.save!
     end
-  end
-
-  def generate_new_topic_resource?
-    true
   end
 end

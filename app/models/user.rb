@@ -16,7 +16,6 @@ class User < ApplicationRecord
   friendly_id :slug_candidates, use: [:slugged, :history]
 
   has_many :subscriptions, dependent: :destroy
-  has_many :interests, through: :subscriptions, source: :subscribable, source_type: "Person"
   has_many :watch_efforts, through: :subscriptions, source: :subscribable, source_type: "Effort"
   has_many :stewardships, dependent: :destroy
   has_many :organizations, through: :stewardships

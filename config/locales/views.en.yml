@@ -95,7 +95,6 @@ en:
       unsubscribe: "Stop receiving %{update_type} updates for %{name}?"
       sign_in_required: "You must be signed in to subscribe to notifications."
       effort_update_type: "live progress"
-      person_update_type: "future event sign-up"
       pending_suffix: "(pending)"
 
   sms:

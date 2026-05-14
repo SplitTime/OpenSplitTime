@@ -95,8 +95,6 @@ module ToggleHelper
     update_type = case subscribable.class.name
                   when "Effort"
                     t("subscriptions.toggle.effort_update_type")
-                  when "Person"
-                    t("subscriptions.toggle.person_update_type")
                   else
                     raise ArgumentError, "Unknown subscribable class: #{subscribable.class.name}"
                   end

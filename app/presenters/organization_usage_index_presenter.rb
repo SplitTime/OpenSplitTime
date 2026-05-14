@@ -36,6 +36,10 @@ class OrganizationUsageIndexPresenter
     ) AS last_donation_year
   SQL
 
+  # Orgs whose last real event was more than ACTIVE_WITHIN_YEARS years ago are dropped
+  # — donation outreach for long-dormant orgs isn't actionable.
+  ACTIVE_WITHIN_YEARS = 3
+
   def for_profit_rows
     rows.reject { |row| row.organization.non_profit? }
   end
@@ -56,10 +60,12 @@ class OrganizationUsageIndexPresenter
   private
 
   def rows
+    cutoff_year = Date.current.year - ACTIVE_WITHIN_YEARS
     @rows ||= Organization
               .joins(event_groups: { events: :efforts })
               .where(event_groups: { concealed: false }, efforts: { started: true })
               .group("organizations.id")
+              .having("MAX(EXTRACT(YEAR FROM events.scheduled_start_time)) >= ?", cutoff_year)
               .select(
                 "organizations.*",
                 "COUNT(DISTINCT event_groups.id)                          AS real_event_group_count",

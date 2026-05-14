@@ -2,11 +2,16 @@ require "rails_helper"
 
 RSpec.describe "OrganizationUsagesController" do
   include Warden::Test::Helpers
+  include ActiveSupport::Testing::TimeHelpers
 
   let(:admin_user) { users(:admin_user) }
   let(:non_admin_user) { users(:third_user) }
 
   after { Warden.test_reset! }
+
+  # Fixture event years top out at 2017; pin "today" so the 3-year activity
+  # filter on the index keeps those orgs visible.
+  before { travel_to Date.new(2018, 6, 1) }
 
   describe "GET /organization-usage" do
     context "when not signed in" do
@@ -66,6 +71,22 @@ RSpec.describe "OrganizationUsagesController" do
         expect(response.body).to include("Current")
         # tfoot row with "Total (N)" appears once per non-empty section
         expect(response.body.scan(/Total \(\d+\)/).size).to be >= 1
+      end
+
+      it "renders Font Awesome status icons in the Current column" do
+        get organization_usages_path
+
+        # At least one of the three statuses should appear given the fixture spread.
+        expect(response.body).to match(/fa-circle-(check|question|xmark)/)
+      end
+
+      it "drops organizations whose last real event is more than 3 years ago" do
+        # hardrock fixture's last event year is 2016; 2025 puts it past the 3-year cutoff
+        travel_to Date.new(2025, 1, 1) do
+          get organization_usages_path
+
+          expect(response.body).not_to include(">Hardrock<")
+        end
       end
     end
   end

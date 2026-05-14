@@ -1,7 +1,13 @@
 require "rails_helper"
 
 RSpec.describe OrganizationUsageIndexPresenter do
+  include ActiveSupport::Testing::TimeHelpers
+
   subject(:presenter) { described_class.new }
+
+  # Fixture event years top out at 2017 — pin "today" to a date that keeps those
+  # orgs within the 3-year activity window so the existing assertions stay valid.
+  before { travel_to Date.new(2018, 6, 1) }
 
   describe "#for_profit_rows / #non_profit_rows" do
     it "places non_profit organizations only in non_profit_rows" do
@@ -86,6 +92,26 @@ RSpec.describe OrganizationUsageIndexPresenter do
 
       row = presenter.for_profit_rows.find { |r| r.organization.id == hardrock.id }
       expect(row.last_donation_year).to eq(expected_year)
+    end
+
+    it "drops organizations whose last event is more than 3 years ago" do
+      hardrock = organizations(:hardrock) # last fixture event in 2016
+
+      travel_to Date.new(2020, 1, 1) do
+        # 2016 is exactly 4 years before 2020 — outside the 3-year window.
+        all_org_ids = (presenter.for_profit_rows + presenter.non_profit_rows).map { |r| r.organization.id }
+        expect(all_org_ids).not_to include(hardrock.id)
+      end
+    end
+
+    it "keeps organizations whose last event is exactly 3 years ago" do
+      hardrock = organizations(:hardrock) # last fixture event in 2016
+
+      travel_to Date.new(2019, 1, 1) do
+        # 2016 is exactly 3 years before 2019 — inside the window.
+        all_org_ids = (presenter.for_profit_rows + presenter.non_profit_rows).map { |r| r.organization.id }
+        expect(all_org_ids).to include(hardrock.id)
+      end
     end
   end
 

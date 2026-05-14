@@ -61,11 +61,15 @@
                 <td class="text-center">
                   <% case row.current_status %>
                   <% when :paid %>
-                    <span class="text-success fw-bold" title="Donated in <%= row.last_active_year %>">&check;</span>
+                    <span class="fas fa-circle-check good text-success" title="Donated in <%= row.last_active_year %>"
+                          data-controller="tooltip" data-bs-placement="top"></span>
                   <% when :recent %>
-                    <span class="text-warning fw-bold" title="Last donation in <%= row.last_donation_year %>">?</span>
+                    <span class="fas fa-circle-question questionable text-warning" title="Last donation in <%= row.last_donation_year %>"
+                          data-controller="tooltip" data-bs-placement="top"></span>
                   <% when :overdue %>
-                    <span class="text-danger fw-bold" title="<%= row.last_donation_year ? "Last donation in #{row.last_donation_year}" : "No donations recorded" %>">&times;</span>
+                    <% overdue_title = row.last_donation_year ? "Last donation in #{row.last_donation_year}" : "No donations recorded" %>
+                    <span class="fas fa-circle-xmark bad text-danger" title="<%= overdue_title %>"
+                          data-controller="tooltip" data-bs-placement="top"></span>
                   <% end %>
                 </td>
                 <td class="text-muted"><%= row.organization.owner_full_name %></td>

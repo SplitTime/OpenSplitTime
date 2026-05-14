@@ -38,6 +38,32 @@ class OrganizationUsageShowPresenter
     end
   end
 
+  def donations
+    @donations ||= organization.monetary_donations.order(received_on: :desc)
+  end
+
+  def total_donated
+    donations.sum(:amount)
+  end
+
+  def first_donation_year
+    donations.minimum(:received_on)&.year
+  end
+
+  def last_donation_year
+    donations.maximum(:received_on)&.year
+  end
+
+  # Chart data keyed by stringified year so Chart.js treats the x-axis as discrete
+  # categories (same trick as #chart_series). Years without donations are omitted.
+  def donations_by_year
+    organization.monetary_donations
+                .group(Arel.sql("EXTRACT(YEAR FROM received_on)::int"))
+                .sum(:amount)
+                .sort.to_h
+                .transform_keys(&:to_s)
+  end
+
   private
 
   def breakdown

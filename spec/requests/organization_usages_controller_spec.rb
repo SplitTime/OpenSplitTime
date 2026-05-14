@@ -96,12 +96,25 @@ RSpec.describe "OrganizationUsagesController" do
         expect(response.body).to include("No real efforts recorded")
       end
 
-      it "does not surface donation data on the show page" do
+      it "renders the admin-only donations section with totals and the per-donation table" do
         get organization_usage_path(hardrock)
 
-        expect(response.body).not_to include("Donations")
-        expect(response.body).not_to include("Total Donated")
-        expect(response.body).not_to include("monetary_donations")
+        expect(response.body).to include("Donations")
+        expect(response.body).to include("admin only")
+        expect(response.body).to include("Total Donated")
+        # hardrock_check_2025 fixture: $500.00 check on 2025-03-04
+        expect(response.body).to include("$500.00")
+        expect(response.body).to include("Check")
+      end
+
+      it "shows an empty-state message inside the donations section when the org has none" do
+        # dirty_30_running fixture has real efforts but no monetary_donations
+        dirty_30 = organizations(:dirty_30_running)
+        expect(dirty_30.monetary_donations).to be_empty
+
+        get organization_usage_path(dirty_30)
+
+        expect(response.body).to include("No donations recorded for this organization")
       end
     end
   end

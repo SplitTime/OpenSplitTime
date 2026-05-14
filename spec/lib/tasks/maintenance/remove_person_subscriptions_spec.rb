@@ -84,7 +84,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
 
       output = silent_invoke
 
-      expect(output).to include("Destroyed 2 Person subscriptions")
+      expect(output).to include("destroyed 2 Person subscriptions")
       expect(output).to include("tore down #{affected_count} SNS topics")
     end
 
@@ -94,7 +94,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
 
       output = silent_invoke
 
-      expect(output).to include("Destroyed 0 Person subscriptions")
+      expect(output).to include("destroyed 0 Person subscriptions")
       expect(output).to include("tore down 0 SNS topics")
     end
   end
@@ -108,7 +108,7 @@ RSpec.describe "maintenance:remove_person_subscriptions", type: :task do
     it "runs cleanly and reports zeros" do
       output = silent_invoke
 
-      expect(output).to include("Destroyed 0 Person subscriptions")
+      expect(output).to include("destroyed 0 Person subscriptions")
       expect(output).to include("tore down 0 SNS topics")
     end
   end

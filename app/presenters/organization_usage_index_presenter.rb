@@ -3,13 +3,14 @@ class OrganizationUsageIndexPresenter
                    :last_donation_year, :total_donated) do
     # Returns:
     #   nil       — org isn't active (no real events in the prior or current year)
-    #   :paid     — donated in the same year as the most recent event
+    #   :paid     — donated in the same year as the most recent event, or any year since
     #   :recent   — donated in the year before the most recent event
-    #   :overdue  — active but donation history doesn't match the above
+    #   :overdue  — active but donation history is older than that, or nonexistent
     def current_status
       current_year = Date.current.year
       return nil if last_active_year.nil? || last_active_year < current_year - 1
-      return :paid if last_donation_year == last_active_year
+      return :overdue if last_donation_year.nil?
+      return :paid if last_donation_year >= last_active_year
       return :recent if last_donation_year == last_active_year - 1
 
       :overdue

@@ -55,13 +55,17 @@ class OrganizationUsageShowPresenter
   end
 
   # Chart data keyed by stringified year so Chart.js treats the x-axis as discrete
-  # categories (same trick as #chart_series). Years without donations are omitted.
+  # categories (same trick as #chart_series). Spans the full range from the org's
+  # first real event year to the current year, filling years without donations with 0
+  # so the chart shows a continuous timeline rather than skipping over quiet years.
   def donations_by_year
-    organization.monetary_donations
-                .group(Arel.sql("EXTRACT(YEAR FROM received_on)::int"))
-                .sum(:amount)
-                .sort.to_h
-                .transform_keys(&:to_s)
+    start_year = sorted_years.first || first_donation_year
+    return {} if start_year.nil?
+
+    amounts = organization.monetary_donations
+                          .group(Arel.sql("EXTRACT(YEAR FROM received_on)::int"))
+                          .sum(:amount)
+    (start_year..Date.current.year).to_h { |year| [year.to_s, amounts[year] || 0] }
   end
 
   private

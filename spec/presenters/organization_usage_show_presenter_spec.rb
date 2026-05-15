@@ -116,6 +116,8 @@ RSpec.describe OrganizationUsageShowPresenter do
   end
 
   describe "#donations_by_year" do
+    include ActiveSupport::Testing::TimeHelpers
+
     let(:presenter) { described_class.new(hardrock) }
 
     it "buckets donation amounts by stringified year, sorted ascending" do
@@ -131,6 +133,30 @@ RSpec.describe OrganizationUsageShowPresenter do
       hardrock.monetary_donations.create!(received_on: Date.new(2024, 11, 30), amount: 50, source: "paypal")
 
       expect(presenter.donations_by_year["2024"]).to eq(hardrock.monetary_donations.where("EXTRACT(YEAR FROM received_on) = 2024").sum(:amount))
+    end
+
+    it "spans every year from the org's first real event to the current year, filling quiet years with zero" do
+      # Hardrock fixture events run 2014-2016. Pin "today" to 2026 to get the full range.
+      travel_to Date.new(2026, 5, 15) do
+        data = presenter.donations_by_year
+
+        expect(data.keys).to eq((2014..2026).map(&:to_s))
+        # Years with no donations come back as zero, not missing
+        zero_years = data.select { |_year, amount| amount.zero? }.keys
+        expect(zero_years).to include("2015", "2016", "2017") # quiet years inside the range
+      end
+    end
+
+    it "falls back to the first donation year when the org has no real events" do
+      orphan = Organization.create!(name: "Donor No Events", created_by: users(:admin_user).id, concealed: false)
+      orphan.monetary_donations.create!(received_on: Date.new(2023, 6, 1), amount: 100, source: "paypal")
+      orphan.monetary_donations.create!(received_on: Date.new(2024, 6, 1), amount: 200, source: "check")
+
+      travel_to Date.new(2025, 1, 1) do
+        data = described_class.new(orphan).donations_by_year
+        expect(data.keys).to eq(%w[2023 2024 2025])
+        expect(data["2025"]).to eq(0)
+      end
     end
   end
 end

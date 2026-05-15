@@ -164,6 +164,11 @@ RSpec.describe OrganizationUsageIndexPresenter do
       expect(row(last_active: 2025, last_donation: 2025).current_status).to eq(:paid)
     end
 
+    it "returns :paid when last donation is more recent than the most recent event" do
+      # The race ran in 2025 and they donated in 2026 — fully current.
+      expect(row(last_active: 2025, last_donation: 2026).current_status).to eq(:paid)
+    end
+
     it "returns :recent when last donation is the year before the most recent event" do
       expect(row(last_active: 2026, last_donation: 2025).current_status).to eq(:recent)
       expect(row(last_active: 2025, last_donation: 2024).current_status).to eq(:recent)

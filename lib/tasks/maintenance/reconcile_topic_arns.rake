@@ -10,7 +10,9 @@ namespace :maintenance do
   task reconcile_topic_arns: :environment do
     apply = ENV["APPLY"] == "true"
     klasses = [::Event, ::Effort]
-    sns_client = ::SnsClientFactory.client
+    # Pass logger: nil so the aws-sdk-rails railtie's per-call INFO logging
+    # doesn't drown the progress bar in one line per GetTopicAttributes.
+    sns_client = ::SnsClientFactory.client(logger: nil)
 
     puts "Mode: #{apply ? 'APPLY (will nil topic_resource_key on dangling rows)' : 'DRY RUN (read-only)'}"
     puts

@@ -122,7 +122,7 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
       expect(effort_recent_finished.reload.topic_resource_key).to eq(topic_arn)
     end
 
-    it "preserves the topic when the Effort is not finished" do
+    it "preserves the topic when the Effort is not finished and younger than 3 months" do
       effort_active_unfinished.update_columns(
         finished: false,
         scheduled_start_time: 31.days.ago,
@@ -134,6 +134,21 @@ RSpec.describe Sweepers::EffortSubscriptionsAndTopicsJob, type: :job do
       described_class.perform_now
 
       expect(effort_active_unfinished.reload.topic_resource_key).to eq(topic_arn)
+    end
+
+    it "deletes the topic for unfinished Efforts older than 3 months (safety belt)" do
+      effort_active_unfinished.update_columns(
+        finished: false,
+        scheduled_start_time: 4.months.ago,
+        topic_resource_key: topic_arn,
+      )
+
+      allow(SnsTopicManager).to receive(:delete).and_return(topic_arn)
+
+      described_class.perform_now
+
+      expect(SnsTopicManager).to have_received(:delete).with(resource: effort_active_unfinished)
+      expect(effort_active_unfinished.reload.topic_resource_key).to be_nil
     end
 
     it "preserves the topic for finished Efforts younger than 30 days" do

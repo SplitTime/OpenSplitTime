@@ -1,13 +1,15 @@
-# Reconciles Subscribable topic_resource_key values against AWS SNS. Reports drift
-# (rows whose topic name doesn't match the row's slug) and splits into "topic still
-# exists in AWS" (harmless slug renames) vs "topic missing in AWS" (dangling
-# pointers — the cause of repeated NotifyEventUpdateJob etc. failures).
-# Pass APPLY=true to nil out topic_resource_key on the dangling rows.
+# Reconciles Subscribable topic_resource_key values against AWS SNS. For every
+# row with a topic_resource_key, calls GetTopicAttributes and classifies:
+#   - exists in AWS, slug matches the ARN (healthy)
+#   - exists in AWS, slug differs from the ARN (drift — harmless slug rename)
+#   - missing in AWS (dangling pointer — what causes NotifyEventUpdateJob etc.
+#     to fail and self-heal repeatedly)
+# Pass APPLY=true to nil topic_resource_key on the dangling rows.
 namespace :maintenance do
-  desc "Reports drifted topic_resource_keys; APPLY=true to nil dangling pointers"
+  desc "Reports topic_resource_key vs AWS; APPLY=true clears dangling pointers"
   task reconcile_topic_arns: :environment do
     apply = ENV["APPLY"] == "true"
-    klasses = [::Event, ::Effort, ::Person]
+    klasses = [::Event, ::Effort]
     sns_client = ::SnsClientFactory.client
 
     puts "Mode: #{apply ? 'APPLY (will nil topic_resource_key on dangling rows)' : 'DRY RUN (read-only)'}"
@@ -18,23 +20,25 @@ namespace :maintenance do
 end
 
 def reconcile_class(klass, sns_client, apply:)
-  drifted = collect_drift(klass)
-  if drifted.empty?
-    puts "#{klass.name}: no drift"
+  scope = klass.where.not(topic_resource_key: nil)
+  total = scope.count
+  if total.zero?
+    puts "#{klass.name}: no rows with topic_resource_key"
     return
   end
 
-  puts "#{klass.name}: #{drifted.size} drifted — checking AWS"
-  exists = []
+  puts "#{klass.name}: #{total} row(s) — checking AWS"
+  exists_matched = 0
+  exists_drifted = 0
   missing = []
   errored = []
 
-  progress = ::ProgressBar.new(drifted.size)
-  drifted.each do |record|
+  progress = ::ProgressBar.new(total)
+  scope.find_each do |record|
     progress.increment!
     begin
       sns_client.get_topic_attributes(topic_arn: record.topic_resource_key)
-      exists << record
+      slug_matches_arn?(record) ? exists_matched += 1 : exists_drifted += 1
     rescue ::Aws::SNS::Errors::NotFound
       missing << record
     rescue ::Aws::SNS::Errors::ServiceError => e
@@ -42,12 +46,13 @@ def reconcile_class(klass, sns_client, apply:)
     end
   end
 
-  puts "  exists in AWS (slug-renamed, harmless): #{exists.size}"
+  puts "  exists in AWS (slug matches):           #{exists_matched}"
+  puts "  exists in AWS (slug-renamed, harmless): #{exists_drifted}"
   puts "  MISSING in AWS (dangling pointers):     #{missing.size}"
   puts "  errors during AWS check:                #{errored.size}"
 
   if missing.any?
-    puts "\n  Dangling records:"
+    puts "\n  Dangling rows:"
     missing.each { |r| puts "    #{klass.name}##{r.id}  slug=#{r.slug}  arn=#{r.topic_resource_key}" }
   end
 
@@ -75,11 +80,9 @@ def reconcile_class(klass, sns_client, apply:)
   puts
 end
 
-def collect_drift(klass)
-  klass.where.not(topic_resource_key: nil).find_each.reject do |record|
-    # Tolerate both eras (follow_/follow-) and any single-letter env prefix
-    # (d-, s-, t-) so this works in non-prod environments too.
-    arn_slug = record.topic_resource_key.split(":").last.to_s.sub(/\A([a-z]-)?follow[-_]/, "")
-    arn_slug == record.slug
-  end
+def slug_matches_arn?(record)
+  # Tolerate both eras (follow_/follow-) and any single-letter env prefix
+  # (d-, s-, t-) so this works in non-prod environments too.
+  arn_slug = record.topic_resource_key.split(":").last.to_s.sub(/\A([a-z]-)?follow[-_]/, "")
+  arn_slug == record.slug
 end

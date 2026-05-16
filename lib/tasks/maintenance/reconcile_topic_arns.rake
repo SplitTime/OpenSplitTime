@@ -20,24 +20,25 @@ namespace :maintenance do
 end
 
 def reconcile_class(klass, sns_client, apply:)
-  records = klass.where.not(topic_resource_key: nil).to_a
-  if records.empty?
+  scope = klass.where.not(topic_resource_key: nil)
+  total = scope.count
+  if total.zero?
     puts "#{klass.name}: no rows with topic_resource_key"
     return
   end
 
-  puts "#{klass.name}: #{records.size} row(s) — checking AWS"
-  exists_matched = []
-  exists_drifted = []
+  puts "#{klass.name}: #{total} row(s) — checking AWS"
+  exists_matched = 0
+  exists_drifted = 0
   missing = []
   errored = []
 
-  progress = ::ProgressBar.new(records.size)
-  records.each do |record|
+  progress = ::ProgressBar.new(total)
+  scope.find_each do |record|
     progress.increment!
     begin
       sns_client.get_topic_attributes(topic_arn: record.topic_resource_key)
-      slug_matches_arn?(record) ? exists_matched << record : exists_drifted << record
+      slug_matches_arn?(record) ? exists_matched += 1 : exists_drifted += 1
     rescue ::Aws::SNS::Errors::NotFound
       missing << record
     rescue ::Aws::SNS::Errors::ServiceError => e
@@ -45,8 +46,8 @@ def reconcile_class(klass, sns_client, apply:)
     end
   end
 
-  puts "  exists in AWS (slug matches):           #{exists_matched.size}"
-  puts "  exists in AWS (slug-renamed, harmless): #{exists_drifted.size}"
+  puts "  exists in AWS (slug matches):           #{exists_matched}"
+  puts "  exists in AWS (slug-renamed, harmless): #{exists_drifted}"
   puts "  MISSING in AWS (dangling pointers):     #{missing.size}"
   puts "  errors during AWS check:                #{errored.size}"
 

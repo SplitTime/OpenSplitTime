@@ -4,7 +4,8 @@ module Sweepers
 
     SUBSCRIPTION_FINISHED_CUTOFF = 10.days
     SUBSCRIPTION_ABSOLUTE_CUTOFF = 3.months
-    TOPIC_AGE_CUTOFF = 30.days
+    TOPIC_FINISHED_CUTOFF = 30.days
+    TOPIC_ABSOLUTE_CUTOFF = 3.months
     ORPHANED_DRIFT_THRESHOLD = 100
 
     class OrphanedTopicDriftError < StandardError; end
@@ -59,18 +60,21 @@ module Sweepers
     end
 
     def sweep_topics_on_stale_efforts
-      append("\n[Pass 2] Sweeping topics on stale finished Efforts")
+      append("\n[Pass 2] Sweeping topics on stale Efforts")
 
       candidates = Effort.joins(:event)
                          .having_topic_resource_key
-                         .where(finished: true)
                          .where(
-                           "COALESCE(efforts.scheduled_start_time, events.scheduled_start_time) < ?",
-                           TOPIC_AGE_CUTOFF.ago,
+                           "(efforts.finished = TRUE AND " \
+                           "COALESCE(efforts.scheduled_start_time, events.scheduled_start_time) < ?) " \
+                           "OR COALESCE(efforts.scheduled_start_time, events.scheduled_start_time) < ?",
+                           TOPIC_FINISHED_CUTOFF.ago,
+                           TOPIC_ABSOLUTE_CUTOFF.ago,
                          )
 
       total_candidates = candidates.count
-      append("  #{total_candidates} candidate Effort(s) past the #{TOPIC_AGE_CUTOFF.inspect} cutoff")
+      append("  #{total_candidates} candidate Effort(s) " \
+             "(finished + #{TOPIC_FINISHED_CUTOFF.inspect}, or any + #{TOPIC_ABSOLUTE_CUTOFF.inspect})")
       return if total_candidates.zero?
 
       deleted_count = 0

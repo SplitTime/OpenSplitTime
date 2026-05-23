@@ -1,7 +1,6 @@
 class SplitResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :location_id
   attribute :distance_from_start
   attribute :vert_gain_from_start
   attribute :vert_loss_from_start

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_14_201232) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -370,18 +370,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_14_201232) do
     t.bigint "user_id", null: false
     t.index ["parent_type", "parent_id"], name: "index_import_jobs_on_parent"
     t.index ["user_id"], name: "index_import_jobs_on_user_id"
-  end
-
-  create_table "locations", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", precision: nil, null: false
-    t.integer "created_by"
-    t.text "description"
-    t.float "elevation"
-    t.decimal "latitude", precision: 9, scale: 6
-    t.decimal "longitude", precision: 9, scale: 6
-    t.string "name", limit: 64, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.integer "updated_by"
   end
 
   create_table "lotteries", force: :cascade do |t|
@@ -872,7 +860,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_14_201232) do
     t.float "elevation"
     t.integer "kind", null: false
     t.decimal "latitude", precision: 9, scale: 6
-    t.integer "location_id"
     t.decimal "longitude", precision: 9, scale: 6
     t.string "parameterized_base_name", null: false
     t.string "slug", null: false
@@ -882,7 +869,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_14_201232) do
     t.float "vert_loss_from_start"
     t.index ["base_name", "course_id"], name: "index_splits_on_base_name_and_course_id", unique: true
     t.index ["course_id"], name: "index_splits_on_course_id"
-    t.index ["location_id"], name: "index_splits_on_location_id"
     t.index ["parameterized_base_name", "course_id"], name: "index_splits_on_parameterized_base_name_and_course_id", unique: true
     t.index ["parameterized_base_name"], name: "index_splits_on_parameterized_base_name"
     t.index ["slug"], name: "index_splits_on_slug", unique: true
@@ -1022,7 +1008,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_14_201232) do
   add_foreign_key "split_times", "efforts"
   add_foreign_key "split_times", "splits"
   add_foreign_key "splits", "courses"
-  add_foreign_key "splits", "locations"
   add_foreign_key "stewardships", "organizations"
   add_foreign_key "stewardships", "users"
   add_foreign_key "subscriptions", "users"

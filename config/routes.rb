@@ -86,7 +86,6 @@ Rails.application.routes.draw do
         as: :subscription_button,
         constraints: { notification_protocol: /email|sms/ }
     collection do
-      get :subregion_options
       post :mini_table
     end
     member do
@@ -275,7 +274,6 @@ Rails.application.routes.draw do
   end
 
   resources :people, only: [:index, :show, :edit, :update, :destroy] do
-    collection { get :subregion_options }
     member { patch :avatar_claim }
     member { get :merge }
     member { put :combine }

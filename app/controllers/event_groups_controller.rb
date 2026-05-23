@@ -431,6 +431,20 @@ class EventGroupsController < ApplicationController
     redirect_to setup_event_group_path(@event_group)
   end
 
+  # GET /event_groups/1/export_entrants
+  def export_entrants
+    authorize @event_group
+    efforts = @event_group.efforts.order(:bib_number, :last_name, :first_name)
+    builder = CsvBuilder.new(Effort, efforts)
+
+    respond_to do |format|
+      format.csv do
+        send_data(builder.full_string, type: "text/csv",
+                                       filename: "#{@event_group.name.parameterize}-entrants-#{Time.zone.today}.csv")
+      end
+    end
+  end
+
   # GET /event_groups/1/export_raw_times
   def export_raw_times
     authorize @event_group

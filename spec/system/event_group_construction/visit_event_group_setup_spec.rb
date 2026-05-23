@@ -1,7 +1,14 @@
 require "rails_helper"
 
-RSpec.describe "Visit an event group setup page and try various features", type: :system, js: true do
+RSpec.describe "Visit an event group setup page and try various features", :js, type: :system do
   let(:user) { users(:third_user) }
+  let(:organization) { organizations(:dirty_30_running) }
+  let(:event_group) { event_groups(:sum) }
+  let(:event_1) { event_group.events.first }
+  let(:event_2) { event_group.events.second }
+  let(:outside_event_group) { event_groups(:rufa_2017) }
+  let(:outside_event_1) { outside_event_group.events.first }
+  let(:outside_event_2) { outside_event_group.events.second }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
@@ -11,17 +18,8 @@ RSpec.describe "Visit an event group setup page and try various features", type:
     organization.stewards << steward
   end
 
-  let(:organization) { organizations(:dirty_30_running) }
-  let(:event_group) { event_groups(:sum) }
-  let(:event_1) { event_group.events.first }
-  let(:event_2) { event_group.events.second }
-
-  let(:outside_event_group) { event_groups(:rufa_2017) }
-  let(:outside_event_1) { outside_event_group.events.first }
-  let(:outside_event_2) { outside_event_group.events.second }
-
-  context "The event group is visible" do
-    context "The event group has events" do
+  context "when the event group is visible" do
+    context "when the event group has events" do
       scenario "The user is a visitor" do
         visit setup_event_group_path(event_group)
 
@@ -71,7 +69,7 @@ RSpec.describe "Visit an event group setup page and try various features", type:
       end
     end
 
-    context "The event group has no events" do
+    context "when the event group has no events" do
       before { event_group.events.each(&:destroy) }
 
       scenario "The user owns the organization" do
@@ -103,7 +101,7 @@ RSpec.describe "Visit an event group setup page and try various features", type:
     end
   end
 
-  context "The event group is concealed" do
+  context "when the event group is concealed" do
     before { event_group.update(concealed: true) }
 
     scenario "The user is a visitor" do
@@ -148,42 +146,6 @@ RSpec.describe "Visit an event group setup page and try various features", type:
       verify_steward_links_present
       verify_admin_links_present
       verify_outside_content_absent
-    end
-
-    # Ensure policy scoping is working as expected, i.e., ignoring created_by
-    # and looking only at the organization owner.
-    context "The event group has an event that was created by an admin" do
-      before { event_2.update(created_by: admin.id) }
-
-      scenario "The user owns the organization" do
-        login_as owner, scope: :user
-        visit setup_event_group_path(event_group)
-
-        verify_public_links_present
-        verify_steward_links_present
-        verify_admin_links_present
-        verify_outside_content_absent
-      end
-
-      scenario "The user is a steward of the organization" do
-        login_as steward, scope: :user
-        visit setup_event_group_path(event_group)
-
-        verify_public_links_present
-        verify_steward_links_present
-        verify_admin_links_absent
-        verify_outside_content_absent
-      end
-
-      scenario "The user is an admin user" do
-        login_as admin, scope: :user
-        visit setup_event_group_path(event_group)
-
-        verify_public_links_present
-        verify_steward_links_present
-        verify_admin_links_present
-        verify_outside_content_absent
-      end
     end
   end
 

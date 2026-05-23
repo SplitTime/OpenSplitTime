@@ -1,28 +1,9 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!,
-                except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
-  before_action :set_effort, except: [:index, :new, :create, :create_split_time_from_raw_time, :mini_table]
+                except: [:show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
+  before_action :set_effort, except: [:new, :create, :create_split_time_from_raw_time, :mini_table]
   after_action :verify_authorized,
-               except: [:index, :show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
-
-  # GET /efforts
-  def index
-    @efforts = policy_scope(Effort).order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
-                                   .where(prepared_params[:filter])
-    respond_to do |format|
-      format.csv do
-        builder = CsvBuilder.new(Effort, @efforts)
-        filename = if prepared_params[:filter] == { "id" => "0" }
-                     "ost-effort-import-template.csv"
-                   else
-                     "#{prepared_params[:filter].to_param}-#{builder.model_class_name}" \
-                       "-#{Time.zone.now.strftime('%Y-%m-%d')}.csv"
-                   end
-
-        send_data(builder.full_string, type: "text/csv", filename: filename)
-      end
-    end
-  end
+               except: [:show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
 
   # GET /efforts/1
   def show

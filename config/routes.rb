@@ -79,7 +79,7 @@ Rails.application.routes.draw do
 
   resources :credentials, only: [:create, :update, :destroy]
 
-  resources :efforts do
+  resources :efforts, except: [:index] do
     resources :subscriptions, only: [:create, :destroy], module: "efforts"
     get "subscription_button/:notification_protocol",
         to: "efforts/subscriptions#button",
@@ -136,6 +136,7 @@ Rails.application.routes.draw do
       get :drop_list
       get :efforts
       get :entrants
+      get :export_entrants
       get :export_raw_times
       get :finish_line
       get :follow

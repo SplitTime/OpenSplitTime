@@ -22,7 +22,7 @@
                   <%= link_to "Manage Photos", manage_entrant_photos_event_group_path(presenter.event_group), class: "dropdown-item" %>
                   <%= link_to "Manage Start Times", manage_start_times_event_group_path(presenter.event_group), class: "dropdown-item" %>
                   <div class="dropdown-divider"></div>
-                  <%= link_to "Export", efforts_path(filter: { event_id: presenter.events.ids }, format: :csv), class: "dropdown-item" %>
+                  <%= link_to "Export", export_entrants_event_group_path(presenter.event_group, format: :csv), class: "dropdown-item" %>
                   <div class="dropdown-divider"></div>
                   <%= link_to_strong_confirm "Delete all entrants", delete_all_efforts_event_group_path(presenter.event_group),
                                              class: "dropdown-item text-danger",

@@ -26,6 +26,10 @@ class EventGroupPolicy < ApplicationPolicy
     setup?
   end
 
+  def efforts?
+    entrants?
+  end
+
   def setup_summary?
     setup?
   end

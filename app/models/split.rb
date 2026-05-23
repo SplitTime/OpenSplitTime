@@ -13,7 +13,11 @@ class Split < ApplicationRecord
   friendly_id :course_split_name, use: [:slugged, :history]
   has_paper_trail
 
-  enum :kind, { :start => 0, :finish => 1, :intermediate => 2 }, default: :intermediate
+  enum :kind, {
+    start: 0,
+    finish: 1,
+    intermediate: 2,
+  }, default: :intermediate
   belongs_to :course
   has_many :split_times, dependent: :destroy
   has_many :aid_stations, dependent: :destroy

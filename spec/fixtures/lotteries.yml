@@ -1,19 +1,19 @@
 ---
 lottery_without_tickets:
   id: 3
-  organization_id: 4
+  calculation_class:
+  concealed:
   name: Lottery Without Tickets
+  organization_id: 4
   scheduled_start_date: 2022-12-06
   slug: lottery-without-tickets
-  concealed:
   status: 0
-  calculation_class:
 lottery_with_tickets_and_draws:
   id: 4
-  organization_id: 4
+  calculation_class:
+  concealed:
   name: Lottery With Tickets And Draws
+  organization_id: 4
   scheduled_start_date: 2020-11-11
   slug: lottery-with-tickets-and-draws
-  concealed:
   status: 1
-  calculation_class:

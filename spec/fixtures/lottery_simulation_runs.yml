@@ -1,4 +1,13 @@
-lottery_simulation_run_one:
+---
+lottery_simulation_run_0001:
+  id: 813529981
+  context:
+  elapsed_time:
+  error_message:
+  failure_count:
   lottery_id: 3
+  name:
   requested_count: 2
+  started_at:
   status: 0
+  success_count:

@@ -1,89 +1,97 @@
 ---
 ramble:
   id: 4
+  available_live: false
+  concealed: false
+  created_by: 1
+  data_entry_grouping_strategy: 0
+  home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: false
   name: Ramble
   organization_id: 6
-  available_live: false
-  concealed: false
-  created_by: 1
   slug: ramble
-  data_entry_grouping_strategy: 0
-  monitor_pacers: false
-  home_time_zone: Mountain Time (US & Canada)
+  webhook_token:
 hardrock_2014:
   id: 7
+  available_live: false
+  concealed: false
+  created_by: 1
+  data_entry_grouping_strategy: 0
+  home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: true
   name: Hardrock 2014
   organization_id: 4
-  available_live: false
-  concealed: false
-  created_by: 1
   slug: hardrock-2014
-  data_entry_grouping_strategy: 0
-  monitor_pacers: true
-  home_time_zone: Mountain Time (US & Canada)
+  webhook_token:
 hardrock_2015:
   id: 17
-  name: Hardrock 2015
-  organization_id: 4
   available_live: true
   concealed: false
   created_by: 1
-  slug: hardrock-2015
   data_entry_grouping_strategy: 0
-  monitor_pacers: true
   home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: true
+  name: Hardrock 2015
+  organization_id: 4
+  slug: hardrock-2015
+  webhook_token:
 rufa_2016:
   id: 25
-  name: RUFA 2016
-  organization_id: 14
   available_live: false
   concealed: false
   created_by: 1
-  slug: rufa-2016
   data_entry_grouping_strategy: 0
-  monitor_pacers: false
   home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: false
+  name: RUFA 2016
+  organization_id: 14
+  slug: rufa-2016
+  webhook_token:
 dirty_30:
   id: 27
+  available_live: true
+  concealed: false
+  created_by: 1
+  data_entry_grouping_strategy: 1
+  home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: false
   name: Dirty 30
   organization_id: 15
-  available_live: true
-  concealed: false
-  created_by: 1
   slug: dirty-30
-  data_entry_grouping_strategy: 1
-  monitor_pacers: false
-  home_time_zone: Mountain Time (US & Canada)
+  webhook_token:
 hardrock_2016:
   id: 28
+  available_live: true
+  concealed: false
+  created_by: 1
+  data_entry_grouping_strategy: 0
+  home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: true
   name: Hardrock 2016
   organization_id: 4
-  available_live: true
-  concealed: false
-  created_by: 1
   slug: hardrock-2016
-  data_entry_grouping_strategy: 0
-  monitor_pacers: true
-  home_time_zone: Mountain Time (US & Canada)
+  webhook_token:
 sum:
   id: 32
+  available_live: true
+  concealed: false
+  created_by: 1
+  data_entry_grouping_strategy: 0
+  home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: false
   name: SUM
   organization_id: 15
-  available_live: true
-  concealed: false
-  created_by: 1
   slug: sum
-  data_entry_grouping_strategy: 0
-  monitor_pacers: false
-  home_time_zone: Mountain Time (US & Canada)
+  webhook_token:
 rufa_2017:
   id: 59
-  name: RUFA 2017
-  organization_id: 14
   available_live: true
   concealed: false
   created_by: 1
-  slug: rufa-2017
   data_entry_grouping_strategy: 0
-  monitor_pacers: false
   home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: false
+  name: RUFA 2017
+  organization_id: 14
+  slug: rufa-2017
+  webhook_token:

@@ -4,7 +4,6 @@ class EventResource < Madmin::Resource
   attribute :historical_name
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :created_by
   attribute :scheduled_start_time
   attribute :beacon_url
   attribute :laps_required

@@ -32,12 +32,6 @@ RSpec.describe DuplicateEventGroup, type: :model do
       it "sets created_by to the provided user" do
         expect(subject.new_event_group.created_by).to eq(user.id)
       end
-
-      it "sets created_by on duplicated events" do
-        subject.new_event_group.events.each do |event|
-          expect(event.created_by).to eq(user.id)
-        end
-      end
     end
 
     context "when the source event group has a webhook token" do

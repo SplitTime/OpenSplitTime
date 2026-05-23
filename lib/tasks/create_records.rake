@@ -31,12 +31,11 @@ namespace :create_records do
         city = FFaker::Address.city
         emergency_contact = FFaker::Name.name
         emergency_phone = FFaker::PhoneNumber.short_phone_number
-        user_id = 1
 
         effort = event.efforts.new(bib_number: bib_number, first_name: first_name, last_name: last_name, gender: gender,
                                    birthdate: birthdate, country_code: country_code, state_code: state_code, city: city,
                                    scheduled_start_time: event.scheduled_start_time, emergency_phone: emergency_phone,
-                                   emergency_contact: emergency_contact, created_by: user_id)
+                                   emergency_contact: emergency_contact)
 
         effort_description = "#{effort.full_name} using bib number #{bib_number} for #{event.name}"
 

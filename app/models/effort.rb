@@ -18,7 +18,6 @@ class Effort < ApplicationRecord
   include Delegable
   include DataStatusMethods
   include CapitalizeAttributes
-  include Auditable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true

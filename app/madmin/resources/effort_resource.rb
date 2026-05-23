@@ -8,7 +8,6 @@ class EffortResource < Madmin::Resource
   attribute :age
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :created_by
   attribute :first_name
   attribute :last_name
   attribute :gender

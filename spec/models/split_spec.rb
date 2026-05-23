@@ -3,24 +3,22 @@ require "rails_helper"
 RSpec.describe Split, kind: :model do
   include BitkeyDefinitions
 
+  let(:course2) { build_stubbed(:course, name: "Test Course 2") }
+  let(:course1) { build_stubbed(:course, name: "Test Course") }
+  let(:persisted_course) { create(:course) }
   it_behaves_like "unit_conversions"
-  it_behaves_like "auditable"
   it_behaves_like "locatable"
   it { is_expected.to strip_attribute(:base_name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
 
-  let(:persisted_course) { create(:course) }
-  let(:course1) { build_stubbed(:course, name: "Test Course") }
-  let(:course2) { build_stubbed(:course, name: "Test Course 2") }
-
   describe "#initialize" do
     it "is valid when created with a course, a name, a distance_from_start, and a kind" do
       expect do
-        Split.create!(course: persisted_course,
-                      base_name: "Hopeless Outbound",
-                      distance_from_start: 50_000,
-                      kind: :intermediate)
-      end.to change { Split.count }.by(1)
+        described_class.create!(course: persisted_course,
+                                base_name: "Hopeless Outbound",
+                                distance_from_start: 50_000,
+                                kind: :intermediate)
+      end.to change(described_class, :count).by(1)
     end
 
     it "is invalid without a base_name" do
@@ -187,7 +185,7 @@ RSpec.describe Split, kind: :model do
       expect(split_2.errors.full_messages).to include("Parameterized base name must be unique for a course")
     end
 
-    context "for event_group split location validations" do
+    context "with event_group split location validations" do
       let(:event_1) { create(:event, :with_short_name, course: course_1, event_group: event_group) }
       let(:event_2) { create(:event, :with_short_name, course: course_2, event_group: event_group) }
       let(:event_group) { create(:event_group) }
@@ -256,16 +254,16 @@ RSpec.describe Split, kind: :model do
 
   describe "#in_bitkey and #out_bitkey" do
     it "returns the in or out bitkey if included in the sub_split bitmap" do
-      split = Split.new(sub_split_bitmap: 65)
+      split = described_class.new(sub_split_bitmap: 65)
       expect(split.in_bitkey).to eq(in_bitkey)
       expect(split.out_bitkey).to eq(out_bitkey)
     end
 
     it "returns nil only if not included in the sub_split bitmap" do
-      split = Split.new(sub_split_bitmap: 64)
+      split = described_class.new(sub_split_bitmap: 64)
       expect(split.in_bitkey).to be_nil
       expect(split.out_bitkey).to eq(out_bitkey)
-      split = Split.new(sub_split_bitmap: 1)
+      split = described_class.new(sub_split_bitmap: 1)
       expect(split.out_bitkey).to be_nil
       expect(split.in_bitkey).to eq(in_bitkey)
     end
@@ -273,61 +271,61 @@ RSpec.describe Split, kind: :model do
 
   describe "#name_extensions=" do
     it 'sets sub_split_bitmap to 1 if provided with ["In"]' do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = %w[In]
       expect(split.sub_split_bitmap).to eq(1)
     end
 
     it 'sets sub_split_bitmap to 65 if provided with ["In", "Out"]' do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = %w[In Out]
       expect(split.sub_split_bitmap).to eq(65)
     end
 
     it "is unaffacted by different cases in the parameters" do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = %w[IN out]
       expect(split.sub_split_bitmap).to eq(65)
     end
 
     it "functions correctly if passed a single extension as a string" do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = "Out"
       expect(split.sub_split_bitmap).to eq(64)
     end
 
     it "functions correctly if passed two extensions as a string separated by a space" do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = "In Out"
       expect(split.sub_split_bitmap).to eq(65)
     end
 
     it "ignores unrecognized extensions" do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = "In Hello Out"
       expect(split.sub_split_bitmap).to eq(65)
     end
 
     it "sets sub_split_bitmap to 1 if provided with no recognized extensions" do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = "Hello There"
       expect(split.sub_split_bitmap).to eq(1)
     end
 
     it "sets sub_split_bitmap to 1 if provided with an empty string" do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = ""
       expect(split.sub_split_bitmap).to eq(1)
     end
 
     it "sets sub_split_bitmap to 1 if provided with nil" do
-      split = Split.new
+      split = described_class.new
       split.name_extensions = nil
       expect(split.sub_split_bitmap).to eq(1)
     end
 
     it "is properly aliased as sub_split_kinds=" do
-      split = Split.new
+      split = described_class.new
       split.sub_split_kinds = %w[In Out]
       expect(split.sub_split_bitmap).to eq(65)
     end
@@ -336,56 +334,56 @@ RSpec.describe Split, kind: :model do
   context "when there is no current user (therefore no preferred distance or elevation units)" do
     describe "#distance_in_preferred_units" do
       it "returns nil if passed an empty string" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.distance_in_preferred_units = ""
         expect(split.distance_from_start).to be_nil
       end
 
       it "returns nil if passed nil" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.distance_in_preferred_units = nil
         expect(split.distance_from_start).to be_nil
       end
 
       it "takes a number in miles and store it as meters (rounded to 0) in the correct attribute" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.distance_in_preferred_units = 5.5
         expect(split.distance_from_start).to eq(8851)
       end
 
       it "takes a number string in miles and store it as meters in the correct attribute" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.distance_in_preferred_units = "5"
         expect(split.distance_from_start).to eq(8047)
       end
 
       it "ignores commas" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.distance_in_preferred_units = "1,000"
         expect(split.distance_from_start).to eq(1_609_344)
       end
 
       it "ignores non-numeric characters" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.distance_in_preferred_units = "5 meters"
         expect(split.distance_from_start).to eq(8047)
       end
 
       it "does not ignore decimals" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.distance_in_preferred_units = "5.5"
         expect(split.distance_from_start).to eq(8851)
       end
 
       it "properly reports values in miles when queried" do
-        split = Split.new(base_name: "Test Split", distance_from_start: 8851)
+        split = described_class.new(base_name: "Test Split", distance_from_start: 8851)
         expect(split.distance_in_preferred_units).to eq(5.5)
       end
     end
 
     describe "vert_gain_in_preferred_units and vert_loss_in_preferred_units" do
       it "returns nil if passed an empty string" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.vert_gain_in_preferred_units = ""
         split.vert_loss_in_preferred_units = ""
         expect(split.vert_gain_from_start).to be_nil
@@ -393,7 +391,7 @@ RSpec.describe Split, kind: :model do
       end
 
       it "returns nil if passed nil" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.vert_gain_in_preferred_units = nil
         split.vert_loss_in_preferred_units = nil
         expect(split.vert_gain_from_start).to be_nil
@@ -401,7 +399,7 @@ RSpec.describe Split, kind: :model do
       end
 
       it "takes a number in feet and store it as meters in the correct attribute" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.vert_gain_in_preferred_units = 13_500
         split.vert_loss_in_preferred_units = 12_000
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
@@ -409,7 +407,7 @@ RSpec.describe Split, kind: :model do
       end
 
       it "takes a number string in feet and store it as meters in the correct attribute" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.vert_gain_in_preferred_units = "13500"
         split.vert_loss_in_preferred_units = "12000"
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
@@ -417,25 +415,25 @@ RSpec.describe Split, kind: :model do
       end
 
       it "ignores commas" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.vert_gain_in_preferred_units = "13,500"
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
       end
 
       it "ignores non-numeric characters" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.vert_gain_in_preferred_units = "13500 meters"
         expect(split.vert_gain_from_start.round(1)).to eq(4114.8)
       end
 
       it "does not ignore decimals" do
-        split = Split.new(base_name: "Test Split")
+        split = described_class.new(base_name: "Test Split")
         split.vert_gain_in_preferred_units = "13,500.5"
         expect(split.vert_gain_from_start.round(1)).to eq(4115.0)
       end
 
       it "properly reports values in feet when queried" do
-        split = Split.new(base_name: "Test Split", vert_gain_from_start: 4114.8, vert_loss_from_start: 3657.6)
+        split = described_class.new(base_name: "Test Split", vert_gain_from_start: 4114.8, vert_loss_from_start: 3657.6)
         expect(split.vert_gain_in_preferred_units).to eq(13_500)
         expect(split.vert_loss_in_preferred_units).to eq(12_000)
       end

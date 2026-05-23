@@ -5,7 +5,6 @@ notification_0001:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -16,7 +15,6 @@ notification_0002:
   distance: 0
   bitkey: 1
   follower_ids: "{4,3}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -27,7 +25,6 @@ notification_0003:
   distance: 8690
   bitkey: 1
   follower_ids: "{3}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -38,7 +35,6 @@ notification_0004:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -49,7 +45,6 @@ notification_0005:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -60,7 +55,6 @@ notification_0006:
   distance: 8690
   bitkey: 1
   follower_ids: "{11,4}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -71,7 +65,6 @@ notification_0007:
   distance: 8690
   bitkey: 1
   follower_ids: "{11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -82,7 +75,6 @@ notification_0008:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -93,7 +85,6 @@ notification_0009:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -104,7 +95,6 @@ notification_0010:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -115,7 +105,6 @@ notification_0011:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -126,7 +115,6 @@ notification_0012:
   distance: 0
   bitkey: 1
   follower_ids: "{1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -137,7 +125,6 @@ notification_0013:
   distance: 4345
   bitkey: 1
   follower_ids: "{11,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -148,7 +135,6 @@ notification_0014:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -159,7 +145,6 @@ notification_0015:
   distance: 0
   bitkey: 1
   follower_ids: "{1,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -170,7 +155,6 @@ notification_0016:
   distance: 4345
   bitkey: 1
   follower_ids: "{1,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -181,7 +165,6 @@ notification_0017:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -192,7 +175,6 @@ notification_0018:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -203,7 +185,6 @@ notification_0019:
   distance: 8690
   bitkey: 1
   follower_ids: "{1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -214,7 +195,6 @@ notification_0020:
   distance: 4345
   bitkey: 1
   follower_ids: "{3,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -225,7 +205,6 @@ notification_0021:
   distance: 8690
   bitkey: 1
   follower_ids: "{4}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -236,7 +215,6 @@ notification_0022:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -247,7 +225,6 @@ notification_0023:
   distance: 0
   bitkey: 1
   follower_ids: "{3,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -258,7 +235,6 @@ notification_0024:
   distance: 8690
   bitkey: 1
   follower_ids: "{4,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -269,7 +245,6 @@ notification_0025:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -280,7 +255,6 @@ notification_0026:
   distance: 0
   bitkey: 1
   follower_ids: "{3,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -291,7 +265,6 @@ notification_0027:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -302,7 +275,6 @@ notification_0028:
   distance: 8690
   bitkey: 1
   follower_ids: "{1,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -313,7 +285,6 @@ notification_0029:
   distance: 4345
   bitkey: 1
   follower_ids: "{1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -324,7 +295,6 @@ notification_0030:
   distance: 4345
   bitkey: 1
   follower_ids: "{3,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -335,7 +305,6 @@ notification_0031:
   distance: 0
   bitkey: 1
   follower_ids: "{11,4}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -346,7 +315,6 @@ notification_0032:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -357,7 +325,6 @@ notification_0033:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -368,7 +335,6 @@ notification_0034:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -379,7 +345,6 @@ notification_0035:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -390,7 +355,6 @@ notification_0036:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,4}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -401,7 +365,6 @@ notification_0037:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -412,7 +375,6 @@ notification_0038:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -423,7 +385,6 @@ notification_0039:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -434,7 +395,6 @@ notification_0040:
   distance: 4345
   bitkey: 1
   follower_ids: "{4}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -445,7 +405,6 @@ notification_0041:
   distance: 4345
   bitkey: 1
   follower_ids: "{4,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -456,7 +415,6 @@ notification_0042:
   distance: 8690
   bitkey: 1
   follower_ids: "{11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -467,7 +425,6 @@ notification_0043:
   distance: 0
   bitkey: 1
   follower_ids: "{3,4}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -478,7 +435,6 @@ notification_0044:
   distance: 0
   bitkey: 1
   follower_ids: "{4,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -489,7 +445,6 @@ notification_0045:
   distance: 0
   bitkey: 1
   follower_ids: "{11,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -500,7 +455,6 @@ notification_0046:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -511,7 +465,6 @@ notification_0047:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -522,7 +475,6 @@ notification_0048:
   distance: 8690
   bitkey: 1
   follower_ids: "{11,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -533,7 +485,6 @@ notification_0049:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -544,7 +495,6 @@ notification_0050:
   distance: 8690
   bitkey: 1
   follower_ids: "{11,1}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -555,7 +505,6 @@ notification_0051:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -566,7 +515,6 @@ notification_0052:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -577,7 +525,6 @@ notification_0053:
   distance: 4345
   bitkey: 1
   follower_ids: "{3}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -588,7 +535,6 @@ notification_0054:
   distance: 8690
   bitkey: 1
   follower_ids: "{3}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -599,7 +545,6 @@ notification_0055:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -610,7 +555,6 @@ notification_0056:
   distance: 4345
   bitkey: 1
   follower_ids: "{11,3}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -621,7 +565,6 @@ notification_0057:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -632,7 +575,6 @@ notification_0058:
   distance: 8690
   bitkey: 1
   follower_ids: "{3,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -643,7 +585,6 @@ notification_0059:
   distance: 8690
   bitkey: 1
   follower_ids: "{3}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -654,7 +595,6 @@ notification_0060:
   distance: 0
   bitkey: 1
   follower_ids: "{11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -665,7 +605,6 @@ notification_0061:
   distance: 4345
   bitkey: 1
   follower_ids: "{3,11}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -676,7 +615,6 @@ notification_0062:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -687,7 +625,6 @@ notification_0063:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -698,7 +635,6 @@ notification_0064:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -709,7 +645,6 @@ notification_0065:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -720,7 +655,6 @@ notification_0066:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -731,7 +665,6 @@ notification_0067:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -742,7 +675,6 @@ notification_0068:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -753,7 +685,6 @@ notification_0069:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -764,7 +695,6 @@ notification_0070:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -775,7 +705,6 @@ notification_0071:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -786,7 +715,6 @@ notification_0072:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -797,7 +725,6 @@ notification_0073:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -808,7 +735,6 @@ notification_0074:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -819,7 +745,6 @@ notification_0075:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -830,7 +755,6 @@ notification_0076:
   distance: 4345
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -841,7 +765,6 @@ notification_0077:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -852,7 +775,6 @@ notification_0078:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -863,7 +785,6 @@ notification_0079:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -874,7 +795,6 @@ notification_0080:
   distance: 0
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:
@@ -885,7 +805,6 @@ notification_0081:
   distance: 8690
   bitkey: 1
   follower_ids: "{}"
-  created_by:
   kind:
   topic_resource_key:
   subject:

@@ -3,7 +3,6 @@ require "rails_helper"
 RSpec.describe Course, type: :model do
   include BitkeyDefinitions
 
-  it_behaves_like "auditable"
   it { is_expected.to strip_attribute(:name).collapse_spaces }
   it { is_expected.to strip_attribute(:description).collapse_spaces }
   it { is_expected.to localize_time_attribute(:next_start_time) }

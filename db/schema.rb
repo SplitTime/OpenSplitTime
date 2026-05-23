@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_22_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -135,7 +135,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
   create_table "courses", id: :serial, force: :cascade do |t|
     t.boolean "concealed"
     t.datetime "created_at", precision: nil, null: false
-    t.integer "created_by"
     t.text "description"
     t.string "name", limit: 64, null: false
     t.datetime "next_start_time", precision: nil
@@ -197,7 +196,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
     t.string "country_code", limit: 2
     t.string "country_name"
     t.datetime "created_at", precision: nil, null: false
-    t.integer "created_by"
     t.integer "data_status"
     t.boolean "dropped"
     t.string "email"
@@ -273,7 +271,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
     t.string "beacon_url"
     t.integer "course_id", null: false
     t.datetime "created_at", precision: nil, null: false
-    t.integer "created_by"
     t.integer "efforts_count", default: 0
     t.integer "event_group_id"
     t.string "historical_name", limit: 64
@@ -327,7 +324,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
     t.string "country_code"
     t.string "country_name"
     t.datetime "created_at", null: false
-    t.integer "created_by"
     t.string "email"
     t.string "external_id"
     t.string "first_name", null: false
@@ -501,7 +497,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
   create_table "notifications", force: :cascade do |t|
     t.integer "bitkey", null: false
     t.datetime "created_at", precision: nil, null: false
-    t.integer "created_by"
     t.integer "distance", null: false
     t.bigint "effort_id", null: false
     t.integer "follower_ids", default: [], array: true
@@ -543,7 +538,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
     t.string "country_code", limit: 2
     t.string "country_name"
     t.datetime "created_at", precision: nil, null: false
-    t.integer "created_by"
     t.string "email"
     t.string "first_name", limit: 32, null: false
     t.integer "gender", null: false
@@ -854,7 +848,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_000000) do
     t.string "base_name", null: false
     t.integer "course_id", null: false
     t.datetime "created_at", precision: nil, null: false
-    t.integer "created_by"
     t.string "description"
     t.integer "distance_from_start", null: false
     t.float "elevation"

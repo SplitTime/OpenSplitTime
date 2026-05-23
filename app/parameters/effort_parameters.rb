@@ -26,7 +26,7 @@ class EffortParameters < BaseParameters
 
   def self.enriched_query
     [:id, :slug, :event_id, :person_id, :participant_id, :wave, :bib_number, :city, :state_code, :age,
-     :created_at, :updated_at, :created_by, :first_name, :last_name, :gender,
+     :created_at, :updated_at, :first_name, :last_name, :gender,
      :country_code, :birthdate, :data_status, :beacon_url, :report_url, :photo, :laps_required, :event_start_time,
      :final_split_name, :final_lap_distance, :final_lap, :final_split_id, :final_bitkey, :final_elapsed_seconds,
      :final_split_time_id, :stopped_split_time_id, :stopped_lap, :stopped_split_id, :stopped_bitkey,
@@ -38,10 +38,11 @@ class EffortParameters < BaseParameters
   end
 
   def self.permitted
-    [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number, :bib_number_hardcoded,
-     :age, :birthdate, :city, :state_code, :country_code, :finished, :start_time, :scheduled_start_time, :scheduled_start_time_local,
-     :scheduled_start_offset, :beacon_url, :report_url, :photo, :phone, :email, :checked_in, :emergency_contact, :emergency_phone,
-     :comments, { split_times_attributes: [*SplitTimeParameters.permitted] }]
+    [:id, :slug, :event_id, :person_id, :participant_id, :first_name, :last_name, :gender, :wave, :bib_number,
+     :bib_number_hardcoded, :age, :birthdate, :city, :state_code, :country_code, :finished, :start_time,
+     :scheduled_start_time, :scheduled_start_time_local, :scheduled_start_offset, :beacon_url, :report_url, :photo,
+     :phone, :email, :checked_in, :emergency_contact, :emergency_phone, :comments,
+     { split_times_attributes: [*SplitTimeParameters.permitted] }]
   end
 
   def self.mapping

@@ -46,7 +46,6 @@ class DuplicateEventGroup
         historical_name: nil,
         beacon_url: nil,
         efforts_count: 0,
-        created_by: created_by,
         topic_resource_key: nil,
       )
       new_event_group.events << new_event

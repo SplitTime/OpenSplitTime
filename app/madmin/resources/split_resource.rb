@@ -7,7 +7,6 @@ class SplitResource < Madmin::Resource
   attribute :kind
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :created_by
   attribute :description
   attribute :base_name
   attribute :sub_split_bitmap

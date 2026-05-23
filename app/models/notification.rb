@@ -1,7 +1,9 @@
 class Notification < ApplicationRecord
-  include Auditable
-
-  enum :kind, [:participation, :progress, :event_update]
+  enum :kind, {
+    participation: 0,
+    progress: 1,
+    event_update: 2,
+  }
 
   belongs_to :effort
   has_one :event, through: :effort

@@ -5,7 +5,7 @@ RSpec.describe ProjectionAssessments::RunnerJob do
 
   subject(:job) { described_class.perform_later(projection_assessment_run.id) }
 
-  let(:projection_assessment_run) { projection_assessment_runs(:projection_assessment_run_one) }
+  let(:projection_assessment_run) { projection_assessment_runs(:projection_assessment_run_0001) }
 
   before { allow(ProjectionAssessments::Runner).to receive(:perform!) }
 

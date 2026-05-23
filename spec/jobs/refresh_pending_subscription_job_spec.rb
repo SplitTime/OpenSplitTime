@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe RefreshPendingSubscriptionJob do
   subject(:job) { described_class.new }
 
-  let(:subscription) { subscriptions(:subscription_0003) }
+  let(:subscription) { subscriptions(:subscription_0002) }
   let(:effort) { subscription.subscribable }
 
   describe "#perform" do

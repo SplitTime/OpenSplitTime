@@ -9,7 +9,6 @@ bruno_fadel:
   state_code: CA
   email: bruno@gmail.com
   phone: '3035551212'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -26,7 +25,6 @@ robby_gerlach:
   state_code: VA
   email: robby@yahoo.com
   phone: '3034441212'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -43,7 +41,6 @@ brinda_fisher:
   state_code: SC
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -60,7 +57,6 @@ bad_status:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -77,7 +73,6 @@ willis_murray:
   state_code: FL
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -94,7 +89,6 @@ finished_with_stop:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -111,7 +105,6 @@ garry_kuhlman:
   state_code: MT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -128,7 +121,6 @@ donn_mckenzie:
   state_code: WY
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -145,7 +137,6 @@ gilberto_mckenzie:
   state_code: WA
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -162,7 +153,6 @@ benedict_davis:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -179,7 +169,6 @@ erich_larson:
   state_code: MT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -196,7 +185,6 @@ lavon_paucek:
   state_code: AR
   email: lashunda@koelpin.co.uk
   phone: '6919767666'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -213,7 +201,6 @@ irvin_harber:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -230,7 +217,6 @@ santa_green:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -247,7 +233,6 @@ carmine_adams:
   state_code: WA
   email: jarod@millermoore.com
   phone: '9526029499'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -264,7 +249,6 @@ vesta_borer:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -281,7 +265,6 @@ susanna_abshire:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -298,7 +281,6 @@ pat_schaden:
   state_code: AZ
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -315,7 +297,6 @@ tuan_jacobs:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code: ES
   user_id:
   concealed: false
@@ -332,7 +313,6 @@ rachelle_eichmann:
   state_code: CO
   email: woodrow@runte.ca
   phone: '7764262796'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -349,7 +329,6 @@ leif_carter:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code: ES
   user_id:
   concealed: false
@@ -366,7 +345,6 @@ leroy_leffler:
   state_code: NM
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -383,7 +361,6 @@ cassondra_nienow:
   state_code: OH
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -400,7 +377,6 @@ gus_walker:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -417,7 +393,6 @@ donte_spencer:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -434,7 +409,6 @@ ken_bradtke:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -451,7 +425,6 @@ darius_jacobson:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -468,7 +441,6 @@ chris_rempel:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -485,7 +457,6 @@ samara_vandervort:
   state_code: CA
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -502,7 +473,6 @@ douglas_vandervort:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -519,7 +489,6 @@ leandro_cole:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -536,7 +505,6 @@ elden_morissette:
   state_code: WI
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -553,7 +521,6 @@ raphael_swift:
   state_code: AR
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -570,7 +537,6 @@ vern_buckridge:
   state_code: TX
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -587,7 +553,6 @@ cedric_windler:
   state_code: TN
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -604,7 +569,6 @@ clarence_goyette:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -621,7 +585,6 @@ vince_willms:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -638,7 +601,6 @@ eddy_goldner:
   state_code: WA
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -655,7 +617,6 @@ demetrius_moen:
   state_code: OR
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -672,7 +633,6 @@ robt_wintheiser:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -689,7 +649,6 @@ mervin_smitham:
   state_code: NM
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -706,7 +665,6 @@ without_start:
   state_code: MT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -723,7 +681,6 @@ humberto_adams:
   state_code: NM
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -740,7 +697,6 @@ omer_yundt:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -757,7 +713,6 @@ drop_ouray:
   state_code: CA
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -774,7 +729,6 @@ charlie_mueller:
   state_code: OR
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -791,7 +745,6 @@ kendall_koch:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -808,7 +761,6 @@ dropped_grouse:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -825,7 +777,6 @@ hoyt_macejkovic:
   state_code: TX
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -842,7 +793,6 @@ progress_sherman_colorado_us:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -859,7 +809,6 @@ finished_second_montana_us:
   state_code: MT
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -876,7 +825,6 @@ start_only_2019_02_01:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -893,7 +841,6 @@ finished_first_2019_02_01:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -910,7 +857,6 @@ not_started_2019_02_01:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -927,7 +873,6 @@ shad_hirthe:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -944,7 +889,6 @@ finished_without_stop:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -961,7 +905,6 @@ progress_sherman:
   state_code: ID
   email:
   phone:
-  created_by: 2
   country_code: US
   user_id:
   concealed: false
@@ -978,7 +921,6 @@ finished_first_japan:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code: JP
   user_id:
   concealed: false
@@ -995,7 +937,6 @@ claudio_wunsch:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1012,7 +953,6 @@ keith_metz:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1029,7 +969,6 @@ major_green:
   state_code: NC
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1046,7 +985,6 @@ irvin_corkery:
   state_code: DC
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1063,7 +1001,6 @@ multiple_stops:
   state_code: HI
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1080,7 +1017,6 @@ not_started:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1097,7 +1033,6 @@ start_only_maine_us:
   state_code: ME
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1114,7 +1049,6 @@ junior_lesch:
   state_code: NM
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1131,7 +1065,6 @@ finished_first_utah_us:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1148,7 +1081,6 @@ progress_lap6:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1165,7 +1097,6 @@ multiple_stops_utah_us:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1182,7 +1113,6 @@ finished_last:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1199,7 +1129,6 @@ progress_lap1:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1216,7 +1145,6 @@ kory_kulas:
   state_code: CA
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1233,7 +1161,6 @@ benito_moen:
   state_code: OH
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1250,7 +1177,6 @@ rene_mclaughlin:
   state_code: TX
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1267,7 +1193,6 @@ start_only_colorado_us_2019_02_01:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1284,7 +1209,6 @@ drop_bandera:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1301,7 +1225,6 @@ progress_rolling:
   state_code: CA
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1318,7 +1241,6 @@ not_started_colorado_us_2019_02_01:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1335,7 +1257,6 @@ finished_first_colorado_us:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1352,7 +1273,6 @@ drop_aid4:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1369,7 +1289,6 @@ progress_aid3:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1386,7 +1305,6 @@ drop_anvil:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1403,7 +1321,6 @@ progress_cascade:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1420,7 +1337,6 @@ not_started_colorado_us:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1437,7 +1353,6 @@ finished_second_colorado_us:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1454,7 +1369,6 @@ start_only_colorado_us:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1471,7 +1385,6 @@ finished_first_france:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code: FR
   user_id:
   concealed: false
@@ -1488,7 +1401,6 @@ start_only_2019_02_01_07_19_53:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1505,7 +1417,6 @@ progress_aid4:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1522,7 +1433,6 @@ bad_finish:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1539,7 +1449,6 @@ progress_lap5_partial:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1556,7 +1465,6 @@ finished_first:
   state_code: AZ
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1573,7 +1481,6 @@ finished_lap6:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1590,7 +1497,6 @@ progress_lap2:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1607,7 +1513,6 @@ not_started_utah_us:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1624,7 +1529,6 @@ start_only:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1641,7 +1545,6 @@ on_dst_change:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1658,7 +1561,6 @@ across_dst_change:
   state_code:
   email:
   phone:
-  created_by: 1
   country_code:
   user_id:
   concealed: false
@@ -1675,7 +1577,6 @@ un_started:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1692,7 +1593,6 @@ series_finisher:
   state_code: CO
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1709,7 +1609,6 @@ slow_finisher:
   state_code: UT
   email:
   phone:
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1726,7 +1625,6 @@ antony_grady:
   state_code: VA
   email: dominica@rau.info
   phone: '7797152514'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1743,7 +1641,6 @@ beryl_kutch:
   state_code:
   email: candra@thiel.name
   phone: '4747239760'
-  created_by: 1
   country_code: 'NO'
   user_id:
   concealed: false
@@ -1760,7 +1657,6 @@ dorothy_fahey:
   state_code: WA
   email: alphonso@carterjaskolski.com
   phone: '8952939469'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1777,7 +1673,6 @@ bethany_sanford:
   state_code:
   email: fran.bar@gmail.com
   phone: '601271155'
-  created_by: 1
   country_code: FR
   user_id:
   concealed: false
@@ -1794,7 +1689,6 @@ freddy_maggio:
   state_code: AB
   email: leighann.schoen@adams.us
   phone: '9584628190'
-  created_by: 1
   country_code: CA
   user_id:
   concealed: false
@@ -1811,7 +1705,6 @@ fredrick_wiza:
   state_code: MT
   email: martin.bruen@christiansen.name
   phone: '5046722864'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false
@@ -1828,7 +1721,6 @@ alfreda_cruickshank:
   state_code: CO
   email: sammie.schuppe@bradtke.us
   phone: '2958601819'
-  created_by: 1
   country_code: US
   user_id:
   concealed: false

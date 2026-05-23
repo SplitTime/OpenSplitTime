@@ -6,7 +6,6 @@ class Person < ApplicationRecord
   include PersonalInfo
   include Concealable
   include CapitalizeAttributes
-  include Auditable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
@@ -67,7 +66,7 @@ class Person < ApplicationRecord
   end
 
   def self.columns_to_pull_from_model
-    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo, :created_by]
+    [:first_name, :last_name, :gender, :birthdate, :email, :phone, :photo]
   end
 
   def to_s

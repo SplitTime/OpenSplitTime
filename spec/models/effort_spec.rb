@@ -4,7 +4,6 @@ RSpec.describe Effort, type: :model do
   include BitkeyDefinitions
 
   it_behaves_like "data_status_methods"
-  it_behaves_like "auditable"
   it_behaves_like "matchable"
   it_behaves_like "subscribable"
   it { is_expected.to capitalize_attribute(:first_name) }

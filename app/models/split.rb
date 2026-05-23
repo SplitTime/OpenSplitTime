@@ -7,14 +7,13 @@ class Split < ApplicationRecord
   include Locatable
   include DelegatedConcealable
   include Delegable
-  include Auditable
   extend FriendlyId
 
   strip_attributes collapse_spaces: true
   friendly_id :course_split_name, use: [:slugged, :history]
   has_paper_trail
 
-  enum :kind, [:start, :finish, :intermediate], default: :intermediate
+  enum :kind, { :start => 0, :finish => 1, :intermediate => 2 }, default: :intermediate
   belongs_to :course
   has_many :split_times, dependent: :destroy
   has_many :aid_stations, dependent: :destroy
@@ -24,16 +23,15 @@ class Split < ApplicationRecord
   before_validation :parameterize_base_name
   after_commit :touch_all_events
 
-  validates_presence_of :base_name, :distance_from_start, :sub_split_bitmap, :kind
-  validates :kind, inclusion: {in: Split.kinds.keys}
-  validates_uniqueness_of [:base_name, :parameterized_base_name], scope: :course_id, case_sensitive: false,
-                                                                  message: "must be unique for a course"
-  validates_uniqueness_of :kind, scope: :course_id, if: :start?,
-                                 message: "only one start split permitted on a course"
-  validates_uniqueness_of :kind, scope: :course_id, if: :finish?,
-                                 message: "only one finish split permitted on a course"
-  validates_uniqueness_of :distance_from_start, scope: :course_id,
-                                                message: "only one split of a given distance permitted on a course. Use sub_splits if needed."
+  validates :base_name, :distance_from_start, :sub_split_bitmap, :kind, presence: true
+  validates :kind, inclusion: { in: Split.kinds.keys }
+  validates :base_name, :parameterized_base_name, uniqueness: { scope: :course_id, case_sensitive: false,
+                                                                message: "must be unique for a course" }
+  validates :kind, uniqueness: { scope: :course_id, if: :start?,
+                                 message: "only one start split permitted on a course" }
+  validates :kind, uniqueness: { scope: :course_id, if: :finish?,
+                                 message: "only one finish split permitted on a course" }
+  validates :distance_from_start, uniqueness: { scope: :course_id, message: "only one split of a given distance permitted on a course. Use sub_splits if needed." } # rubocop:disable Rails/UniqueValidationWithoutIndex, Layout/LineLength
   validates_with SplitAttributesValidator
 
   scope :ordered, -> { order(:distance_from_start) }
@@ -47,7 +45,7 @@ class Split < ApplicationRecord
                               }
   scope :location_bounded_across_dateline, lambda { |params|
                                              where(latitude: params[:south]..params[:north])
-                                                 .where.not(longitude: params[:east]..params[:west])
+                                               .where.not(longitude: params[:east]..params[:west])
                                            }
 
   def self.null_record

@@ -17,7 +17,6 @@ historical_fact_0001:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2019
@@ -40,7 +39,6 @@ historical_fact_0002:
   kind: 5
   quantity:
   comments: Dominque Corkery, 2236531216
-  created_by: 1
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2023
@@ -63,7 +61,6 @@ historical_fact_0003:
   kind: 7
   quantity: 2
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2023
@@ -86,7 +83,6 @@ historical_fact_0004:
   kind: 8
   quantity:
   comments: Never
-  created_by: 1
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2023
@@ -109,7 +105,6 @@ historical_fact_0005:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2016
@@ -132,7 +127,6 @@ historical_fact_0006:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2017
@@ -155,7 +149,6 @@ historical_fact_0007:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2018
@@ -178,7 +171,6 @@ historical_fact_0008:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2019
@@ -201,7 +193,6 @@ historical_fact_0009:
   kind: 5
   quantity:
   comments: Shellie Krajcik, 4747239722
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2023
@@ -224,7 +215,6 @@ historical_fact_0010:
   kind: 7
   quantity: 16
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2023
@@ -247,7 +237,6 @@ historical_fact_0011:
   kind: 8
   quantity:
   comments: Never
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2023
@@ -270,7 +259,6 @@ historical_fact_0012:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2015
@@ -293,7 +281,6 @@ historical_fact_0013:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2016
@@ -316,7 +303,6 @@ historical_fact_0014:
   kind: 5
   quantity:
   comments: Sonja Christiansen, 8615039757
-  created_by: 1
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2023
@@ -339,7 +325,6 @@ historical_fact_0015:
   kind: 7
   quantity: 4
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2023
@@ -362,7 +347,6 @@ historical_fact_0016:
   kind: 8
   quantity:
   comments: Never
-  created_by: 1
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2023
@@ -385,7 +369,6 @@ historical_fact_0017:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2022
@@ -408,7 +391,6 @@ historical_fact_0018:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
@@ -431,7 +413,6 @@ historical_fact_0019:
   kind: 4
   quantity:
   comments: '2022 OCT: Diagonale des Fous (Reunion Is)'
-  created_by: 1
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
@@ -454,7 +435,6 @@ historical_fact_0020:
   kind: 5
   quantity:
   comments: Aberkane, 695511156
-  created_by: 1
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
@@ -477,7 +457,6 @@ historical_fact_0021:
   kind: 7
   quantity: 4
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
@@ -500,7 +479,6 @@ historical_fact_0022:
   kind: 8
   quantity:
   comments: Never
-  created_by: 1
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2023
@@ -523,7 +501,6 @@ historical_fact_0023:
   kind: 7
   quantity: 1
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 9a68ffede91950516d62650371d69eb4
   year: 2023
@@ -546,7 +523,6 @@ historical_fact_0024:
   kind: 8
   quantity:
   comments: Never
-  created_by: 1
   organization_id: 4
   personal_info_hash: 9a68ffede91950516d62650371d69eb4
   year: 2023
@@ -569,7 +545,6 @@ historical_fact_0025:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2014
@@ -592,7 +567,6 @@ historical_fact_0026:
   kind: 10
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2015
@@ -615,7 +589,6 @@ historical_fact_0027:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2016
@@ -638,7 +611,6 @@ historical_fact_0028:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2017
@@ -661,7 +633,6 @@ historical_fact_0029:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2018
@@ -684,7 +655,6 @@ historical_fact_0030:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2019
@@ -707,7 +677,6 @@ historical_fact_0031:
   kind: 5
   quantity:
   comments: Sarai Klein, 280-567-7592
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2023
@@ -730,7 +699,6 @@ historical_fact_0032:
   kind: 7
   quantity: 6
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2023
@@ -753,7 +721,6 @@ historical_fact_0033:
   kind: 8
   quantity:
   comments: Else
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2023
@@ -776,7 +743,6 @@ historical_fact_0034:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2003
@@ -799,7 +765,6 @@ historical_fact_0035:
   kind: 9
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2004
@@ -822,7 +787,6 @@ historical_fact_0036:
   kind: 9
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2005
@@ -845,7 +809,6 @@ historical_fact_0037:
   kind: 9
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2006
@@ -868,7 +831,6 @@ historical_fact_0038:
   kind: 9
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2007
@@ -891,7 +853,6 @@ historical_fact_0039:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2008
@@ -914,7 +875,6 @@ historical_fact_0040:
   kind: 9
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2009
@@ -937,7 +897,6 @@ historical_fact_0041:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2010
@@ -960,7 +919,6 @@ historical_fact_0042:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2011
@@ -983,7 +941,6 @@ historical_fact_0043:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2012
@@ -1006,7 +963,6 @@ historical_fact_0044:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2013
@@ -1029,7 +985,6 @@ historical_fact_0045:
   kind: 9
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2014
@@ -1052,7 +1007,6 @@ historical_fact_0046:
   kind: 3
   quantity: 5
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2023
@@ -1075,7 +1029,6 @@ historical_fact_0047:
   kind: 7
   quantity: 2
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2023
@@ -1098,7 +1051,6 @@ historical_fact_0048:
   kind: 8
   quantity:
   comments: Else
-  created_by: 1
   organization_id: 4
   personal_info_hash: 29fc1be7dae9c7df527fc6d9fc2b2401
   year: 2023
@@ -1121,7 +1073,6 @@ historical_fact_0049:
   kind: 9
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2013
@@ -1144,7 +1095,6 @@ historical_fact_0050:
   kind: 10
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2015
@@ -1167,7 +1117,6 @@ historical_fact_0051:
   kind: 10
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2014
@@ -1190,7 +1139,6 @@ historical_fact_0052:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2017
@@ -1213,7 +1161,6 @@ historical_fact_0053:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2018
@@ -1236,7 +1183,6 @@ historical_fact_0054:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2019
@@ -1259,7 +1205,6 @@ historical_fact_0055:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2021
@@ -1282,7 +1227,6 @@ historical_fact_0056:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2022
@@ -1305,7 +1249,6 @@ historical_fact_0057:
   kind: 3
   quantity: 1
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
@@ -1328,7 +1271,6 @@ historical_fact_0058:
   kind: 5
   quantity:
   comments: Winnifred Yost, 982-416-8561
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
@@ -1351,7 +1293,6 @@ historical_fact_0059:
   kind: 7
   quantity: 8
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
@@ -1374,7 +1315,6 @@ historical_fact_0060:
   kind: 8
   quantity:
   comments: Else
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2023
@@ -1397,7 +1337,6 @@ historical_fact_0061:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2015
@@ -1420,7 +1359,6 @@ historical_fact_0062:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2016
@@ -1443,7 +1381,6 @@ historical_fact_0063:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2017
@@ -1466,7 +1403,6 @@ historical_fact_0064:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2018
@@ -1489,7 +1425,6 @@ historical_fact_0065:
   kind: 5
   quantity:
   comments: Penney Turner, 737-930-2991
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2023
@@ -1512,7 +1447,6 @@ historical_fact_0066:
   kind: 7
   quantity: 16
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2023
@@ -1535,7 +1469,6 @@ historical_fact_0067:
   kind: 8
   quantity:
   comments: Never
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2023
@@ -1558,7 +1491,6 @@ historical_fact_0068:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2015
@@ -1581,7 +1513,6 @@ historical_fact_0069:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2016
@@ -1604,7 +1535,6 @@ historical_fact_0070:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2017
@@ -1627,7 +1557,6 @@ historical_fact_0071:
   kind: 5
   quantity:
   comments: Lucila Gleichner, 271-427-6816
-  created_by: 1
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2023
@@ -1650,7 +1579,6 @@ historical_fact_0072:
   kind: 7
   quantity: 8
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2023
@@ -1673,7 +1601,6 @@ historical_fact_0073:
   kind: 8
   quantity:
   comments: Never
-  created_by: 1
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2023
@@ -1696,7 +1623,6 @@ historical_fact_0074:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2012
@@ -1719,7 +1645,6 @@ historical_fact_0075:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2015
@@ -1742,7 +1667,6 @@ historical_fact_0076:
   kind: 10
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2016
@@ -1765,7 +1689,6 @@ historical_fact_0077:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2017
@@ -1788,7 +1711,6 @@ historical_fact_0078:
   kind: 0
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2018
@@ -1811,7 +1733,6 @@ historical_fact_0079:
   kind: 5
   quantity:
   comments: Brynn Hermiston, 950-975-4391
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2023
@@ -1834,7 +1755,6 @@ historical_fact_0080:
   kind: 7
   quantity: 4
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2023
@@ -1857,7 +1777,6 @@ historical_fact_0081:
   kind: 8
   quantity:
   comments: Else
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2023
@@ -1880,7 +1799,6 @@ historical_fact_0082:
   kind: 11
   quantity:
   comments: 'Ultrasignup order id: 123'
-  created_by: 1
   organization_id: 4
   personal_info_hash: 21df48c361d0534aba8859979021f3d1
   year: 2024
@@ -1903,7 +1821,6 @@ historical_fact_0083:
   kind: 11
   quantity:
   comments: 'Ultrasignup order id: 456'
-  created_by: 1
   organization_id: 4
   personal_info_hash: fcbdaf1ed2bfa5abf2455bf9a653293b
   year: 2024
@@ -1926,7 +1843,6 @@ historical_fact_0084:
   kind: 11
   quantity:
   comments: 'Ultrasignup order id: 789'
-  created_by: 1
   organization_id: 4
   personal_info_hash: 1c900831381a7c7c1679af5e0f97a88c
   year: 2024
@@ -1949,7 +1865,6 @@ historical_fact_0085:
   kind: 11
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: db16effbacc5cedcdee92e5659e2e5d1
   year: 2024
@@ -1972,7 +1887,6 @@ historical_fact_0086:
   kind: 11
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 9a68ffede91950516d62650371d69eb4
   year: 2024
@@ -1995,7 +1909,6 @@ historical_fact_0087:
   kind: 11
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 8737a3d4b174a796d8b666a7ead80dde
   year: 2024
@@ -2018,7 +1931,6 @@ historical_fact_0088:
   kind: 11
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: deabe1ed7755c167fcff71181bcd5457
   year: 2024
@@ -2041,7 +1953,6 @@ historical_fact_0089:
   kind: 11
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: ec7e8e7b56ffd284791b016d5f04907a
   year: 2024
@@ -2064,7 +1975,6 @@ historical_fact_0090:
   kind: 11
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 57897ed5eacdf94f8faf49ba463eb2f1
   year: 2024
@@ -2087,7 +1997,6 @@ historical_fact_0091:
   kind: 11
   quantity:
   comments:
-  created_by: 1
   organization_id: 4
   personal_info_hash: 12f185f68030f2c4c91a881f4f8a6692
   year: 2024

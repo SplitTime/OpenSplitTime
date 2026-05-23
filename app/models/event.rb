@@ -7,7 +7,6 @@ class Event < ApplicationRecord
   include SplitMethods
   include DelegatedConcealable
   include Delegable
-  include Auditable
   include Subscribable
   include Connectable
   extend FriendlyId

@@ -19,7 +19,6 @@ class HistoricalFactResource < Madmin::Resource
   attribute :phone
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :created_by
 
   # Associations
   attribute :organization

@@ -22,7 +22,6 @@ class HistoricalFact < ApplicationRecord
     ticket_count_reported: 19
   }
 
-  include Auditable
   include CapitalizeAttributes
   include Matchable
   include PersonalInfo
@@ -37,18 +36,15 @@ class HistoricalFact < ApplicationRecord
   belongs_to :organization
   belongs_to :person, optional: true
 
-  attr_writer :creator
-
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :gender, presence: true
   validates :kind, presence: true
 
-
   before_save :fill_personal_info_hash
 
   scope :by_kind, ->(kinds) { where(kind: kinds) if kinds.present? }
-  scope :by_reconciled, ->(reconciled_boolean) do
+  scope :by_reconciled, lambda { |reconciled_boolean|
     if reconciled_boolean == true
       where.not(person_id: nil)
     elsif reconciled_boolean == false
@@ -56,22 +52,16 @@ class HistoricalFact < ApplicationRecord
     else
       all
     end
-  end
+  }
   scope :ordered, -> { order(:last_name, :first_name, :state_code, :year, :kind) }
   scope :ordered_within_person, -> { order(:year, :kind) }
   scope :reconciled, -> { where.not(person_id: nil) }
   scope :unreconciled, -> { where(person_id: nil) }
 
   def self.search(search_text)
-    return all unless search_text.present?
+    return all if search_text.blank?
 
     search_names_and_locations(search_text)
-  end
-
-  def creator
-    return @creator if defined?(@creator)
-
-    @creator = User.find_by(id: created_by) if created_by?
   end
 
   def related_facts

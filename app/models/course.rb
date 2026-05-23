@@ -4,7 +4,6 @@ class Course < ApplicationRecord
   include SplitMethods
   include Delegable
   include Concealable
-  include Auditable
   extend FriendlyId
 
   zonable_attribute :next_start_time

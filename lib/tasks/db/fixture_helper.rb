@@ -42,8 +42,13 @@ module FixtureHelper
     :results_template_categories,
   ].freeze
 
-  PRIMARY_KEY_MAP = {
+  # ORDER BY clause used when dumping fixtures. Required for any non-slug portable table
+  # so labels are stable across regenerations and across schema changes (otherwise a new
+  # column could become an unexpected sort key, scrambling every label and FK reference).
+  # Pick columns that uniquely identify a row by its real-world identity.
+  ORDER_BY_MAP = {
     effort_segments: "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap",
+    results_template_categories: "results_template_id, position, results_category_id",
   }.freeze
 
   ATTRIBUTES_TO_IGNORE = [

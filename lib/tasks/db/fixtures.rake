@@ -21,8 +21,8 @@ namespace :db do
       counter = 0
       file_path = Rails.root.join("spec/fixtures/#{table_name}.yml").to_s
       File.open(file_path, "w") do |file|
-        order_clause = FixtureHelper::PRIMARY_KEY_MAP[table_name.to_sym] ||
-                       order_clause_for(model, table_name, table_portable, model_slugged)
+        order_clause = FixtureHelper::ORDER_BY_MAP[table_name.to_sym] ||
+                       order_clause_for(table_name, table_portable, model_slugged)
 
         rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY #{order_clause}")
         data = rows.each_with_object({}) do |record, hash|
@@ -82,17 +82,15 @@ namespace :db do
   end
 
   # Determines the SQL ORDER BY clause used when dumping a table's rows.
-  # Non-slug portable tables order by content so labels are stable across regenerations —
-  # otherwise the row's hash-derived id depends on the label, the label depends on the
-  # ORDER BY position, and the cycle never settles.
-  def order_clause_for(model, table_name, table_portable, model_slugged)
+  # Non-slug portable tables (other than split_times, which generates content-based titles
+  # of its own) MUST have an explicit FixtureHelper::ORDER_BY_MAP entry — there is no safe
+  # default, since their `<table>_NNNN` labels depend on row order, and ad-hoc sorts can
+  # silently scramble every label and every FK reference whenever a column is added.
+  def order_clause_for(table_name, table_portable, model_slugged)
     return "slug" if table_portable && model_slugged
     return "id" unless table_portable && table_name != "split_times"
 
-    sortable_columns = model.columns
-                            .reject { |c| c.array? || c.sql_type_metadata.type.in?([:json, :jsonb]) }
-                            .map(&:name) - %w[id created_at updated_at]
-    sortable_columns.join(", ").presence || "id"
+    raise "Non-slug portable table '#{table_name}' needs an explicit FixtureHelper::ORDER_BY_MAP entry"
   end
 
   desc "Convert Rails test fixtures to development database"

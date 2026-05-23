@@ -3,7 +3,7 @@ class EventGroupsController < ApplicationController
   before_action :set_event_group, except: [:index, :new, :create]
   before_action :redirect_if_no_events,
                 only: [:roster, :raw_times, :split_raw_times, :finish_line, :stats, :drop_list, :follow, :traffic]
-  after_action :verify_authorized, except: [:index, :show, :follow, :traffic, :efforts]
+  after_action :verify_authorized, except: [:index, :show, :follow, :traffic]
 
   # GET /event_groups
   def index
@@ -111,6 +111,7 @@ class EventGroupsController < ApplicationController
 
   # GET /event_groups/1/efforts
   def efforts
+    authorize @event_group
     @efforts = policy_scope(@event_group.efforts)
                .order(prepared_params[:sort] || :bib_number, :last_name, :first_name)
                .where(prepared_params[:filter])

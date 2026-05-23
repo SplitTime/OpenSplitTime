@@ -27,7 +27,7 @@ class EventGroupPolicy < ApplicationPolicy
   end
 
   def efforts?
-    entrants?
+    finish_line?
   end
 
   def setup_summary?

@@ -54,7 +54,6 @@ module FixtureHelper
   # Pick columns that uniquely identify a row by its real-world identity.
   ORDER_BY_MAP = {
     credentials: "service_identifier, key, user_id",
-    effort_segments: "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap",
     partners: "partnerable_type, partnerable_id, name",
     results_template_categories: "results_template_id, position, results_category_id",
   }.freeze

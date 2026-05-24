@@ -18,6 +18,7 @@ module FixtureHelper
     :lottery_entrants,
     :lottery_simulation_runs,
     :lottery_tickets,
+    :monetary_donations,
     :notifications,
     :organizations,
     :partners,
@@ -37,6 +38,7 @@ module FixtureHelper
   # Portable fixture tables are assigned an :id by Rails and are referenced by title
   # rather than id in other fixture tables.
   PORTABLE_FIXTURE_TABLES = [
+    :organizations,
     :results_categories,
     :results_templates,
     :results_template_categories,

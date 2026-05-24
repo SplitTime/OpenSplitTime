@@ -16,9 +16,7 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:connect_ser
     }
   end
   let(:event_group) { event_groups(:rufa_2017) }
-  let!(:race_connection) do
-    Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "174571", destination: event_group)
-  end
+  let(:race_connection) { connections(:connection_0001) }
 
   before { login_as user, scope: :user }
   after { Warden.test_reset! }
@@ -38,6 +36,7 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:connect_ser
   end
 
   it "does not require any per-event Connection to exist" do
+    event_group.events.each { |e| e.connections.from_service(:runsignup).destroy_all }
     event_level_count = event_group.events.flat_map { |e| e.connections.from_service(:runsignup).to_a }.size
     expect(event_level_count).to eq(0)
 

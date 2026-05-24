@@ -53,6 +53,8 @@ namespace :db do
             if association.polymorphic?
               foreign_type = association.foreign_type
               record_parent_type = record[foreign_type]
+              next if record_parent_type.nil?
+
               record_parent_table = record_parent_type.constantize.table_name
               next unless record_parent_table.to_sym.in? FixtureHelper::PORTABLE_FIXTURE_TABLES
 
@@ -66,8 +68,12 @@ namespace :db do
 
               parent_class = association.class_name.constantize
               parent_id = record.delete(association.foreign_key)
-              parent = parent_class.find(parent_id)
-              association_hash[association.name.to_s] = parent.slug.tr("-", "_")
+              if parent_id.nil?
+                association_hash[association.name.to_s] = nil
+              else
+                parent = parent_class.find(parent_id)
+                association_hash[association.name.to_s] = parent.slug.tr("-", "_")
+              end
             end
           end
 

@@ -39,6 +39,7 @@ module FixtureHelper
   # rather than id in other fixture tables.
   PORTABLE_FIXTURE_TABLES = [
     :course_groups,
+    :credentials,
     :lotteries,
     :organizations,
     :partners,
@@ -52,6 +53,7 @@ module FixtureHelper
   # column could become an unexpected sort key, scrambling every label and FK reference).
   # Pick columns that uniquely identify a row by its real-world identity.
   ORDER_BY_MAP = {
+    credentials: "service_identifier, key, user_id",
     effort_segments: "begin_split_id, begin_bitkey, end_split_id, end_bitkey, effort_id, lap",
     partners: "partnerable_type, partnerable_id, name",
     results_template_categories: "results_template_id, position, results_category_id",

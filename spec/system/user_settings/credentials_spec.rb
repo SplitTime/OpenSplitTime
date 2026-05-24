@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "user settings preferences", type: :system, js: true do
+RSpec.describe "user settings preferences", :js, type: :system do
   let(:user) { users(:third_user) }
 
   scenario "visitor attempts to reach the page" do
@@ -15,8 +15,7 @@ RSpec.describe "user settings preferences", type: :system, js: true do
 
     expect(page).to have_text("Add Credentials")
     within("#credentials_list") do
-      within(first(".card")) do
-        expect(page).to have_text("RunSignup")
+      within(find(".card", text: "RunSignup")) do
         expect(page).to have_button("Reveal")
 
         expect(page).not_to have_text("api_key")

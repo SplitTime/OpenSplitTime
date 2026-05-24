@@ -4,7 +4,7 @@ RSpec.describe "Madmin::MonetaryDonationsController" do
   include Warden::Test::Helpers
 
   let(:admin_user) { users(:admin_user) }
-  let(:donation) { monetary_donations(:hardrock_paypal_2024) }
+  let(:donation) { monetary_donations(:monetary_donation_0001) }
 
   before { login_as admin_user, scope: :user }
   after { Warden.test_reset! }

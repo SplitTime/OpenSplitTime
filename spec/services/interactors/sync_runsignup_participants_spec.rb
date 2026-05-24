@@ -31,8 +31,6 @@ RSpec.describe Interactors::SyncRunsignupParticipants do
   let(:current_user) { users(:admin_user) }
 
   before do
-    Connection.create!(service_identifier: :runsignup, source_type: "Event", source_id: "24", destination: event)
-    Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "123", destination: event_group)
     allow(Connectors::Runsignup::FetchEventParticipants).to receive(:perform).and_return([participant])
   end
 

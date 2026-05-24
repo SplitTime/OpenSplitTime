@@ -19,7 +19,7 @@ RSpec.describe MonetaryDonation, type: :model do
     end
 
     it "is accessible through Organization#monetary_donations" do
-      expect(hardrock.monetary_donations).to include(monetary_donations(:hardrock_paypal_2024))
+      expect(hardrock.monetary_donations).to include(monetary_donations(:monetary_donation_0001))
     end
   end
 

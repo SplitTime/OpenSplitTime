@@ -133,8 +133,7 @@ RSpec.describe ConnectServicePresenter do
       ]
     end
     before do
-      Connection.create!(service_identifier: :runsignup, source_type: "Race", source_id: "174571",
-                         destination: event_group, field_mappings: persisted_mappings)
+      connections(:connection_0001).update!(field_mappings: persisted_mappings)
     end
 
     describe "#field_mappings" do
@@ -171,7 +170,7 @@ RSpec.describe ConnectServicePresenter do
 
         expect(presenter.race_questions).to eq([question_struct])
         expect(::Connectors::Runsignup::FetchRaceQuestions).to have_received(:perform)
-          .with(race_id: "174571", user: user)
+          .with(race_id: "123", user: user)
       end
 
       context "when no Runsignup Race connection is set" do

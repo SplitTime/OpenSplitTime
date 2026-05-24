@@ -1,6 +1,6 @@
 ---
 both_directions:
   id: 2
-  organization_id: 4
   name: Both Directions
+  organization_id: 4
   slug: both-directions

@@ -1,17 +1,17 @@
 ---
 subscription_0001:
   id: 2
-  user_id: 1
+  endpoint:
   protocol: 1
   resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rufa-2017-12h-not-started:c7853bd1-f4c2-44e8-bb25-e814aafdf134
-  subscribable_type: Effort
   subscribable_id: 16673
-  endpoint:
-subscription_0003:
-  id: 4
+  subscribable_type: Effort
   user_id: 1
+subscription_0002:
+  id: 4
+  endpoint:
   protocol: 0
   resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rufa-2017-12h-not-started:c7853bd1-f4c2-44e8-bb25-e814aafdf134
-  subscribable_type: Effort
   subscribable_id: 16673
-  endpoint:
+  subscribable_type: Effort
+  user_id: 1

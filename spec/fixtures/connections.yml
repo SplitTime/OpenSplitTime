@@ -1,22 +1,25 @@
 ---
 connection_0001:
   id: 1
-  service_identifier: runsignup
-  source_type: Race
-  source_id: '123'
-  destination_type: EventGroup
   destination_id: 59
+  destination_type: EventGroup
+  service_identifier: runsignup
+  source_id: '123'
+  source_type: Race
+  field_mappings: []
 connection_0002:
   id: 2
-  service_identifier: runsignup
-  source_type: Event
-  source_id: '24'
-  destination_type: Event
   destination_id: 36
+  destination_type: Event
+  service_identifier: runsignup
+  source_id: '24'
+  source_type: Event
+  field_mappings: []
 connection_0003:
   id: 3
-  service_identifier: runsignup
-  source_type: Event
-  source_id: '12'
-  destination_type: Event
   destination_id: 70
+  destination_type: Event
+  service_identifier: runsignup
+  source_id: '12'
+  source_type: Event
+  field_mappings: []

@@ -1,34 +1,37 @@
 ---
 hardrock:
   id: 4
-  name: Hardrock
-  description: A long race
-  created_by: 1
   concealed: false
-  slug: hardrock
+  created_by: 1
+  description: A long race
   good_standing_through:
+  name: Hardrock
+  slug: hardrock
+  non_profit: false
 rattlesnake_ramble:
   id: 6
-  name: Rattlesnake Ramble
-  description: Bill's Race to benefit Eldorado Canyon State Park
-  created_by: 1
   concealed: false
-  slug: rattlesnake-ramble
+  created_by: 1
+  description: Bill's Race to benefit Eldorado Canyon State Park
   good_standing_through:
+  name: Rattlesnake Ramble
+  slug: rattlesnake-ramble
+  non_profit: false
 running_up_for_air:
   id: 14
-  name: Running Up For Air
-  description:
-  created_by: 1
   concealed: false
-  non_profit: true
-  slug: running-up-for-air
+  created_by: 1
+  description:
   good_standing_through:
+  name: Running Up For Air
+  slug: running-up-for-air
+  non_profit: true
 dirty_30_running:
   id: 15
-  name: Dirty 30 Running
-  description:
-  created_by: 1
   concealed: false
-  slug: dirty-30-running
+  created_by: 1
+  description:
   good_standing_through:
+  name: Dirty 30 Running
+  slug: dirty-30-running
+  non_profit: false

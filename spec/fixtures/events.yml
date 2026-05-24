@@ -2,154 +2,154 @@
 hardrock_2015:
   results_template: simple
   id: 4
-  course_id: 4
-  historical_name: Hardrock 2015
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
   beacon_url:
-  laps_required: 1
-  slug: hardrock-2015
-  event_group_id: 17
-  short_name:
+  course_id: 4
   efforts_count: 30
+  event_group_id: 17
+  historical_name: Hardrock 2015
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  short_name:
+  slug: hardrock-2015
   topic_resource_key:
 ramble:
   results_template: simple
   id: 14
-  course_id: 9
-  historical_name: Ramble
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
   beacon_url:
-  laps_required: 1
-  slug: ramble
-  event_group_id: 4
-  short_name:
+  course_id: 9
   efforts_count: 4
+  event_group_id: 4
+  historical_name: Ramble
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  short_name:
+  slug: ramble
   topic_resource_key:
 hardrock_2014:
   results_template: simple
   id: 17
-  course_id: 12
-  historical_name: Hardrock 2014
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
   beacon_url:
-  laps_required: 1
-  slug: hardrock-2014
-  event_group_id: 7
-  short_name:
+  course_id: 12
   efforts_count: 19
+  event_group_id: 7
+  historical_name: Hardrock 2014
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  short_name:
+  slug: hardrock-2014
   topic_resource_key:
 rufa_2016:
   results_template: simple
   id: 34
-  course_id: 20
-  historical_name: RUFA 2016
-  scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
   beacon_url:
-  laps_required: 0
-  slug: rufa-2016
-  event_group_id: 25
-  short_name:
+  course_id: 20
   efforts_count: 4
+  event_group_id: 25
+  historical_name: RUFA 2016
+  laps_required: 0
   notice_text:
+  scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
+  short_name:
+  slug: rufa-2016
   topic_resource_key:
 rufa_2017_24h:
   results_template: simple
   id: 36
-  course_id: 20
-  historical_name: RUFA 2017 24H
-  scheduled_start_time: 2017-02-11 13:00:00.000000000 Z
   beacon_url:
-  laps_required: 0
-  slug: rufa-2017-24h
-  event_group_id: 59
-  short_name: 24H
+  course_id: 20
   efforts_count: 6
+  event_group_id: 59
+  historical_name: RUFA 2017 24H
+  laps_required: 0
   notice_text:
+  scheduled_start_time: 2017-02-11 13:00:00.000000000 Z
+  short_name: 24H
+  slug: rufa-2017-24h
   topic_resource_key:
 hardrock_2016:
   results_template: simple
   id: 37
-  course_id: 12
-  historical_name: Hardrock 2016
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
   beacon_url: http://trackleaders.com/hardrock16
-  laps_required: 1
-  slug: hardrock-2016
-  event_group_id: 28
-  short_name:
+  course_id: 12
   efforts_count: 19
+  event_group_id: 28
+  historical_name: Hardrock 2016
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  short_name:
+  slug: hardrock-2016
   topic_resource_key:
 ggd30_50k:
   results_template: simple
   id: 48
-  course_id: 26
-  historical_name: GGD30 50K
-  scheduled_start_time: 2017-06-04 01:00:00.000000000 Z
   beacon_url: https://goldengatedirty30.maprogress.com
-  laps_required: 1
-  slug: ggd30-50k
-  event_group_id: 27
-  short_name: 50K
+  course_id: 26
   efforts_count: 8
+  event_group_id: 27
+  historical_name: GGD30 50K
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2017-06-04 01:00:00.000000000 Z
+  short_name: 50K
+  slug: ggd30-50k
   topic_resource_key:
 ggd30_12m:
   results_template: simple
   id: 49
-  course_id: 27
-  historical_name: GGD30 12M
-  scheduled_start_time: 2017-06-04 02:00:00.000000000 Z
   beacon_url:
-  laps_required: 1
-  slug: ggd30-12m
-  event_group_id: 27
-  short_name: 12-miler
+  course_id: 27
   efforts_count: 6
+  event_group_id: 27
+  historical_name: GGD30 12M
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2017-06-04 02:00:00.000000000 Z
+  short_name: 12-miler
+  slug: ggd30-12m
   topic_resource_key:
 sum_100k:
   results_template: simple
   id: 56
-  course_id: 31
-  historical_name: SUM 100K
-  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
   beacon_url:
-  laps_required: 1
-  slug: sum-100k
-  event_group_id: 32
-  short_name: 100K
+  course_id: 31
   efforts_count: 5
+  event_group_id: 32
+  historical_name: SUM 100K
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
+  short_name: 100K
+  slug: sum-100k
   topic_resource_key:
 sum_55k:
   results_template: sub_masters_masters_and_grandmasters
   id: 57
-  course_id: 32
-  historical_name: SUM 55K
-  scheduled_start_time: 2017-09-23 15:00:00.000000000 Z
   beacon_url:
-  laps_required: 1
-  slug: sum-55k
-  event_group_id: 32
-  short_name: 55K
+  course_id: 32
   efforts_count: 8
+  event_group_id: 32
+  historical_name: SUM 55K
+  laps_required: 1
   notice_text:
+  scheduled_start_time: 2017-09-23 15:00:00.000000000 Z
+  short_name: 55K
+  slug: sum-55k
   topic_resource_key:
 rufa_2017_12h:
   results_template: simple
   id: 70
-  course_id: 20
-  historical_name: RUFA 2017 12H
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
   beacon_url:
-  laps_required: 0
-  slug: rufa-2017-12h
-  event_group_id: 59
-  short_name: 12H
+  course_id: 20
   efforts_count: 6
+  event_group_id: 59
+  historical_name: RUFA 2017 12H
+  laps_required: 0
   notice_text:
+  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  short_name: 12H
+  slug: rufa-2017-12h
   topic_resource_key:

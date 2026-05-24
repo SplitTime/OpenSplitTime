@@ -1,74 +1,74 @@
 ---
 hardrock_ccw:
   id: 4
-  name: Hardrock CCW
+  concealed:
   description: Counter-clockwise Hardrock 100 course, starting in Silverton, going
     to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton
+  name: Hardrock CCW
   next_start_time: 2019-07-19 06:00:00.000000000 Z
-  slug: hardrock-ccw
   organization_id: 4
-  concealed:
+  slug: hardrock-ccw
   track_points:
 ramble_even_course:
   id: 9
-  name: Ramble Even Course
-  description:
-  next_start_time:
-  slug: ramble-even-course
-  organization_id: 6
   concealed:
+  description:
+  name: Ramble Even Course
+  next_start_time:
+  organization_id: 6
+  slug: ramble-even-course
   track_points:
 hardrock_cw:
   id: 12
-  name: Hardrock CW
-  description: Clockwise Hardrock 100 course
-  next_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-cw
-  organization_id: 4
   concealed:
+  description: Clockwise Hardrock 100 course
+  name: Hardrock CW
+  next_start_time: 2016-07-15 12:00:00.000000000 Z
+  organization_id: 4
+  slug: hardrock-cw
   track_points:
 rufa_course:
   id: 20
-  name: RUFA Course
-  description: Bottom of Grandeur Peak to top and back
-  next_start_time: 2019-02-09 14:00:00.000000000 Z
-  slug: rufa-course
-  organization_id: 14
   concealed:
+  description: Bottom of Grandeur Peak to top and back
+  name: RUFA Course
+  next_start_time: 2019-02-09 14:00:00.000000000 Z
+  organization_id: 14
+  slug: rufa-course
   track_points:
 d30_50k_course:
   id: 26
-  name: D30 50K Course
-  description:
-  next_start_time: 2017-11-06 06:00:00.000000000 Z
-  slug: d30-50k-course
-  organization_id: 15
   concealed:
+  description:
+  name: D30 50K Course
+  next_start_time: 2017-11-06 06:00:00.000000000 Z
+  organization_id: 15
+  slug: d30-50k-course
   track_points:
 d30_12m_course:
   id: 27
-  name: D30 12M Course
-  description:
-  next_start_time:
-  slug: d30-12m-course
-  organization_id: 15
   concealed:
+  description:
+  name: D30 12M Course
+  next_start_time:
+  organization_id: 15
+  slug: d30-12m-course
   track_points:
 sum_100k_course:
   id: 31
-  name: SUM 100K Course
-  description:
-  next_start_time:
-  slug: sum-100k-course
-  organization_id: 15
   concealed:
+  description:
+  name: SUM 100K Course
+  next_start_time:
+  organization_id: 15
+  slug: sum-100k-course
   track_points:
 sum_55k_course:
   id: 32
-  name: SUM 55K Course
-  description:
-  next_start_time:
-  slug: sum-55k-course
-  organization_id: 15
   concealed:
+  description:
+  name: SUM 55K Course
+  next_start_time:
+  organization_id: 15
+  slug: sum-55k-course
   track_points:

@@ -1,9 +1,16 @@
-projection_assessment_run_one:
-  event_id: 14
+---
+projection_assessment_run_0001:
+  id: 269964004
+  completed_bitkey: 1
   completed_lap: 1
   completed_split_id: 46
-  completed_bitkey: 1
+  elapsed_time:
+  error_message:
+  event_id: 14
+  failure_count:
+  projected_bitkey: 1
   projected_lap: 1
   projected_split_id: 47
-  projected_bitkey: 1
+  started_at:
   status: 0
+  success_count:

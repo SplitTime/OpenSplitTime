@@ -16,14 +16,21 @@ namespace :db do
       table_portable = table_name.to_sym.in? FixtureHelper::PORTABLE_FIXTURE_TABLES
       belongs_to_associations = model.reflect_on_all_associations(:belongs_to)
 
+      json_column_names = model.columns.select { |c| c.sql_type_metadata.type.in?([:json, :jsonb]) }.map(&:name)
+
       counter = 0
       file_path = Rails.root.join("spec/fixtures/#{table_name}.yml").to_s
       File.open(file_path, "w") do |file|
-        default_primary_key = table_portable && model_slugged ? "slug" : "id"
-        primary_key = FixtureHelper::PRIMARY_KEY_MAP[table_name.to_sym] || default_primary_key
+        order_clause = FixtureHelper::ORDER_BY_MAP[table_name.to_sym] ||
+                       order_clause_for(table_name, table_portable, model_slugged)
 
-        rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY #{primary_key}")
+        rows = ActiveRecord::Base.connection.select_all("SELECT * FROM #{table_name} ORDER BY #{order_clause}")
         data = rows.each_with_object({}) do |record, hash|
+          json_column_names.each do |col|
+            raw = record[col]
+            record[col] = JSON.parse(raw) if raw.is_a?(String)
+          end
+
           counter += 1
           suffix = counter.to_s.rjust(4, "0")
           title = if model_slugged
@@ -72,6 +79,18 @@ namespace :db do
     end
   ensure
     ActiveRecord::Base.connection&.close
+  end
+
+  # Determines the SQL ORDER BY clause used when dumping a table's rows.
+  # Non-slug portable tables (other than split_times, which generates content-based titles
+  # of its own) MUST have an explicit FixtureHelper::ORDER_BY_MAP entry — there is no safe
+  # default, since their `<table>_NNNN` labels depend on row order, and ad-hoc sorts can
+  # silently scramble every label and every FK reference whenever a column is added.
+  def order_clause_for(table_name, table_portable, model_slugged)
+    return "slug" if table_portable && model_slugged
+    return "id" unless table_portable && table_name != "split_times"
+
+    raise "Non-slug portable table '#{table_name}' needs an explicit FixtureHelper::ORDER_BY_MAP entry"
   end
 
   desc "Convert Rails test fixtures to development database"

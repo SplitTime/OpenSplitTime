@@ -5,7 +5,7 @@ RSpec.describe LotterySimulations::RunnerJob do
 
   subject(:job) { described_class.perform_later(lottery_simulation_run.id) }
 
-  let(:lottery_simulation_run) { lottery_simulation_runs(:lottery_simulation_run_one) }
+  let(:lottery_simulation_run) { lottery_simulation_runs(:lottery_simulation_run_0001) }
 
   before { allow(LotterySimulations::Runner).to receive(:perform!) }
 

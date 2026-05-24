@@ -1,811 +1,811 @@
 ---
 notification_0001:
   id: 1
-  effort_id: 16663
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16663
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0002:
   id: 2
-  effort_id: 16667
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16667
   follower_ids: "{4,3}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0003:
   id: 3
-  effort_id: 16667
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16667
   follower_ids: "{3}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0004:
   id: 4
-  effort_id: 16667
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16667
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0005:
   id: 5
-  effort_id: 6805
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6805
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0006:
   id: 6
-  effort_id: 16663
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16663
   follower_ids: "{11,4}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0007:
   id: 7
-  effort_id: 16648
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16648
   follower_ids: "{11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0008:
   id: 8
-  effort_id: 6805
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6805
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0009:
   id: 9
-  effort_id: 16643
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16643
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0010:
   id: 10
-  effort_id: 6693
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6693
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0011:
   id: 11
-  effort_id: 6756
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6756
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0012:
   id: 12
-  effort_id: 6695
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6695
   follower_ids: "{1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0013:
   id: 13
-  effort_id: 16667
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16667
   follower_ids: "{11,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0014:
   id: 14
-  effort_id: 6782
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6782
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0015:
   id: 15
-  effort_id: 16673
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16673
   follower_ids: "{1,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0016:
   id: 16
-  effort_id: 16673
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16673
   follower_ids: "{1,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0017:
   id: 17
-  effort_id: 16663
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16663
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0018:
   id: 18
-  effort_id: 16643
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16643
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0019:
   id: 19
-  effort_id: 6805
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6805
   follower_ids: "{1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0020:
   id: 20
-  effort_id: 16648
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16648
   follower_ids: "{3,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0021:
   id: 21
-  effort_id: 16663
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16663
   follower_ids: "{4}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0022:
   id: 22
-  effort_id: 16643
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16643
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0023:
   id: 23
-  effort_id: 16667
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16667
   follower_ids: "{3,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0024:
   id: 24
-  effort_id: 6695
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6695
   follower_ids: "{4,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0025:
   id: 25
-  effort_id: 6805
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6805
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0026:
   id: 26
-  effort_id: 16643
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16643
   follower_ids: "{3,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0027:
   id: 27
-  effort_id: 6805
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6805
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0028:
   id: 28
-  effort_id: 16673
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16673
   follower_ids: "{1,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0029:
   id: 29
-  effort_id: 16663
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16663
   follower_ids: "{1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0030:
   id: 30
-  effort_id: 6780
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6780
   follower_ids: "{3,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0031:
   id: 31
-  effort_id: 6782
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6782
   follower_ids: "{11,4}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0032:
   id: 32
-  effort_id: 16667
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16667
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0033:
   id: 33
-  effort_id: 6693
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6693
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0034:
   id: 34
-  effort_id: 16673
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16673
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0035:
   id: 35
-  effort_id: 6780
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6780
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0036:
   id: 36
-  effort_id: 16648
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16648
   follower_ids: "{3,4}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0037:
   id: 37
-  effort_id: 6756
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6756
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0038:
   id: 38
-  effort_id: 16648
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16648
   follower_ids: "{3,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0039:
   id: 39
-  effort_id: 16673
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16673
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0040:
   id: 40
-  effort_id: 16648
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16648
   follower_ids: "{4}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0041:
   id: 41
-  effort_id: 6695
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6695
   follower_ids: "{4,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0042:
   id: 42
-  effort_id: 16673
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16673
   follower_ids: "{11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0043:
   id: 43
-  effort_id: 6805
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6805
   follower_ids: "{3,4}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0044:
   id: 44
-  effort_id: 6693
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6693
   follower_ids: "{4,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0045:
   id: 45
-  effort_id: 6805
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6805
   follower_ids: "{11,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0046:
   id: 46
-  effort_id: 6756
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6756
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0047:
   id: 47
-  effort_id: 16673
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16673
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0048:
   id: 48
-  effort_id: 16657
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16657
   follower_ids: "{11,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0049:
   id: 49
-  effort_id: 16673
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16673
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0050:
   id: 50
-  effort_id: 16643
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16643
   follower_ids: "{11,1}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0051:
   id: 51
-  effort_id: 16648
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16648
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0052:
   id: 52
-  effort_id: 6805
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6805
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0053:
   id: 53
-  effort_id: 16648
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16648
   follower_ids: "{3}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0054:
   id: 54
-  effort_id: 16648
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16648
   follower_ids: "{3}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0055:
   id: 55
-  effort_id: 6695
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6695
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0056:
   id: 56
-  effort_id: 16643
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16643
   follower_ids: "{11,3}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0057:
   id: 57
-  effort_id: 6780
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6780
   follower_ids: "{3,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0058:
   id: 58
-  effort_id: 16667
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16667
   follower_ids: "{3,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0059:
   id: 59
-  effort_id: 16673
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16673
   follower_ids: "{3}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0060:
   id: 60
-  effort_id: 16667
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16667
   follower_ids: "{11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0061:
   id: 61
-  effort_id: 16657
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 16657
   follower_ids: "{3,11}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0062:
   id: 62
-  effort_id: 6693
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6693
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0063:
   id: 63
-  effort_id: 6693
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6693
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0064:
   id: 64
-  effort_id: 6695
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6695
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0065:
   id: 65
-  effort_id: 6695
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6695
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0066:
   id: 66
-  effort_id: 16657
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16657
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0067:
   id: 67
-  effort_id: 16648
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16648
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0068:
   id: 68
-  effort_id: 6782
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6782
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0069:
   id: 69
-  effort_id: 16648
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16648
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0070:
   id: 70
-  effort_id: 16648
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16648
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0071:
   id: 71
-  effort_id: 6756
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6756
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0072:
   id: 72
-  effort_id: 6695
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6695
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0073:
   id: 73
-  effort_id: 16657
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 16657
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0074:
   id: 74
-  effort_id: 6780
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6780
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0075:
   id: 75
-  effort_id: 6780
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6780
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0076:
   id: 76
-  effort_id: 6780
-  distance: 4345
   bitkey: 1
+  distance: 4345
+  effort_id: 6780
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0077:
   id: 77
-  effort_id: 6782
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6782
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0078:
   id: 78
-  effort_id: 6780
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 6780
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0079:
   id: 79
-  effort_id: 16648
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16648
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0080:
   id: 80
-  effort_id: 16663
-  distance: 0
   bitkey: 1
+  distance: 0
+  effort_id: 16663
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:
 notification_0081:
   id: 81
-  effort_id: 6756
-  distance: 8690
   bitkey: 1
+  distance: 8690
+  effort_id: 6756
   follower_ids: "{}"
   kind:
-  topic_resource_key:
-  subject:
   notice_text:
+  subject:
+  topic_resource_key:

@@ -128,10 +128,18 @@ RSpec.describe HistoricalFact, type: :model do
       let(:result) { subject.related_facts }
 
       context "when related facts exist" do
-        subject { historical_facts(:historical_fact_0001) }
+        subject { described_class.where(personal_info_hash: shared_hash).first }
+
+        let(:shared_hash) do
+          described_class.where.not(personal_info_hash: nil)
+                         .group(:personal_info_hash)
+                         .having("COUNT(*) > 1")
+                         .count.keys.first
+        end
+        let(:expected_related_count) { described_class.where(personal_info_hash: shared_hash).count - 1 }
 
         it "returns all facts that have the same personal_info_hash" do
-          expect(result.count).to eq(4)
+          expect(result.count).to eq(expected_related_count)
           expect(result.map(&:personal_info_hash)).to all be_present
           expect(result.map(&:personal_info_hash)).to all eq(subject.personal_info_hash)
         end

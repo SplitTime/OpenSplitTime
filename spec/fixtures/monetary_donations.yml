@@ -1,22 +1,22 @@
 ---
-hardrock_paypal_2024:
+monetary_donation_0001:
+  organization: hardrock
   id: 1
-  organization_id: 4
   received_on: 2024-09-12
-  amount: 250.00
+  amount: !ruby/object:BigDecimal 9:0.25e3
   source: paypal
   note: PayPal transaction ABC123
-hardrock_check_2025:
+monetary_donation_0002:
+  organization: hardrock
   id: 2
-  organization_id: 4
   received_on: 2025-03-04
-  amount: 500.00
+  amount: !ruby/object:BigDecimal 9:0.5e3
   source: check
-  note: Check #4421
-running_up_for_air_bitpay_2025:
+  note: Check
+monetary_donation_0003:
+  organization: running_up_for_air
   id: 3
-  organization_id: 14
   received_on: 2025-02-15
-  amount: 100.00
+  amount: !ruby/object:BigDecimal 9:0.1e3
   source: bitpay
   note:

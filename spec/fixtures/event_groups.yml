@@ -1,5 +1,6 @@
 ---
 ramble:
+  organization: rattlesnake_ramble
   id: 4
   available_live: false
   concealed: false
@@ -8,10 +9,10 @@ ramble:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
   name: Ramble
-  organization_id: 6
   slug: ramble
   webhook_token:
 hardrock_2014:
+  organization: hardrock
   id: 7
   available_live: false
   concealed: false
@@ -20,10 +21,10 @@ hardrock_2014:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: true
   name: Hardrock 2014
-  organization_id: 4
   slug: hardrock-2014
   webhook_token:
 hardrock_2015:
+  organization: hardrock
   id: 17
   available_live: true
   concealed: false
@@ -32,10 +33,10 @@ hardrock_2015:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: true
   name: Hardrock 2015
-  organization_id: 4
   slug: hardrock-2015
   webhook_token:
 rufa_2016:
+  organization: running_up_for_air
   id: 25
   available_live: false
   concealed: false
@@ -44,10 +45,10 @@ rufa_2016:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
   name: RUFA 2016
-  organization_id: 14
   slug: rufa-2016
   webhook_token:
 dirty_30:
+  organization: dirty_30_running
   id: 27
   available_live: true
   concealed: false
@@ -56,10 +57,10 @@ dirty_30:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
   name: Dirty 30
-  organization_id: 15
   slug: dirty-30
   webhook_token:
 hardrock_2016:
+  organization: hardrock
   id: 28
   available_live: true
   concealed: false
@@ -68,10 +69,10 @@ hardrock_2016:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: true
   name: Hardrock 2016
-  organization_id: 4
   slug: hardrock-2016
   webhook_token:
 sum:
+  organization: dirty_30_running
   id: 32
   available_live: true
   concealed: false
@@ -80,10 +81,10 @@ sum:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
   name: SUM
-  organization_id: 15
   slug: sum
   webhook_token:
 rufa_2017:
+  organization: running_up_for_air
   id: 59
   available_live: true
   concealed: false
@@ -92,6 +93,5 @@ rufa_2017:
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
   name: RUFA 2017
-  organization_id: 14
   slug: rufa-2017
   webhook_token:

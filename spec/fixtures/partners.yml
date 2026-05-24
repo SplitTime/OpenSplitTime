@@ -1,13 +1,11 @@
 ---
 partner_0001:
-  id: 5
   banner_link: www.blackdiamondequipment.com
   name: Black Diamond Equipment
   partnerable_id: 27
   partnerable_type: EventGroup
   weight: 1
 partner_0002:
-  id: 6
   banner_link: blackdiamondequipment.com
   name: BD
   partnerable_id: 32

@@ -1,5 +1,6 @@
 ---
 hardrock_2015_tuan_jacobs:
+  person: tuan_jacobs
   id: 7
   age: 17
   beacon_url:
@@ -25,7 +26,6 @@ hardrock_2015_tuan_jacobs:
   gender: 0
   last_name: Jacobs
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111011000001001010101110011111'
-  person_id: 80
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -39,6 +39,7 @@ hardrock_2015_tuan_jacobs:
   topic_resource_key:
   wave:
 hardrock_2015_erich_larson:
+  person: erich_larson
   id: 8
   age: 36
   beacon_url:
@@ -64,7 +65,6 @@ hardrock_2015_erich_larson:
   gender: 0
   last_name: Larson
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111010011110011000101001101111'
-  person_id: 51
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -78,6 +78,7 @@ hardrock_2015_erich_larson:
   topic_resource_key:
   wave:
 hardrock_2015_leif_carter:
+  person: leif_carter
   id: 15
   age: 55
   beacon_url:
@@ -103,7 +104,6 @@ hardrock_2015_leif_carter:
   gender: 0
   last_name: Carter
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110011000111100110111111'
-  person_id: 83
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -117,6 +117,7 @@ hardrock_2015_leif_carter:
   topic_resource_key:
   wave:
 hardrock_2015_carmine_adams:
+  person: carmine_adams
   id: 20
   age: 18
   beacon_url:
@@ -142,7 +143,6 @@ hardrock_2015_carmine_adams:
   gender: 0
   last_name: Adams
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001010110111101110110011111'
-  person_id: 69
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -156,6 +156,7 @@ hardrock_2015_carmine_adams:
   topic_resource_key:
   wave:
 hardrock_2015_garry_kuhlman:
+  person: garry_kuhlman
   id: 24
   age: 45
   beacon_url:
@@ -181,7 +182,6 @@ hardrock_2015_garry_kuhlman:
   gender: 0
   last_name: Kuhlman
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001101010110100111011111'
-  person_id: 39
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -195,6 +195,7 @@ hardrock_2015_garry_kuhlman:
   topic_resource_key:
   wave:
 hardrock_2015_darius_jacobson:
+  person: darius_jacobson
   id: 25
   age: 30
   beacon_url:
@@ -220,7 +221,6 @@ hardrock_2015_darius_jacobson:
   gender: 0
   last_name: Jacobson
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001100011100000001011111'
-  person_id: 108
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -234,6 +234,7 @@ hardrock_2015_darius_jacobson:
   topic_resource_key:
   wave:
 hardrock_2015_santa_green:
+  person: santa_green
   id: 29
   age: 37
   beacon_url:
@@ -259,7 +260,6 @@ hardrock_2015_santa_green:
   gender: 1
   last_name: Green
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000110101110001110100111111'
-  person_id: 62
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -273,6 +273,7 @@ hardrock_2015_santa_green:
   topic_resource_key:
   wave:
 hardrock_2015_gilberto_mckenzie:
+  person: gilberto_mckenzie
   id: 31
   age: 45
   beacon_url:
@@ -298,7 +299,6 @@ hardrock_2015_gilberto_mckenzie:
   gender: 0
   last_name: McKenzie
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000011011001110100110111111'
-  person_id: 42
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -312,6 +312,7 @@ hardrock_2015_gilberto_mckenzie:
   topic_resource_key:
   wave:
 hardrock_2015_vince_willms:
+  person: vince_willms
   id: 47
   age: 50
   beacon_url:
@@ -337,7 +338,6 @@ hardrock_2015_vince_willms:
   gender: 0
   last_name: Willms
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000000100010101110000111111'
-  person_id: 141
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -351,6 +351,7 @@ hardrock_2015_vince_willms:
   topic_resource_key:
   wave:
 hardrock_2015_cedric_windler:
+  person: cedric_windler
   id: 50
   age: 36
   beacon_url:
@@ -376,7 +377,6 @@ hardrock_2015_cedric_windler:
   gender: 0
   last_name: Windler
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111111100010001001011111'
-  person_id: 135
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -390,6 +390,7 @@ hardrock_2015_cedric_windler:
   topic_resource_key:
   wave:
 hardrock_2015_chris_rempel:
+  person: chris_rempel
   id: 56
   age: 26
   beacon_url:
@@ -415,7 +416,6 @@ hardrock_2015_chris_rempel:
   gender: 0
   last_name: Rempel
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111100001011100111111'
-  person_id: 109
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -429,6 +429,7 @@ hardrock_2015_chris_rempel:
   topic_resource_key:
   wave:
 hardrock_2015_robby_gerlach:
+  person: robby_gerlach
   id: 57
   age: 45
   beacon_url:
@@ -454,7 +455,6 @@ hardrock_2015_robby_gerlach:
   gender: 0
   last_name: Gerlach
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111000100001001111111'
-  person_id: 13
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -468,6 +468,7 @@ hardrock_2015_robby_gerlach:
   topic_resource_key:
   wave:
 hardrock_2015_rachelle_eichmann:
+  person: rachelle_eichmann
   id: 59
   age: 23
   beacon_url:
@@ -493,7 +494,6 @@ hardrock_2015_rachelle_eichmann:
   gender: 1
   last_name: Eichmann
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101101111010001101111111'
-  person_id: 81
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -507,6 +507,7 @@ hardrock_2015_rachelle_eichmann:
   topic_resource_key:
   wave:
 hardrock_2015_elden_morissette:
+  person: elden_morissette
   id: 61
   age: 42
   beacon_url:
@@ -532,7 +533,6 @@ hardrock_2015_elden_morissette:
   gender: 0
   last_name: Morissette
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101100110000111110011111'
-  person_id: 119
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -546,6 +546,7 @@ hardrock_2015_elden_morissette:
   topic_resource_key:
   wave:
 hardrock_2015_leroy_leffler:
+  person: leroy_leffler
   id: 63
   age: 48
   beacon_url:
@@ -571,7 +572,6 @@ hardrock_2015_leroy_leffler:
   gender: 0
   last_name: Leffler
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100101111001100001011111'
-  person_id: 85
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -585,6 +585,7 @@ hardrock_2015_leroy_leffler:
   topic_resource_key:
   wave:
 hardrock_2015_samara_vandervort:
+  person: samara_vandervort
   id: 73
   age: 22
   beacon_url:
@@ -610,7 +611,6 @@ hardrock_2015_samara_vandervort:
   gender: 1
   last_name: Vandervort
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111010111000001010111111111'
-  person_id: 110
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -624,6 +624,7 @@ hardrock_2015_samara_vandervort:
   topic_resource_key:
   wave:
 hardrock_2015_robt_wintheiser:
+  person: robt_wintheiser
   id: 94
   age: 57
   beacon_url:
@@ -649,7 +650,6 @@ hardrock_2015_robt_wintheiser:
   gender: 0
   last_name: Wintheiser
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100100101010101101111111'
-  person_id: 152
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -663,6 +663,7 @@ hardrock_2015_robt_wintheiser:
   topic_resource_key:
   wave:
 hardrock_2015_demetrius_moen:
+  person: demetrius_moen
   id: 96
   age: 40
   beacon_url:
@@ -688,7 +689,6 @@ hardrock_2015_demetrius_moen:
   gender: 0
   last_name: Moen
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100011100001011110011111'
-  person_id: 148
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -702,6 +702,7 @@ hardrock_2015_demetrius_moen:
   topic_resource_key:
   wave:
 hardrock_2015_vern_buckridge:
+  person: vern_buckridge
   id: 105
   age: 33
   beacon_url:
@@ -727,7 +728,6 @@ hardrock_2015_vern_buckridge:
   gender: 0
   last_name: Buckridge
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001011100001111111111'
-  person_id: 128
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -741,6 +741,7 @@ hardrock_2015_vern_buckridge:
   topic_resource_key:
   wave:
 hardrock_2015_donte_spencer:
+  person: donte_spencer
   id: 112
   age: 30
   beacon_url:
@@ -766,7 +767,6 @@ hardrock_2015_donte_spencer:
   gender: 0
   last_name: Spencer
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101111101010011001011111111'
-  person_id: 99
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -780,6 +780,7 @@ hardrock_2015_donte_spencer:
   topic_resource_key:
   wave:
 hardrock_2015_bruno_fadel:
+  person: bruno_fadel
   id: 116
   age: 27
   beacon_url:
@@ -805,7 +806,6 @@ hardrock_2015_bruno_fadel:
   gender: 0
   last_name: Fadel
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110110101010011000011111'
-  person_id: 10
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -819,6 +819,7 @@ hardrock_2015_bruno_fadel:
   topic_resource_key:
   wave:
 hardrock_2015_gus_walker:
+  person: gus_walker
   id: 117
   age: 54
   beacon_url:
@@ -844,7 +845,6 @@ hardrock_2015_gus_walker:
   gender: 0
   last_name: Walker
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110101100001001000111111'
-  person_id: 98
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -858,6 +858,7 @@ hardrock_2015_gus_walker:
   topic_resource_key:
   wave:
 hardrock_2015_susanna_abshire:
+  person: susanna_abshire
   id: 121
   age: 34
   beacon_url:
@@ -883,7 +884,6 @@ hardrock_2015_susanna_abshire:
   gender: 1
   last_name: Abshire
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110011011101010011011111'
-  person_id: 74
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -897,6 +897,7 @@ hardrock_2015_susanna_abshire:
   topic_resource_key:
   wave:
 hardrock_2015_leandro_cole:
+  person: leandro_cole
   id: 125
   age: 45
   beacon_url:
@@ -922,7 +923,6 @@ hardrock_2015_leandro_cole:
   gender: 0
   last_name: Cole
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110010000101011010011111'
-  person_id: 116
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -936,6 +936,7 @@ hardrock_2015_leandro_cole:
   topic_resource_key:
   wave:
 hardrock_2015_benedict_davis:
+  person: benedict_davis
   id: 129
   age: 32
   beacon_url:
@@ -961,7 +962,6 @@ hardrock_2015_benedict_davis:
   gender: 0
   last_name: Davis
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101101101000011001001011111'
-  person_id: 43
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -975,6 +975,7 @@ hardrock_2015_benedict_davis:
   topic_resource_key:
   wave:
 hardrock_2015_raphael_swift:
+  person: raphael_swift
   id: 136
   age: 40
   beacon_url:
@@ -1000,7 +1001,6 @@ hardrock_2015_raphael_swift:
   gender: 0
   last_name: Swift
   overall_performance: '100000000000001000000000000011100100110101000100000011111111111111111001011001111100010001111111'
-  person_id: 120
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -1014,6 +1014,7 @@ hardrock_2015_raphael_swift:
   topic_resource_key:
   wave:
 hardrock_2015_bad_status:
+  person: bad_status
   id: 138
   age: 21
   beacon_url:
@@ -1039,7 +1040,6 @@ hardrock_2015_bad_status:
   gender: 0
   last_name: Status
   overall_performance: '000000000000001000000000000100101001101010100100000011111111111111111000000010101111001110011111'
-  person_id: 18
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -1053,6 +1053,7 @@ hardrock_2015_bad_status:
   topic_resource_key:
   wave:
 hardrock_2015_irvin_harber:
+  person: irvin_harber
   id: 141
   age: 19
   beacon_url:
@@ -1078,7 +1079,6 @@ hardrock_2015_irvin_harber:
   gender: 0
   last_name: Harber
   overall_performance: '000000000000001000000000000011100100110101000100000011111111111111111010110110011010001111111111'
-  person_id: 61
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -1092,6 +1092,7 @@ hardrock_2015_irvin_harber:
   topic_resource_key:
   wave:
 hardrock_2015_cassondra_nienow:
+  person: cassondra_nienow
   id: 155
   age: 56
   beacon_url:
@@ -1117,7 +1118,6 @@ hardrock_2015_cassondra_nienow:
   gender: 1
   last_name: Nienow
   overall_performance: '000000000000001000000000000001011010100001101100000011111111111111111101011010100001001011011111'
-  person_id: 97
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -1131,6 +1131,7 @@ hardrock_2015_cassondra_nienow:
   topic_resource_key:
   wave:
 hardrock_2015_donn_mckenzie:
+  person: donn_mckenzie
   id: 158
   age: 16
   beacon_url:
@@ -1156,7 +1157,6 @@ hardrock_2015_donn_mckenzie:
   gender: 0
   last_name: McKenzie
   overall_performance: '100000000000001000000000000000011101001110110100000011111111111111111111011101101010101110111111'
-  person_id: 40
   phone:
   report_url:
   scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
@@ -1170,6 +1170,7 @@ hardrock_2015_donn_mckenzie:
   topic_resource_key:
   wave:
 ramble_finished_first:
+  person: finished_first_2019_02_01
   id: 1040
   age: 49
   beacon_url:
@@ -1195,7 +1196,6 @@ ramble_finished_first:
   gender: 0
   last_name: First
   overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111111000001000100101001111'
-  person_id: 369
   phone:
   report_url:
   scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
@@ -1209,6 +1209,7 @@ ramble_finished_first:
   topic_resource_key:
   wave:
 ramble_finished_second:
+  person: finished_second_montana_us
   id: 1048
   age: 12
   beacon_url:
@@ -1234,7 +1235,6 @@ ramble_finished_second:
   gender: 1
   last_name: Second
   overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111110111011010011100000111'
-  person_id: 326
   phone:
   report_url:
   scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
@@ -1248,6 +1248,7 @@ ramble_finished_second:
   topic_resource_key:
   wave:
 ramble_start_only:
+  person: start_only_2019_02_01
   id: 1051
   age: 38
   beacon_url:
@@ -1273,7 +1274,6 @@ ramble_start_only:
   gender: 1
   last_name: Only
   overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  person_id: 331
   phone:
   report_url:
   scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
@@ -1287,6 +1287,7 @@ ramble_start_only:
   topic_resource_key:
   wave:
 ramble_not_started:
+  person: not_started_2019_02_01
   id: 1061
   age: 17
   beacon_url:
@@ -1312,7 +1313,6 @@ ramble_not_started:
   gender: 0
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 384
   phone:
   report_url:
   scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
@@ -1326,6 +1326,7 @@ ramble_not_started:
   topic_resource_key:
   wave:
 hardrock_2014_finished_first:
+  person: finished_first_japan
   id: 4172
   age: 19
   beacon_url:
@@ -1351,7 +1352,6 @@ hardrock_2014_finished_first:
   gender: 0
   last_name: First
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001111101101110110011101111'
-  person_id: 682
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1365,6 +1365,7 @@ hardrock_2014_finished_first:
   topic_resource_key:
   wave:
 hardrock_2014_finished_with_stop:
+  person: finished_with_stop
   id: 4173
   age: 40
   beacon_url:
@@ -1390,7 +1391,6 @@ hardrock_2014_finished_with_stop:
   gender: 0
   last_name: With Stop
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001111010000011011101001111'
-  person_id: 25
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1404,6 +1404,7 @@ hardrock_2014_finished_with_stop:
   topic_resource_key:
   wave:
 hardrock_2014_finished_without_stop:
+  person: finished_without_stop
   id: 4174
   age: 25
   beacon_url:
@@ -1429,7 +1430,6 @@ hardrock_2014_finished_without_stop:
   gender: 0
   last_name: Without Stop
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001111000110111010010001111'
-  person_id: 495
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1443,6 +1443,7 @@ hardrock_2014_finished_without_stop:
   topic_resource_key:
   wave:
 hardrock_2014_claudio_wunsch:
+  person: claudio_wunsch
   id: 4192
   age: 33
   beacon_url:
@@ -1468,7 +1469,6 @@ hardrock_2014_claudio_wunsch:
   gender: 0
   last_name: Wunsch
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000010001111111100010110111'
-  person_id: 689
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1482,6 +1482,7 @@ hardrock_2014_claudio_wunsch:
   topic_resource_key:
   wave:
 hardrock_2014_rachelle_eichmann:
+  person: rachelle_eichmann
   id: 4199
   age: 22
   beacon_url:
@@ -1507,7 +1508,6 @@ hardrock_2014_rachelle_eichmann:
   gender: 1
   last_name: Eichmann
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111010111001000001110111'
-  person_id: 81
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1521,6 +1521,7 @@ hardrock_2014_rachelle_eichmann:
   topic_resource_key:
   wave:
 hardrock_2014_keith_metz:
+  person: keith_metz
   id: 4206
   age: 42
   beacon_url:
@@ -1546,7 +1547,6 @@ hardrock_2014_keith_metz:
   gender: 0
   last_name: Metz
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101000101000110100001111'
-  person_id: 690
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1560,6 +1560,7 @@ hardrock_2014_keith_metz:
   topic_resource_key:
   wave:
 hardrock_2014_major_green:
+  person: major_green
   id: 4207
   age: 58
   beacon_url:
@@ -1585,7 +1586,6 @@ hardrock_2014_major_green:
   gender: 0
   last_name: Green
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100111100100101100110111'
-  person_id: 691
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1599,6 +1599,7 @@ hardrock_2014_major_green:
   topic_resource_key:
   wave:
 hardrock_2014_humberto_adams:
+  person: humberto_adams
   id: 4221
   age: 24
   beacon_url:
@@ -1624,7 +1625,6 @@ hardrock_2014_humberto_adams:
   gender: 0
   last_name: Adams
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111000011101101110001110111'
-  person_id: 182
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1638,6 +1638,7 @@ hardrock_2014_humberto_adams:
   topic_resource_key:
   wave:
 hardrock_2014_omer_yundt:
+  person: omer_yundt
   id: 4246
   age: 40
   beacon_url:
@@ -1663,7 +1664,6 @@ hardrock_2014_omer_yundt:
   gender: 0
   last_name: Yundt
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110011000101101010101100111'
-  person_id: 190
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1677,6 +1677,7 @@ hardrock_2014_omer_yundt:
   topic_resource_key:
   wave:
 hardrock_2014_pat_schaden:
+  person: pat_schaden
   id: 4247
   age: 53
   beacon_url:
@@ -1702,7 +1703,6 @@ hardrock_2014_pat_schaden:
   gender: 0
   last_name: Schaden
   overall_performance: '000000000000001000000000000100011110101010100000000111111111111111110111010111011110101010111111'
-  person_id: 79
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1716,6 +1716,7 @@ hardrock_2014_pat_schaden:
   topic_resource_key:
   wave:
 hardrock_2014_clarence_goyette:
+  person: clarence_goyette
   id: 4249
   age: 52
   beacon_url:
@@ -1741,7 +1742,6 @@ hardrock_2014_clarence_goyette:
   gender: 0
   last_name: Goyette
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001000110110000111111'
-  person_id: 136
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1755,6 +1755,7 @@ hardrock_2014_clarence_goyette:
   topic_resource_key:
   wave:
 hardrock_2014_irvin_corkery:
+  person: irvin_corkery
   id: 4251
   age: 22
   beacon_url:
@@ -1780,7 +1781,6 @@ hardrock_2014_irvin_corkery:
   gender: 0
   last_name: Corkery
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010000001111000110011111'
-  person_id: 698
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1794,6 +1794,7 @@ hardrock_2014_irvin_corkery:
   topic_resource_key:
   wave:
 hardrock_2014_willis_murray:
+  person: willis_murray
   id: 4253
   age: 16
   beacon_url:
@@ -1819,7 +1820,6 @@ hardrock_2014_willis_murray:
   gender: 0
   last_name: Murray
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110001100101101100000111111'
-  person_id: 21
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1833,6 +1833,7 @@ hardrock_2014_willis_murray:
   topic_resource_key:
   wave:
 hardrock_2014_ken_bradtke:
+  person: ken_bradtke
   id: 4256
   age: 47
   beacon_url:
@@ -1858,7 +1859,6 @@ hardrock_2014_ken_bradtke:
   gender: 0
   last_name: Bradtke
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110000010110110101001111111'
-  person_id: 101
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1872,6 +1872,7 @@ hardrock_2014_ken_bradtke:
   topic_resource_key:
   wave:
 hardrock_2014_progress_sherman:
+  person: progress_sherman_colorado_us
   id: 4277
   age: 36
   beacon_url:
@@ -1897,7 +1898,6 @@ hardrock_2014_progress_sherman:
   gender: 0
   last_name: Sherman
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111000110100011001111011111111'
-  person_id: 289
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1911,6 +1911,7 @@ hardrock_2014_progress_sherman:
   topic_resource_key:
   wave:
 hardrock_2014_multiple_stops:
+  person: multiple_stops
   id: 4293
   age: 60
   beacon_url:
@@ -1936,7 +1937,6 @@ hardrock_2014_multiple_stops:
   gender: 1
   last_name: Stops
   overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010100110011000110110111111'
-  person_id: 707
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1950,6 +1950,7 @@ hardrock_2014_multiple_stops:
   topic_resource_key:
   wave:
 hardrock_2014_without_start:
+  person: without_start
   id: 4294
   age: 49
   beacon_url:
@@ -1975,7 +1976,6 @@ hardrock_2014_without_start:
   gender: 0
   last_name: Start
   overall_performance: '000000000000001000000000000010110111010000000100000000000000000000000000000000000000000000000000'
-  person_id: 170
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -1989,6 +1989,7 @@ hardrock_2014_without_start:
   topic_resource_key:
   wave:
 hardrock_2014_drop_ouray:
+  person: drop_ouray
   id: 4295
   age: 40
   beacon_url:
@@ -2014,7 +2015,6 @@ hardrock_2014_drop_ouray:
   gender: 1
   last_name: Ouray
   overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100000010011001100001111111'
-  person_id: 195
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -2028,6 +2028,7 @@ hardrock_2014_drop_ouray:
   topic_resource_key:
   wave:
 hardrock_2014_not_started:
+  person: not_started
   id: 4302
   age: 28
   beacon_url:
@@ -2053,7 +2054,6 @@ hardrock_2014_not_started:
   gender: 0
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 710
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
@@ -2067,6 +2067,7 @@ hardrock_2014_not_started:
   topic_resource_key:
   wave:
 rufa_2016_finished_first:
+  person:
   id: 6518
   age: 35
   beacon_url:
@@ -2092,7 +2093,6 @@ rufa_2016_finished_first:
   gender: 0
   last_name: First
   overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111100111111100000101010011111'
-  person_id:
   phone:
   report_url:
   scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
@@ -2106,6 +2106,7 @@ rufa_2016_finished_first:
   topic_resource_key:
   wave:
 rufa_2016_finished_second:
+  person:
   id: 6520
   age: 32
   beacon_url:
@@ -2131,7 +2132,6 @@ rufa_2016_finished_second:
   gender: 0
   last_name: Second
   overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111110001011101110100101111111'
-  person_id:
   phone:
   report_url:
   scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
@@ -2145,6 +2145,7 @@ rufa_2016_finished_second:
   topic_resource_key:
   wave:
 rufa_2016_progress_lap1:
+  person:
   id: 6560
   age: 25
   beacon_url:
@@ -2170,7 +2171,6 @@ rufa_2016_progress_lap1:
   gender: 0
   last_name: Lap1
   overall_performance: '100000000000001000000000000000001000011111001000000111111111111111111111101100100010111000011111'
-  person_id:
   phone:
   report_url:
   scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
@@ -2184,6 +2184,7 @@ rufa_2016_progress_lap1:
   topic_resource_key:
   wave:
 rufa_2016_not_started:
+  person:
   id: 6561
   age: 57
   beacon_url:
@@ -2209,7 +2210,6 @@ rufa_2016_not_started:
   gender: 1
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id:
   phone:
   report_url:
   scheduled_start_time: 2016-02-13 15:00:00.000000000 Z
@@ -2223,6 +2223,7 @@ rufa_2016_not_started:
   topic_resource_key:
   wave:
 rufa_2017_24h_finished_first:
+  person: finished_first_utah_us
   id: 6693
   age: 47
   beacon_url:
@@ -2248,7 +2249,6 @@ rufa_2017_24h_finished_first:
   gender: 1
   last_name: First
   overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111100010110111111111000111111'
-  person_id: 1265
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 13:10:00.000000000 Z
@@ -2262,6 +2262,7 @@ rufa_2017_24h_finished_first:
   topic_resource_key:
   wave:
 rufa_2017_24h_progress_lap6:
+  person: progress_lap6
   id: 6695
   age: 33
   beacon_url:
@@ -2287,7 +2288,6 @@ rufa_2017_24h_progress_lap6:
   gender: 0
   last_name: Lap6
   overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111101110010000101111101111111'
-  person_id: 1266
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
@@ -2301,6 +2301,7 @@ rufa_2017_24h_progress_lap6:
   topic_resource_key:
   wave:
 rufa_2017_24h_multiple_stops:
+  person: multiple_stops_utah_us
   id: 6756
   age: 43
   beacon_url:
@@ -2326,7 +2327,6 @@ rufa_2017_24h_multiple_stops:
   gender: 1
   last_name: Stops
   overall_performance: '100000000000011000000000000000010000111110010000000111111111111111111110110001101110001110111111'
-  person_id: 1305
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
@@ -2340,6 +2340,7 @@ rufa_2017_24h_multiple_stops:
   topic_resource_key:
   wave:
 rufa_2017_24h_finished_last:
+  person: finished_last
   id: 6780
   age: 40
   beacon_url:
@@ -2365,7 +2366,6 @@ rufa_2017_24h_finished_last:
   gender: 0
   last_name: Last
   overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111001001110000010100011111'
-  person_id: 1324
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
@@ -2379,6 +2379,7 @@ rufa_2017_24h_finished_last:
   topic_resource_key:
   wave:
 rufa_2017_24h_not_started:
+  person: not_started
   id: 6782
   age: 30
   beacon_url:
@@ -2404,7 +2405,6 @@ rufa_2017_24h_not_started:
   gender: 0
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 710
   phone:
   report_url:
   scheduled_start_time: 2017-02-12 01:00:00.000000000 Z
@@ -2418,6 +2418,7 @@ rufa_2017_24h_not_started:
   topic_resource_key:
   wave:
 rufa_2017_24h_progress_lap1:
+  person: progress_lap1
   id: 6805
   age: 49
   beacon_url:
@@ -2443,7 +2444,6 @@ rufa_2017_24h_progress_lap1:
   gender: 0
   last_name: Lap1
   overall_performance: '100000000000001000000000000000010000111110010000000111111111111111111111011000011001110100011111'
-  person_id: 1344
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 16:00:00.000000000 Z
@@ -2457,6 +2457,7 @@ rufa_2017_24h_progress_lap1:
   topic_resource_key:
   wave:
 hardrock_2016_lavon_paucek:
+  person: lavon_paucek
   id: 7270
   age: 41
   beacon_url:
@@ -2482,7 +2483,6 @@ hardrock_2016_lavon_paucek:
   gender: 1
   last_name: Paucek
   overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110001010000001110010111'
-  person_id: 53
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2496,6 +2496,7 @@ hardrock_2016_lavon_paucek:
   topic_resource_key:
   wave:
 hardrock_2016_vesta_borer:
+  person: vesta_borer
   id: 7284
   age: 21
   beacon_url:
@@ -2521,7 +2522,6 @@ hardrock_2016_vesta_borer:
   gender: 1
   last_name: Borer
   overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111001010101001000101010011111'
-  person_id: 70
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2535,6 +2535,7 @@ hardrock_2016_vesta_borer:
   topic_resource_key:
   wave:
 hardrock_2016_kory_kulas:
+  person: kory_kulas
   id: 7289
   age: 42
   beacon_url:
@@ -2560,7 +2561,6 @@ hardrock_2016_kory_kulas:
   gender: 0
   last_name: Kulas
   overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111000111011010001011000111111'
-  person_id: 1356
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2574,6 +2574,7 @@ hardrock_2016_kory_kulas:
   topic_resource_key:
   wave:
 hardrock_2016_shad_hirthe:
+  person: shad_hirthe
   id: 7297
   age: 40
   beacon_url:
@@ -2599,7 +2600,6 @@ hardrock_2016_shad_hirthe:
   gender: 0
   last_name: Hirthe
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010101000111001111111011111'
-  person_id: 463
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2613,6 +2613,7 @@ hardrock_2016_shad_hirthe:
   topic_resource_key:
   wave:
 hardrock_2016_douglas_vandervort:
+  person: douglas_vandervort
   id: 7302
   age: 52
   beacon_url:
@@ -2638,7 +2639,6 @@ hardrock_2016_douglas_vandervort:
   gender: 0
   last_name: Vandervort
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010010110100110000111011111'
-  person_id: 113
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2652,6 +2652,7 @@ hardrock_2016_douglas_vandervort:
   topic_resource_key:
   wave:
 hardrock_2016_missing_telluride_out:
+  person:
   id: 7308
   age: 20
   beacon_url:
@@ -2677,7 +2678,6 @@ hardrock_2016_missing_telluride_out:
   gender: 0
   last_name: Telluride Out
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001010001111000110011111'
-  person_id:
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2691,6 +2691,7 @@ hardrock_2016_missing_telluride_out:
   topic_resource_key:
   wave:
 hardrock_2016_junior_lesch:
+  person: junior_lesch
   id: 7311
   age: 49
   beacon_url:
@@ -2716,7 +2717,6 @@ hardrock_2016_junior_lesch:
   gender: 0
   last_name: Lesch
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010000011001000111111111111'
-  person_id: 830
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2730,6 +2730,7 @@ hardrock_2016_junior_lesch:
   topic_resource_key:
   wave:
 hardrock_2016_eddy_goldner:
+  person: eddy_goldner
   id: 7315
   age: 18
   beacon_url:
@@ -2755,7 +2756,6 @@ hardrock_2016_eddy_goldner:
   gender: 0
   last_name: Goldner
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001101001101100001111111'
-  person_id: 147
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2769,6 +2769,7 @@ hardrock_2016_eddy_goldner:
   topic_resource_key:
   wave:
 hardrock_2016_progress_sherman:
+  person: progress_sherman
   id: 7328
   age: 33
   beacon_url:
@@ -2794,7 +2795,6 @@ hardrock_2016_progress_sherman:
   gender: 0
   last_name: Sherman
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010111000001111011011111111'
-  person_id: 656
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2808,6 +2808,7 @@ hardrock_2016_progress_sherman:
   topic_resource_key:
   wave:
 hardrock_2016_benito_moen:
+  person: benito_moen
   id: 7337
   age: 52
   beacon_url:
@@ -2833,7 +2834,6 @@ hardrock_2016_benito_moen:
   gender: 0
   last_name: Moen
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101011100100001101011111'
-  person_id: 1365
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2847,6 +2847,7 @@ hardrock_2016_benito_moen:
   topic_resource_key:
   wave:
 hardrock_2016_kendall_koch:
+  person: kendall_koch
   id: 7340
   age: 40
   beacon_url:
@@ -2872,7 +2873,6 @@ hardrock_2016_kendall_koch:
   gender: 0
   last_name: Koch
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101010011010111101111111'
-  person_id: 226
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2886,6 +2886,7 @@ hardrock_2016_kendall_koch:
   topic_resource_key:
   wave:
 hardrock_2016_charlie_mueller:
+  person: charlie_mueller
   id: 7343
   age: 27
   beacon_url:
@@ -2911,7 +2912,6 @@ hardrock_2016_charlie_mueller:
   gender: 0
   last_name: Mueller
   overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001110000100110011110011111'
-  person_id: 205
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2925,6 +2925,7 @@ hardrock_2016_charlie_mueller:
   topic_resource_key:
   wave:
 hardrock_2016_brinda_fisher:
+  person: brinda_fisher
   id: 7376
   age: 22
   beacon_url:
@@ -2950,7 +2951,6 @@ hardrock_2016_brinda_fisher:
   gender: 1
   last_name: Fisher
   overall_performance: '100000000000001000000000000010110111010000000100000011111111111111111010010110100110000111011111'
-  person_id: 14
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -2964,6 +2964,7 @@ hardrock_2016_brinda_fisher:
   topic_resource_key:
   wave:
 hardrock_2016_rene_mclaughlin:
+  person: rene_mclaughlin
   id: 7380
   age: 32
   beacon_url:
@@ -2989,7 +2990,6 @@ hardrock_2016_rene_mclaughlin:
   gender: 0
   last_name: McLaughlin
   overall_performance: '100000000000001000000000000011100001010111101000000111111111111111111000111111001010011010011111'
-  person_id: 1379
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -3003,6 +3003,7 @@ hardrock_2016_rene_mclaughlin:
   topic_resource_key:
   wave:
 hardrock_2016_dropped_grouse:
+  person: dropped_grouse
   id: 7396
   age: 47
   beacon_url:
@@ -3028,7 +3029,6 @@ hardrock_2016_dropped_grouse:
   gender: 0
   last_name: Grouse
   overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111100110110100101010111111111'
-  person_id: 249
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -3042,6 +3042,7 @@ hardrock_2016_dropped_grouse:
   topic_resource_key:
   wave:
 hardrock_2016_mervin_smitham:
+  person: mervin_smitham
   id: 7400
   age: 24
   beacon_url:
@@ -3067,7 +3068,6 @@ hardrock_2016_mervin_smitham:
   gender: 0
   last_name: Smitham
   overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010111000000000110010011111'
-  person_id: 162
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -3081,6 +3081,7 @@ hardrock_2016_mervin_smitham:
   topic_resource_key:
   wave:
 hardrock_2016_rhett_auer:
+  person:
   id: 7404
   age: 41
   beacon_url:
@@ -3106,7 +3107,6 @@ hardrock_2016_rhett_auer:
   gender: 0
   last_name: Auer
   overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111101111000010001011110011111'
-  person_id:
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -3120,6 +3120,7 @@ hardrock_2016_rhett_auer:
   topic_resource_key:
   wave:
 hardrock_2016_hoyt_macejkovic:
+  person: hoyt_macejkovic
   id: 7407
   age: 55
   beacon_url:
@@ -3145,7 +3146,6 @@ hardrock_2016_hoyt_macejkovic:
   gender: 0
   last_name: Macejkovic
   overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100001100000000110000111111'
-  person_id: 256
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -3159,6 +3159,7 @@ hardrock_2016_hoyt_macejkovic:
   topic_resource_key:
   wave:
 hardrock_2016_start_only:
+  person: start_only_maine_us
   id: 7411
   age: 26
   beacon_url:
@@ -3184,7 +3185,6 @@ hardrock_2016_start_only:
   gender: 0
   last_name: Only
   overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  person_id: 818
   phone:
   report_url:
   scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
@@ -3198,6 +3198,7 @@ hardrock_2016_start_only:
   topic_resource_key:
   wave:
 ggd30_50k_finished_first:
+  person: finished_first_colorado_us
   id: 15626
   age: 44
   beacon_url:
@@ -3223,7 +3224,6 @@ ggd30_50k_finished_first:
   gender: 0
   last_name: First
   overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110110100100001000101101101'
-  person_id: 1585
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
@@ -3237,6 +3237,7 @@ ggd30_50k_finished_first:
   topic_resource_key:
   wave:
 ggd30_50k_bad_finish:
+  person: bad_finish
   id: 15664
   age: 21
   beacon_url:
@@ -3262,7 +3263,6 @@ ggd30_50k_bad_finish:
   gender: 0
   last_name: Finish
   overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101000000010111100110001'
-  person_id: 2104
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
@@ -3276,6 +3276,7 @@ ggd30_50k_bad_finish:
   topic_resource_key:
   wave:
 ggd30_50k_progress_aid4:
+  person: progress_aid4
   id: 15891
   age: 35
   beacon_url:
@@ -3301,7 +3302,6 @@ ggd30_50k_progress_aid4:
   gender: 1
   last_name: Aid4
   overall_performance: '100000000000001000000000000001001101000000100000000111111111111111111110100011000010111100011101'
-  person_id: 2003
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
@@ -3315,6 +3315,7 @@ ggd30_50k_progress_aid4:
   topic_resource_key:
   wave:
 ggd30_50k_progress_aid3:
+  person: progress_aid3
   id: 15901
   age: 31
   beacon_url:
@@ -3340,7 +3341,6 @@ ggd30_50k_progress_aid3:
   gender: 0
   last_name: Aid3
   overall_performance: '100000000000001000000000000000110110000100000000000111111111111111111111000000001001000101011111'
-  person_id: 1734
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
@@ -3354,6 +3354,7 @@ ggd30_50k_progress_aid3:
   topic_resource_key:
   wave:
 ggd30_50k_drop_aid4:
+  person: drop_aid4
   id: 15931
   age: 18
   beacon_url:
@@ -3379,7 +3380,6 @@ ggd30_50k_drop_aid4:
   gender: 0
   last_name: Aid4
   overall_performance: '000000000000001000000000000001001101000000100000000111111111111111111110100010110011100000101001'
-  person_id: 1689
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
@@ -3393,6 +3393,7 @@ ggd30_50k_drop_aid4:
   topic_resource_key:
   wave:
 ggd30_50k_start_only:
+  person: start_only_2019_02_01_07_19_53
   id: 16023
   age: 31
   beacon_url:
@@ -3418,7 +3419,6 @@ ggd30_50k_start_only:
   gender: 1
   last_name: Only
   overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  person_id: 1926
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
@@ -3432,6 +3432,7 @@ ggd30_50k_start_only:
   topic_resource_key:
   wave:
 ggd30_50k_not_started:
+  person: not_started
   id: 16032
   age: 31
   beacon_url:
@@ -3457,7 +3458,6 @@ ggd30_50k_not_started:
   gender: 0
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 710
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
@@ -3471,6 +3471,7 @@ ggd30_50k_not_started:
   topic_resource_key:
   wave:
 ggd30_12m_start_only:
+  person: start_only_colorado_us
   id: 16094
   age: 27
   beacon_url:
@@ -3496,7 +3497,6 @@ ggd30_12m_start_only:
   gender: 1
   last_name: Only
   overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  person_id: 1874
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
@@ -3510,6 +3510,7 @@ ggd30_12m_start_only:
   topic_resource_key:
   wave:
 ggd30_12m_finished_second:
+  person: finished_second_colorado_us
   id: 16107
   age: 43
   beacon_url:
@@ -3535,7 +3536,6 @@ ggd30_12m_finished_second:
   gender: 1
   last_name: Second
   overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111101010101001101'
-  person_id: 1862
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
@@ -3549,6 +3549,7 @@ ggd30_12m_finished_second:
   topic_resource_key:
   wave:
 ggd30_12m_finished_first:
+  person: finished_first_france
   id: 16173
   age: 23
   beacon_url:
@@ -3574,7 +3575,6 @@ ggd30_12m_finished_first:
   gender: 0
   last_name: First
   overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111100111001111101100111111'
-  person_id: 1923
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
@@ -3588,6 +3588,7 @@ ggd30_12m_finished_first:
   topic_resource_key:
   wave:
 ggd30_12m_not_started:
+  person: not_started_colorado_us
   id: 16209
   age: 22
   beacon_url:
@@ -3613,7 +3614,6 @@ ggd30_12m_not_started:
   gender: 1
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 1771
   phone:
   report_url:
   scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
@@ -3627,6 +3627,7 @@ ggd30_12m_not_started:
   topic_resource_key:
   wave:
 sum_55k_finished_first:
+  person: finished_first_colorado_us
   id: 16227
   age: 44
   beacon_url:
@@ -3652,7 +3653,6 @@ sum_55k_finished_first:
   gender: 0
   last_name: First
   overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000100110101101011001111'
-  person_id: 1585
   phone:
   report_url:
   scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
@@ -3666,6 +3666,7 @@ sum_55k_finished_first:
   topic_resource_key:
   wave:
 sum_55k_finished_second:
+  person: finished_second_colorado_us
   id: 16229
   age: 44
   beacon_url:
@@ -3691,7 +3692,6 @@ sum_55k_finished_second:
   gender: 1
   last_name: Second
   overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000010101010000001101111'
-  person_id: 1862
   phone:
   report_url:
   scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
@@ -3705,6 +3705,7 @@ sum_55k_finished_second:
   topic_resource_key:
   wave:
 sum_55k_not_started:
+  person: not_started_colorado_us_2019_02_01
   id: 16242
   age: 36
   beacon_url:
@@ -3730,7 +3731,6 @@ sum_55k_not_started:
   gender: 2
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 1571
   phone:
   report_url:
   scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
@@ -3744,6 +3744,7 @@ sum_55k_not_started:
   topic_resource_key:
   wave:
 sum_55k_progress_rolling:
+  person: progress_rolling
   id: 16244
   age: 55
   beacon_url:
@@ -3769,7 +3770,6 @@ sum_55k_progress_rolling:
   gender: 1
   last_name: Rolling
   overall_performance: '100000000000001000000000000001000100111011101100000011111111111111111111000101101000101001011111'
-  person_id: 1569
   phone:
   report_url:
   scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
@@ -3783,6 +3783,7 @@ sum_55k_progress_rolling:
   topic_resource_key:
   wave:
 sum_55k_drop_bandera:
+  person: drop_bandera
   id: 16245
   age: 19
   beacon_url:
@@ -3808,7 +3809,6 @@ sum_55k_drop_bandera:
   gender: 1
   last_name: Bandera
   overall_performance: '000000000000001000000000000001001111100111101000000111111111111111111101111111100001010101111111'
-  person_id: 1568
   phone:
   report_url:
   scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
@@ -3822,6 +3822,7 @@ sum_55k_drop_bandera:
   topic_resource_key:
   wave:
 sum_55k_start_only:
+  person: start_only_colorado_us_2019_02_01
   id: 16246
   age: 49
   beacon_url:
@@ -3847,7 +3848,6 @@ sum_55k_start_only:
   gender: 0
   last_name: Only
   overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  person_id: 1567
   phone:
   report_url:
   scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
@@ -3861,6 +3861,7 @@ sum_55k_start_only:
   topic_resource_key:
   wave:
 sum_100k_drop_anvil:
+  person: drop_anvil
   id: 16247
   age: 28
   beacon_url:
@@ -3886,7 +3887,6 @@ sum_100k_drop_anvil:
   gender: 0
   last_name: Anvil
   overall_performance: '000000000000001000000000000010110000010011100100000011111111111111111100111010111011101100011111'
-  person_id: 1747
   phone:
   report_url:
   scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
@@ -3900,6 +3900,7 @@ sum_100k_drop_anvil:
   topic_resource_key:
   wave:
 sum_100k_progress_cascade:
+  person: progress_cascade
   id: 16248
   age: 20
   beacon_url:
@@ -3925,7 +3926,6 @@ sum_100k_progress_cascade:
   gender: 0
   last_name: Cascade
   overall_performance: '100000000000001000000000000001011010011101101100000011111111111111111110011100101010100100111111'
-  person_id: 1748
   phone:
   report_url:
   scheduled_start_time:
@@ -3939,6 +3939,7 @@ sum_100k_progress_cascade:
   topic_resource_key:
   wave:
 rufa_2017_12h_finished_first:
+  person: finished_first
   id: 16643
   age: 20
   beacon_url:
@@ -3964,7 +3965,6 @@ rufa_2017_12h_finished_first:
   gender: 0
   last_name: First
   overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111101100000111000011001111111'
-  person_id: 2170
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
@@ -3978,6 +3978,7 @@ rufa_2017_12h_finished_first:
   topic_resource_key:
   wave:
 rufa_2017_12h_finished_lap6:
+  person: finished_lap6
   id: 16648
   age: 53
   beacon_url:
@@ -4003,7 +4004,6 @@ rufa_2017_12h_finished_lap6:
   gender: 0
   last_name: Lap6
   overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111101100010100111001111101111'
-  person_id: 2171
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
@@ -4017,6 +4017,7 @@ rufa_2017_12h_finished_lap6:
   topic_resource_key:
   wave:
 rufa_2017_12h_progress_lap5_partial:
+  person: progress_lap5_partial
   id: 16657
   age: 28
   beacon_url:
@@ -4042,7 +4043,6 @@ rufa_2017_12h_progress_lap5_partial:
   gender: 0
   last_name: Lap5 Partial
   overall_performance: '100000000000101000000000000000001000011111001000000111111111111111111101101111111101111110110111'
-  person_id: 2169
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
@@ -4056,6 +4056,7 @@ rufa_2017_12h_progress_lap5_partial:
   topic_resource_key:
   wave:
 rufa_2017_12h_progress_lap2:
+  person: progress_lap2
   id: 16663
   age: 24
   beacon_url:
@@ -4081,7 +4082,6 @@ rufa_2017_12h_progress_lap2:
   gender: 1
   last_name: Lap2
   overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111000101111000110000101111'
-  person_id: 2174
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
@@ -4095,6 +4095,7 @@ rufa_2017_12h_progress_lap2:
   topic_resource_key:
   wave:
 rufa_2017_12h_start_only:
+  person: start_only
   id: 16667
   age: 44
   beacon_url:
@@ -4120,7 +4121,6 @@ rufa_2017_12h_start_only:
   gender: 0
   last_name: Only
   overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  person_id: 2176
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
@@ -4134,6 +4134,7 @@ rufa_2017_12h_start_only:
   topic_resource_key:
   wave:
 rufa_2017_12h_not_started:
+  person: not_started_utah_us
   id: 16673
   age: 49
   beacon_url:
@@ -4159,7 +4160,6 @@ rufa_2017_12h_not_started:
   gender: 1
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 2175
   phone:
   report_url:
   scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
@@ -4173,6 +4173,7 @@ rufa_2017_12h_not_started:
   topic_resource_key:
   wave:
 sum_100k_un_started:
+  person: un_started
   id: 16683
   age: 29
   beacon_url:
@@ -4198,7 +4199,6 @@ sum_100k_un_started:
   gender: 1
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  person_id: 2184
   phone:
   report_url:
   scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
@@ -4212,6 +4212,7 @@ sum_100k_un_started:
   topic_resource_key:
   wave:
 sum_100k_on_dst_change:
+  person: on_dst_change
   id: 16684
   age:
   beacon_url:
@@ -4237,7 +4238,6 @@ sum_100k_on_dst_change:
   gender: 1
   last_name: DST Change
   overall_performance: '100000000000001000000000000000100011110101011000000111111111111111111111011110110011111110011111'
-  person_id: 2182
   phone:
   report_url:
   scheduled_start_time:
@@ -4251,6 +4251,7 @@ sum_100k_on_dst_change:
   topic_resource_key:
   wave:
 sum_100k_across_dst_change:
+  person: across_dst_change
   id: 16685
   age:
   beacon_url:
@@ -4276,7 +4277,6 @@ sum_100k_across_dst_change:
   gender: 1
   last_name: DST Change
   overall_performance: '100000000000001000000000000000100011110101011000000111111111111111111111010110110011010001111111'
-  person_id: 2183
   phone:
   report_url:
   scheduled_start_time:
@@ -4290,6 +4290,7 @@ sum_100k_across_dst_change:
   topic_resource_key:
   wave:
 ggd30_50k_finished_second:
+  person:
   id: 16686
   age: 43
   beacon_url:
@@ -4315,7 +4316,6 @@ ggd30_50k_finished_second:
   gender: 1
   last_name: Second
   overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101010110110110001111111'
-  person_id:
   phone:
   report_url:
   scheduled_start_time:
@@ -4329,6 +4329,7 @@ ggd30_50k_finished_second:
   topic_resource_key:
   wave:
 ggd30_12m_series_finisher:
+  person: series_finisher
   id: 16687
   age: 34
   beacon_url:
@@ -4354,7 +4355,6 @@ ggd30_12m_series_finisher:
   gender: 0
   last_name: Finisher
   overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111100100001011111'
-  person_id: 2185
   phone:
   report_url:
   scheduled_start_time:
@@ -4368,6 +4368,7 @@ ggd30_12m_series_finisher:
   topic_resource_key:
   wave:
 sum_55k_series_finisher:
+  person: series_finisher
   id: 16688
   age: 34
   beacon_url:
@@ -4393,7 +4394,6 @@ sum_55k_series_finisher:
   gender: 0
   last_name: Finisher
   overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111101110010000101111101111111'
-  person_id: 2185
   phone:
   report_url:
   scheduled_start_time:
@@ -4407,6 +4407,7 @@ sum_55k_series_finisher:
   topic_resource_key:
   wave:
 sum_55k_slow_finisher:
+  person: slow_finisher
   id: 16689
   age: 64
   beacon_url:
@@ -4432,7 +4433,6 @@ sum_55k_slow_finisher:
   gender: 0
   last_name: Finisher
   overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111101010110010100011000010111'
-  person_id: 2186
   phone:
   report_url:
   scheduled_start_time:
@@ -4446,6 +4446,7 @@ sum_55k_slow_finisher:
   topic_resource_key:
   wave:
 ggd30_12m_slow_finisher:
+  person: slow_finisher
   id: 16690
   age: 64
   beacon_url:
@@ -4471,7 +4472,6 @@ ggd30_12m_slow_finisher:
   gender: 0
   last_name: Finisher
   overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111000001101101001011101111'
-  person_id: 2186
   phone:
   report_url:
   scheduled_start_time:

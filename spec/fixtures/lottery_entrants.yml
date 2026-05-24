@@ -1,5 +1,6 @@
 ---
 lottery_entrant_0001:
+  person:
   id: 4
   birthdate: '2000-01-09'
   city: Amadashire
@@ -13,7 +14,6 @@ lottery_entrant_0001:
   last_name: Runolfsson
   lottery_division_id: 1
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -21,6 +21,7 @@ lottery_entrant_0001:
   state_name: South Carolina
   withdrawn: false
 lottery_entrant_0002:
+  person:
   id: 5
   birthdate: '1976-05-14'
   city: O'Connertown
@@ -34,7 +35,6 @@ lottery_entrant_0002:
   last_name: Wilkinson
   lottery_division_id: 1
   number_of_tickets: 5
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -42,6 +42,7 @@ lottery_entrant_0002:
   state_name: Kentucky
   withdrawn: false
 lottery_entrant_0003:
+  person:
   id: 6
   birthdate: '1983-01-09'
   city: Port Brandaburgh
@@ -55,7 +56,6 @@ lottery_entrant_0003:
   last_name: Treutel
   lottery_division_id: 2
   number_of_tickets: 3
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -63,6 +63,7 @@ lottery_entrant_0003:
   state_name: Wisconsin
   withdrawn: false
 lottery_entrant_0004:
+  person:
   id: 7
   birthdate: '1993-06-06'
   city: West Vicentafurt
@@ -76,7 +77,6 @@ lottery_entrant_0004:
   last_name: Barrows
   lottery_division_id: 1
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -84,6 +84,7 @@ lottery_entrant_0004:
   state_name: Mississippi
   withdrawn: false
 lottery_entrant_0005:
+  person:
   id: 8
   birthdate: '1981-05-12'
   city: Caroleeville
@@ -97,7 +98,6 @@ lottery_entrant_0005:
   last_name: Kuhn
   lottery_division_id: 2
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -105,6 +105,7 @@ lottery_entrant_0005:
   state_name: New Mexico
   withdrawn: false
 lottery_entrant_0006:
+  person:
   id: 9
   birthdate: '1971-11-07'
   city: Hungborough
@@ -118,7 +119,6 @@ lottery_entrant_0006:
   last_name: Heaney
   lottery_division_id: 1
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -126,6 +126,7 @@ lottery_entrant_0006:
   state_name: Nebraska
   withdrawn: false
 lottery_entrant_0007:
+  person:
   id: 10
   birthdate: '1976-08-30'
   city: East Lauraport
@@ -139,7 +140,6 @@ lottery_entrant_0007:
   last_name: Cassin
   lottery_division_id: 2
   number_of_tickets: 2
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -147,6 +147,7 @@ lottery_entrant_0007:
   state_name: Michigan
   withdrawn: false
 lottery_entrant_0008:
+  person:
   id: 11
   birthdate: '1986-08-22'
   city: Lebsackville
@@ -160,7 +161,6 @@ lottery_entrant_0008:
   last_name: Raynor
   lottery_division_id: 1
   number_of_tickets: 2
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -168,6 +168,7 @@ lottery_entrant_0008:
   state_name: Indiana
   withdrawn: false
 lottery_entrant_0009:
+  person:
   id: 12
   birthdate: '1994-03-08'
   city: Lake Nickyberg
@@ -181,7 +182,6 @@ lottery_entrant_0009:
   last_name: Hintz
   lottery_division_id: 2
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -189,6 +189,7 @@ lottery_entrant_0009:
   state_name: Alabama
   withdrawn: false
 lottery_entrant_0010:
+  person:
   id: 13
   birthdate: '1986-10-23'
   city: Beerbury
@@ -202,7 +203,6 @@ lottery_entrant_0010:
   last_name: Wilkinson
   lottery_division_id: 1
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -210,6 +210,7 @@ lottery_entrant_0010:
   state_name: Pennsylvania
   withdrawn: false
 lottery_entrant_0011:
+  person:
   id: 21
   birthdate: '1994-05-31'
   city: Port Glennis
@@ -223,7 +224,6 @@ lottery_entrant_0011:
   last_name: Crona
   lottery_division_id: 6
   number_of_tickets: 2
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -231,6 +231,7 @@ lottery_entrant_0011:
   state_name: Virginia
   withdrawn: false
 lottery_entrant_0012:
+  person:
   id: 22
   birthdate: '1997-10-15'
   city: West Rebecka
@@ -244,7 +245,6 @@ lottery_entrant_0012:
   last_name: Swaniawski
   lottery_division_id: 7
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -252,6 +252,7 @@ lottery_entrant_0012:
   state_name: Arizona
   withdrawn: false
 lottery_entrant_0013:
+  person:
   id: 23
   birthdate: '1997-11-08'
   city: Prohaskaside
@@ -265,7 +266,6 @@ lottery_entrant_0013:
   last_name: Gerlach
   lottery_division_id: 7
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -273,6 +273,7 @@ lottery_entrant_0013:
   state_name: Rhode Island
   withdrawn: false
 lottery_entrant_0014:
+  person:
   id: 24
   birthdate: '1991-07-22'
   city: Piamouth
@@ -286,7 +287,6 @@ lottery_entrant_0014:
   last_name: Carter
   lottery_division_id: 8
   number_of_tickets: 2
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -294,6 +294,7 @@ lottery_entrant_0014:
   state_name: North Dakota
   withdrawn: false
 lottery_entrant_0015:
+  person:
   id: 25
   birthdate: '1978-08-19'
   city: Lake Antonialand
@@ -307,7 +308,6 @@ lottery_entrant_0015:
   last_name: O'Kon
   lottery_division_id: 8
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -315,6 +315,7 @@ lottery_entrant_0015:
   state_name: Texas
   withdrawn: false
 lottery_entrant_0016:
+  person:
   id: 26
   birthdate: '1977-05-09'
   city: West Virgenborough
@@ -328,7 +329,6 @@ lottery_entrant_0016:
   last_name: Boyer
   lottery_division_id: 8
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -336,6 +336,7 @@ lottery_entrant_0016:
   state_name: Connecticut
   withdrawn: false
 lottery_entrant_0017:
+  person:
   id: 27
   birthdate: '1972-12-18'
   city: North Jessia
@@ -349,7 +350,6 @@ lottery_entrant_0017:
   last_name: Conroy
   lottery_division_id: 8
   number_of_tickets: 3
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:
@@ -357,6 +357,7 @@ lottery_entrant_0017:
   state_name: Oregon
   withdrawn: false
 lottery_entrant_0018:
+  person:
   id: 28
   birthdate: '1992-08-29'
   city: Refugialand
@@ -370,7 +371,6 @@ lottery_entrant_0018:
   last_name: Balistreri
   lottery_division_id: 8
   number_of_tickets: 1
-  person_id:
   phone:
   pre_selected: false
   service_completed_date:

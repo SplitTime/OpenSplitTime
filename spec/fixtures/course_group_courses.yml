@@ -1,9 +1,9 @@
 ---
 course_group_course_0001:
+  course_group: both_directions
   id: 4
-  course_group_id: 2
   course_id: 4
 course_group_course_0002:
+  course_group: both_directions
   id: 6
-  course_group_id: 2
   course_id: 12

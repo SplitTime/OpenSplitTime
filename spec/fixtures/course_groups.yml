@@ -1,6 +1,5 @@
 ---
 both_directions:
   organization: hardrock
-  id: 2
   name: Both Directions
   slug: both-directions

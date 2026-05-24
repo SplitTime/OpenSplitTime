@@ -39,6 +39,7 @@ module FixtureHelper
   # rather than id in other fixture tables.
   PORTABLE_FIXTURE_TABLES = [
     :course_groups,
+    :lotteries,
     :organizations,
     :results_categories,
     :results_templates,

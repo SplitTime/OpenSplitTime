@@ -43,6 +43,7 @@ module FixtureHelper
     :lotteries,
     :organizations,
     :partners,
+    :people,
     :results_categories,
     :results_templates,
     :results_template_categories,

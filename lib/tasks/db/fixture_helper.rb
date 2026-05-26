@@ -40,6 +40,7 @@ module FixtureHelper
   PORTABLE_FIXTURE_TABLES = [
     :course_groups,
     :credentials,
+    :historical_facts,
     :lotteries,
     :organizations,
     :partners,
@@ -55,6 +56,7 @@ module FixtureHelper
   # Pick columns that uniquely identify a row by its real-world identity.
   ORDER_BY_MAP = {
     credentials: "service_identifier, key, user_id",
+    historical_facts: "last_name, first_name, year, kind, personal_info_hash",
     partners: "partnerable_type, partnerable_id, name",
     results_template_categories: "results_template_id, position, results_category_id",
   }.freeze

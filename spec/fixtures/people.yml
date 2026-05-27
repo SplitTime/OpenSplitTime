@@ -1,5 +1,6 @@
 ---
 across_dst_change:
+  claimant:
   birthdate:
   city:
   concealed: false
@@ -13,10 +14,10 @@ across_dst_change:
   slug: across-dst-change
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 alfreda_cruickshank:
+  claimant:
   birthdate:
   city: Pandoraborough
   concealed: false
@@ -30,10 +31,10 @@ alfreda_cruickshank:
   slug: alfreda-cruickshank
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 antony_grady:
+  claimant:
   birthdate:
   city: Bednarshire
   concealed: false
@@ -47,10 +48,10 @@ antony_grady:
   slug: antony-grady
   state_code: VA
   state_name: Virginia
-  user_id:
   hide_age: false
   obscure_name: false
 bad_finish:
+  claimant:
   birthdate: 1995-07-25
   city:
   concealed: false
@@ -64,10 +65,10 @@ bad_finish:
   slug: bad-finish
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 bad_status:
+  claimant:
   birthdate: 1994-04-18
   city: Erie
   concealed: false
@@ -81,10 +82,10 @@ bad_status:
   slug: bad-status
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 benedict_davis:
+  claimant:
   birthdate: 1983-06-28
   city:
   concealed: false
@@ -98,10 +99,10 @@ benedict_davis:
   slug: benedict-davis
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 benito_moen:
+  claimant:
   birthdate: 1964-01-16
   city:
   concealed: false
@@ -115,10 +116,10 @@ benito_moen:
   slug: benito-moen
   state_code: OH
   state_name: Ohio
-  user_id:
   hide_age: false
   obscure_name: false
 beryl_kutch:
+  claimant:
   birthdate:
   city:
   concealed: false
@@ -132,10 +133,10 @@ beryl_kutch:
   slug: beryl-kutch
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 bethany_sanford:
+  claimant:
   birthdate: 1988-05-01
   city:
   concealed: false
@@ -149,10 +150,10 @@ bethany_sanford:
   slug: bethany-sanford
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 brinda_fisher:
+  claimant:
   birthdate: 1994-07-12
   city:
   concealed: false
@@ -166,10 +167,10 @@ brinda_fisher:
   slug: brinda-fisher
   state_code: SC
   state_name: South Carolina
-  user_id:
   hide_age: false
   obscure_name: false
 bruno_fadel:
+  claimant:
   birthdate: 1988-05-11
   city:
   concealed: false
@@ -183,10 +184,10 @@ bruno_fadel:
   slug: bruno-fadel
   state_code: CA
   state_name: California
-  user_id:
   hide_age: false
   obscure_name: false
 carmine_adams:
+  claimant:
   birthdate: 1997-05-25
   city: Kassulkemouth
   concealed: false
@@ -200,10 +201,10 @@ carmine_adams:
   slug: carmine-adams
   state_code: WA
   state_name: Washington
-  user_id:
   hide_age: false
   obscure_name: false
 cassondra_nienow:
+  claimant:
   birthdate: 1958-09-07
   city:
   concealed: false
@@ -217,10 +218,10 @@ cassondra_nienow:
   slug: cassondra-nienow
   state_code: OH
   state_name: Ohio
-  user_id:
   hide_age: false
   obscure_name: false
 cedric_windler:
+  claimant:
   birthdate: 1979-07-10
   city:
   concealed: false
@@ -234,10 +235,10 @@ cedric_windler:
   slug: cedric-windler
   state_code: TN
   state_name: Tennessee
-  user_id:
   hide_age: false
   obscure_name: false
 charlie_mueller:
+  claimant:
   birthdate: 1989-06-10
   city:
   concealed: false
@@ -251,10 +252,10 @@ charlie_mueller:
   slug: charlie-mueller
   state_code: OR
   state_name: Oregon
-  user_id:
   hide_age: false
   obscure_name: false
 chris_rempel:
+  claimant:
   birthdate: 1988-12-28
   city:
   concealed: false
@@ -268,10 +269,10 @@ chris_rempel:
   slug: chris-rempel
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 clarence_goyette:
+  claimant:
   birthdate: 1961-09-18
   city:
   concealed: false
@@ -285,10 +286,10 @@ clarence_goyette:
   slug: clarence-goyette
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 claudio_wunsch:
+  claimant:
   birthdate:
   city:
   concealed: false
@@ -302,10 +303,10 @@ claudio_wunsch:
   slug: claudio-wunsch
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 darius_jacobson:
+  claimant:
   birthdate: 1985-03-21
   city: Carbondale
   concealed: false
@@ -319,10 +320,10 @@ darius_jacobson:
   slug: darius-jacobson
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 demetrius_moen:
+  claimant:
   birthdate: 1975-06-06
   city:
   concealed: false
@@ -336,10 +337,10 @@ demetrius_moen:
   slug: demetrius-moen
   state_code: OR
   state_name: Oregon
-  user_id:
   hide_age: false
   obscure_name: false
 donn_mckenzie:
+  claimant:
   birthdate: 1998-12-29
   city:
   concealed: false
@@ -353,10 +354,10 @@ donn_mckenzie:
   slug: donn-mckenzie
   state_code: WY
   state_name: Wyoming
-  user_id:
   hide_age: false
   obscure_name: false
 donte_spencer:
+  claimant:
   birthdate: 1984-07-14
   city: Eden
   concealed: false
@@ -370,10 +371,10 @@ donte_spencer:
   slug: donte-spencer
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 dorothy_fahey:
+  claimant:
   birthdate:
   city: Pfannerstillberg
   concealed: false
@@ -387,10 +388,10 @@ dorothy_fahey:
   slug: dorothy-fahey
   state_code: WA
   state_name: Washington
-  user_id:
   hide_age: false
   obscure_name: false
 douglas_vandervort:
+  claimant:
   birthdate:
   city:
   concealed: false
@@ -404,10 +405,10 @@ douglas_vandervort:
   slug: douglas-vandervort
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 drop_aid4:
+  claimant:
   birthdate: 1998-11-08
   city:
   concealed: false
@@ -421,10 +422,10 @@ drop_aid4:
   slug: drop-aid4
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 drop_anvil:
+  claimant:
   birthdate: 1988-09-29
   city:
   concealed: false
@@ -438,10 +439,10 @@ drop_anvil:
   slug: drop-anvil
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 drop_bandera:
+  claimant:
   birthdate: 1998-08-31
   city:
   concealed: false
@@ -455,10 +456,10 @@ drop_bandera:
   slug: drop-bandera
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 drop_ouray:
+  claimant:
   birthdate: 1974-01-05
   city: Boulder Creek
   concealed: false
@@ -472,10 +473,10 @@ drop_ouray:
   slug: drop-ouray
   state_code: CA
   state_name: California
-  user_id:
   hide_age: false
   obscure_name: false
 dropped_grouse:
+  claimant:
   birthdate: 1969-05-13
   city:
   concealed: false
@@ -489,10 +490,10 @@ dropped_grouse:
   slug: dropped-grouse
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 eddy_goldner:
+  claimant:
   birthdate: 1997-07-26
   city:
   concealed: false
@@ -506,10 +507,10 @@ eddy_goldner:
   slug: eddy-goldner
   state_code: WA
   state_name: Washington
-  user_id:
   hide_age: false
   obscure_name: false
 elden_morissette:
+  claimant:
   birthdate: 1972-11-21
   city:
   concealed: false
@@ -523,10 +524,10 @@ elden_morissette:
   slug: elden-morissette
   state_code: WI
   state_name: Wisconsin
-  user_id:
   hide_age: false
   obscure_name: false
 erich_larson:
+  claimant:
   birthdate: 1979-07-10
   city:
   concealed: false
@@ -540,10 +541,10 @@ erich_larson:
   slug: erich-larson
   state_code: MT
   state_name: Montana
-  user_id:
   hide_age: false
   obscure_name: false
 finished_first:
+  claimant:
   birthdate: 1997-01-25
   city:
   concealed: false
@@ -557,10 +558,10 @@ finished_first:
   slug: finished-first
   state_code: AZ
   state_name: Arizona
-  user_id:
   hide_age: false
   obscure_name: false
 finished_first_2019_02_01:
+  claimant:
   birthdate: 1957-02-04
   city:
   concealed: false
@@ -574,10 +575,10 @@ finished_first_2019_02_01:
   slug: finished-first-2019-02-01
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 finished_first_colorado_us:
+  claimant:
   birthdate: 1973-08-18
   city:
   concealed: false
@@ -591,10 +592,10 @@ finished_first_colorado_us:
   slug: finished-first-colorado-us
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 finished_first_france:
+  claimant:
   birthdate: 1993-06-05
   city:
   concealed: false
@@ -608,10 +609,10 @@ finished_first_france:
   slug: finished-first-france
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 finished_first_japan:
+  claimant:
   birthdate: 1995-04-25
   city:
   concealed: false
@@ -625,10 +626,10 @@ finished_first_japan:
   slug: finished-first-japan
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 finished_first_utah_us:
+  claimant:
   birthdate: 1969-04-04
   city:
   concealed: false
@@ -642,10 +643,10 @@ finished_first_utah_us:
   slug: finished-first-utah-us
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 finished_lap6:
+  claimant:
   birthdate: 1963-03-07
   city:
   concealed: false
@@ -659,10 +660,10 @@ finished_lap6:
   slug: finished-lap6
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 finished_last:
+  claimant:
   birthdate: 1976-05-03
   city:
   concealed: false
@@ -676,10 +677,10 @@ finished_last:
   slug: finished-last
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 finished_second_colorado_us:
+  claimant:
   birthdate: 1973-07-23
   city: Boulder
   concealed: false
@@ -693,10 +694,10 @@ finished_second_colorado_us:
   slug: finished-second-colorado-us
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 finished_second_montana_us:
+  claimant:
   birthdate: 1994-08-16
   city: Bozeman
   concealed: false
@@ -710,10 +711,10 @@ finished_second_montana_us:
   slug: finished-second-montana-us
   state_code: MT
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 finished_with_stop:
+  claimant:
   birthdate: 1974-03-03
   city:
   concealed: false
@@ -727,10 +728,10 @@ finished_with_stop:
   slug: finished-with-stop
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 finished_without_stop:
+  claimant:
   birthdate:
   city: Salt Lake City
   concealed: false
@@ -744,10 +745,10 @@ finished_without_stop:
   slug: finished-without-stop
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 freddy_maggio:
+  claimant:
   birthdate: 1995-06-21
   city: Port Kandice
   concealed: false
@@ -761,10 +762,10 @@ freddy_maggio:
   slug: freddy-maggio
   state_code: AB
   state_name: Alberta
-  user_id:
   hide_age: false
   obscure_name: false
 fredrick_wiza:
+  claimant:
   birthdate:
   city: East Shenitaport
   concealed: false
@@ -778,10 +779,10 @@ fredrick_wiza:
   slug: fredrick-wiza
   state_code: MT
   state_name: Montana
-  user_id:
   hide_age: false
   obscure_name: false
 garry_kuhlman:
+  claimant:
   birthdate: 1969-10-10
   city:
   concealed: false
@@ -795,10 +796,10 @@ garry_kuhlman:
   slug: garry-kuhlman
   state_code: MT
   state_name: Montana
-  user_id:
   hide_age: false
   obscure_name: false
 gilberto_mckenzie:
+  claimant:
   birthdate: 1970-06-02
   city:
   concealed: false
@@ -812,10 +813,10 @@ gilberto_mckenzie:
   slug: gilberto-mckenzie
   state_code: WA
   state_name: Washington
-  user_id:
   hide_age: false
   obscure_name: false
 gus_walker:
+  claimant:
   birthdate: 1960-11-23
   city: Boulder
   concealed: false
@@ -829,10 +830,10 @@ gus_walker:
   slug: gus-walker
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 hoyt_macejkovic:
+  claimant:
   birthdate: 1960-07-23
   city:
   concealed: false
@@ -846,10 +847,10 @@ hoyt_macejkovic:
   slug: hoyt-macejkovic
   state_code: TX
   state_name: Texas
-  user_id:
   hide_age: false
   obscure_name: false
 humberto_adams:
+  claimant:
   birthdate: 1990-04-25
   city:
   concealed: false
@@ -863,10 +864,10 @@ humberto_adams:
   slug: humberto-adams
   state_code: NM
   state_name: New Mexico
-  user_id:
   hide_age: false
   obscure_name: false
 irvin_corkery:
+  claimant:
   birthdate: 1991-11-01
   city:
   concealed: false
@@ -880,10 +881,10 @@ irvin_corkery:
   slug: irvin-corkery
   state_code: DC
   state_name: District of Columbia
-  user_id:
   hide_age: false
   obscure_name: false
 irvin_harber:
+  claimant:
   birthdate: 1996-07-05
   city:
   concealed: false
@@ -897,10 +898,10 @@ irvin_harber:
   slug: irvin-harber
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 junior_lesch:
+  claimant:
   birthdate: 1967-02-21
   city:
   concealed: false
@@ -914,10 +915,10 @@ junior_lesch:
   slug: junior-lesch
   state_code: NM
   state_name: New Mexico
-  user_id:
   hide_age: false
   obscure_name: false
 keith_metz:
+  claimant:
   birthdate: 1971-11-06
   city:
   concealed: false
@@ -931,10 +932,10 @@ keith_metz:
   slug: keith-metz
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 ken_bradtke:
+  claimant:
   birthdate: 1966-07-21
   city:
   concealed: false
@@ -948,10 +949,10 @@ ken_bradtke:
   slug: ken-bradtke
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 kendall_koch:
+  claimant:
   birthdate: 1976-02-05
   city: Littleton
   concealed: false
@@ -965,10 +966,10 @@ kendall_koch:
   slug: kendall-koch
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 kory_kulas:
+  claimant:
   birthdate: 1974-01-25
   city:
   concealed: false
@@ -982,10 +983,10 @@ kory_kulas:
   slug: kory-kulas
   state_code: CA
   state_name: California
-  user_id:
   hide_age: false
   obscure_name: false
 lavon_paucek:
+  claimant:
   birthdate: 1974-07-29
   city: West Ariel
   concealed: false
@@ -999,10 +1000,10 @@ lavon_paucek:
   slug: lavon-paucek
   state_code: AR
   state_name: Arkansas
-  user_id:
   hide_age: false
   obscure_name: false
 leandro_cole:
+  claimant:
   birthdate: 1970-06-26
   city:
   concealed: false
@@ -1016,10 +1017,10 @@ leandro_cole:
   slug: leandro-cole
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 leif_carter:
+  claimant:
   birthdate: 1960-02-01
   city:
   concealed: false
@@ -1033,10 +1034,10 @@ leif_carter:
   slug: leif-carter
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 leroy_leffler:
+  claimant:
   birthdate: 1967-06-18
   city:
   concealed: false
@@ -1050,10 +1051,10 @@ leroy_leffler:
   slug: leroy-leffler
   state_code: NM
   state_name: New Mexico
-  user_id:
   hide_age: false
   obscure_name: false
 major_green:
+  claimant:
   birthdate: 1955-09-29
   city:
   concealed: false
@@ -1067,10 +1068,10 @@ major_green:
   slug: major-green
   state_code: NC
   state_name: North Carolina
-  user_id:
   hide_age: false
   obscure_name: false
 mervin_smitham:
+  claimant:
   birthdate: 1991-10-08
   city:
   concealed: false
@@ -1084,10 +1085,10 @@ mervin_smitham:
   slug: mervin-smitham
   state_code: NM
   state_name: New Mexico
-  user_id:
   hide_age: false
   obscure_name: false
 multiple_stops:
+  claimant:
   birthdate: 1954-03-21
   city:
   concealed: false
@@ -1101,10 +1102,10 @@ multiple_stops:
   slug: multiple-stops
   state_code: HI
   state_name: Hawaii
-  user_id:
   hide_age: false
   obscure_name: false
 multiple_stops_utah_us:
+  claimant:
   birthdate: 1973-11-14
   city:
   concealed: false
@@ -1118,10 +1119,10 @@ multiple_stops_utah_us:
   slug: multiple-stops-utah-us
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 not_started:
+  claimant:
   birthdate: 1986-03-23
   city:
   concealed: false
@@ -1135,10 +1136,10 @@ not_started:
   slug: not-started
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 not_started_2019_02_01:
+  claimant:
   birthdate: 1989-03-22
   city:
   concealed: false
@@ -1152,10 +1153,10 @@ not_started_2019_02_01:
   slug: not-started-2019-02-01
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 not_started_colorado_us:
+  claimant:
   birthdate: 1995-03-06
   city: Greeley
   concealed: false
@@ -1169,10 +1170,10 @@ not_started_colorado_us:
   slug: not-started-colorado-us
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 not_started_colorado_us_2019_02_01:
+  claimant:
   birthdate: 1981-03-31
   city:
   concealed: false
@@ -1186,10 +1187,10 @@ not_started_colorado_us_2019_02_01:
   slug: not-started-colorado-us-2019-02-01
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 not_started_utah_us:
+  claimant:
   birthdate:
   city:
   concealed: false
@@ -1203,10 +1204,10 @@ not_started_utah_us:
   slug: not-started-utah-us
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 omer_yundt:
+  claimant:
   birthdate: 1974-06-23
   city:
   concealed: false
@@ -1220,10 +1221,10 @@ omer_yundt:
   slug: omer-yundt
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 on_dst_change:
+  claimant:
   birthdate:
   city:
   concealed: false
@@ -1237,10 +1238,10 @@ on_dst_change:
   slug: on-dst-change
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 pat_schaden:
+  claimant:
   birthdate: 1960-09-09
   city:
   concealed: false
@@ -1254,10 +1255,10 @@ pat_schaden:
   slug: pat-schaden
   state_code: AZ
   state_name: Arizona
-  user_id:
   hide_age: false
   obscure_name: false
 progress_aid3:
+  claimant:
   birthdate: 1986-03-04
   city:
   concealed: false
@@ -1271,10 +1272,10 @@ progress_aid3:
   slug: progress-aid3
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 progress_aid4:
+  claimant:
   birthdate: 1982-03-29
   city:
   concealed: false
@@ -1288,10 +1289,10 @@ progress_aid4:
   slug: progress-aid4
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 progress_cascade:
+  claimant:
   birthdate: 1997-05-20
   city: Provo
   concealed: false
@@ -1305,10 +1306,10 @@ progress_cascade:
   slug: progress-cascade
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 progress_lap1:
+  claimant:
   birthdate: 1967-03-21
   city:
   concealed: false
@@ -1322,10 +1323,10 @@ progress_lap1:
   slug: progress-lap1
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 progress_lap2:
+  claimant:
   birthdate: 1992-10-06
   city:
   concealed: false
@@ -1339,10 +1340,10 @@ progress_lap2:
   slug: progress-lap2
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 progress_lap5_partial:
+  claimant:
   birthdate: 1988-09-15
   city:
   concealed: false
@@ -1356,10 +1357,10 @@ progress_lap5_partial:
   slug: progress-lap5-partial
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 progress_lap6:
+  claimant:
   birthdate:
   city:
   concealed: false
@@ -1373,10 +1374,10 @@ progress_lap6:
   slug: progress-lap6
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 progress_rolling:
+  claimant:
   birthdate: 1962-04-23
   city:
   concealed: false
@@ -1390,10 +1391,10 @@ progress_rolling:
   slug: progress-rolling
   state_code: CA
   state_name: California
-  user_id:
   hide_age: false
   obscure_name: false
 progress_sherman:
+  claimant:
   birthdate: 1982-07-28
   city:
   concealed: false
@@ -1407,10 +1408,10 @@ progress_sherman:
   slug: progress-sherman
   state_code: ID
   state_name: Idaho
-  user_id:
   hide_age: false
   obscure_name: false
 progress_sherman_colorado_us:
+  claimant:
   birthdate: 1977-12-15
   city:
   concealed: false
@@ -1424,10 +1425,10 @@ progress_sherman_colorado_us:
   slug: progress-sherman-colorado-us
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 rachelle_eichmann:
+  claimant:
   birthdate: 1992-01-11
   city: Tamartown
   concealed: false
@@ -1441,10 +1442,10 @@ rachelle_eichmann:
   slug: rachelle-eichmann
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 raphael_swift:
+  claimant:
   birthdate: 1974-07-14
   city:
   concealed: false
@@ -1458,10 +1459,10 @@ raphael_swift:
   slug: raphael-swift
   state_code: AR
   state_name: Arkansas
-  user_id:
   hide_age: false
   obscure_name: false
 rene_mclaughlin:
+  claimant:
   birthdate: 1984-04-30
   city:
   concealed: false
@@ -1475,10 +1476,10 @@ rene_mclaughlin:
   slug: rene-mclaughlin
   state_code: TX
   state_name: Texas
-  user_id:
   hide_age: false
   obscure_name: false
 robby_gerlach:
+  claimant:
   birthdate: 1970-05-18
   city:
   concealed: false
@@ -1492,10 +1493,10 @@ robby_gerlach:
   slug: robby-gerlach
   state_code: VA
   state_name: Virginia
-  user_id:
   hide_age: false
   obscure_name: false
 robt_wintheiser:
+  claimant:
   birthdate:
   city: Durango
   concealed: false
@@ -1509,10 +1510,10 @@ robt_wintheiser:
   slug: robt-wintheiser
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 samara_vandervort:
+  claimant:
   birthdate: 1992-12-15
   city: Truckee
   concealed: false
@@ -1526,10 +1527,10 @@ samara_vandervort:
   slug: samara-vandervort
   state_code: CA
   state_name: California
-  user_id:
   hide_age: false
   obscure_name: false
 santa_green:
+  claimant:
   birthdate: 1977-10-27
   city:
   concealed: false
@@ -1543,10 +1544,10 @@ santa_green:
   slug: santa-green
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 series_finisher:
+  claimant:
   birthdate: 1983-03-03
   city: Louisville
   concealed: false
@@ -1560,10 +1561,10 @@ series_finisher:
   slug: series-finisher
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 shad_hirthe:
+  claimant:
   birthdate: 1975-09-05
   city: Crested Butte
   concealed: false
@@ -1577,10 +1578,10 @@ shad_hirthe:
   slug: shad-hirthe
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 slow_finisher:
+  claimant:
   birthdate: 1953-03-03
   city: Orem
   concealed: false
@@ -1594,10 +1595,10 @@ slow_finisher:
   slug: slow-finisher
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 start_only:
+  claimant:
   birthdate: 1972-12-19
   city:
   concealed: false
@@ -1611,10 +1612,10 @@ start_only:
   slug: start-only
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 start_only_2019_02_01:
+  claimant:
   birthdate: 1968-07-11
   city:
   concealed: false
@@ -1628,10 +1629,10 @@ start_only_2019_02_01:
   slug: start-only-2019-02-01
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 start_only_2019_02_01_07_19_53:
+  claimant:
   birthdate: 1985-11-14
   city:
   concealed: false
@@ -1645,10 +1646,10 @@ start_only_2019_02_01_07_19_53:
   slug: start-only-2019-02-01-07-19-53
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 start_only_colorado_us:
+  claimant:
   birthdate: 1989-09-09
   city: Aurora
   concealed: false
@@ -1662,10 +1663,10 @@ start_only_colorado_us:
   slug: start-only-colorado-us
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 start_only_colorado_us_2019_02_01:
+  claimant:
   birthdate: 1967-10-27
   city:
   concealed: false
@@ -1679,10 +1680,10 @@ start_only_colorado_us_2019_02_01:
   slug: start-only-colorado-us-2019-02-01
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 start_only_maine_us:
+  claimant:
   birthdate: 1990-04-23
   city:
   concealed: false
@@ -1696,10 +1697,10 @@ start_only_maine_us:
   slug: start-only-maine-us
   state_code: ME
   state_name: Maine
-  user_id:
   hide_age: false
   obscure_name: false
 susanna_abshire:
+  claimant:
   birthdate: 1980-08-17
   city:
   concealed: false
@@ -1713,10 +1714,10 @@ susanna_abshire:
   slug: susanna-abshire
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 tuan_jacobs:
+  claimant:
   birthdate: 1998-03-19
   city:
   concealed: false
@@ -1730,10 +1731,10 @@ tuan_jacobs:
   slug: tuan-jacobs
   state_code:
   state_name:
-  user_id:
   hide_age: false
   obscure_name: false
 un_started:
+  claimant:
   birthdate: 1988-09-01
   city: Fort Collins
   concealed: false
@@ -1747,10 +1748,10 @@ un_started:
   slug: un-started
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 vern_buckridge:
+  claimant:
   birthdate: 1981-10-15
   city:
   concealed: false
@@ -1764,10 +1765,10 @@ vern_buckridge:
   slug: vern-buckridge
   state_code: TX
   state_name: Texas
-  user_id:
   hide_age: false
   obscure_name: false
 vesta_borer:
+  claimant:
   birthdate: 1995-04-24
   city:
   concealed: false
@@ -1781,10 +1782,10 @@ vesta_borer:
   slug: vesta-borer
   state_code: UT
   state_name: Utah
-  user_id:
   hide_age: false
   obscure_name: false
 vince_willms:
+  claimant:
   birthdate: 1964-10-22
   city:
   concealed: false
@@ -1798,10 +1799,10 @@ vince_willms:
   slug: vince-willms
   state_code: CO
   state_name: Colorado
-  user_id:
   hide_age: false
   obscure_name: false
 willis_murray:
+  claimant:
   birthdate: 1998-02-04
   city:
   concealed: false
@@ -1815,10 +1816,10 @@ willis_murray:
   slug: willis-murray
   state_code: FL
   state_name: Florida
-  user_id:
   hide_age: false
   obscure_name: false
 without_start:
+  claimant:
   birthdate: 1965-04-23
   city:
   concealed: false
@@ -1832,6 +1833,5 @@ without_start:
   slug: without-start
   state_code: MT
   state_name: Montana
-  user_id:
   hide_age: false
   obscure_name: false

@@ -286,7 +286,7 @@ RSpec.describe RawTime, type: :model do
       before { raw_time.save! }
 
       it "broadcasts a turbo stream to the event group channel" do
-        expect { raw_time.update!(reviewed_by: 1) }
+        expect { raw_time.update!(reviewed_by: users(:admin_user).id) }
           .to have_enqueued_job(Turbo::Streams::BroadcastJob)
           .on_queue(:default)
       end

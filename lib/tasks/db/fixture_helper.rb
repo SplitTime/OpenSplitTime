@@ -48,6 +48,7 @@ module FixtureHelper
     :results_categories,
     :results_templates,
     :results_template_categories,
+    :users,
   ].freeze
 
   # ORDER BY clause used when dumping fixtures. Required for any non-slug portable table

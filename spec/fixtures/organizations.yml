@@ -1,31 +1,31 @@
 ---
 dirty_30_running:
+  owner: admin_user
   concealed: false
-  created_by: 1
   description:
   good_standing_through:
   name: Dirty 30 Running
   slug: dirty-30-running
   non_profit: false
 hardrock:
+  owner: admin_user
   concealed: false
-  created_by: 1
   description: A long race
   good_standing_through:
   name: Hardrock
   slug: hardrock
   non_profit: false
 rattlesnake_ramble:
+  owner: admin_user
   concealed: false
-  created_by: 1
   description: Bill's Race to benefit Eldorado Canyon State Park
   good_standing_through:
   name: Rattlesnake Ramble
   slug: rattlesnake-ramble
   non_profit: false
 running_up_for_air:
+  owner: admin_user
   concealed: false
-  created_by: 1
   description:
   good_standing_through:
   name: Running Up For Air

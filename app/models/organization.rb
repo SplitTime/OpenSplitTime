@@ -8,8 +8,6 @@ class Organization < ApplicationRecord
   friendly_id :name, use: [:slugged, :history]
   has_paper_trail
 
-  NOT_FOUND_OWNER_ID = -1
-
   belongs_to :owner, class_name: "User", foreign_key: "created_by", optional: true
 
   has_many :courses, dependent: :destroy
@@ -72,6 +70,6 @@ class Organization < ApplicationRecord
 
   def owner_email=(email)
     user = User.find_by(email: email)
-    self.created_by = user&.id || NOT_FOUND_OWNER_ID
+    self.created_by = user&.id
   end
 end

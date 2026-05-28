@@ -1,20 +1,18 @@
 ---
-ramble:
-  organization: rattlesnake_ramble
+dirty_30:
+  organization: dirty_30_running
   creator: admin_user
-  id: 4
-  available_live: false
+  available_live: true
   concealed: false
-  data_entry_grouping_strategy: 0
+  data_entry_grouping_strategy: 1
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
-  name: Ramble
-  slug: ramble
+  name: Dirty 30
+  slug: dirty-30
   webhook_token:
 hardrock_2014:
   organization: hardrock
   creator: admin_user
-  id: 7
   available_live: false
   concealed: false
   data_entry_grouping_strategy: 0
@@ -26,7 +24,6 @@ hardrock_2014:
 hardrock_2015:
   organization: hardrock
   creator: admin_user
-  id: 17
   available_live: true
   concealed: false
   data_entry_grouping_strategy: 0
@@ -35,34 +32,9 @@ hardrock_2015:
   name: Hardrock 2015
   slug: hardrock-2015
   webhook_token:
-rufa_2016:
-  organization: running_up_for_air
-  creator: admin_user
-  id: 25
-  available_live: false
-  concealed: false
-  data_entry_grouping_strategy: 0
-  home_time_zone: Mountain Time (US & Canada)
-  monitor_pacers: false
-  name: RUFA 2016
-  slug: rufa-2016
-  webhook_token:
-dirty_30:
-  organization: dirty_30_running
-  creator: admin_user
-  id: 27
-  available_live: true
-  concealed: false
-  data_entry_grouping_strategy: 1
-  home_time_zone: Mountain Time (US & Canada)
-  monitor_pacers: false
-  name: Dirty 30
-  slug: dirty-30
-  webhook_token:
 hardrock_2016:
   organization: hardrock
   creator: admin_user
-  id: 28
   available_live: true
   concealed: false
   data_entry_grouping_strategy: 0
@@ -71,22 +43,31 @@ hardrock_2016:
   name: Hardrock 2016
   slug: hardrock-2016
   webhook_token:
-sum:
-  organization: dirty_30_running
+ramble:
+  organization: rattlesnake_ramble
   creator: admin_user
-  id: 32
-  available_live: true
+  available_live: false
   concealed: false
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
-  name: SUM
-  slug: sum
+  name: Ramble
+  slug: ramble
+  webhook_token:
+rufa_2016:
+  organization: running_up_for_air
+  creator: admin_user
+  available_live: false
+  concealed: false
+  data_entry_grouping_strategy: 0
+  home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: false
+  name: RUFA 2016
+  slug: rufa-2016
   webhook_token:
 rufa_2017:
   organization: running_up_for_air
   creator: admin_user
-  id: 59
   available_live: true
   concealed: false
   data_entry_grouping_strategy: 0
@@ -94,4 +75,15 @@ rufa_2017:
   monitor_pacers: false
   name: RUFA 2017
   slug: rufa-2017
+  webhook_token:
+sum:
+  organization: dirty_30_running
+  creator: admin_user
+  available_live: true
+  concealed: false
+  data_entry_grouping_strategy: 0
+  home_time_zone: Mountain Time (US & Canada)
+  monitor_pacers: false
+  name: SUM
+  slug: sum
   webhook_token:

@@ -40,6 +40,7 @@ module FixtureHelper
   PORTABLE_FIXTURE_TABLES = [
     :course_groups,
     :credentials,
+    :event_groups,
     :historical_facts,
     :lotteries,
     :organizations,

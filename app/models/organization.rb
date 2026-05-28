@@ -8,7 +8,7 @@ class Organization < ApplicationRecord
   friendly_id :name, use: [:slugged, :history]
   has_paper_trail
 
-  belongs_to :owner, class_name: "User", foreign_key: "created_by", optional: true
+  belongs_to :owner, class_name: "User", foreign_key: "created_by"
 
   has_many :courses, dependent: :destroy
   has_many :course_groups, dependent: :destroy
@@ -46,7 +46,6 @@ class Organization < ApplicationRecord
 
   validates :name, presence: true
   validates :name, uniqueness: { case_sensitive: false } # rubocop:disable Rails/UniqueValidationWithoutIndex
-  validates_with OwnerExistsValidator
 
   def to_s
     slug

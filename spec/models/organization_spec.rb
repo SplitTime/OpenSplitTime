@@ -40,7 +40,7 @@ RSpec.describe Organization, type: :model do
 
       it "is invalid" do
         expect(subject).to be_invalid
-        expect(subject.errors[:owner_id]).to include("does not exist")
+        expect(subject.errors[:owner]).to include("must exist")
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe Organization, type: :model do
       let(:owner_id) { -1 }
       it "is invalid" do
         expect(subject).to be_invalid
-        expect(subject.errors[:owner_id]).to include("does not exist")
+        expect(subject.errors[:owner]).to include("must exist")
       end
     end
   end

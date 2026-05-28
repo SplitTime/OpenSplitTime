@@ -23,6 +23,7 @@ class EventGroup < ApplicationRecord
   has_many :efforts, through: :events
   has_many :raw_times, dependent: :destroy
   belongs_to :organization
+  belongs_to :creator, class_name: "User", optional: true, foreign_key: "created_by"
 
   has_many_attached :entrant_photos do |photo|
     photo.variant :thumbnail, resize_to_limit: [50, 50]

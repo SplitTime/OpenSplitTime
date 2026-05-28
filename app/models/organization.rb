@@ -8,7 +8,7 @@ class Organization < ApplicationRecord
   friendly_id :name, use: [:slugged, :history]
   has_paper_trail
 
-  NOT_FOUND_OWNER_ID = -1
+  belongs_to :owner, class_name: "User", foreign_key: "created_by"
 
   has_many :courses, dependent: :destroy
   has_many :course_groups, dependent: :destroy
@@ -46,7 +46,6 @@ class Organization < ApplicationRecord
 
   validates :name, presence: true
   validates :name, uniqueness: { case_sensitive: false } # rubocop:disable Rails/UniqueValidationWithoutIndex
-  validates_with OwnerExistsValidator
 
   def to_s
     slug
@@ -60,22 +59,11 @@ class Organization < ApplicationRecord
     end
   end
 
-  def owner
-    return @owner if defined?(@owner)
-
-    @owner = User.find_by(id: owner_id)
-  end
-
   def owner_full_name
     owner&.full_name
   end
 
   def owner_email
     owner&.email
-  end
-
-  def owner_email=(email)
-    user = User.find_by(email: email)
-    self.created_by = user&.id || NOT_FOUND_OWNER_ID
   end
 end

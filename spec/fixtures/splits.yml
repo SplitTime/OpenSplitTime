@@ -1,8 +1,8 @@
 ---
 hardrock_ccw_start:
+  course: hardrock_ccw
   id: 5
   base_name: Start
-  course_id: 4
   description: Silverton High School
   distance_from_start: 0
   elevation: 2837.84594726562
@@ -15,9 +15,9 @@ hardrock_ccw_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 hardrock_ccw_cunningham:
+  course: hardrock_ccw
   id: 6
   base_name: Cunningham
-  course_id: 4
   description:
   distance_from_start: 14966
   elevation: 3164.79809570312
@@ -30,9 +30,9 @@ hardrock_ccw_cunningham:
   vert_gain_from_start: 1170.432
   vert_loss_from_start: 844.296
 hardrock_ccw_sherman:
+  course: hardrock_ccw
   id: 12
   base_name: Sherman
-  course_id: 4
   description:
   distance_from_start: 46349
   elevation: 2925.47534179688
@@ -45,9 +45,9 @@ hardrock_ccw_sherman:
   vert_gain_from_start: 3084.576
   vert_loss_from_start: 2749.296
 hardrock_ccw_grouse:
+  course: hardrock_ccw
   id: 16
   base_name: Grouse
-  course_id: 4
   description:
   distance_from_start: 67914
   elevation: 3282.86303710938
@@ -60,9 +60,9 @@ hardrock_ccw_grouse:
   vert_gain_from_start: 4452.5184
   vert_loss_from_start: 4025.7984
 hardrock_ccw_ouray:
+  course: hardrock_ccw
   id: 20
   base_name: Ouray
-  course_id: 4
   description:
   distance_from_start: 91088
   elevation: 2371.22412109375
@@ -75,9 +75,9 @@ hardrock_ccw_ouray:
   vert_gain_from_start: 5295.2904
   vert_loss_from_start: 5792.1144
 hardrock_ccw_telluride:
+  course: hardrock_ccw
   id: 26
   base_name: Telluride
-  course_id: 4
   description:
   distance_from_start: 117160
   elevation: 2690.43334960938
@@ -90,9 +90,9 @@ hardrock_ccw_telluride:
   vert_gain_from_start: 6961.9368
   vert_loss_from_start: 7144.8168
 hardrock_ccw_putnam:
+  course: hardrock_ccw
   id: 32
   base_name: Putnam
-  course_id: 4
   description:
   distance_from_start: 152404
   elevation: 3482.12158203125
@@ -105,9 +105,9 @@ hardrock_ccw_putnam:
   vert_gain_from_start: 9974.8848
   vert_loss_from_start: 9276.8928
 hardrock_ccw_finish:
+  course: hardrock_ccw
   id: 34
   base_name: Finish
-  course_id: 4
   description:
   distance_from_start: 161739
   elevation: 2837.96826171875
@@ -120,9 +120,9 @@ hardrock_ccw_finish:
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
 ramble_even_course_start:
+  course: ramble_even_course
   id: 46
   base_name: Start
-  course_id: 9
   description: Starting point for the Ramble Even-Year Course course.
   distance_from_start: 0
   elevation:
@@ -135,9 +135,9 @@ ramble_even_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 ramble_even_course_finish:
+  course: ramble_even_course
   id: 47
   base_name: Finish
-  course_id: 9
   description: Finish point for the Ramble Even-Year Course course.
   distance_from_start: 6759
   elevation:
@@ -150,9 +150,9 @@ ramble_even_course_finish:
   vert_gain_from_start: 249.935992002048
   vert_loss_from_start: 249.935992002048
 hardrock_cw_start:
+  course: hardrock_cw
   id: 81
   base_name: Start
-  course_id: 12
   description: Starting point for the Hardrock CW course.
   distance_from_start: 0
   elevation: 2839.82150912571
@@ -165,9 +165,9 @@ hardrock_cw_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 hardrock_cw_finish:
+  course: hardrock_cw
   id: 82
   base_name: Finish
-  course_id: 12
   description: Finish point for the Hardrock CW course.
   distance_from_start: 161739
   elevation: 2839.82150912571
@@ -180,9 +180,9 @@ hardrock_cw_finish:
   vert_gain_from_start: 10073.64
   vert_loss_from_start: 10073.64
 hardrock_cw_telluride:
+  course: hardrock_cw
   id: 87
   base_name: Telluride
-  course_id: 12
   description:
   distance_from_start: 44578
   elevation: 2678.88711427561
@@ -195,9 +195,9 @@ hardrock_cw_telluride:
   vert_gain_from_start: 2928.82310627766
   vert_loss_from_start: 3099.51110081564
 hardrock_cw_ouray:
+  course: hardrock_cw
   id: 93
   base_name: Ouray
-  course_id: 12
   description:
   distance_from_start: 70650
   elevation: 7739.78615232684
@@ -210,9 +210,9 @@ hardrock_cw_ouray:
   vert_gain_from_start: 4281.52546299119
   vert_loss_from_start: 4778.34944709282
 hardrock_cw_grouse:
+  course: hardrock_cw
   id: 97
   base_name: Grouse
-  course_id: 12
   description:
   distance_from_start: 93824
   elevation: 3291.83989466112
@@ -225,9 +225,9 @@ hardrock_cw_grouse:
   vert_gain_from_start: 6047.84140646908
   vert_loss_from_start: 5621.12142012411
 hardrock_cw_sherman:
+  course: hardrock_cw
   id: 101
   base_name: Sherman
-  course_id: 12
   description:
   distance_from_start: 115389
   elevation: 2925.7751063752
@@ -240,9 +240,9 @@ hardrock_cw_sherman:
   vert_gain_from_start: 7324.343765621
   vert_loss_from_start: 7223.75976883969
 hardrock_cw_cunningham:
+  course: hardrock_cw
   id: 107
   base_name: Cunningham
-  course_id: 12
   description:
   distance_from_start: 146772
   elevation: 3162.9094987869
@@ -255,9 +255,9 @@ hardrock_cw_cunningham:
   vert_gain_from_start: 9229.343704661
   vert_loss_from_start: 8903.20771509735
 rufa_course_start:
+  course: rufa_course
   id: 135
   base_name: Start
-  course_id: 20
   description: Starting point for the RUFA Course course.
   distance_from_start: 0
   elevation: 1738.73815917969
@@ -270,9 +270,9 @@ rufa_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 rufa_course_finish:
+  course: rufa_course
   id: 136
   base_name: Finish
-  course_id: 20
   description: Finish point for the RUFA Course course.
   distance_from_start: 8690
   elevation: 1738.33129882812
@@ -285,9 +285,9 @@ rufa_course_finish:
   vert_gain_from_start: 780.288
   vert_loss_from_start: 780.288
 rufa_course_grandeur_peak:
+  course: rufa_course
   id: 137
   base_name: Grandeur Peak
-  course_id: 20
   description: Top of Grander Peak
   distance_from_start: 4345
   elevation: 2522.94921875
@@ -300,9 +300,9 @@ rufa_course_grandeur_peak:
   vert_gain_from_start: 780.288
   vert_loss_from_start: 0.0
 d30_50k_course_start:
+  course: d30_50k_course
   id: 164
   base_name: Start
-  course_id: 26
   description:
   distance_from_start: 0
   elevation: 2356.51098632812
@@ -315,9 +315,9 @@ d30_50k_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 d30_50k_course_finish:
+  course: d30_50k_course
   id: 165
   base_name: Finish
-  course_id: 26
   description:
   distance_from_start: 49889
   elevation: 2356.2763671875
@@ -330,9 +330,9 @@ d30_50k_course_finish:
   vert_gain_from_start: 2286.0
   vert_loss_from_start: 2286.0
 d30_50k_course_aid_5:
+  course: d30_50k_course
   id: 166
   base_name: 'Aid #5'
-  course_id: 26
   description: On the Burro Trail on the slopes of Windy Peak
   distance_from_start: 47475
   elevation: 2434.32568359375
@@ -345,9 +345,9 @@ d30_50k_course_aid_5:
   vert_gain_from_start: 2164.08
   vert_loss_from_start: 2072.64
 d30_50k_course_aid_1:
+  course: d30_50k_course
   id: 167
   base_name: 'Aid #1'
-  course_id: 26
   description: In Forgotten Valley
   distance_from_start: 8046
   elevation: 2540.84106445312
@@ -360,9 +360,9 @@ d30_50k_course_aid_1:
   vert_gain_from_start: 487.68
   vert_loss_from_start: 243.84
 d30_50k_course_aid_4:
+  course: d30_50k_course
   id: 168
   base_name: 'Aid #4'
-  course_id: 26
   description:
   distance_from_start: 39428
   elevation: 2541.6455078125
@@ -375,9 +375,9 @@ d30_50k_course_aid_4:
   vert_gain_from_start: 1798.32
   vert_loss_from_start: 1615.44
 d30_50k_course_aid_3:
+  course: d30_50k_course
   id: 170
   base_name: 'Aid #3'
-  course_id: 26
   description:
   distance_from_start: 27680
   elevation: 2488.14086914062
@@ -390,9 +390,9 @@ d30_50k_course_aid_3:
   vert_gain_from_start: 1310.64
   vert_loss_from_start: 1158.24
 d30_50k_course_aid_2:
+  course: d30_50k_course
   id: 171
   base_name: 'Aid #2'
-  course_id: 26
   description:
   distance_from_start: 19473
   elevation: 2637.22631835938
@@ -405,9 +405,9 @@ d30_50k_course_aid_2:
   vert_gain_from_start: 1036.32
   vert_loss_from_start: 701.04
 d30_12m_course_start:
+  course: d30_12m_course
   id: 172
   base_name: Start
-  course_id: 27
   description:
   distance_from_start: 0
   elevation: 2356.51098632812
@@ -420,9 +420,9 @@ d30_12m_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 d30_12m_course_finish:
+  course: d30_12m_course
   id: 173
   base_name: Finish
-  course_id: 27
   description:
   distance_from_start: 19473
   elevation: 2356.2763671875
@@ -435,9 +435,9 @@ d30_12m_course_finish:
   vert_gain_from_start: 1066.7999658624
   vert_loss_from_start: 1066.7999658624
 sum_100k_course_start:
+  course: sum_100k_course
   id: 204
   base_name: Start
-  course_id: 31
   description:
   distance_from_start: 0
   elevation: 2840.0
@@ -450,9 +450,9 @@ sum_100k_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 sum_100k_course_finish:
+  course: sum_100k_course
   id: 205
   base_name: Finish
-  course_id: 31
   description:
   distance_from_start: 99779
   elevation: 2840.0
@@ -465,9 +465,9 @@ sum_100k_course_finish:
   vert_gain_from_start: 2676.144
   vert_loss_from_start: 2529.84
 sum_100k_course_molas_pass_aid1:
+  course: sum_100k_course
   id: 206
   base_name: Molas Pass (Aid1)
-  course_id: 31
   description:
   distance_from_start: 18347
   elevation: 3328.416
@@ -480,9 +480,9 @@ sum_100k_course_molas_pass_aid1:
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
 sum_100k_course_rolling_pass_aid2:
+  course: sum_100k_course
   id: 207
   base_name: Rolling Pass (Aid2)
-  course_id: 31
   description:
   distance_from_start: 35293
   elevation: 3749.04
@@ -495,9 +495,9 @@ sum_100k_course_rolling_pass_aid2:
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
 sum_100k_course_cascade_creek_rd_aid3:
+  course: sum_100k_course
   id: 208
   base_name: Cascade Creek Rd (Aid3)
-  course_id: 31
   description:
   distance_from_start: 46317
   elevation: 3474.72
@@ -510,9 +510,9 @@ sum_100k_course_cascade_creek_rd_aid3:
   vert_gain_from_start: 1112.52
   vert_loss_from_start: 365.76
 sum_100k_course_engineer_mtn_th_aid4:
+  course: sum_100k_course
   id: 209
   base_name: Engineer Mtn TH (Aid4)
-  course_id: 31
   description:
   distance_from_start: 59642
   elevation: 2769.7176
@@ -525,9 +525,9 @@ sum_100k_course_engineer_mtn_th_aid4:
   vert_gain_from_start: 1271.016
   vert_loss_from_start: 1203.96
 sum_100k_course_bandera_mine_aid5:
+  course: sum_100k_course
   id: 210
   base_name: Bandera Mine (Aid5)
-  course_id: 31
   description:
   distance_from_start: 80741
   elevation: 3243.9864
@@ -540,9 +540,9 @@ sum_100k_course_bandera_mine_aid5:
   vert_gain_from_start: 2496.312
   vert_loss_from_start: 1938.528
 sum_100k_course_anvil_cg_aid6:
+  course: sum_100k_course
   id: 211
   base_name: Anvil CG (Aid6)
-  course_id: 31
   description:
   distance_from_start: 90268
   elevation: 2886.456
@@ -555,9 +555,9 @@ sum_100k_course_anvil_cg_aid6:
   vert_gain_from_start: 2542.032
   vert_loss_from_start: 2328.672
 sum_55k_course_start:
+  course: sum_55k_course
   id: 212
   base_name: Start
-  course_id: 32
   description:
   distance_from_start: 0
   elevation: 2838.857421875
@@ -570,9 +570,9 @@ sum_55k_course_start:
   vert_gain_from_start: 0.0
   vert_loss_from_start: 0.0
 sum_55k_course_finish:
+  course: sum_55k_course
   id: 213
   base_name: Finish
-  course_id: 32
   description:
   distance_from_start: 57277
   elevation: 2838.86376953125
@@ -585,9 +585,9 @@ sum_55k_course_finish:
   vert_gain_from_start: 1097.28
   vert_loss_from_start: 1097.28
 sum_55k_course_molas_pass_aid1:
+  course: sum_55k_course
   id: 218
   base_name: Molas Pass (Aid1)
-  course_id: 32
   description:
   distance_from_start: 18347
   elevation: 3319.3212890625
@@ -600,9 +600,9 @@ sum_55k_course_molas_pass_aid1:
   vert_gain_from_start: 609.6
   vert_loss_from_start: 60.96
 sum_55k_course_rolling_pass_aid2:
+  course: sum_55k_course
   id: 219
   base_name: Rolling Pass (Aid2)
-  course_id: 32
   description:
   distance_from_start: 35293
   elevation: 3698.63208007812
@@ -615,9 +615,9 @@ sum_55k_course_rolling_pass_aid2:
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 152.4
 sum_55k_course_bandera_mine_aid5:
+  course: sum_55k_course
   id: 220
   base_name: Bandera Mine (Aid5)
-  course_id: 32
   description:
   distance_from_start: 40765
   elevation: 3252.72241210938
@@ -630,9 +630,9 @@ sum_55k_course_bandera_mine_aid5:
   vert_gain_from_start: 1005.84
   vert_loss_from_start: 670.56
 sum_55k_course_anvil_cg_aid6:
+  course: sum_55k_course
   id: 221
   base_name: Anvil CG (Aid6)
-  course_id: 32
   description:
   distance_from_start: 50292
   elevation: 2904.18798828125

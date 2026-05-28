@@ -6,9 +6,8 @@ RSpec.describe "search the event group index", :js, type: :system do
 
   let(:concealed_event_group) { event_groups(:rufa_2017) }
   let(:concealed_event) { concealed_event_group.events.first }
-  let(:visible_event_groups) { event_groups - [concealed_event_group].sort_by(&:name) }
-  let(:visible_event_group_1) { visible_event_groups.first }
-  let(:visible_event_group_2) { visible_event_groups.second }
+  let(:visible_event_group_1) { event_groups(:ramble) }
+  let(:visible_event_group_2) { event_groups(:hardrock_2014) }
   let(:visible_event_1) { visible_event_group_1.events.first }
   let(:visible_event_2) { visible_event_group_2.events.first }
 

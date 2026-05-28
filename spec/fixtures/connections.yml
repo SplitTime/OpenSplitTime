@@ -1,8 +1,7 @@
 ---
 connection_0001:
+  destination: rufa_2017 (EventGroup)
   id: 1
-  destination_id: 59
-  destination_type: EventGroup
   service_identifier: runsignup
   source_id: '123'
   source_type: Race

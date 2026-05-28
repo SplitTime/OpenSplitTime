@@ -1,5 +1,6 @@
 ---
 raw_time_0001:
+  event_group: hardrock_2015
   creator: admin_user
   reviewer: admin_user
   id: 49
@@ -10,7 +11,6 @@ raw_time_0001:
   disassociated_from_effort:
   entered_lap:
   entered_time: '16:31:00'
-  event_group_id: 17
   matchable_bib_number: 102
   parameterized_split_name: pole-creek
   remarks:
@@ -22,6 +22,7 @@ raw_time_0001:
   stopped_here:
   with_pacer:
 raw_time_0002:
+  event_group: hardrock_2015
   creator: admin_user
   reviewer: admin_user
   id: 50
@@ -32,7 +33,6 @@ raw_time_0002:
   disassociated_from_effort:
   entered_lap:
   entered_time: '20:20:00'
-  event_group_id: 17
   matchable_bib_number: 103
   parameterized_split_name: pole-creek
   remarks:
@@ -44,6 +44,7 @@ raw_time_0002:
   stopped_here:
   with_pacer:
 raw_time_0003:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 67
@@ -54,7 +55,6 @@ raw_time_0003:
   disassociated_from_effort:
   entered_lap:
   entered_time: '12:34:00'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: molas-pass-aid1
   remarks:
@@ -66,6 +66,7 @@ raw_time_0003:
   stopped_here:
   with_pacer: false
 raw_time_0004:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 68
@@ -76,7 +77,6 @@ raw_time_0004:
   disassociated_from_effort:
   entered_lap:
   entered_time: '12:44:00'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: molas-pass-aid1
   remarks:
@@ -88,6 +88,7 @@ raw_time_0004:
   stopped_here:
   with_pacer: false
 raw_time_0005:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 69
@@ -98,7 +99,6 @@ raw_time_0005:
   disassociated_from_effort:
   entered_lap:
   entered_time: '21:11:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: anvil-cg-aid6
   remarks:
@@ -110,6 +110,7 @@ raw_time_0005:
   stopped_here:
   with_pacer: false
 raw_time_0006:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 70
@@ -120,7 +121,6 @@ raw_time_0006:
   disassociated_from_effort:
   entered_lap:
   entered_time: '21:21:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: anvil-cg-aid6
   remarks:
@@ -132,6 +132,7 @@ raw_time_0006:
   stopped_here:
   with_pacer: false
 raw_time_0007:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 73
@@ -142,7 +143,6 @@ raw_time_0007:
   disassociated_from_effort:
   entered_lap:
   entered_time: '09:09:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -154,6 +154,7 @@ raw_time_0007:
   stopped_here:
   with_pacer: false
 raw_time_0008:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 74
@@ -164,7 +165,6 @@ raw_time_0008:
   disassociated_from_effort:
   entered_lap:
   entered_time: '09:10:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -176,6 +176,7 @@ raw_time_0008:
   stopped_here:
   with_pacer: false
 raw_time_0009:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 75
@@ -186,7 +187,6 @@ raw_time_0009:
   disassociated_from_effort:
   entered_lap:
   entered_time: '13:13:00'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -198,6 +198,7 @@ raw_time_0009:
   stopped_here:
   with_pacer: false
 raw_time_0010:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 76
@@ -208,7 +209,6 @@ raw_time_0010:
   disassociated_from_effort:
   entered_lap:
   entered_time: '13:14:00'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -220,6 +220,7 @@ raw_time_0010:
   stopped_here:
   with_pacer: false
 raw_time_0011:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 77
@@ -230,7 +231,6 @@ raw_time_0011:
   disassociated_from_effort:
   entered_lap:
   entered_time: '07:00:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: start
   remarks:
@@ -242,6 +242,7 @@ raw_time_0011:
   stopped_here:
   with_pacer: false
 raw_time_0012:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 78
@@ -252,7 +253,6 @@ raw_time_0012:
   disassociated_from_effort:
   entered_lap:
   entered_time: '08:30:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: molas-pass-aid1
   remarks:
@@ -264,6 +264,7 @@ raw_time_0012:
   stopped_here:
   with_pacer: false
 raw_time_0013:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 79
@@ -274,7 +275,6 @@ raw_time_0013:
   disassociated_from_effort:
   entered_lap:
   entered_time: '08:32:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: molas-pass-aid1
   remarks:
@@ -286,6 +286,7 @@ raw_time_0013:
   stopped_here:
   with_pacer: false
 raw_time_0014:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 80
@@ -296,7 +297,6 @@ raw_time_0014:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:24:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: cascade-creek-rd-aid3
   remarks:
@@ -308,6 +308,7 @@ raw_time_0014:
   stopped_here:
   with_pacer: false
 raw_time_0015:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 81
@@ -318,7 +319,6 @@ raw_time_0015:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:28:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: cascade-creek-rd-aid3
   remarks:
@@ -330,6 +330,7 @@ raw_time_0015:
   stopped_here:
   with_pacer: false
 raw_time_0016:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 82
@@ -340,7 +341,6 @@ raw_time_0016:
   disassociated_from_effort:
   entered_lap:
   entered_time: '09:09:00'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: engineer-mtn-th-aid4
   remarks:
@@ -352,6 +352,7 @@ raw_time_0016:
   stopped_here:
   with_pacer: false
 raw_time_0017:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 83
@@ -362,7 +363,6 @@ raw_time_0017:
   disassociated_from_effort:
   entered_lap:
   entered_time: '09:09:09'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: engineer-mtn-th-aid4
   remarks:
@@ -374,6 +374,7 @@ raw_time_0017:
   stopped_here:
   with_pacer: false
 raw_time_0018:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 84
@@ -384,7 +385,6 @@ raw_time_0018:
   disassociated_from_effort:
   entered_lap:
   entered_time: '22:22:00'
-  event_group_id: 32
   matchable_bib_number: 101
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -396,6 +396,7 @@ raw_time_0018:
   stopped_here:
   with_pacer: false
 raw_time_0019:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 85
@@ -406,7 +407,6 @@ raw_time_0019:
   disassociated_from_effort:
   entered_lap:
   entered_time: '23:23:00'
-  event_group_id: 32
   matchable_bib_number: 101
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -418,6 +418,7 @@ raw_time_0019:
   stopped_here:
   with_pacer: false
 raw_time_0020:
+  event_group: sum
   creator:
   reviewer: admin_user
   id: 86
@@ -428,7 +429,6 @@ raw_time_0020:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:02:03'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -440,6 +440,7 @@ raw_time_0020:
   stopped_here:
   with_pacer:
 raw_time_0021:
+  event_group: sum
   creator:
   reviewer: admin_user
   id: 87
@@ -450,7 +451,6 @@ raw_time_0021:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:03:04'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -462,6 +462,7 @@ raw_time_0021:
   stopped_here:
   with_pacer:
 raw_time_0022:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 88
@@ -472,7 +473,6 @@ raw_time_0022:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:03:05'
-  event_group_id: 32
   matchable_bib_number: 999
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
@@ -484,6 +484,7 @@ raw_time_0022:
   stopped_here:
   with_pacer:
 raw_time_0023:
+  event_group: sum
   creator: admin_user
   reviewer:
   id: 89
@@ -494,7 +495,6 @@ raw_time_0023:
   disassociated_from_effort:
   entered_lap:
   entered_time: '13:14:00'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -506,6 +506,7 @@ raw_time_0023:
   stopped_here: false
   with_pacer: false
 raw_time_0024:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 91
@@ -516,7 +517,6 @@ raw_time_0024:
   disassociated_from_effort:
   entered_lap:
   entered_time: '07:00:00'
-  event_group_id: 32
   matchable_bib_number: 777
   parameterized_split_name: start
   remarks: ''
@@ -528,6 +528,7 @@ raw_time_0024:
   stopped_here: false
   with_pacer: false
 raw_time_0025:
+  event_group: sum
   creator:
   reviewer: admin_user
   id: 92
@@ -538,7 +539,6 @@ raw_time_0025:
   disassociated_from_effort:
   entered_lap:
   entered_time: '09:mm:ss'
-  event_group_id: 32
   matchable_bib_number: 777
   parameterized_split_name: start
   remarks:
@@ -550,6 +550,7 @@ raw_time_0025:
   stopped_here: false
   with_pacer: false
 raw_time_0026:
+  event_group: sum
   creator:
   reviewer: admin_user
   id: 176
@@ -560,7 +561,6 @@ raw_time_0026:
   disassociated_from_effort:
   entered_lap:
   entered_time: '13:13:13'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -572,6 +572,7 @@ raw_time_0026:
   stopped_here: false
   with_pacer: false
 raw_time_0027:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 177
@@ -582,7 +583,6 @@ raw_time_0027:
   disassociated_from_effort:
   entered_lap:
   entered_time: '13:13:15'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
@@ -594,6 +594,7 @@ raw_time_0027:
   stopped_here: false
   with_pacer: false
 raw_time_0028:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 178
@@ -604,7 +605,6 @@ raw_time_0028:
   disassociated_from_effort:
   entered_lap:
   entered_time: '13:13:11'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: rolling-pass-aid2
   remarks: ''
@@ -616,6 +616,7 @@ raw_time_0028:
   stopped_here: false
   with_pacer: false
 raw_time_0029:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1100
@@ -626,7 +627,6 @@ raw_time_0029:
   disassociated_from_effort:
   entered_lap:
   entered_time: '13:13:13'
-  event_group_id: 32
   matchable_bib_number: 130
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -638,6 +638,7 @@ raw_time_0029:
   stopped_here: false
   with_pacer: false
 raw_time_0030:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1106
@@ -648,7 +649,6 @@ raw_time_0030:
   disassociated_from_effort:
   entered_lap:
   entered_time: '23:41:00'
-  event_group_id: 32
   matchable_bib_number: 103
   parameterized_split_name: bandera-mine-aid5
   remarks:
@@ -660,6 +660,7 @@ raw_time_0030:
   stopped_here: false
   with_pacer: false
 raw_time_0031:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1110
@@ -670,7 +671,6 @@ raw_time_0031:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:00:00'
-  event_group_id: 32
   matchable_bib_number: 103
   parameterized_split_name: anvil-cg-aid6
   remarks:
@@ -682,6 +682,7 @@ raw_time_0031:
   stopped_here: false
   with_pacer: false
 raw_time_0032:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1111
@@ -692,7 +693,6 @@ raw_time_0032:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:05:00'
-  event_group_id: 32
   matchable_bib_number: 103
   parameterized_split_name: anvil-cg-aid6
   remarks:
@@ -704,6 +704,7 @@ raw_time_0032:
   stopped_here: true
   with_pacer: false
 raw_time_0033:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1117
@@ -714,7 +715,6 @@ raw_time_0033:
   disassociated_from_effort:
   entered_lap:
   entered_time: '01:40:00'
-  event_group_id: 32
   matchable_bib_number: 103
   parameterized_split_name: anvil-cg-aid6
   remarks:
@@ -726,6 +726,7 @@ raw_time_0033:
   stopped_here: true
   with_pacer: false
 raw_time_0034:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1122
@@ -736,7 +737,6 @@ raw_time_0034:
   disassociated_from_effort:
   entered_lap:
   entered_time: '21:30:00'
-  event_group_id: 32
   matchable_bib_number: 101
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -748,6 +748,7 @@ raw_time_0034:
   stopped_here: false
   with_pacer: false
 raw_time_0035:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1123
@@ -758,7 +759,6 @@ raw_time_0035:
   disassociated_from_effort:
   entered_lap:
   entered_time: '21:40:00'
-  event_group_id: 32
   matchable_bib_number: 101
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -770,6 +770,7 @@ raw_time_0035:
   stopped_here: false
   with_pacer: false
 raw_time_0036:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1124
@@ -780,7 +781,6 @@ raw_time_0036:
   disassociated_from_effort:
   entered_lap:
   entered_time: '22:30:00'
-  event_group_id: 32
   matchable_bib_number: 101
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -792,6 +792,7 @@ raw_time_0036:
   stopped_here: false
   with_pacer: false
 raw_time_0037:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1125
@@ -802,7 +803,6 @@ raw_time_0037:
   disassociated_from_effort:
   entered_lap:
   entered_time: '22:35:00'
-  event_group_id: 32
   matchable_bib_number: 101
   parameterized_split_name: rolling-pass-aid2
   remarks:
@@ -814,6 +814,7 @@ raw_time_0037:
   stopped_here: false
   with_pacer: false
 raw_time_0038:
+  event_group: sum
   creator: admin_user
   reviewer: admin_user
   id: 1126
@@ -824,7 +825,6 @@ raw_time_0038:
   disassociated_from_effort:
   entered_lap:
   entered_time: '10:00:00'
-  event_group_id: 32
   matchable_bib_number: 114
   parameterized_split_name: start
   remarks:

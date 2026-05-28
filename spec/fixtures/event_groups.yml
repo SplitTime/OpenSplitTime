@@ -1,10 +1,10 @@
 ---
 ramble:
   organization: rattlesnake_ramble
+  creator: admin_user
   id: 4
   available_live: false
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
@@ -13,10 +13,10 @@ ramble:
   webhook_token:
 hardrock_2014:
   organization: hardrock
+  creator: admin_user
   id: 7
   available_live: false
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: true
@@ -25,10 +25,10 @@ hardrock_2014:
   webhook_token:
 hardrock_2015:
   organization: hardrock
+  creator: admin_user
   id: 17
   available_live: true
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: true
@@ -37,10 +37,10 @@ hardrock_2015:
   webhook_token:
 rufa_2016:
   organization: running_up_for_air
+  creator: admin_user
   id: 25
   available_live: false
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
@@ -49,10 +49,10 @@ rufa_2016:
   webhook_token:
 dirty_30:
   organization: dirty_30_running
+  creator: admin_user
   id: 27
   available_live: true
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 1
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
@@ -61,10 +61,10 @@ dirty_30:
   webhook_token:
 hardrock_2016:
   organization: hardrock
+  creator: admin_user
   id: 28
   available_live: true
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: true
@@ -73,10 +73,10 @@ hardrock_2016:
   webhook_token:
 sum:
   organization: dirty_30_running
+  creator: admin_user
   id: 32
   available_live: true
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false
@@ -85,10 +85,10 @@ sum:
   webhook_token:
 rufa_2017:
   organization: running_up_for_air
+  creator: admin_user
   id: 59
   available_live: true
   concealed: false
-  created_by: 1
   data_entry_grouping_strategy: 0
   home_time_zone: Mountain Time (US & Canada)
   monitor_pacers: false

@@ -99,7 +99,7 @@ RSpec.describe Interactors::SubmitRawTimeRows do
 
     context "when mark_as_reviewed is true" do
       let(:mark_as_reviewed) { true }
-      let(:current_user_id) { 1 }
+      let(:current_user_id) { users(:admin_user).id }
 
       it "sets reviewed_by and reviewed_at on saved raw_times" do
         response

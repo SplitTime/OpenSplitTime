@@ -1,6 +1,5 @@
 ---
 admin_user:
-  id: 1
   confirmed_at: 2016-04-16 19:25:07.374438000 Z
   current_sign_in_at: 2022-03-08 08:40:31.063076000 Z
   current_sign_in_ip: 127.0.0.1
@@ -25,20 +24,19 @@ admin_user:
   uid:
   unconfirmed_email:
   sms_carrier_opted_out_at:
-third_user:
-  id: 3
-  confirmed_at: 2016-04-16 19:25:07.514373000 Z
-  current_sign_in_at: 2019-01-25 22:45:17.386817000 Z
+fifth_user:
+  confirmed_at: 2018-01-10 06:34:50.173537000 Z
+  current_sign_in_at: 2018-01-10 06:35:01.065288000 Z
   current_sign_in_ip: 127.0.0.1
-  email: thirduser@example.com
-  encrypted_password: "$2a$10$/i14/9oGIR.0UWJaQYofNOeS85UAUgU0LOpd9C1mn.x4ZJxIZTSCy"
-  first_name: Third
+  email: fifthuser@example.com
+  encrypted_password: "$2a$10$OEXtV8bNIUspArW48HCjGO86WR3aUnPqSJLClYo.kINpUvdSFBQxu"
+  first_name: Fifth
   http_endpoint:
   https_endpoint:
   last_name: User
-  last_sign_in_at: 2019-01-25 22:41:52.540192000 Z
+  last_sign_in_at: 2018-01-10 06:35:01.065288000 Z
   last_sign_in_ip: 127.0.0.1
-  phone:
+  phone: "+13038806481"
   phone_confirmation_sent_at:
   phone_confirmation_token:
   phone_confirmed_at:
@@ -46,13 +44,12 @@ third_user:
   pref_elevation_unit: 0
   provider:
   role: 0
-  sign_in_count: 22
-  slug: third-user
+  sign_in_count: 1
+  slug: fifth-user
   uid:
   unconfirmed_email:
   sms_carrier_opted_out_at:
 fourth_user:
-  id: 4
   confirmed_at: 2016-04-16 19:25:07.568372000 Z
   current_sign_in_at:
   current_sign_in_ip:
@@ -77,20 +74,19 @@ fourth_user:
   uid:
   unconfirmed_email:
   sms_carrier_opted_out_at:
-fifth_user:
-  id: 11
-  confirmed_at: 2018-01-10 06:34:50.173537000 Z
-  current_sign_in_at: 2018-01-10 06:35:01.065288000 Z
+third_user:
+  confirmed_at: 2016-04-16 19:25:07.514373000 Z
+  current_sign_in_at: 2019-01-25 22:45:17.386817000 Z
   current_sign_in_ip: 127.0.0.1
-  email: fifthuser@example.com
-  encrypted_password: "$2a$10$OEXtV8bNIUspArW48HCjGO86WR3aUnPqSJLClYo.kINpUvdSFBQxu"
-  first_name: Fifth
+  email: thirduser@example.com
+  encrypted_password: "$2a$10$/i14/9oGIR.0UWJaQYofNOeS85UAUgU0LOpd9C1mn.x4ZJxIZTSCy"
+  first_name: Third
   http_endpoint:
   https_endpoint:
   last_name: User
-  last_sign_in_at: 2018-01-10 06:35:01.065288000 Z
+  last_sign_in_at: 2019-01-25 22:41:52.540192000 Z
   last_sign_in_ip: 127.0.0.1
-  phone: "+13038806481"
+  phone:
   phone_confirmation_sent_at:
   phone_confirmation_token:
   phone_confirmed_at:
@@ -98,8 +94,8 @@ fifth_user:
   pref_elevation_unit: 0
   provider:
   role: 0
-  sign_in_count: 1
-  slug: fifth-user
+  sign_in_count: 22
+  slug: third-user
   uid:
   unconfirmed_email:
   sms_carrier_opted_out_at:

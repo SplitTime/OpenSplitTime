@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :organization do
     name { FFaker::Company.unique.name }
-    owner_id { 1 }
+    owner { users(:admin_user) }
   end
 end

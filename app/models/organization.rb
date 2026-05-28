@@ -10,6 +10,8 @@ class Organization < ApplicationRecord
 
   NOT_FOUND_OWNER_ID = -1
 
+  belongs_to :owner, class_name: "User", foreign_key: "created_by", optional: true
+
   has_many :courses, dependent: :destroy
   has_many :course_groups, dependent: :destroy
   has_many :event_groups, dependent: :destroy
@@ -58,12 +60,6 @@ class Organization < ApplicationRecord
     else
       Event.where(event_group_id: event_groups.ids)
     end
-  end
-
-  def owner
-    return @owner if defined?(@owner)
-
-    @owner = User.find_by(id: owner_id)
   end
 
   def owner_full_name

@@ -1,7 +1,22 @@
 ---
+d30_12m_course:
+  organization: dirty_30_running
+  concealed:
+  description:
+  name: D30 12M Course
+  next_start_time:
+  slug: d30-12m-course
+  track_points:
+d30_50k_course:
+  organization: dirty_30_running
+  concealed:
+  description:
+  name: D30 50K Course
+  next_start_time: 2017-11-06 06:00:00.000000000 Z
+  slug: d30-50k-course
+  track_points:
 hardrock_ccw:
   organization: hardrock
-  id: 4
   concealed:
   description: Counter-clockwise Hardrock 100 course, starting in Silverton, going
     to Sherman, over Handies Peak, to Ouray, Telluride, and back to Silverton
@@ -9,54 +24,32 @@ hardrock_ccw:
   next_start_time: 2019-07-19 06:00:00.000000000 Z
   slug: hardrock-ccw
   track_points:
-ramble_even_course:
-  organization: rattlesnake_ramble
-  id: 9
-  concealed:
-  description:
-  name: Ramble Even Course
-  next_start_time:
-  slug: ramble-even-course
-  track_points:
 hardrock_cw:
   organization: hardrock
-  id: 12
   concealed:
   description: Clockwise Hardrock 100 course
   name: Hardrock CW
   next_start_time: 2016-07-15 12:00:00.000000000 Z
   slug: hardrock-cw
   track_points:
+ramble_even_course:
+  organization: rattlesnake_ramble
+  concealed:
+  description:
+  name: Ramble Even Course
+  next_start_time:
+  slug: ramble-even-course
+  track_points:
 rufa_course:
   organization: running_up_for_air
-  id: 20
   concealed:
   description: Bottom of Grandeur Peak to top and back
   name: RUFA Course
   next_start_time: 2019-02-09 14:00:00.000000000 Z
   slug: rufa-course
   track_points:
-d30_50k_course:
-  organization: dirty_30_running
-  id: 26
-  concealed:
-  description:
-  name: D30 50K Course
-  next_start_time: 2017-11-06 06:00:00.000000000 Z
-  slug: d30-50k-course
-  track_points:
-d30_12m_course:
-  organization: dirty_30_running
-  id: 27
-  concealed:
-  description:
-  name: D30 12M Course
-  next_start_time:
-  slug: d30-12m-course
-  track_points:
 sum_100k_course:
   organization: dirty_30_running
-  id: 31
   concealed:
   description:
   name: SUM 100K Course
@@ -65,7 +58,6 @@ sum_100k_course:
   track_points:
 sum_55k_course:
   organization: dirty_30_running
-  id: 32
   concealed:
   description:
   name: SUM 55K Course

@@ -1,10 +1,10 @@
 ---
 hardrock_2015:
+  course: hardrock_ccw
   event_group: hardrock_2015
   results_template: simple
   id: 4
   beacon_url:
-  course_id: 4
   efforts_count: 30
   historical_name: Hardrock 2015
   laps_required: 1
@@ -14,11 +14,11 @@ hardrock_2015:
   slug: hardrock-2015
   topic_resource_key:
 ramble:
+  course: ramble_even_course
   event_group: ramble
   results_template: simple
   id: 14
   beacon_url:
-  course_id: 9
   efforts_count: 4
   historical_name: Ramble
   laps_required: 1
@@ -28,11 +28,11 @@ ramble:
   slug: ramble
   topic_resource_key:
 hardrock_2014:
+  course: hardrock_cw
   event_group: hardrock_2014
   results_template: simple
   id: 17
   beacon_url:
-  course_id: 12
   efforts_count: 19
   historical_name: Hardrock 2014
   laps_required: 1
@@ -42,11 +42,11 @@ hardrock_2014:
   slug: hardrock-2014
   topic_resource_key:
 rufa_2016:
+  course: rufa_course
   event_group: rufa_2016
   results_template: simple
   id: 34
   beacon_url:
-  course_id: 20
   efforts_count: 4
   historical_name: RUFA 2016
   laps_required: 0
@@ -56,11 +56,11 @@ rufa_2016:
   slug: rufa-2016
   topic_resource_key:
 rufa_2017_24h:
+  course: rufa_course
   event_group: rufa_2017
   results_template: simple
   id: 36
   beacon_url:
-  course_id: 20
   efforts_count: 6
   historical_name: RUFA 2017 24H
   laps_required: 0
@@ -70,11 +70,11 @@ rufa_2017_24h:
   slug: rufa-2017-24h
   topic_resource_key:
 hardrock_2016:
+  course: hardrock_cw
   event_group: hardrock_2016
   results_template: simple
   id: 37
   beacon_url: http://trackleaders.com/hardrock16
-  course_id: 12
   efforts_count: 19
   historical_name: Hardrock 2016
   laps_required: 1
@@ -84,11 +84,11 @@ hardrock_2016:
   slug: hardrock-2016
   topic_resource_key:
 ggd30_50k:
+  course: d30_50k_course
   event_group: dirty_30
   results_template: simple
   id: 48
   beacon_url: https://goldengatedirty30.maprogress.com
-  course_id: 26
   efforts_count: 8
   historical_name: GGD30 50K
   laps_required: 1
@@ -98,11 +98,11 @@ ggd30_50k:
   slug: ggd30-50k
   topic_resource_key:
 ggd30_12m:
+  course: d30_12m_course
   event_group: dirty_30
   results_template: simple
   id: 49
   beacon_url:
-  course_id: 27
   efforts_count: 6
   historical_name: GGD30 12M
   laps_required: 1
@@ -112,11 +112,11 @@ ggd30_12m:
   slug: ggd30-12m
   topic_resource_key:
 sum_100k:
+  course: sum_100k_course
   event_group: sum
   results_template: simple
   id: 56
   beacon_url:
-  course_id: 31
   efforts_count: 5
   historical_name: SUM 100K
   laps_required: 1
@@ -126,11 +126,11 @@ sum_100k:
   slug: sum-100k
   topic_resource_key:
 sum_55k:
+  course: sum_55k_course
   event_group: sum
   results_template: sub_masters_masters_and_grandmasters
   id: 57
   beacon_url:
-  course_id: 32
   efforts_count: 8
   historical_name: SUM 55K
   laps_required: 1
@@ -140,11 +140,11 @@ sum_55k:
   slug: sum-55k
   topic_resource_key:
 rufa_2017_12h:
+  course: rufa_course
   event_group: rufa_2017
   results_template: simple
   id: 70
   beacon_url:
-  course_id: 20
   efforts_count: 6
   historical_name: RUFA 2017 12H
   laps_required: 0

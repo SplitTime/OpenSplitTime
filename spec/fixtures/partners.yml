@@ -1,13 +1,11 @@
 ---
 partner_0001:
+  partnerable: dirty_30 (EventGroup)
   banner_link: www.blackdiamondequipment.com
   name: Black Diamond Equipment
-  partnerable_id: 27
-  partnerable_type: EventGroup
   weight: 1
 partner_0002:
+  partnerable: sum (EventGroup)
   banner_link: blackdiamondequipment.com
   name: BD
-  partnerable_id: 32
-  partnerable_type: EventGroup
   weight: 100

@@ -66,9 +66,4 @@ class Organization < ApplicationRecord
   def owner_email
     owner&.email
   end
-
-  def owner_email=(email)
-    user = User.find_by(email: email)
-    self.created_by = user&.id
-  end
 end

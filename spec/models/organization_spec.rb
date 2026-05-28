@@ -97,29 +97,4 @@ RSpec.describe Organization, type: :model do
       end
     end
   end
-
-  describe "#owner_email=" do
-    before { subject.owner_email = provided_email }
-
-    context "when the email exists" do
-      let(:provided_email) { users(:third_user).email }
-      it "sets owner_id to the related user id" do
-        expect(subject.owner_id).to eq(users(:third_user).id)
-      end
-    end
-
-    context "when the email does not exist" do
-      let(:provided_email) { "random@email.com" }
-      it "sets owner_id to nil" do
-        expect(subject.owner_id).to be_nil
-      end
-    end
-
-    context "when the email provided is nil" do
-      let(:provided_email) { nil }
-      it "sets owner_id to nil" do
-        expect(subject.owner_id).to be_nil
-      end
-    end
-  end
 end

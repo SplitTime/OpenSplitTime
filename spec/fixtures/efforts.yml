@@ -1,5 +1,6 @@
 ---
 hardrock_2015_tuan_jacobs:
+  event: hardrock_2015
   person: tuan_jacobs
   id: 7
   age: 17
@@ -19,7 +20,6 @@ hardrock_2015_tuan_jacobs:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 42
   finished: true
   first_name: Tuan
@@ -39,6 +39,7 @@ hardrock_2015_tuan_jacobs:
   topic_resource_key:
   wave:
 hardrock_2015_erich_larson:
+  event: hardrock_2015
   person: erich_larson
   id: 8
   age: 36
@@ -58,7 +59,6 @@ hardrock_2015_erich_larson:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 72
   finished: true
   first_name: Erich
@@ -78,6 +78,7 @@ hardrock_2015_erich_larson:
   topic_resource_key:
   wave:
 hardrock_2015_leif_carter:
+  event: hardrock_2015
   person: leif_carter
   id: 15
   age: 55
@@ -97,7 +98,6 @@ hardrock_2015_leif_carter:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 282
   finished: true
   first_name: Leif
@@ -117,6 +117,7 @@ hardrock_2015_leif_carter:
   topic_resource_key:
   wave:
 hardrock_2015_carmine_adams:
+  event: hardrock_2015
   person: carmine_adams
   id: 20
   age: 18
@@ -136,7 +137,6 @@ hardrock_2015_carmine_adams:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 432
   finished: true
   first_name: Carmine
@@ -156,6 +156,7 @@ hardrock_2015_carmine_adams:
   topic_resource_key:
   wave:
 hardrock_2015_garry_kuhlman:
+  event: hardrock_2015
   person: garry_kuhlman
   id: 24
   age: 45
@@ -175,7 +176,6 @@ hardrock_2015_garry_kuhlman:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 552
   finished: true
   first_name: Garry
@@ -195,6 +195,7 @@ hardrock_2015_garry_kuhlman:
   topic_resource_key:
   wave:
 hardrock_2015_darius_jacobson:
+  event: hardrock_2015
   person: darius_jacobson
   id: 25
   age: 30
@@ -214,7 +215,6 @@ hardrock_2015_darius_jacobson:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 582
   finished: true
   first_name: Darius
@@ -234,6 +234,7 @@ hardrock_2015_darius_jacobson:
   topic_resource_key:
   wave:
 hardrock_2015_santa_green:
+  event: hardrock_2015
   person: santa_green
   id: 29
   age: 37
@@ -253,7 +254,6 @@ hardrock_2015_santa_green:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 702
   finished: true
   first_name: Santa
@@ -273,6 +273,7 @@ hardrock_2015_santa_green:
   topic_resource_key:
   wave:
 hardrock_2015_gilberto_mckenzie:
+  event: hardrock_2015
   person: gilberto_mckenzie
   id: 31
   age: 45
@@ -292,7 +293,6 @@ hardrock_2015_gilberto_mckenzie:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 762
   finished: true
   first_name: Gilberto
@@ -312,6 +312,7 @@ hardrock_2015_gilberto_mckenzie:
   topic_resource_key:
   wave:
 hardrock_2015_vince_willms:
+  event: hardrock_2015
   person: vince_willms
   id: 47
   age: 50
@@ -331,7 +332,6 @@ hardrock_2015_vince_willms:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 1242
   finished: true
   first_name: Vince
@@ -351,6 +351,7 @@ hardrock_2015_vince_willms:
   topic_resource_key:
   wave:
 hardrock_2015_cedric_windler:
+  event: hardrock_2015
   person: cedric_windler
   id: 50
   age: 36
@@ -370,7 +371,6 @@ hardrock_2015_cedric_windler:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 1332
   finished: true
   first_name: Cedric
@@ -390,6 +390,7 @@ hardrock_2015_cedric_windler:
   topic_resource_key:
   wave:
 hardrock_2015_chris_rempel:
+  event: hardrock_2015
   person: chris_rempel
   id: 56
   age: 26
@@ -409,7 +410,6 @@ hardrock_2015_chris_rempel:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 1512
   finished: true
   first_name: Chris
@@ -429,6 +429,7 @@ hardrock_2015_chris_rempel:
   topic_resource_key:
   wave:
 hardrock_2015_robby_gerlach:
+  event: hardrock_2015
   person: robby_gerlach
   id: 57
   age: 45
@@ -448,7 +449,6 @@ hardrock_2015_robby_gerlach:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 1542
   finished: true
   first_name: Robby
@@ -468,6 +468,7 @@ hardrock_2015_robby_gerlach:
   topic_resource_key:
   wave:
 hardrock_2015_rachelle_eichmann:
+  event: hardrock_2015
   person: rachelle_eichmann
   id: 59
   age: 23
@@ -487,7 +488,6 @@ hardrock_2015_rachelle_eichmann:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 1602
   finished: true
   first_name: Rachelle
@@ -507,6 +507,7 @@ hardrock_2015_rachelle_eichmann:
   topic_resource_key:
   wave:
 hardrock_2015_elden_morissette:
+  event: hardrock_2015
   person: elden_morissette
   id: 61
   age: 42
@@ -526,7 +527,6 @@ hardrock_2015_elden_morissette:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 1662
   finished: true
   first_name: Elden
@@ -546,6 +546,7 @@ hardrock_2015_elden_morissette:
   topic_resource_key:
   wave:
 hardrock_2015_leroy_leffler:
+  event: hardrock_2015
   person: leroy_leffler
   id: 63
   age: 48
@@ -565,7 +566,6 @@ hardrock_2015_leroy_leffler:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 1722
   finished: true
   first_name: Leroy
@@ -585,6 +585,7 @@ hardrock_2015_leroy_leffler:
   topic_resource_key:
   wave:
 hardrock_2015_samara_vandervort:
+  event: hardrock_2015
   person: samara_vandervort
   id: 73
   age: 22
@@ -604,7 +605,6 @@ hardrock_2015_samara_vandervort:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 2022
   finished: true
   first_name: Samara
@@ -624,6 +624,7 @@ hardrock_2015_samara_vandervort:
   topic_resource_key:
   wave:
 hardrock_2015_robt_wintheiser:
+  event: hardrock_2015
   person: robt_wintheiser
   id: 94
   age: 57
@@ -643,7 +644,6 @@ hardrock_2015_robt_wintheiser:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 2652
   finished: true
   first_name: Robt
@@ -663,6 +663,7 @@ hardrock_2015_robt_wintheiser:
   topic_resource_key:
   wave:
 hardrock_2015_demetrius_moen:
+  event: hardrock_2015
   person: demetrius_moen
   id: 96
   age: 40
@@ -682,7 +683,6 @@ hardrock_2015_demetrius_moen:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 2712
   finished: true
   first_name: Demetrius
@@ -702,6 +702,7 @@ hardrock_2015_demetrius_moen:
   topic_resource_key:
   wave:
 hardrock_2015_vern_buckridge:
+  event: hardrock_2015
   person: vern_buckridge
   id: 105
   age: 33
@@ -721,7 +722,6 @@ hardrock_2015_vern_buckridge:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 2982
   finished: true
   first_name: Vern
@@ -741,6 +741,7 @@ hardrock_2015_vern_buckridge:
   topic_resource_key:
   wave:
 hardrock_2015_donte_spencer:
+  event: hardrock_2015
   person: donte_spencer
   id: 112
   age: 30
@@ -760,7 +761,6 @@ hardrock_2015_donte_spencer:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 3192
   finished: true
   first_name: Donte
@@ -780,6 +780,7 @@ hardrock_2015_donte_spencer:
   topic_resource_key:
   wave:
 hardrock_2015_bruno_fadel:
+  event: hardrock_2015
   person: bruno_fadel
   id: 116
   age: 27
@@ -799,7 +800,6 @@ hardrock_2015_bruno_fadel:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 3312
   finished: true
   first_name: Bruno
@@ -819,6 +819,7 @@ hardrock_2015_bruno_fadel:
   topic_resource_key:
   wave:
 hardrock_2015_gus_walker:
+  event: hardrock_2015
   person: gus_walker
   id: 117
   age: 54
@@ -838,7 +839,6 @@ hardrock_2015_gus_walker:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 3342
   finished: true
   first_name: Gus
@@ -858,6 +858,7 @@ hardrock_2015_gus_walker:
   topic_resource_key:
   wave:
 hardrock_2015_susanna_abshire:
+  event: hardrock_2015
   person: susanna_abshire
   id: 121
   age: 34
@@ -877,7 +878,6 @@ hardrock_2015_susanna_abshire:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 3462
   finished: true
   first_name: Susanna
@@ -897,6 +897,7 @@ hardrock_2015_susanna_abshire:
   topic_resource_key:
   wave:
 hardrock_2015_leandro_cole:
+  event: hardrock_2015
   person: leandro_cole
   id: 125
   age: 45
@@ -916,7 +917,6 @@ hardrock_2015_leandro_cole:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 3582
   finished: true
   first_name: Leandro
@@ -936,6 +936,7 @@ hardrock_2015_leandro_cole:
   topic_resource_key:
   wave:
 hardrock_2015_benedict_davis:
+  event: hardrock_2015
   person: benedict_davis
   id: 129
   age: 32
@@ -955,7 +956,6 @@ hardrock_2015_benedict_davis:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 3702
   finished: true
   first_name: Benedict
@@ -975,6 +975,7 @@ hardrock_2015_benedict_davis:
   topic_resource_key:
   wave:
 hardrock_2015_raphael_swift:
+  event: hardrock_2015
   person: raphael_swift
   id: 136
   age: 40
@@ -994,7 +995,6 @@ hardrock_2015_raphael_swift:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 3891
   finished: false
   first_name: Raphael
@@ -1014,6 +1014,7 @@ hardrock_2015_raphael_swift:
   topic_resource_key:
   wave:
 hardrock_2015_bad_status:
+  event: hardrock_2015
   person: bad_status
   id: 138
   age: 21
@@ -1033,7 +1034,6 @@ hardrock_2015_bad_status:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 101556
   finished: false
   first_name: Bad
@@ -1053,6 +1053,7 @@ hardrock_2015_bad_status:
   topic_resource_key:
   wave:
 hardrock_2015_irvin_harber:
+  event: hardrock_2015
   person: irvin_harber
   id: 141
   age: 19
@@ -1072,7 +1073,6 @@ hardrock_2015_irvin_harber:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 101541
   finished: false
   first_name: Irvin
@@ -1092,6 +1092,7 @@ hardrock_2015_irvin_harber:
   topic_resource_key:
   wave:
 hardrock_2015_cassondra_nienow:
+  event: hardrock_2015
   person: cassondra_nienow
   id: 155
   age: 56
@@ -1111,7 +1112,6 @@ hardrock_2015_cassondra_nienow:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 4198
   finished: false
   first_name: Cassondra
@@ -1131,6 +1131,7 @@ hardrock_2015_cassondra_nienow:
   topic_resource_key:
   wave:
 hardrock_2015_donn_mckenzie:
+  event: hardrock_2015
   person: donn_mckenzie
   id: 158
   age: 16
@@ -1150,7 +1151,6 @@ hardrock_2015_donn_mckenzie:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 4
   final_split_time_id: 4219
   finished: false
   first_name: Donn
@@ -1170,6 +1170,7 @@ hardrock_2015_donn_mckenzie:
   topic_resource_key:
   wave:
 ramble_finished_first:
+  event: ramble
   person: finished_first_2019_02_01
   id: 1040
   age: 49
@@ -1189,7 +1190,6 @@ ramble_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 14
   final_split_time_id: 15145
   finished: true
   first_name: Finished
@@ -1209,6 +1209,7 @@ ramble_finished_first:
   topic_resource_key:
   wave:
 ramble_finished_second:
+  event: ramble
   person: finished_second_montana_us
   id: 1048
   age: 12
@@ -1228,7 +1229,6 @@ ramble_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 14
   final_split_time_id: 15161
   finished: true
   first_name: Finished
@@ -1248,6 +1248,7 @@ ramble_finished_second:
   topic_resource_key:
   wave:
 ramble_start_only:
+  event: ramble
   person: start_only_2019_02_01
   id: 1051
   age: 38
@@ -1267,7 +1268,6 @@ ramble_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 14
   final_split_time_id: 15166
   finished: false
   first_name: Start
@@ -1287,6 +1287,7 @@ ramble_start_only:
   topic_resource_key:
   wave:
 ramble_not_started:
+  event: ramble
   person: not_started_2019_02_01
   id: 1061
   age: 17
@@ -1306,7 +1307,6 @@ ramble_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 14
   final_split_time_id:
   finished: false
   first_name: Not
@@ -1326,6 +1326,7 @@ ramble_not_started:
   topic_resource_key:
   wave:
 hardrock_2014_finished_first:
+  event: hardrock_2014
   person: finished_first_japan
   id: 4172
   age: 19
@@ -1345,7 +1346,6 @@ hardrock_2014_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 91286
   finished: true
   first_name: Finished
@@ -1365,6 +1365,7 @@ hardrock_2014_finished_first:
   topic_resource_key:
   wave:
 hardrock_2014_finished_with_stop:
+  event: hardrock_2014
   person: finished_with_stop
   id: 4173
   age: 40
@@ -1384,7 +1385,6 @@ hardrock_2014_finished_with_stop:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 91314
   finished: true
   first_name: Finished
@@ -1404,6 +1404,7 @@ hardrock_2014_finished_with_stop:
   topic_resource_key:
   wave:
 hardrock_2014_finished_without_stop:
+  event: hardrock_2014
   person: finished_without_stop
   id: 4174
   age: 25
@@ -1423,7 +1424,6 @@ hardrock_2014_finished_without_stop:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 91342
   finished: true
   first_name: Finished
@@ -1443,6 +1443,7 @@ hardrock_2014_finished_without_stop:
   topic_resource_key:
   wave:
 hardrock_2014_claudio_wunsch:
+  event: hardrock_2014
   person: claudio_wunsch
   id: 4192
   age: 33
@@ -1462,7 +1463,6 @@ hardrock_2014_claudio_wunsch:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 91846
   finished: true
   first_name: Claudio
@@ -1482,6 +1482,7 @@ hardrock_2014_claudio_wunsch:
   topic_resource_key:
   wave:
 hardrock_2014_rachelle_eichmann:
+  event: hardrock_2014
   person: rachelle_eichmann
   id: 4199
   age: 22
@@ -1501,7 +1502,6 @@ hardrock_2014_rachelle_eichmann:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 92042
   finished: true
   first_name: Rachelle
@@ -1521,6 +1521,7 @@ hardrock_2014_rachelle_eichmann:
   topic_resource_key:
   wave:
 hardrock_2014_keith_metz:
+  event: hardrock_2014
   person: keith_metz
   id: 4206
   age: 42
@@ -1540,7 +1541,6 @@ hardrock_2014_keith_metz:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 92238
   finished: true
   first_name: Keith
@@ -1560,6 +1560,7 @@ hardrock_2014_keith_metz:
   topic_resource_key:
   wave:
 hardrock_2014_major_green:
+  event: hardrock_2014
   person: major_green
   id: 4207
   age: 58
@@ -1579,7 +1580,6 @@ hardrock_2014_major_green:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 92266
   finished: true
   first_name: Major
@@ -1599,6 +1599,7 @@ hardrock_2014_major_green:
   topic_resource_key:
   wave:
 hardrock_2014_humberto_adams:
+  event: hardrock_2014
   person: humberto_adams
   id: 4221
   age: 24
@@ -1618,7 +1619,6 @@ hardrock_2014_humberto_adams:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 92658
   finished: true
   first_name: Humberto
@@ -1638,6 +1638,7 @@ hardrock_2014_humberto_adams:
   topic_resource_key:
   wave:
 hardrock_2014_omer_yundt:
+  event: hardrock_2014
   person: omer_yundt
   id: 4246
   age: 40
@@ -1657,7 +1658,6 @@ hardrock_2014_omer_yundt:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 93358
   finished: true
   first_name: Omer
@@ -1677,6 +1677,7 @@ hardrock_2014_omer_yundt:
   topic_resource_key:
   wave:
 hardrock_2014_pat_schaden:
+  event: hardrock_2014
   person: pat_schaden
   id: 4247
   age: 53
@@ -1696,7 +1697,6 @@ hardrock_2014_pat_schaden:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 93384
   finished: false
   first_name: Pat
@@ -1716,6 +1716,7 @@ hardrock_2014_pat_schaden:
   topic_resource_key:
   wave:
 hardrock_2014_clarence_goyette:
+  event: hardrock_2014
   person: clarence_goyette
   id: 4249
   age: 52
@@ -1735,7 +1736,6 @@ hardrock_2014_clarence_goyette:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 93442
   finished: true
   first_name: Clarence
@@ -1755,6 +1755,7 @@ hardrock_2014_clarence_goyette:
   topic_resource_key:
   wave:
 hardrock_2014_irvin_corkery:
+  event: hardrock_2014
   person: irvin_corkery
   id: 4251
   age: 22
@@ -1774,7 +1775,6 @@ hardrock_2014_irvin_corkery:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 93498
   finished: true
   first_name: Irvin
@@ -1794,6 +1794,7 @@ hardrock_2014_irvin_corkery:
   topic_resource_key:
   wave:
 hardrock_2014_willis_murray:
+  event: hardrock_2014
   person: willis_murray
   id: 4253
   age: 16
@@ -1813,7 +1814,6 @@ hardrock_2014_willis_murray:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 93554
   finished: true
   first_name: Willis
@@ -1833,6 +1833,7 @@ hardrock_2014_willis_murray:
   topic_resource_key:
   wave:
 hardrock_2014_ken_bradtke:
+  event: hardrock_2014
   person: ken_bradtke
   id: 4256
   age: 47
@@ -1852,7 +1853,6 @@ hardrock_2014_ken_bradtke:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 93638
   finished: true
   first_name: Ken
@@ -1872,6 +1872,7 @@ hardrock_2014_ken_bradtke:
   topic_resource_key:
   wave:
 hardrock_2014_progress_sherman:
+  event: hardrock_2014
   person: progress_sherman_colorado_us
   id: 4277
   age: 36
@@ -1891,7 +1892,6 @@ hardrock_2014_progress_sherman:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 94175
   finished: false
   first_name: Progress
@@ -1911,6 +1911,7 @@ hardrock_2014_progress_sherman:
   topic_resource_key:
   wave:
 hardrock_2014_multiple_stops:
+  event: hardrock_2014
   person: multiple_stops
   id: 4293
   age: 60
@@ -1930,7 +1931,6 @@ hardrock_2014_multiple_stops:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 94453
   finished: false
   first_name: Multiple
@@ -1950,6 +1950,7 @@ hardrock_2014_multiple_stops:
   topic_resource_key:
   wave:
 hardrock_2014_without_start:
+  event: hardrock_2014
   person: without_start
   id: 4294
   age: 49
@@ -1969,7 +1970,6 @@ hardrock_2014_without_start:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 94470
   finished: false
   first_name: Without
@@ -1989,6 +1989,7 @@ hardrock_2014_without_start:
   topic_resource_key:
   wave:
 hardrock_2014_drop_ouray:
+  event: hardrock_2014
   person: drop_ouray
   id: 4295
   age: 40
@@ -2008,7 +2009,6 @@ hardrock_2014_drop_ouray:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id: 94483
   finished: false
   first_name: Drop
@@ -2028,6 +2028,7 @@ hardrock_2014_drop_ouray:
   topic_resource_key:
   wave:
 hardrock_2014_not_started:
+  event: hardrock_2014
   person: not_started
   id: 4302
   age: 28
@@ -2047,7 +2048,6 @@ hardrock_2014_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 17
   final_split_time_id:
   finished: false
   first_name: Not
@@ -2067,6 +2067,7 @@ hardrock_2014_not_started:
   topic_resource_key:
   wave:
 rufa_2016_finished_first:
+  event: rufa_2016
   person:
   id: 6518
   age: 35
@@ -2086,7 +2087,6 @@ rufa_2016_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 34
   final_split_time_id: 132059
   finished: true
   first_name: Finished
@@ -2106,6 +2106,7 @@ rufa_2016_finished_first:
   topic_resource_key:
   wave:
 rufa_2016_finished_second:
+  event: rufa_2016
   person:
   id: 6520
   age: 32
@@ -2125,7 +2126,6 @@ rufa_2016_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 34
   final_split_time_id: 132090
   finished: true
   first_name: Finished
@@ -2145,6 +2145,7 @@ rufa_2016_finished_second:
   topic_resource_key:
   wave:
 rufa_2016_progress_lap1:
+  event: rufa_2016
   person:
   id: 6560
   age: 25
@@ -2164,7 +2165,6 @@ rufa_2016_progress_lap1:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 34
   final_split_time_id: 132439
   finished: false
   first_name: Progress
@@ -2184,6 +2184,7 @@ rufa_2016_progress_lap1:
   topic_resource_key:
   wave:
 rufa_2016_not_started:
+  event: rufa_2016
   person:
   id: 6561
   age: 57
@@ -2203,7 +2204,6 @@ rufa_2016_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 34
   final_split_time_id:
   finished: false
   first_name: Not
@@ -2223,6 +2223,7 @@ rufa_2016_not_started:
   topic_resource_key:
   wave:
 rufa_2017_24h_finished_first:
+  event: rufa_2017_24h
   person: finished_first_utah_us
   id: 6693
   age: 47
@@ -2242,7 +2243,6 @@ rufa_2017_24h_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 36
   final_split_time_id: 133983
   finished: true
   first_name: Finished
@@ -2262,6 +2262,7 @@ rufa_2017_24h_finished_first:
   topic_resource_key:
   wave:
 rufa_2017_24h_progress_lap6:
+  event: rufa_2017_24h
   person: progress_lap6
   id: 6695
   age: 33
@@ -2281,7 +2282,6 @@ rufa_2017_24h_progress_lap6:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 36
   final_split_time_id: 134018
   finished: false
   first_name: Progress
@@ -2301,6 +2301,7 @@ rufa_2017_24h_progress_lap6:
   topic_resource_key:
   wave:
 rufa_2017_24h_multiple_stops:
+  event: rufa_2017_24h
   person: multiple_stops_utah_us
   id: 6756
   age: 43
@@ -2320,7 +2321,6 @@ rufa_2017_24h_multiple_stops:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 36
   final_split_time_id: 134812
   finished: true
   first_name: Multiple
@@ -2340,6 +2340,7 @@ rufa_2017_24h_multiple_stops:
   topic_resource_key:
   wave:
 rufa_2017_24h_finished_last:
+  event: rufa_2017_24h
   person: finished_last
   id: 6780
   age: 40
@@ -2359,7 +2360,6 @@ rufa_2017_24h_finished_last:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 36
   final_split_time_id: 135012
   finished: true
   first_name: Finished
@@ -2379,6 +2379,7 @@ rufa_2017_24h_finished_last:
   topic_resource_key:
   wave:
 rufa_2017_24h_not_started:
+  event: rufa_2017_24h
   person: not_started
   id: 6782
   age: 30
@@ -2398,7 +2399,6 @@ rufa_2017_24h_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 36
   final_split_time_id:
   finished: false
   first_name: Not
@@ -2418,6 +2418,7 @@ rufa_2017_24h_not_started:
   topic_resource_key:
   wave:
 rufa_2017_24h_progress_lap1:
+  event: rufa_2017_24h
   person: progress_lap1
   id: 6805
   age: 49
@@ -2437,7 +2438,6 @@ rufa_2017_24h_progress_lap1:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 36
   final_split_time_id: 135134
   finished: false
   first_name: Progress
@@ -2457,6 +2457,7 @@ rufa_2017_24h_progress_lap1:
   topic_resource_key:
   wave:
 hardrock_2016_lavon_paucek:
+  event: hardrock_2016
   person: lavon_paucek
   id: 7270
   age: 41
@@ -2476,7 +2477,6 @@ hardrock_2016_lavon_paucek:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 146950
   finished: true
   first_name: Lavon
@@ -2496,6 +2496,7 @@ hardrock_2016_lavon_paucek:
   topic_resource_key:
   wave:
 hardrock_2016_vesta_borer:
+  event: hardrock_2016
   person: vesta_borer
   id: 7284
   age: 21
@@ -2515,7 +2516,6 @@ hardrock_2016_vesta_borer:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 147341
   finished: false
   first_name: Vesta
@@ -2535,6 +2535,7 @@ hardrock_2016_vesta_borer:
   topic_resource_key:
   wave:
 hardrock_2016_kory_kulas:
+  event: hardrock_2016
   person: kory_kulas
   id: 7289
   age: 42
@@ -2554,7 +2555,6 @@ hardrock_2016_kory_kulas:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 147481
   finished: false
   first_name: Kory
@@ -2574,6 +2574,7 @@ hardrock_2016_kory_kulas:
   topic_resource_key:
   wave:
 hardrock_2016_shad_hirthe:
+  event: hardrock_2016
   person: shad_hirthe
   id: 7297
   age: 40
@@ -2593,7 +2594,6 @@ hardrock_2016_shad_hirthe:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 147699
   finished: false
   first_name: Shad
@@ -2613,6 +2613,7 @@ hardrock_2016_shad_hirthe:
   topic_resource_key:
   wave:
 hardrock_2016_douglas_vandervort:
+  event: hardrock_2016
   person: douglas_vandervort
   id: 7302
   age: 52
@@ -2632,7 +2633,6 @@ hardrock_2016_douglas_vandervort:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 147839
   finished: false
   first_name: Douglas
@@ -2652,6 +2652,7 @@ hardrock_2016_douglas_vandervort:
   topic_resource_key:
   wave:
 hardrock_2016_missing_telluride_out:
+  event: hardrock_2016
   person:
   id: 7308
   age: 20
@@ -2671,7 +2672,6 @@ hardrock_2016_missing_telluride_out:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 148007
   finished: false
   first_name: Missing
@@ -2691,6 +2691,7 @@ hardrock_2016_missing_telluride_out:
   topic_resource_key:
   wave:
 hardrock_2016_junior_lesch:
+  event: hardrock_2016
   person: junior_lesch
   id: 7311
   age: 49
@@ -2710,7 +2711,6 @@ hardrock_2016_junior_lesch:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 148091
   finished: false
   first_name: Junior
@@ -2730,6 +2730,7 @@ hardrock_2016_junior_lesch:
   topic_resource_key:
   wave:
 hardrock_2016_eddy_goldner:
+  event: hardrock_2016
   person: eddy_goldner
   id: 7315
   age: 18
@@ -2749,7 +2750,6 @@ hardrock_2016_eddy_goldner:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 148203
   finished: false
   first_name: Eddy
@@ -2769,6 +2769,7 @@ hardrock_2016_eddy_goldner:
   topic_resource_key:
   wave:
 hardrock_2016_progress_sherman:
+  event: hardrock_2016
   person: progress_sherman
   id: 7328
   age: 33
@@ -2788,7 +2789,6 @@ hardrock_2016_progress_sherman:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 148567
   finished: false
   first_name: Progress
@@ -2808,6 +2808,7 @@ hardrock_2016_progress_sherman:
   topic_resource_key:
   wave:
 hardrock_2016_benito_moen:
+  event: hardrock_2016
   person: benito_moen
   id: 7337
   age: 52
@@ -2827,7 +2828,6 @@ hardrock_2016_benito_moen:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 148819
   finished: false
   first_name: Benito
@@ -2847,6 +2847,7 @@ hardrock_2016_benito_moen:
   topic_resource_key:
   wave:
 hardrock_2016_kendall_koch:
+  event: hardrock_2016
   person: kendall_koch
   id: 7340
   age: 40
@@ -2866,7 +2867,6 @@ hardrock_2016_kendall_koch:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 148903
   finished: false
   first_name: Kendall
@@ -2886,6 +2886,7 @@ hardrock_2016_kendall_koch:
   topic_resource_key:
   wave:
 hardrock_2016_charlie_mueller:
+  event: hardrock_2016
   person: charlie_mueller
   id: 7343
   age: 27
@@ -2905,7 +2906,6 @@ hardrock_2016_charlie_mueller:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 148987
   finished: false
   first_name: Charlie
@@ -2925,6 +2925,7 @@ hardrock_2016_charlie_mueller:
   topic_resource_key:
   wave:
 hardrock_2016_brinda_fisher:
+  event: hardrock_2016
   person: brinda_fisher
   id: 7376
   age: 22
@@ -2944,7 +2945,6 @@ hardrock_2016_brinda_fisher:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 149907
   finished: false
   first_name: Brinda
@@ -2964,6 +2964,7 @@ hardrock_2016_brinda_fisher:
   topic_resource_key:
   wave:
 hardrock_2016_rene_mclaughlin:
+  event: hardrock_2016
   person: rene_mclaughlin
   id: 7380
   age: 32
@@ -2983,7 +2984,6 @@ hardrock_2016_rene_mclaughlin:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 150016
   finished: false
   first_name: Rene
@@ -3003,6 +3003,7 @@ hardrock_2016_rene_mclaughlin:
   topic_resource_key:
   wave:
 hardrock_2016_dropped_grouse:
+  event: hardrock_2016
   person: dropped_grouse
   id: 7396
   age: 47
@@ -3022,7 +3023,6 @@ hardrock_2016_dropped_grouse:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 150335
   finished: false
   first_name: Dropped
@@ -3042,6 +3042,7 @@ hardrock_2016_dropped_grouse:
   topic_resource_key:
   wave:
 hardrock_2016_mervin_smitham:
+  event: hardrock_2016
   person: mervin_smitham
   id: 7400
   age: 24
@@ -3061,7 +3062,6 @@ hardrock_2016_mervin_smitham:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 150403
   finished: false
   first_name: Mervin
@@ -3081,6 +3081,7 @@ hardrock_2016_mervin_smitham:
   topic_resource_key:
   wave:
 hardrock_2016_rhett_auer:
+  event: hardrock_2016
   person:
   id: 7404
   age: 41
@@ -3100,7 +3101,6 @@ hardrock_2016_rhett_auer:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 150467
   finished: false
   first_name: Rhett
@@ -3120,6 +3120,7 @@ hardrock_2016_rhett_auer:
   topic_resource_key:
   wave:
 hardrock_2016_hoyt_macejkovic:
+  event: hardrock_2016
   person: hoyt_macejkovic
   id: 7407
   age: 55
@@ -3139,7 +3140,6 @@ hardrock_2016_hoyt_macejkovic:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 150506
   finished: false
   first_name: Hoyt
@@ -3159,6 +3159,7 @@ hardrock_2016_hoyt_macejkovic:
   topic_resource_key:
   wave:
 hardrock_2016_start_only:
+  event: hardrock_2016
   person: start_only_maine_us
   id: 7411
   age: 26
@@ -3178,7 +3179,6 @@ hardrock_2016_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 37
   final_split_time_id: 192705
   finished: false
   first_name: Start
@@ -3198,6 +3198,7 @@ hardrock_2016_start_only:
   topic_resource_key:
   wave:
 ggd30_50k_finished_first:
+  event: ggd30_50k
   person: finished_first_colorado_us
   id: 15626
   age: 44
@@ -3217,7 +3218,6 @@ ggd30_50k_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id: 188951
   finished: true
   first_name: Finished
@@ -3237,6 +3237,7 @@ ggd30_50k_finished_first:
   topic_resource_key:
   wave:
 ggd30_50k_bad_finish:
+  event: ggd30_50k
   person: bad_finish
   id: 15664
   age: 21
@@ -3256,7 +3257,6 @@ ggd30_50k_bad_finish:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id: 189055
   finished: true
   first_name: Bad
@@ -3276,6 +3276,7 @@ ggd30_50k_bad_finish:
   topic_resource_key:
   wave:
 ggd30_50k_progress_aid4:
+  event: ggd30_50k
   person: progress_aid4
   id: 15891
   age: 35
@@ -3295,7 +3296,6 @@ ggd30_50k_progress_aid4:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id: 189814
   finished: false
   first_name: Progress
@@ -3315,6 +3315,7 @@ ggd30_50k_progress_aid4:
   topic_resource_key:
   wave:
 ggd30_50k_progress_aid3:
+  event: ggd30_50k
   person: progress_aid3
   id: 15901
   age: 31
@@ -3334,7 +3335,6 @@ ggd30_50k_progress_aid3:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id: 189850
   finished: false
   first_name: Progress
@@ -3354,6 +3354,7 @@ ggd30_50k_progress_aid3:
   topic_resource_key:
   wave:
 ggd30_50k_drop_aid4:
+  event: ggd30_50k
   person: drop_aid4
   id: 15931
   age: 18
@@ -3373,7 +3374,6 @@ ggd30_50k_drop_aid4:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id: 189952
   finished: false
   first_name: Drop
@@ -3393,6 +3393,7 @@ ggd30_50k_drop_aid4:
   topic_resource_key:
   wave:
 ggd30_50k_start_only:
+  event: ggd30_50k
   person: start_only_2019_02_01_07_19_53
   id: 16023
   age: 31
@@ -3412,7 +3413,6 @@ ggd30_50k_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id: 190761
   finished: false
   first_name: Start
@@ -3432,6 +3432,7 @@ ggd30_50k_start_only:
   topic_resource_key:
   wave:
 ggd30_50k_not_started:
+  event: ggd30_50k
   person: not_started
   id: 16032
   age: 31
@@ -3451,7 +3452,6 @@ ggd30_50k_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id:
   finished: false
   first_name: Not
@@ -3471,6 +3471,7 @@ ggd30_50k_not_started:
   topic_resource_key:
   wave:
 ggd30_12m_start_only:
+  event: ggd30_12m
   person: start_only_colorado_us
   id: 16094
   age: 27
@@ -3490,7 +3491,6 @@ ggd30_12m_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 49
   final_split_time_id: 190731
   finished: false
   first_name: Start
@@ -3510,6 +3510,7 @@ ggd30_12m_start_only:
   topic_resource_key:
   wave:
 ggd30_12m_finished_second:
+  event: ggd30_12m
   person: finished_second_colorado_us
   id: 16107
   age: 43
@@ -3529,7 +3530,6 @@ ggd30_12m_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 49
   final_split_time_id: 190273
   finished: true
   first_name: Finished
@@ -3549,6 +3549,7 @@ ggd30_12m_finished_second:
   topic_resource_key:
   wave:
 ggd30_12m_finished_first:
+  event: ggd30_12m
   person: finished_first_france
   id: 16173
   age: 23
@@ -3568,7 +3569,6 @@ ggd30_12m_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 49
   final_split_time_id: 190117
   finished: true
   first_name: Finished
@@ -3588,6 +3588,7 @@ ggd30_12m_finished_first:
   topic_resource_key:
   wave:
 ggd30_12m_not_started:
+  event: ggd30_12m
   person: not_started_colorado_us
   id: 16209
   age: 22
@@ -3607,7 +3608,6 @@ ggd30_12m_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 49
   final_split_time_id:
   finished: false
   first_name: Not
@@ -3627,6 +3627,7 @@ ggd30_12m_not_started:
   topic_resource_key:
   wave:
 sum_55k_finished_first:
+  event: sum_55k
   person: finished_first_colorado_us
   id: 16227
   age: 44
@@ -3646,7 +3647,6 @@ sum_55k_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id: 190508
   finished: true
   first_name: Finished
@@ -3666,6 +3666,7 @@ sum_55k_finished_first:
   topic_resource_key:
   wave:
 sum_55k_finished_second:
+  event: sum_55k
   person: finished_second_colorado_us
   id: 16229
   age: 44
@@ -3685,7 +3686,6 @@ sum_55k_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id: 190528
   finished: true
   first_name: Finished
@@ -3705,6 +3705,7 @@ sum_55k_finished_second:
   topic_resource_key:
   wave:
 sum_55k_not_started:
+  event: sum_55k
   person: not_started_colorado_us_2019_02_01
   id: 16242
   age: 36
@@ -3724,7 +3725,6 @@ sum_55k_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id:
   finished: false
   first_name: Not
@@ -3744,6 +3744,7 @@ sum_55k_not_started:
   topic_resource_key:
   wave:
 sum_55k_progress_rolling:
+  event: sum_55k
   person: progress_rolling
   id: 16244
   age: 55
@@ -3763,7 +3764,6 @@ sum_55k_progress_rolling:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id: 190672
   finished: false
   first_name: Progress
@@ -3783,6 +3783,7 @@ sum_55k_progress_rolling:
   topic_resource_key:
   wave:
 sum_55k_drop_bandera:
+  event: sum_55k
   person: drop_bandera
   id: 16245
   age: 19
@@ -3802,7 +3803,6 @@ sum_55k_drop_bandera:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id: 190683
   finished: false
   first_name: Drop
@@ -3822,6 +3822,7 @@ sum_55k_drop_bandera:
   topic_resource_key:
   wave:
 sum_55k_start_only:
+  event: sum_55k
   person: start_only_colorado_us_2019_02_01
   id: 16246
   age: 49
@@ -3841,7 +3842,6 @@ sum_55k_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id: 190816
   finished: false
   first_name: Start
@@ -3861,6 +3861,7 @@ sum_55k_start_only:
   topic_resource_key:
   wave:
 sum_100k_drop_anvil:
+  event: sum_100k
   person: drop_anvil
   id: 16247
   age: 28
@@ -3880,7 +3881,6 @@ sum_100k_drop_anvil:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 56
   final_split_time_id: 190695
   finished: false
   first_name: Drop
@@ -3900,6 +3900,7 @@ sum_100k_drop_anvil:
   topic_resource_key:
   wave:
 sum_100k_progress_cascade:
+  event: sum_100k
   person: progress_cascade
   id: 16248
   age: 20
@@ -3919,7 +3920,6 @@ sum_100k_progress_cascade:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 56
   final_split_time_id: 192704
   finished: false
   first_name: Progress
@@ -3939,6 +3939,7 @@ sum_100k_progress_cascade:
   topic_resource_key:
   wave:
 rufa_2017_12h_finished_first:
+  event: rufa_2017_12h
   person: finished_first
   id: 16643
   age: 20
@@ -3958,7 +3959,6 @@ rufa_2017_12h_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 70
   final_split_time_id: 192201
   finished: true
   first_name: Finished
@@ -3978,6 +3978,7 @@ rufa_2017_12h_finished_first:
   topic_resource_key:
   wave:
 rufa_2017_12h_finished_lap6:
+  event: rufa_2017_12h
   person: finished_lap6
   id: 16648
   age: 53
@@ -3997,7 +3998,6 @@ rufa_2017_12h_finished_lap6:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 70
   final_split_time_id: 192295
   finished: true
   first_name: Finished
@@ -4017,6 +4017,7 @@ rufa_2017_12h_finished_lap6:
   topic_resource_key:
   wave:
 rufa_2017_12h_progress_lap5_partial:
+  event: rufa_2017_12h
   person: progress_lap5_partial
   id: 16657
   age: 28
@@ -4036,7 +4037,6 @@ rufa_2017_12h_progress_lap5_partial:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 70
   final_split_time_id: 192433
   finished: false
   first_name: Progress
@@ -4056,6 +4056,7 @@ rufa_2017_12h_progress_lap5_partial:
   topic_resource_key:
   wave:
 rufa_2017_12h_progress_lap2:
+  event: rufa_2017_12h
   person: progress_lap2
   id: 16663
   age: 24
@@ -4075,7 +4076,6 @@ rufa_2017_12h_progress_lap2:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 70
   final_split_time_id: 192502
   finished: false
   first_name: Progress
@@ -4095,6 +4095,7 @@ rufa_2017_12h_progress_lap2:
   topic_resource_key:
   wave:
 rufa_2017_12h_start_only:
+  event: rufa_2017_12h
   person: start_only
   id: 16667
   age: 44
@@ -4114,7 +4115,6 @@ rufa_2017_12h_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 70
   final_split_time_id: 192542
   finished: false
   first_name: Start
@@ -4134,6 +4134,7 @@ rufa_2017_12h_start_only:
   topic_resource_key:
   wave:
 rufa_2017_12h_not_started:
+  event: rufa_2017_12h
   person: not_started_utah_us
   id: 16673
   age: 49
@@ -4153,7 +4154,6 @@ rufa_2017_12h_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 70
   final_split_time_id:
   finished: false
   first_name: Not
@@ -4173,6 +4173,7 @@ rufa_2017_12h_not_started:
   topic_resource_key:
   wave:
 sum_100k_un_started:
+  event: sum_100k
   person: un_started
   id: 16683
   age: 29
@@ -4192,7 +4193,6 @@ sum_100k_un_started:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 56
   final_split_time_id:
   finished: false
   first_name: Un
@@ -4212,6 +4212,7 @@ sum_100k_un_started:
   topic_resource_key:
   wave:
 sum_100k_on_dst_change:
+  event: sum_100k
   person: on_dst_change
   id: 16684
   age:
@@ -4231,7 +4232,6 @@ sum_100k_on_dst_change:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 56
   final_split_time_id: 192715
   finished: false
   first_name: 'On'
@@ -4251,6 +4251,7 @@ sum_100k_on_dst_change:
   topic_resource_key:
   wave:
 sum_100k_across_dst_change:
+  event: sum_100k
   person: across_dst_change
   id: 16685
   age:
@@ -4270,7 +4271,6 @@ sum_100k_across_dst_change:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 56
   final_split_time_id: 192710
   finished: false
   first_name: Across
@@ -4290,6 +4290,7 @@ sum_100k_across_dst_change:
   topic_resource_key:
   wave:
 ggd30_50k_finished_second:
+  event: ggd30_50k
   person:
   id: 16686
   age: 43
@@ -4309,7 +4310,6 @@ ggd30_50k_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 48
   final_split_time_id: 192722
   finished: true
   first_name: Finished
@@ -4329,6 +4329,7 @@ ggd30_50k_finished_second:
   topic_resource_key:
   wave:
 ggd30_12m_series_finisher:
+  event: ggd30_12m
   person: series_finisher
   id: 16687
   age: 34
@@ -4348,7 +4349,6 @@ ggd30_12m_series_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 49
   final_split_time_id: 192724
   finished: true
   first_name: Series
@@ -4368,6 +4368,7 @@ ggd30_12m_series_finisher:
   topic_resource_key:
   wave:
 sum_55k_series_finisher:
+  event: sum_55k
   person: series_finisher
   id: 16688
   age: 34
@@ -4387,7 +4388,6 @@ sum_55k_series_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id: 192734
   finished: true
   first_name: Series
@@ -4407,6 +4407,7 @@ sum_55k_series_finisher:
   topic_resource_key:
   wave:
 sum_55k_slow_finisher:
+  event: sum_55k
   person: slow_finisher
   id: 16689
   age: 64
@@ -4426,7 +4427,6 @@ sum_55k_slow_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 57
   final_split_time_id: 192744
   finished: true
   first_name: Slow
@@ -4446,6 +4446,7 @@ sum_55k_slow_finisher:
   topic_resource_key:
   wave:
 ggd30_12m_slow_finisher:
+  event: ggd30_12m
   person: slow_finisher
   id: 16690
   age: 64
@@ -4465,7 +4466,6 @@ ggd30_12m_slow_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  event_id: 49
   final_split_time_id: 192746
   finished: true
   first_name: Slow

@@ -3,10 +3,11 @@ require "rails_helper"
 RSpec.describe IntervalSplitTraffic, type: :model do
   describe ".execute_query" do
     subject { described_class.execute_query(event_group: event_group, split_name: split_name, band_width: band_width) }
+
     let(:event_group) { event_groups(:hardrock_2015) }
     let(:band_width) { 1.hour }
 
-    context "for a split close to the start" do
+    context "when the split is close to the start" do
       let(:split_name) { "Cunningham" }
 
       it "returns an array of IntervalSplitTraffic objects" do
@@ -18,7 +19,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
       end
     end
 
-    context "for a split extending over multiple days" do
+    context "when the split extends over multiple days" do
       let(:split_name) { "Telluride" }
 
       it "returns an array of IntervalSplitTraffic objects reflecting multiple days" do
@@ -34,7 +35,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
       end
     end
 
-    context "for an event group with multiple events" do
+    context "when the event group has multiple events" do
       let(:event_group) { event_groups(:sum) }
       let(:split_name) { "Start" }
       let(:band_width) { 1.day }
@@ -46,7 +47,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
         expect(subject_ist.start_time).to eq("2017-09-23 00:00:00")
         expect(subject_ist.end_time).to eq("2017-09-24 00:00:00")
         expect(subject_ist.short_names).to eq(%w[100K 55K])
-        expect(subject_ist.event_ids).to eq([56, 57])
+        expect(subject_ist.event_ids).to eq([events(:sum_100k).id, events(:sum_55k).id])
         expect(subject_ist.in_counts).to eq([2, 2])
         expect(subject_ist.out_counts).to eq([0, 0])
         expect(subject_ist.finished_in_counts).to eq([0, 2])
@@ -63,11 +64,11 @@ RSpec.describe IntervalSplitTraffic, type: :model do
       end
     end
 
-    context "for a split that has not yet seen any traffic" do
+    context "when the split has not yet seen any traffic" do
       let(:event_group) { event_groups(:hardrock_2016) }
       let(:split_name) { "Finish" }
       let(:split) { event_group.events.first.course.finish_split }
-      before { event_group.split_times.where(split: split).each(&:destroy) }
+      before { event_group.split_times.where(split: split).find_each(&:destroy) }
 
       it "returns an empty array" do
         expect(subject).to eq([])
@@ -79,7 +80,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
     subject do
       described_class.new(
         short_names: ["First Event", "Second Event"],
-        event_ids: [1, 2],
+        event_ids: [first_event.id, second_event.id],
         in_counts: [3, 4],
         out_counts: [3, 3],
         finished_in_counts: [2, 3],
@@ -91,19 +92,21 @@ RSpec.describe IntervalSplitTraffic, type: :model do
       )
     end
 
+    let(:first_event) { events(:sum_100k) }
+    let(:second_event) { events(:sum_55k) }
     let(:result) { subject.counts_for_event(event_id) }
 
-    context "for the first event" do
-      let(:event_id) { 1 }
-      it { expect(result).to eq(described_class::Counts.new(1, "First Event", 3, 3, 2, 2)) }
+    context "when event_id matches the first event" do
+      let(:event_id) { first_event.id }
+      it { expect(result).to eq(described_class::Counts.new(first_event.id, "First Event", 3, 3, 2, 2)) }
     end
 
-    context "for the second event" do
-      let(:event_id) { 2 }
-      it { expect(result).to eq(described_class::Counts.new(2, "Second Event", 4, 3, 3, 2)) }
+    context "when event_id matches the second event" do
+      let(:event_id) { second_event.id }
+      it { expect(result).to eq(described_class::Counts.new(second_event.id, "Second Event", 4, 3, 3, 2)) }
     end
 
-    context "for the overall event group" do
+    context "when event_id is nil for the overall event group" do
       let(:event_id) { nil }
       it { expect(result).to eq(described_class::Counts.new(nil, nil, 7, 6, 5, 4)) }
     end

@@ -1,225 +1,225 @@
 ---
 aid_station_0001:
+  event: hardrock_2015
   id: 5
-  event_id: 4
   split_id: 5
 aid_station_0002:
+  event: hardrock_2015
   id: 6
-  event_id: 4
   split_id: 6
 aid_station_0003:
+  event: hardrock_2015
   id: 12
-  event_id: 4
   split_id: 12
 aid_station_0004:
+  event: hardrock_2015
   id: 16
-  event_id: 4
   split_id: 16
 aid_station_0005:
+  event: hardrock_2015
   id: 26
-  event_id: 4
   split_id: 26
 aid_station_0006:
+  event: hardrock_2015
   id: 32
-  event_id: 4
   split_id: 32
 aid_station_0007:
+  event: hardrock_2015
   id: 34
-  event_id: 4
   split_id: 34
 aid_station_0008:
+  event: ramble
   id: 140
-  event_id: 14
   split_id: 46
 aid_station_0009:
+  event: ramble
   id: 141
-  event_id: 14
   split_id: 47
 aid_station_0010:
+  event: hardrock_2014
   id: 202
-  event_id: 17
   split_id: 81
 aid_station_0011:
+  event: hardrock_2014
   id: 203
-  event_id: 17
   split_id: 82
 aid_station_0012:
+  event: hardrock_2014
   id: 208
-  event_id: 17
   split_id: 87
 aid_station_0013:
+  event: hardrock_2014
   id: 214
-  event_id: 17
   split_id: 93
 aid_station_0014:
+  event: hardrock_2014
   id: 218
-  event_id: 17
   split_id: 97
 aid_station_0015:
+  event: hardrock_2014
   id: 222
-  event_id: 17
   split_id: 101
 aid_station_0016:
+  event: hardrock_2014
   id: 228
-  event_id: 17
   split_id: 107
 aid_station_0017:
+  event: rufa_2016
   id: 458
-  event_id: 34
   split_id: 135
 aid_station_0018:
+  event: rufa_2016
   id: 459
-  event_id: 34
   split_id: 136
 aid_station_0019:
+  event: rufa_2016
   id: 460
-  event_id: 34
   split_id: 137
 aid_station_0020:
+  event: rufa_2017_24h
   id: 476
-  event_id: 36
   split_id: 137
 aid_station_0021:
+  event: rufa_2017_24h
   id: 477
-  event_id: 36
   split_id: 135
 aid_station_0022:
+  event: rufa_2017_24h
   id: 478
-  event_id: 36
   split_id: 136
 aid_station_0023:
+  event: hardrock_2016
   id: 479
-  event_id: 37
   split_id: 81
 aid_station_0024:
+  event: hardrock_2016
   id: 482
-  event_id: 37
   split_id: 87
 aid_station_0025:
+  event: hardrock_2016
   id: 485
-  event_id: 37
   split_id: 93
 aid_station_0026:
+  event: hardrock_2016
   id: 487
-  event_id: 37
   split_id: 97
 aid_station_0027:
+  event: hardrock_2016
   id: 489
-  event_id: 37
   split_id: 101
 aid_station_0028:
+  event: hardrock_2016
   id: 492
-  event_id: 37
   split_id: 107
 aid_station_0029:
+  event: hardrock_2016
   id: 493
-  event_id: 37
   split_id: 82
 aid_station_0030:
+  event: hardrock_2015
   id: 513
-  event_id: 4
   split_id: 20
 aid_station_0031:
+  event: ggd30_50k
   id: 570
-  event_id: 48
   split_id: 164
 aid_station_0032:
+  event: ggd30_50k
   id: 571
-  event_id: 48
   split_id: 165
 aid_station_0033:
+  event: ggd30_50k
   id: 572
-  event_id: 48
   split_id: 167
 aid_station_0034:
+  event: ggd30_50k
   id: 574
-  event_id: 48
   split_id: 170
 aid_station_0035:
+  event: ggd30_50k
   id: 575
-  event_id: 48
   split_id: 168
 aid_station_0036:
+  event: ggd30_50k
   id: 576
-  event_id: 48
   split_id: 166
 aid_station_0037:
+  event: ggd30_50k
   id: 577
-  event_id: 48
   split_id: 171
 aid_station_0038:
+  event: ggd30_12m
   id: 578
-  event_id: 49
   split_id: 173
 aid_station_0039:
+  event: ggd30_12m
   id: 579
-  event_id: 49
   split_id: 172
 aid_station_0040:
+  event: sum_100k
   id: 626
-  event_id: 56
   split_id: 205
 aid_station_0041:
+  event: sum_100k
   id: 627
-  event_id: 56
   split_id: 204
 aid_station_0042:
+  event: sum_100k
   id: 629
-  event_id: 56
   split_id: 207
 aid_station_0043:
+  event: sum_100k
   id: 630
-  event_id: 56
   split_id: 208
 aid_station_0044:
+  event: sum_100k
   id: 631
-  event_id: 56
   split_id: 209
 aid_station_0045:
+  event: sum_100k
   id: 632
-  event_id: 56
   split_id: 210
 aid_station_0046:
+  event: sum_55k
   id: 634
-  event_id: 57
   split_id: 213
 aid_station_0047:
+  event: sum_55k
   id: 635
-  event_id: 57
   split_id: 212
 aid_station_0048:
+  event: sum_55k
   id: 636
-  event_id: 57
   split_id: 218
 aid_station_0049:
+  event: sum_55k
   id: 637
-  event_id: 57
   split_id: 219
 aid_station_0050:
+  event: sum_55k
   id: 638
-  event_id: 57
   split_id: 220
 aid_station_0051:
+  event: sum_55k
   id: 639
-  event_id: 57
   split_id: 221
 aid_station_0052:
+  event: sum_100k
   id: 725
-  event_id: 56
   split_id: 206
 aid_station_0053:
+  event: sum_100k
   id: 726
-  event_id: 56
   split_id: 211
 aid_station_0054:
+  event: rufa_2017_12h
   id: 753
-  event_id: 70
   split_id: 137
 aid_station_0055:
+  event: rufa_2017_12h
   id: 754
-  event_id: 70
   split_id: 136
 aid_station_0056:
+  event: rufa_2017_12h
   id: 755
-  event_id: 70
   split_id: 135

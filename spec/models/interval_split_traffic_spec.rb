@@ -80,7 +80,7 @@ RSpec.describe IntervalSplitTraffic, type: :model do
     subject do
       described_class.new(
         short_names: ["First Event", "Second Event"],
-        event_ids: [1, 2],
+        event_ids: [first_event.id, second_event.id],
         in_counts: [3, 4],
         out_counts: [3, 3],
         finished_in_counts: [2, 3],
@@ -92,16 +92,18 @@ RSpec.describe IntervalSplitTraffic, type: :model do
       )
     end
 
+    let(:first_event) { events(:sum_100k) }
+    let(:second_event) { events(:sum_55k) }
     let(:result) { subject.counts_for_event(event_id) }
 
     context "when event_id matches the first event" do
-      let(:event_id) { 1 }
-      it { expect(result).to eq(described_class::Counts.new(1, "First Event", 3, 3, 2, 2)) }
+      let(:event_id) { first_event.id }
+      it { expect(result).to eq(described_class::Counts.new(first_event.id, "First Event", 3, 3, 2, 2)) }
     end
 
     context "when event_id matches the second event" do
-      let(:event_id) { 2 }
-      it { expect(result).to eq(described_class::Counts.new(2, "Second Event", 4, 3, 3, 2)) }
+      let(:event_id) { second_event.id }
+      it { expect(result).to eq(described_class::Counts.new(second_event.id, "Second Event", 4, 3, 3, 2)) }
     end
 
     context "when event_id is nil for the overall event group" do

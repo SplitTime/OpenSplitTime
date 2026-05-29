@@ -1,5 +1,7 @@
 class ProjectionAssessmentRun < ApplicationRecord
   belongs_to :event
+  belongs_to :completed_split, class_name: "Split"
+  belongs_to :projected_split, class_name: "Split"
   has_many :assessments, class_name: "ProjectionAssessment", dependent: :destroy
 
   after_update :broadcast_projection_assessment_run
@@ -35,6 +37,6 @@ class ProjectionAssessmentRun < ApplicationRecord
     broadcast_replace_to event,
                          :projection_assessment_runs,
                          partial: "projection_assessment_runs/projection_assessment_run",
-                         locals: { organization: self.organization, event: self.event, projection_assessment_run: self }
+                         locals: { organization: organization, event: event, projection_assessment_run: self }
   end
 end

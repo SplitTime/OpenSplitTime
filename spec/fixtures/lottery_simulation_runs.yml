@@ -1,7 +1,6 @@
 ---
 lottery_simulation_run_0001:
   lottery: lottery_without_tickets
-  id: 813529981
   context:
   elapsed_time:
   error_message:

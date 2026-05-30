@@ -1,157 +1,157 @@
 ---
 lottery_ticket_0001:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 1
-  lottery_division_id: 8
   lottery_entrant_id: 28
   reference_number: 10000
 lottery_ticket_0002:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 2
-  lottery_division_id: 1
   lottery_entrant_id: 5
   reference_number: 10001
 lottery_ticket_0003:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 3
-  lottery_division_id: 8
   lottery_entrant_id: 27
   reference_number: 10002
 lottery_ticket_0004:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0003
   id: 4
-  lottery_division_id: 2
   lottery_entrant_id: 12
   reference_number: 10003
 lottery_ticket_0005:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0003
   id: 5
-  lottery_division_id: 2
   lottery_entrant_id: 6
   reference_number: 10004
 lottery_ticket_0006:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 6
-  lottery_division_id: 8
   lottery_entrant_id: 24
   reference_number: 10005
 lottery_ticket_0007:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 7
-  lottery_division_id: 1
   lottery_entrant_id: 5
   reference_number: 10006
 lottery_ticket_0008:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 8
-  lottery_division_id: 8
   lottery_entrant_id: 25
   reference_number: 10007
 lottery_ticket_0009:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 9
-  lottery_division_id: 1
   lottery_entrant_id: 4
   reference_number: 10008
 lottery_ticket_0010:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 10
-  lottery_division_id: 1
   lottery_entrant_id: 7
   reference_number: 10009
 lottery_ticket_0011:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 11
-  lottery_division_id: 1
   lottery_entrant_id: 5
   reference_number: 10010
 lottery_ticket_0012:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 12
-  lottery_division_id: 8
   lottery_entrant_id: 26
   reference_number: 10011
 lottery_ticket_0013:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 13
-  lottery_division_id: 1
   lottery_entrant_id: 11
   reference_number: 10012
 lottery_ticket_0014:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0003
   id: 14
-  lottery_division_id: 2
   lottery_entrant_id: 8
   reference_number: 10013
 lottery_ticket_0015:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 15
-  lottery_division_id: 8
   lottery_entrant_id: 27
   reference_number: 10014
 lottery_ticket_0016:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 16
-  lottery_division_id: 1
   lottery_entrant_id: 5
   reference_number: 10015
 lottery_ticket_0017:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 17
-  lottery_division_id: 1
   lottery_entrant_id: 9
   reference_number: 10016
 lottery_ticket_0018:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 18
-  lottery_division_id: 1
   lottery_entrant_id: 13
   reference_number: 10017
 lottery_ticket_0019:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 19
-  lottery_division_id: 8
   lottery_entrant_id: 27
   reference_number: 10018
 lottery_ticket_0020:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 20
-  lottery_division_id: 1
   lottery_entrant_id: 11
   reference_number: 10019
 lottery_ticket_0021:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0003
   id: 21
-  lottery_division_id: 2
   lottery_entrant_id: 10
   reference_number: 10020
 lottery_ticket_0022:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0001
   id: 22
-  lottery_division_id: 8
   lottery_entrant_id: 24
   reference_number: 10021
 lottery_ticket_0023:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0002
   id: 23
-  lottery_division_id: 1
   lottery_entrant_id: 5
   reference_number: 10022
 lottery_ticket_0024:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0003
   id: 24
-  lottery_division_id: 2
   lottery_entrant_id: 10
   reference_number: 10023
 lottery_ticket_0025:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0003
   id: 25
-  lottery_division_id: 2
   lottery_entrant_id: 6
   reference_number: 10024
 lottery_ticket_0026:
   lottery: lottery_with_tickets_and_draws
+  division: lottery_division_0003
   id: 26
-  lottery_division_id: 2
   lottery_entrant_id: 6
   reference_number: 10025

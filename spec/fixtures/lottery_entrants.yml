@@ -1,6 +1,7 @@
 ---
 lottery_entrant_0001:
   person:
+  division: lottery_division_0002
   id: 4
   birthdate: '2000-01-09'
   city: Amadashire
@@ -12,7 +13,6 @@ lottery_entrant_0001:
   first_name: Emeline
   gender: 0
   last_name: Runolfsson
-  lottery_division_id: 1
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -22,6 +22,7 @@ lottery_entrant_0001:
   withdrawn: false
 lottery_entrant_0002:
   person:
+  division: lottery_division_0002
   id: 5
   birthdate: '1976-05-14'
   city: O'Connertown
@@ -33,7 +34,6 @@ lottery_entrant_0002:
   first_name: Norris
   gender: 0
   last_name: Wilkinson
-  lottery_division_id: 1
   number_of_tickets: 5
   phone:
   pre_selected: false
@@ -43,6 +43,7 @@ lottery_entrant_0002:
   withdrawn: false
 lottery_entrant_0003:
   person:
+  division: lottery_division_0003
   id: 6
   birthdate: '1983-01-09'
   city: Port Brandaburgh
@@ -54,7 +55,6 @@ lottery_entrant_0003:
   first_name: Jerrold
   gender: 0
   last_name: Treutel
-  lottery_division_id: 2
   number_of_tickets: 3
   phone:
   pre_selected: false
@@ -64,6 +64,7 @@ lottery_entrant_0003:
   withdrawn: false
 lottery_entrant_0004:
   person:
+  division: lottery_division_0002
   id: 7
   birthdate: '1993-06-06'
   city: West Vicentafurt
@@ -75,7 +76,6 @@ lottery_entrant_0004:
   first_name: Jospeh
   gender: 1
   last_name: Barrows
-  lottery_division_id: 1
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -85,6 +85,7 @@ lottery_entrant_0004:
   withdrawn: false
 lottery_entrant_0005:
   person:
+  division: lottery_division_0003
   id: 8
   birthdate: '1981-05-12'
   city: Caroleeville
@@ -96,7 +97,6 @@ lottery_entrant_0005:
   first_name: Ivette
   gender: 1
   last_name: Kuhn
-  lottery_division_id: 2
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -106,6 +106,7 @@ lottery_entrant_0005:
   withdrawn: false
 lottery_entrant_0006:
   person:
+  division: lottery_division_0002
   id: 9
   birthdate: '1971-11-07'
   city: Hungborough
@@ -117,7 +118,6 @@ lottery_entrant_0006:
   first_name: Nenita
   gender: 0
   last_name: Heaney
-  lottery_division_id: 1
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -127,6 +127,7 @@ lottery_entrant_0006:
   withdrawn: false
 lottery_entrant_0007:
   person:
+  division: lottery_division_0003
   id: 10
   birthdate: '1976-08-30'
   city: East Lauraport
@@ -138,7 +139,6 @@ lottery_entrant_0007:
   first_name: Veola
   gender: 0
   last_name: Cassin
-  lottery_division_id: 2
   number_of_tickets: 2
   phone:
   pre_selected: false
@@ -148,6 +148,7 @@ lottery_entrant_0007:
   withdrawn: false
 lottery_entrant_0008:
   person:
+  division: lottery_division_0002
   id: 11
   birthdate: '1986-08-22'
   city: Lebsackville
@@ -159,7 +160,6 @@ lottery_entrant_0008:
   first_name: Modesta
   gender: 1
   last_name: Raynor
-  lottery_division_id: 1
   number_of_tickets: 2
   phone:
   pre_selected: false
@@ -169,6 +169,7 @@ lottery_entrant_0008:
   withdrawn: false
 lottery_entrant_0009:
   person:
+  division: lottery_division_0003
   id: 12
   birthdate: '1994-03-08'
   city: Lake Nickyberg
@@ -180,7 +181,6 @@ lottery_entrant_0009:
   first_name: Blythe
   gender: 0
   last_name: Hintz
-  lottery_division_id: 2
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -190,6 +190,7 @@ lottery_entrant_0009:
   withdrawn: false
 lottery_entrant_0010:
   person:
+  division: lottery_division_0002
   id: 13
   birthdate: '1986-10-23'
   city: Beerbury
@@ -201,7 +202,6 @@ lottery_entrant_0010:
   first_name: Mitsuko
   gender: 1
   last_name: Wilkinson
-  lottery_division_id: 1
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -211,6 +211,7 @@ lottery_entrant_0010:
   withdrawn: false
 lottery_entrant_0011:
   person:
+  division: lottery_division_0004
   id: 21
   birthdate: '1994-05-31'
   city: Port Glennis
@@ -222,7 +223,6 @@ lottery_entrant_0011:
   first_name: Gricelda
   gender: 1
   last_name: Crona
-  lottery_division_id: 6
   number_of_tickets: 2
   phone:
   pre_selected: false
@@ -232,6 +232,7 @@ lottery_entrant_0011:
   withdrawn: false
 lottery_entrant_0012:
   person:
+  division: lottery_division_0005
   id: 22
   birthdate: '1997-10-15'
   city: West Rebecka
@@ -243,7 +244,6 @@ lottery_entrant_0012:
   first_name: Deb
   gender: 1
   last_name: Swaniawski
-  lottery_division_id: 7
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -253,6 +253,7 @@ lottery_entrant_0012:
   withdrawn: false
 lottery_entrant_0013:
   person:
+  division: lottery_division_0005
   id: 23
   birthdate: '1997-11-08'
   city: Prohaskaside
@@ -264,7 +265,6 @@ lottery_entrant_0013:
   first_name: Bernetta
   gender: 1
   last_name: Gerlach
-  lottery_division_id: 7
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -274,6 +274,7 @@ lottery_entrant_0013:
   withdrawn: false
 lottery_entrant_0014:
   person:
+  division: lottery_division_0001
   id: 24
   birthdate: '1991-07-22'
   city: Piamouth
@@ -285,7 +286,6 @@ lottery_entrant_0014:
   first_name: Denisha
   gender: 1
   last_name: Carter
-  lottery_division_id: 8
   number_of_tickets: 2
   phone:
   pre_selected: false
@@ -295,6 +295,7 @@ lottery_entrant_0014:
   withdrawn: false
 lottery_entrant_0015:
   person:
+  division: lottery_division_0001
   id: 25
   birthdate: '1978-08-19'
   city: Lake Antonialand
@@ -306,7 +307,6 @@ lottery_entrant_0015:
   first_name: Shenika
   gender: 0
   last_name: O'Kon
-  lottery_division_id: 8
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -316,6 +316,7 @@ lottery_entrant_0015:
   withdrawn: false
 lottery_entrant_0016:
   person:
+  division: lottery_division_0001
   id: 26
   birthdate: '1977-05-09'
   city: West Virgenborough
@@ -327,7 +328,6 @@ lottery_entrant_0016:
   first_name: Maud
   gender: 0
   last_name: Boyer
-  lottery_division_id: 8
   number_of_tickets: 1
   phone:
   pre_selected: false
@@ -337,6 +337,7 @@ lottery_entrant_0016:
   withdrawn: false
 lottery_entrant_0017:
   person:
+  division: lottery_division_0001
   id: 27
   birthdate: '1972-12-18'
   city: North Jessia
@@ -348,7 +349,6 @@ lottery_entrant_0017:
   first_name: Melina
   gender: 1
   last_name: Conroy
-  lottery_division_id: 8
   number_of_tickets: 3
   phone:
   pre_selected: false
@@ -358,6 +358,7 @@ lottery_entrant_0017:
   withdrawn: false
 lottery_entrant_0018:
   person:
+  division: lottery_division_0001
   id: 28
   birthdate: '1992-08-29'
   city: Refugialand
@@ -369,7 +370,6 @@ lottery_entrant_0018:
   first_name: Abraham
   gender: 1
   last_name: Balistreri
-  lottery_division_id: 8
   number_of_tickets: 1
   phone:
   pre_selected: false

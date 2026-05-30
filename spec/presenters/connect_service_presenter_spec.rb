@@ -132,9 +132,10 @@ RSpec.describe ConnectServicePresenter do
         { "source_question_id" => 200, "destination" => "comments", "value_when_present" => "First Attempt" },
       ]
     end
-    before do
-      connections(:connection_0003).update!(field_mappings: persisted_mappings)
+    let(:race_connection) do
+      Connection.find_by!(service_identifier: "runsignup", source_type: "Race", destination: event_group)
     end
+    before { race_connection.update!(field_mappings: persisted_mappings) }
 
     describe "#field_mappings" do
       it "returns the array stored on the EventGroup-level Race Connection" do

@@ -2,7 +2,9 @@ require "rails_helper"
 
 RSpec.describe "Visit the cutoff analysis page", :js do
   let(:course) { courses(:hardrock_ccw) }
-  let(:first_split_name) { course.splits.intermediate.first.base_name }
+  # Matches CourseCutoffAnalysisPresenter#default_split, which picks
+  # `course.ordered_splits.second` (the first intermediate by distance from start).
+  let(:first_split_name) { course.ordered_splits.second.base_name }
 
   # rubocop:disable RSpec/BeforeAfterAll
   before(:all) do

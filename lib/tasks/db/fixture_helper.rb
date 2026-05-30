@@ -51,6 +51,7 @@ module FixtureHelper
     :results_categories,
     :results_templates,
     :results_template_categories,
+    :splits,
     :users,
   ].freeze
 

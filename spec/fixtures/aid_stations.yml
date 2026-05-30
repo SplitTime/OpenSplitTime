@@ -1,225 +1,225 @@
 ---
 aid_station_0001:
   event: hardrock_2015
+  split: hardrock_ccw_start
   id: 5
-  split_id: 5
 aid_station_0002:
   event: hardrock_2015
+  split: hardrock_ccw_cunningham
   id: 6
-  split_id: 6
 aid_station_0003:
   event: hardrock_2015
+  split: hardrock_ccw_sherman
   id: 12
-  split_id: 12
 aid_station_0004:
   event: hardrock_2015
+  split: hardrock_ccw_grouse
   id: 16
-  split_id: 16
 aid_station_0005:
   event: hardrock_2015
+  split: hardrock_ccw_telluride
   id: 26
-  split_id: 26
 aid_station_0006:
   event: hardrock_2015
+  split: hardrock_ccw_putnam
   id: 32
-  split_id: 32
 aid_station_0007:
   event: hardrock_2015
+  split: hardrock_ccw_finish
   id: 34
-  split_id: 34
 aid_station_0008:
   event: ramble
+  split: ramble_even_course_start
   id: 140
-  split_id: 46
 aid_station_0009:
   event: ramble
+  split: ramble_even_course_finish
   id: 141
-  split_id: 47
 aid_station_0010:
   event: hardrock_2014
+  split: hardrock_cw_start
   id: 202
-  split_id: 81
 aid_station_0011:
   event: hardrock_2014
+  split: hardrock_cw_finish
   id: 203
-  split_id: 82
 aid_station_0012:
   event: hardrock_2014
+  split: hardrock_cw_telluride
   id: 208
-  split_id: 87
 aid_station_0013:
   event: hardrock_2014
+  split: hardrock_cw_ouray
   id: 214
-  split_id: 93
 aid_station_0014:
   event: hardrock_2014
+  split: hardrock_cw_grouse
   id: 218
-  split_id: 97
 aid_station_0015:
   event: hardrock_2014
+  split: hardrock_cw_sherman
   id: 222
-  split_id: 101
 aid_station_0016:
   event: hardrock_2014
+  split: hardrock_cw_cunningham
   id: 228
-  split_id: 107
 aid_station_0017:
   event: rufa_2016
+  split: rufa_course_start
   id: 458
-  split_id: 135
 aid_station_0018:
   event: rufa_2016
+  split: rufa_course_finish
   id: 459
-  split_id: 136
 aid_station_0019:
   event: rufa_2016
+  split: rufa_course_grandeur_peak
   id: 460
-  split_id: 137
 aid_station_0020:
   event: rufa_2017_24h
+  split: rufa_course_grandeur_peak
   id: 476
-  split_id: 137
 aid_station_0021:
   event: rufa_2017_24h
+  split: rufa_course_start
   id: 477
-  split_id: 135
 aid_station_0022:
   event: rufa_2017_24h
+  split: rufa_course_finish
   id: 478
-  split_id: 136
 aid_station_0023:
   event: hardrock_2016
+  split: hardrock_cw_start
   id: 479
-  split_id: 81
 aid_station_0024:
   event: hardrock_2016
+  split: hardrock_cw_telluride
   id: 482
-  split_id: 87
 aid_station_0025:
   event: hardrock_2016
+  split: hardrock_cw_ouray
   id: 485
-  split_id: 93
 aid_station_0026:
   event: hardrock_2016
+  split: hardrock_cw_grouse
   id: 487
-  split_id: 97
 aid_station_0027:
   event: hardrock_2016
+  split: hardrock_cw_sherman
   id: 489
-  split_id: 101
 aid_station_0028:
   event: hardrock_2016
+  split: hardrock_cw_cunningham
   id: 492
-  split_id: 107
 aid_station_0029:
   event: hardrock_2016
+  split: hardrock_cw_finish
   id: 493
-  split_id: 82
 aid_station_0030:
   event: hardrock_2015
+  split: hardrock_ccw_ouray
   id: 513
-  split_id: 20
 aid_station_0031:
   event: ggd30_50k
+  split: d30_50k_course_start
   id: 570
-  split_id: 164
 aid_station_0032:
   event: ggd30_50k
+  split: d30_50k_course_finish
   id: 571
-  split_id: 165
 aid_station_0033:
   event: ggd30_50k
+  split: d30_50k_course_aid_1
   id: 572
-  split_id: 167
 aid_station_0034:
   event: ggd30_50k
+  split: d30_50k_course_aid_3
   id: 574
-  split_id: 170
 aid_station_0035:
   event: ggd30_50k
+  split: d30_50k_course_aid_4
   id: 575
-  split_id: 168
 aid_station_0036:
   event: ggd30_50k
+  split: d30_50k_course_aid_5
   id: 576
-  split_id: 166
 aid_station_0037:
   event: ggd30_50k
+  split: d30_50k_course_aid_2
   id: 577
-  split_id: 171
 aid_station_0038:
   event: ggd30_12m
+  split: d30_12m_course_finish
   id: 578
-  split_id: 173
 aid_station_0039:
   event: ggd30_12m
+  split: d30_12m_course_start
   id: 579
-  split_id: 172
 aid_station_0040:
   event: sum_100k
+  split: sum_100k_course_finish
   id: 626
-  split_id: 205
 aid_station_0041:
   event: sum_100k
+  split: sum_100k_course_start
   id: 627
-  split_id: 204
 aid_station_0042:
   event: sum_100k
+  split: sum_100k_course_rolling_pass_aid2
   id: 629
-  split_id: 207
 aid_station_0043:
   event: sum_100k
+  split: sum_100k_course_cascade_creek_rd_aid3
   id: 630
-  split_id: 208
 aid_station_0044:
   event: sum_100k
+  split: sum_100k_course_engineer_mtn_th_aid4
   id: 631
-  split_id: 209
 aid_station_0045:
   event: sum_100k
+  split: sum_100k_course_bandera_mine_aid5
   id: 632
-  split_id: 210
 aid_station_0046:
   event: sum_55k
+  split: sum_55k_course_finish
   id: 634
-  split_id: 213
 aid_station_0047:
   event: sum_55k
+  split: sum_55k_course_start
   id: 635
-  split_id: 212
 aid_station_0048:
   event: sum_55k
+  split: sum_55k_course_molas_pass_aid1
   id: 636
-  split_id: 218
 aid_station_0049:
   event: sum_55k
+  split: sum_55k_course_rolling_pass_aid2
   id: 637
-  split_id: 219
 aid_station_0050:
   event: sum_55k
+  split: sum_55k_course_bandera_mine_aid5
   id: 638
-  split_id: 220
 aid_station_0051:
   event: sum_55k
+  split: sum_55k_course_anvil_cg_aid6
   id: 639
-  split_id: 221
 aid_station_0052:
   event: sum_100k
+  split: sum_100k_course_molas_pass_aid1
   id: 725
-  split_id: 206
 aid_station_0053:
   event: sum_100k
+  split: sum_100k_course_anvil_cg_aid6
   id: 726
-  split_id: 211
 aid_station_0054:
   event: rufa_2017_12h
+  split: rufa_course_grandeur_peak
   id: 753
-  split_id: 137
 aid_station_0055:
   event: rufa_2017_12h
+  split: rufa_course_finish
   id: 754
-  split_id: 136
 aid_station_0056:
   event: rufa_2017_12h
+  split: rufa_course_start
   id: 755
-  split_id: 135

@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Lotteries::EntrantServiceDetail do
-  let(:entrant) { lottery_entrants(:lottery_entrant_0001) }
+  let(:entrant) { LotteryEntrant.find_by!(first_name: "Emeline", last_name: "Runolfsson") }
 
   describe "validations" do
     subject do
@@ -92,11 +92,13 @@ RSpec.describe Lotteries::EntrantServiceDetail do
 
     context "when form_accepted_at is nil" do
       subject { build_stubbed(:lotteries_entrant_service_detail) }
+
       it { expect(result).to eq(false) }
     end
 
     context "when form_accepted_at is not nil" do
       subject { build_stubbed(:lotteries_entrant_service_detail, :accepted) }
+
       it { expect(result).to eq(true) }
     end
   end
@@ -106,11 +108,13 @@ RSpec.describe Lotteries::EntrantServiceDetail do
 
     context "when form_rejected_at is nil" do
       subject { build_stubbed(:lotteries_entrant_service_detail) }
+
       it { expect(result).to eq(false) }
     end
 
     context "when form_rejected_at is not nil" do
       subject { build_stubbed(:lotteries_entrant_service_detail, :rejected) }
+
       it { expect(result).to eq(true) }
     end
   end
@@ -120,22 +124,26 @@ RSpec.describe Lotteries::EntrantServiceDetail do
 
     context "when completed form is not attached" do
       subject { build(:lotteries_entrant_service_detail, entrant: entrant) }
+
       it { expect(result).to eq(false) }
     end
 
     context "when completed form is attached" do
       context "when form_accepted_at is present" do
         subject { build(:lotteries_entrant_service_detail, :accepted, :with_completed_form, entrant: entrant) }
+
         it { expect(result).to eq(false) }
       end
 
       context "when form_rejected_at is present" do
         subject { build(:lotteries_entrant_service_detail, :rejected, :with_completed_form, entrant: entrant) }
+
         it { expect(result).to eq(false) }
       end
 
       context "when form_accepted_at and form_rejected_at are not present" do
         subject { build(:lotteries_entrant_service_detail, :with_completed_form, entrant: entrant) }
+
         it do
           expect(subject.completed_form.attached?).to eq(true)
           expect(result).to eq(true)

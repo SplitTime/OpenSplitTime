@@ -5,7 +5,7 @@ RSpec.describe "manage entrant service form upload and download", :js do
 
   let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
   let(:organization) { lottery.organization }
-  let(:entrant) { lottery_entrants(:lottery_entrant_0004) }
+  let(:entrant) { LotteryEntrant.find_by!(first_name: "Jospeh", last_name: "Barrows") }
   before do
     entrant.update!(email: user.email)
     lottery.update!(status: :finished)

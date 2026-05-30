@@ -1,7 +1,11 @@
 require "rails_helper"
 
-RSpec.describe "visit the manage service view", js: true do
+RSpec.describe "visit the manage service view", :js do
   let(:admin) { users(:admin_user) }
+  let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
+  let(:organization) { lottery.organization }
+  let(:entrant) { LotteryEntrant.find_by!(first_name: "Jospeh", last_name: "Barrows") }
+  let(:person) { people(:bruno_fadel) }
   let(:owner) { users(:third_user) }
   let(:steward) { users(:fifth_user) }
   let(:user) { users(:fourth_user) }
@@ -9,14 +13,8 @@ RSpec.describe "visit the manage service view", js: true do
   before do
     organization.update(created_by: owner.id)
     organization.stewards << steward
+    lottery.update(status: :finished)
   end
-
-  let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
-  let(:organization) { lottery.organization }
-  let(:entrant) { lottery_entrants(:lottery_entrant_0004) }
-  let(:person) { people(:bruno_fadel) }
-
-  before { lottery.update(status: :finished) }
 
   scenario "user who is an admin" do
     login_as admin, scope: :user

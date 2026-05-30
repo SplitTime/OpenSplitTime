@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe LotteryEntrantPresenter do
   subject { described_class.new(entrant) }
-  let(:entrant) { lottery_entrants(:lottery_entrant_0001) }
+
+  let(:entrant) { LotteryEntrant.find_by!(first_name: "Emeline", last_name: "Runolfsson") }
   let(:organization) { entrant.division.lottery.organization }
 
   describe "#service_manageable_by_user?" do

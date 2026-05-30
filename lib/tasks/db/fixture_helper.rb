@@ -38,6 +38,7 @@ module FixtureHelper
   # Portable fixture tables are assigned an :id by Rails and are referenced by title
   # rather than id in other fixture tables.
   PORTABLE_FIXTURE_TABLES = [
+    :aid_stations,
     :course_groups,
     :courses,
     :credentials,
@@ -62,6 +63,7 @@ module FixtureHelper
   # column could become an unexpected sort key, scrambling every label and FK reference).
   # Pick columns that uniquely identify a row by its real-world identity.
   ORDER_BY_MAP = {
+    aid_stations: "event_id, split_id",
     credentials: "service_identifier, key, user_id",
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",
     partners: "partnerable_type, partnerable_id, name",

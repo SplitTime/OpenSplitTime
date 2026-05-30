@@ -74,7 +74,7 @@ RSpec.describe RawTime, type: :model do
 
   describe "#split_time" do
     let(:event) { events(:sum_100k) }
-    let(:effort) { event.efforts.first }
+    let(:effort) { efforts(:sum_100k_drop_anvil) }
     let(:event_group) { event_groups(:sum) }
     let(:split) { event.ordered_splits.second }
     let(:split_time) { effort.ordered_split_times.second }

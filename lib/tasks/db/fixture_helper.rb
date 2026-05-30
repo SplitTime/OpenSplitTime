@@ -41,6 +41,7 @@ module FixtureHelper
     :course_groups,
     :courses,
     :credentials,
+    :efforts,
     :event_groups,
     :events,
     :historical_facts,

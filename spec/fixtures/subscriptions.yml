@@ -1,17 +1,15 @@
 ---
 subscription_0001:
   user: admin_user
+  subscribable: rufa_2017_12h_not_started (Effort)
   id: 2
   endpoint:
   protocol: 1
   resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rufa-2017-12h-not-started:c7853bd1-f4c2-44e8-bb25-e814aafdf134
-  subscribable_id: 16673
-  subscribable_type: Effort
 subscription_0002:
   user: admin_user
+  subscribable: rufa_2017_12h_not_started (Effort)
   id: 4
   endpoint:
   protocol: 0
   resource_key: arn:aws:sns:us-west-2:998989370925:d-follow-rufa-2017-12h-not-started:c7853bd1-f4c2-44e8-bb25-e814aafdf134
-  subscribable_id: 16673
-  subscribable_type: Effort

@@ -39,6 +39,7 @@ module FixtureHelper
   # rather than id in other fixture tables.
   PORTABLE_FIXTURE_TABLES = [
     :aid_stations,
+    :connections,
     :course_groups,
     :courses,
     :credentials,
@@ -69,6 +70,8 @@ module FixtureHelper
   # Pick columns that uniquely identify a row by its real-world identity.
   ORDER_BY_MAP = {
     aid_stations: "event_id, split_id",
+    connections:
+      "service_identifier, source_type, source_id, destination_type, destination_id",
     credentials: "service_identifier, key, user_id",
     event_series_events: "event_series_id, event_id",
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",

@@ -1,22 +1,19 @@
 ---
 connection_0001:
-  destination: rufa_2017 (EventGroup)
-  id: 1
+  destination: rufa_2017_12h (Event)
   service_identifier: runsignup
-  source_id: '123'
-  source_type: Race
+  source_id: '12'
+  source_type: Event
   field_mappings: []
 connection_0002:
   destination: rufa_2017_24h (Event)
-  id: 2
   service_identifier: runsignup
   source_id: '24'
   source_type: Event
   field_mappings: []
 connection_0003:
-  destination: rufa_2017_12h (Event)
-  id: 3
+  destination: rufa_2017 (EventGroup)
   service_identifier: runsignup
-  source_id: '12'
-  source_type: Event
+  source_id: '123'
+  source_type: Race
   field_mappings: []

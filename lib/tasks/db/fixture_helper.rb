@@ -59,6 +59,7 @@ module FixtureHelper
     :results_template_categories,
     :splits,
     :stewardships,
+    :subscriptions,
     :users,
   ].freeze
 
@@ -78,6 +79,7 @@ module FixtureHelper
       "projected_lap, projected_split_id, projected_bitkey",
     results_template_categories: "results_template_id, position, results_category_id",
     stewardships: "user_id, organization_id",
+    subscriptions: "user_id, subscribable_type, subscribable_id, protocol, endpoint",
   }.freeze
 
   ATTRIBUTES_TO_IGNORE = [

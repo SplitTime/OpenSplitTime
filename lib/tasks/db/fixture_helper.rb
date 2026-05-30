@@ -51,6 +51,7 @@ module FixtureHelper
     :historical_facts,
     :lotteries,
     :lottery_divisions,
+    :lottery_simulation_runs,
     :monetary_donations,
     :organizations,
     :partners,
@@ -77,6 +78,7 @@ module FixtureHelper
     event_series_events: "event_series_id, event_id",
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",
     lottery_divisions: "lottery_id, name",
+    lottery_simulation_runs: "lottery_id, started_at, name",
     monetary_donations: "received_on, organization_id, amount, source",
     partners: "partnerable_type, partnerable_id, name",
     projection_assessment_runs:

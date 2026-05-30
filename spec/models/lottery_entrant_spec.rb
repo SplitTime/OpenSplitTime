@@ -17,7 +17,7 @@ RSpec.describe LotteryEntrant, type: :model do
     describe ".belonging_to_user" do
       let(:result) { existing_scope.belonging_to_user(user) }
       let(:user) { users(:fifth_user) }
-      let(:division) { lottery_divisions(:lottery_division_0001) }
+      let(:division) { LotteryDivision.find_by!(name: "Never Ever Evers") }
       let(:entrant_1) { lottery_entrants(:lottery_entrant_0001) }
       let(:entrant_2) { lottery_entrants(:lottery_entrant_0002) }
       let(:person) { people(:bruno_fadel) }
@@ -212,13 +212,14 @@ RSpec.describe LotteryEntrant, type: :model do
 
   describe "#draw_ticket!" do
     subject { lottery.entrants.find_by(last_name: "Crona") }
+
     let(:lottery) { lotteries(:lottery_without_tickets) }
     let(:division) { lottery.divisions.first }
     let(:execute_method) { subject.draw_ticket! }
 
     context "when the entrant has no tickets" do
       it "does not create a draw" do
-        expect { execute_method }.not_to change { LotteryDraw.count }
+        expect { execute_method }.not_to(change(LotteryDraw, :count))
       end
 
       it "returns nil" do
@@ -228,8 +229,9 @@ RSpec.describe LotteryEntrant, type: :model do
 
     context "when the entrant has tickets that have not been drawn" do
       before { lottery.delete_and_insert_tickets! }
+
       it "creates a draw" do
-        expect { execute_method }.to change { LotteryDraw.count }.by(1)
+        expect { execute_method }.to change(LotteryDraw, :count).by(1)
       end
 
       it "returns the draw" do
@@ -244,7 +246,7 @@ RSpec.describe LotteryEntrant, type: :model do
       end
 
       it "does not create a draw" do
-        expect { execute_method }.not_to change { LotteryDraw.count }
+        expect { execute_method }.not_to(change(LotteryDraw, :count))
       end
 
       it "returns nil" do
@@ -255,6 +257,7 @@ RSpec.describe LotteryEntrant, type: :model do
 
   describe "#drawn?" do
     subject { lottery.entrants.find_by(last_name: "Crona") }
+
     let(:lottery) { lotteries(:lottery_without_tickets) }
     let(:division) { lottery.divisions.first }
     let(:result) { subject.drawn? }
@@ -265,6 +268,7 @@ RSpec.describe LotteryEntrant, type: :model do
 
     context "when the entrant has tickets that have not been drawn" do
       before { lottery.delete_and_insert_tickets! }
+
       it { expect(result).to eq(false) }
     end
 

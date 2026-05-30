@@ -49,6 +49,7 @@ module FixtureHelper
     :events,
     :historical_facts,
     :lotteries,
+    :monetary_donations,
     :organizations,
     :partners,
     :people,
@@ -70,6 +71,7 @@ module FixtureHelper
     credentials: "service_identifier, key, user_id",
     event_series_events: "event_series_id, event_id",
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",
+    monetary_donations: "received_on, organization_id, amount, source",
     partners: "partnerable_type, partnerable_id, name",
     projection_assessment_runs:
       "event_id, completed_lap, completed_split_id, completed_bitkey, " \

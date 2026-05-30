@@ -2,6 +2,11 @@ require "rails_helper"
 
 RSpec.describe "visit a lottery entrants page" do
   let(:user) { users(:third_user) }
+  let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
+  let(:organization) { lottery.organization }
+  let(:all_entrants) { lottery.entrants }
+  let(:entrant_1) { lottery.entrants.find_by(first_name: "Maud", last_name: "Boyer") }
+  let(:other_entrants) { all_entrants.where.not(id: entrant_1.id) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
@@ -10,12 +15,6 @@ RSpec.describe "visit a lottery entrants page" do
     organization.update(created_by: owner.id)
     organization.stewards << steward
   end
-
-  let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
-  let(:organization) { lottery.organization }
-  let(:all_entrants) { lottery.entrants }
-  let(:entrant_1) { lottery.entrants.find_by(first_name: "Maud", last_name: "Boyer") }
-  let(:other_entrants) { all_entrants.where.not(id: entrant_1.id) }
 
   context "when the lottery is in preview status" do
     before { lottery.update(status: :preview) }
@@ -180,9 +179,8 @@ RSpec.describe "visit a lottery entrants page" do
   end
 
   def verify_ticket_link_preview_works
-    entrant_id = 6
-    entrant = ::LotteryEntrant.find(entrant_id)
-    entrant_card = find("#lottery_entrant_#{entrant_id}")
+    entrant = ::LotteryEntrant.find_by!(first_name: "Jerrold", last_name: "Treutel")
+    entrant_card = find("#lottery_entrant_#{entrant.id}")
     expect(entrant_card).to have_link("3 tickets")
     ticket_numbers = entrant.tickets.pluck(:reference_number)
     ticket_numbers.each { |ticket_number| expect(entrant_card).not_to have_content(ticket_number) }
@@ -193,9 +191,8 @@ RSpec.describe "visit a lottery entrants page" do
   end
 
   def verify_ticket_link_works
-    entrant_id = 6
-    entrant = ::LotteryEntrant.find(entrant_id)
-    entrant_card = find("#lottery_entrant_#{entrant_id}")
+    entrant = ::LotteryEntrant.find_by!(first_name: "Jerrold", last_name: "Treutel")
+    entrant_card = find("#lottery_entrant_#{entrant.id}")
     expect(entrant_card).to have_link("3 tickets")
     ticket_numbers = entrant.tickets.pluck(:reference_number)
     ticket_numbers.each { |ticket_number| expect(entrant_card).not_to have_content(ticket_number) }

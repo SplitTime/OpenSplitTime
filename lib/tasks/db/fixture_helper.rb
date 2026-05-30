@@ -55,6 +55,7 @@ module FixtureHelper
     :results_templates,
     :results_template_categories,
     :splits,
+    :stewardships,
     :users,
   ].freeze
 
@@ -68,6 +69,7 @@ module FixtureHelper
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",
     partners: "partnerable_type, partnerable_id, name",
     results_template_categories: "results_template_id, position, results_category_id",
+    stewardships: "user_id, organization_id",
   }.freeze
 
   ATTRIBUTES_TO_IGNORE = [

@@ -1,17 +1,13 @@
 ---
 event_series_event_0001:
-  event_series: d30_50k_series
-  event: ggd30_50k
-  id: 1
-event_series_event_0002:
-  event_series: d30_50k_series
-  event: sum_55k
-  id: 2
-event_series_event_0003:
   event_series: d30_short_series
   event: ggd30_12m
-  id: 3
-event_series_event_0004:
+event_series_event_0002:
   event_series: d30_short_series
   event: sum_55k
-  id: 4
+event_series_event_0003:
+  event_series: d30_50k_series
+  event: ggd30_50k
+event_series_event_0004:
+  event_series: d30_50k_series
+  event: sum_55k

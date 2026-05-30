@@ -45,6 +45,7 @@ module FixtureHelper
     :efforts,
     :event_groups,
     :event_series,
+    :event_series_events,
     :events,
     :historical_facts,
     :lotteries,
@@ -66,6 +67,7 @@ module FixtureHelper
   ORDER_BY_MAP = {
     aid_stations: "event_id, split_id",
     credentials: "service_identifier, key, user_id",
+    event_series_events: "event_series_id, event_id",
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",
     partners: "partnerable_type, partnerable_id, name",
     results_template_categories: "results_template_id, position, results_category_id",

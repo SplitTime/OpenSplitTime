@@ -3,7 +3,6 @@ projection_assessment_run_0001:
   event: ramble
   completed_split: ramble_even_course_start
   projected_split: ramble_even_course_finish
-  id: 269964004
   completed_bitkey: 1
   completed_lap: 1
   elapsed_time:

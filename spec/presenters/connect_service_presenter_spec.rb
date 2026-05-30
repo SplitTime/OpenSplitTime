@@ -133,7 +133,7 @@ RSpec.describe ConnectServicePresenter do
       ]
     end
     before do
-      connections(:connection_0001).update!(field_mappings: persisted_mappings)
+      connections(:connection_0003).update!(field_mappings: persisted_mappings)
     end
 
     describe "#field_mappings" do

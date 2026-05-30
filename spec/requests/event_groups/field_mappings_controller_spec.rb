@@ -16,7 +16,7 @@ RSpec.describe "PATCH /event_groups/:event_group_id/connect_service/:connect_ser
     }
   end
   let(:event_group) { event_groups(:rufa_2017) }
-  let(:race_connection) { connections(:connection_0001) }
+  let(:race_connection) { connections(:connection_0003) }
 
   before { login_as user, scope: :user }
   after { Warden.test_reset! }

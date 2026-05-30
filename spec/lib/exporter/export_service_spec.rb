@@ -95,8 +95,8 @@ RSpec.describe ::Exporter::ExportService do
 
         expect(::Effort.count).to be > stubbed_batch_size
         expect(resulting_lines.count).to eq(::Effort.count + 1)
-        expect(resulting_lines.second.chomp).to eq("121,Susanna,Abshire,CO")
-        expect(resulting_lines.last.chomp).to eq("4246,Omer,Yundt,CO")
+        expect(resulting_lines.second.chomp).to eq("#{efforts(:hardrock_2015_susanna_abshire).id},Susanna,Abshire,CO")
+        expect(resulting_lines.last.chomp).to eq("#{efforts(:hardrock_2014_omer_yundt).id},Omer,Yundt,CO")
       end
     end
   end

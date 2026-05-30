@@ -6,7 +6,10 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   let(:event_group) { event.event_group }
   let(:organization) { event_group.organization }
 
-  let(:effort_1) { event.efforts.ranking_subquery.first }
+  # Pin to a finished effort, which is what the best_efforts page actually displays.
+  # `event.efforts.ranking_subquery.first` is brittle: with hash-assigned ids it can land
+  # on a non-finished effort that the page does not render, making verify_link_present fail.
+  let(:effort_1) { efforts(:hardrock_2016_lavon_paucek) }
   let(:other_efforts) { event.efforts.where.not(id: effort_1.id) }
 
   # rubocop:disable RSpec/BeforeAfterAll
@@ -37,7 +40,7 @@ RSpec.describe "Visit the best efforts page and search for an effort" do
   context "when hidden efforts exist for the course" do
     let(:hidden_event) { events(:hardrock_2014) }
     let(:hidden_event_group) { hidden_event.event_group }
-    let(:hidden_effort_1) { hidden_event.efforts.ranking_subquery.first }
+    let(:hidden_effort_1) { efforts(:hardrock_2014_finished_first) }
     let(:other_hidden_efforts) { hidden_event.efforts.where.not(id: hidden_effort_1.id) }
 
     let(:user) { users(:third_user) }

@@ -1,1225 +1,167 @@
 ---
-hardrock_2015_tuan_jacobs:
-  event: hardrock_2015
-  person: tuan_jacobs
-  id: 7
-  age: 17
-  beacon_url:
-  beyond_start: true
-  bib_number: 1
-  bib_number_hardcoded:
-  birthdate: 1998-03-19
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: ES
-  country_name: Spain
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 42
-  finished: true
-  first_name: Tuan
-  gender: 0
-  last_name: Jacobs
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111011000001001010101110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-tuan-jacobs
-  started: true
-  state_code: AN
-  state_name: Andalucía
-  stopped: true
-  stopped_split_time_id: 42
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_erich_larson:
-  event: hardrock_2015
-  person: erich_larson
-  id: 8
-  age: 36
-  beacon_url:
-  beyond_start: true
-  bib_number: 128
-  bib_number_hardcoded:
-  birthdate: 1979-07-10
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 72
-  finished: true
-  first_name: Erich
-  gender: 0
-  last_name: Larson
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111010011110011000101001101111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-erich-larson
-  started: true
-  state_code: MT
-  state_name: Montana
-  stopped: true
-  stopped_split_time_id: 72
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_leif_carter:
-  event: hardrock_2015
-  person: leif_carter
-  id: 15
-  age: 55
-  beacon_url:
-  beyond_start: true
-  bib_number: 146
-  bib_number_hardcoded:
-  birthdate: 1960-02-01
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: ES
-  country_name: Spain
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 282
-  finished: true
-  first_name: Leif
-  gender: 0
-  last_name: Carter
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110011000111100110111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-leif-carter
-  started: true
-  state_code:
-  state_name:
-  stopped: true
-  stopped_split_time_id: 282
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_carmine_adams:
-  event: hardrock_2015
-  person: carmine_adams
-  id: 20
-  age: 18
-  beacon_url:
-  beyond_start: true
-  bib_number: 140
-  bib_number_hardcoded:
-  birthdate: 1997-05-25
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 1
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 432
-  finished: true
-  first_name: Carmine
-  gender: 0
-  last_name: Adams
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001010110111101110110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-carmine-adams
-  started: true
-  state_code: WA
-  state_name: Washington
-  stopped: true
-  stopped_split_time_id: 432
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_garry_kuhlman:
-  event: hardrock_2015
-  person: garry_kuhlman
-  id: 24
-  age: 45
-  beacon_url:
-  beyond_start: true
-  bib_number: 11
-  bib_number_hardcoded:
-  birthdate: 1969-10-10
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 552
-  finished: true
-  first_name: Garry
-  gender: 0
-  last_name: Kuhlman
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001101010110100111011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-garry-kuhlman
-  started: true
-  state_code: MT
-  state_name: Montana
-  stopped: true
-  stopped_split_time_id: 552
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_darius_jacobson:
-  event: hardrock_2015
-  person: darius_jacobson
-  id: 25
-  age: 30
-  beacon_url:
-  beyond_start: true
-  bib_number: 8
-  bib_number_hardcoded:
-  birthdate: 1985-03-21
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 582
-  finished: true
-  first_name: Darius
-  gender: 0
-  last_name: Jacobson
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001100011100000001011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-darius-jacobson
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 582
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_santa_green:
-  event: hardrock_2015
-  person: santa_green
-  id: 29
-  age: 37
-  beacon_url:
-  beyond_start: true
-  bib_number: 133
-  bib_number_hardcoded:
-  birthdate: 1977-10-27
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 702
-  finished: true
-  first_name: Santa
-  gender: 1
-  last_name: Green
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000110101110001110100111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-santa-green
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 702
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_gilberto_mckenzie:
-  event: hardrock_2015
-  person: gilberto_mckenzie
-  id: 31
-  age: 45
-  beacon_url:
-  beyond_start: true
-  bib_number: 121
-  bib_number_hardcoded:
-  birthdate: 1970-06-02
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 762
-  finished: true
-  first_name: Gilberto
-  gender: 0
-  last_name: McKenzie
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000011011001110100110111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-gilberto-mckenzie
-  started: true
-  state_code: WA
-  state_name: Washington
-  stopped: true
-  stopped_split_time_id: 762
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_vince_willms:
-  event: hardrock_2015
-  person: vince_willms
-  id: 47
-  age: 50
-  beacon_url:
-  beyond_start: true
-  bib_number: 182
-  bib_number_hardcoded:
-  birthdate: 1964-10-22
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 1242
-  finished: true
-  first_name: Vince
-  gender: 0
-  last_name: Willms
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000000100010101110000111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-vince-willms
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 1242
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_cedric_windler:
-  event: hardrock_2015
-  person: cedric_windler
-  id: 50
-  age: 36
-  beacon_url:
-  beyond_start: true
-  bib_number: 9
-  bib_number_hardcoded:
-  birthdate: 1979-07-10
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 1332
-  finished: true
-  first_name: Cedric
-  gender: 0
-  last_name: Windler
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111111100010001001011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-cedric-windler
-  started: true
-  state_code: TN
-  state_name: Tennessee
-  stopped: true
-  stopped_split_time_id: 1332
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_chris_rempel:
-  event: hardrock_2015
-  person: chris_rempel
-  id: 56
-  age: 26
-  beacon_url:
-  beyond_start: true
-  bib_number: 26
-  bib_number_hardcoded:
-  birthdate: 1988-12-28
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 1512
-  finished: true
-  first_name: Chris
-  gender: 0
-  last_name: Rempel
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111100001011100111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-chris-rempel
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 1512
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_robby_gerlach:
-  event: hardrock_2015
-  person: robby_gerlach
-  id: 57
-  age: 45
-  beacon_url:
-  beyond_start: true
-  bib_number: 105
-  bib_number_hardcoded:
-  birthdate: 1970-05-18
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 1542
-  finished: true
-  first_name: Robby
-  gender: 0
-  last_name: Gerlach
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111000100001001111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-robby-gerlach
-  started: true
-  state_code: VA
-  state_name: Virginia
-  stopped: true
-  stopped_split_time_id: 1542
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_rachelle_eichmann:
-  event: hardrock_2015
-  person: rachelle_eichmann
-  id: 59
+ggd30_12m_finished_first:
+  event: ggd30_12m
+  person: finished_first_france
   age: 23
   beacon_url:
   beyond_start: true
-  bib_number: 22
+  bib_number: 1586
   bib_number_hardcoded:
-  birthdate: 1992-01-11
-  checked_in: false
-  city:
+  birthdate: 1993-06-05
+  checked_in: true
+  city: LE VIBAL
   comments:
   completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
+  country_code: FR
+  country_name: France
+  data_status:
   dropped: false
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1602
-  finished: true
-  first_name: Rachelle
-  gender: 1
-  last_name: Eichmann
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101101111010001101111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-rachelle-eichmann
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 1602
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_elden_morissette:
-  event: hardrock_2015
-  person: elden_morissette
-  id: 61
-  age: 42
-  beacon_url:
-  beyond_start: true
-  bib_number: 170
-  bib_number_hardcoded:
-  birthdate: 1972-11-21
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 1662
-  finished: true
-  first_name: Elden
-  gender: 0
-  last_name: Morissette
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101100110000111110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-elden-morissette
-  started: true
-  state_code: WI
-  state_name: Wisconsin
-  stopped: true
-  stopped_split_time_id: 1662
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_leroy_leffler:
-  event: hardrock_2015
-  person: leroy_leffler
-  id: 63
-  age: 48
-  beacon_url:
-  beyond_start: true
-  bib_number: 34
-  bib_number_hardcoded:
-  birthdate: 1967-06-18
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 1722
-  finished: true
-  first_name: Leroy
-  gender: 0
-  last_name: Leffler
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100101111001100001011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-leroy-leffler
-  started: true
-  state_code: NM
-  state_name: New Mexico
-  stopped: true
-  stopped_split_time_id: 1722
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_samara_vandervort:
-  event: hardrock_2015
-  person: samara_vandervort
-  id: 73
-  age: 22
-  beacon_url:
-  beyond_start: true
-  bib_number: 35
-  bib_number_hardcoded:
-  birthdate: 1992-12-15
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 2022
-  finished: true
-  first_name: Samara
-  gender: 1
-  last_name: Vandervort
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111010111000001010111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-samara-vandervort
-  started: true
-  state_code: CA
-  state_name: California
-  stopped: true
-  stopped_split_time_id: 2022
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_robt_wintheiser:
-  event: hardrock_2015
-  person: robt_wintheiser
-  id: 94
-  age: 57
-  beacon_url:
-  beyond_start: true
-  bib_number: 30
-  bib_number_hardcoded:
-  birthdate: 1957-09-14
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 2652
-  finished: true
-  first_name: Robt
-  gender: 0
-  last_name: Wintheiser
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100100101010101101111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-robt-wintheiser
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 2652
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_demetrius_moen:
-  event: hardrock_2015
-  person: demetrius_moen
-  id: 96
-  age: 40
-  beacon_url:
-  beyond_start: true
-  bib_number: 39
-  bib_number_hardcoded:
-  birthdate: 1975-06-06
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 2712
-  finished: true
-  first_name: Demetrius
-  gender: 0
-  last_name: Moen
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100011100001011110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-demetrius-moen
-  started: true
-  state_code: OR
-  state_name: Oregon
-  stopped: true
-  stopped_split_time_id: 2712
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_vern_buckridge:
-  event: hardrock_2015
-  person: vern_buckridge
-  id: 105
-  age: 33
-  beacon_url:
-  beyond_start: true
-  bib_number: 176
-  bib_number_hardcoded:
-  birthdate: 1981-10-15
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 2982
-  finished: true
-  first_name: Vern
-  gender: 0
-  last_name: Buckridge
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001011100001111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-vern-buckridge
-  started: true
-  state_code: TX
-  state_name: Texas
-  stopped: true
-  stopped_split_time_id: 2982
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_donte_spencer:
-  event: hardrock_2015
-  person: donte_spencer
-  id: 112
-  age: 30
-  beacon_url:
-  beyond_start: true
-  bib_number: 157
-  bib_number_hardcoded:
-  birthdate: 1984-07-14
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 3192
-  finished: true
-  first_name: Donte
-  gender: 0
-  last_name: Spencer
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101111101010011001011111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-donte-spencer
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: true
-  stopped_split_time_id: 3192
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_bruno_fadel:
-  event: hardrock_2015
-  person: bruno_fadel
-  id: 116
-  age: 27
-  beacon_url:
-  beyond_start: true
-  bib_number: 103
-  bib_number_hardcoded:
-  birthdate: 1988-05-11
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 3312
-  finished: true
-  first_name: Bruno
-  gender: 0
-  last_name: Fadel
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110110101010011000011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-bruno-fadel
-  started: true
-  state_code: CA
-  state_name: California
-  stopped: true
-  stopped_split_time_id: 3312
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_gus_walker:
-  event: hardrock_2015
-  person: gus_walker
-  id: 117
-  age: 54
-  beacon_url:
-  beyond_start: true
-  bib_number: 156
-  bib_number_hardcoded:
-  birthdate: 1960-11-23
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 3342
-  finished: true
-  first_name: Gus
-  gender: 0
-  last_name: Walker
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110101100001001000111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-gus-walker
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 3342
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_susanna_abshire:
-  event: hardrock_2015
-  person: susanna_abshire
-  id: 121
-  age: 34
-  beacon_url:
-  beyond_start: true
-  bib_number: 144
-  bib_number_hardcoded:
-  birthdate: 1980-08-17
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 3462
-  finished: true
-  first_name: Susanna
-  gender: 1
-  last_name: Abshire
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110011011101010011011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-susanna-abshire
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 3462
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_leandro_cole:
-  event: hardrock_2015
-  person: leandro_cole
-  id: 125
-  age: 45
-  beacon_url:
-  beyond_start: true
-  bib_number: 168
-  bib_number_hardcoded:
-  birthdate: 1970-06-26
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 3582
-  finished: true
-  first_name: Leandro
-  gender: 0
-  last_name: Cole
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110010000101011010011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-leandro-cole
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: true
-  stopped_split_time_id: 3582
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_benedict_davis:
-  event: hardrock_2015
-  person: benedict_davis
-  id: 129
-  age: 32
-  beacon_url:
-  beyond_start: true
-  bib_number: 122
-  bib_number_hardcoded:
-  birthdate:
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 3702
-  finished: true
-  first_name: Benedict
-  gender: 0
-  last_name: Davis
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101101101000011001001011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-benedict-davis
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 3702
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_raphael_swift:
-  event: hardrock_2015
-  person: raphael_swift
-  id: 136
-  age: 40
-  beacon_url:
-  beyond_start: true
-  bib_number: 171
-  bib_number_hardcoded:
-  birthdate: 1974-07-14
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 3891
-  finished: false
-  first_name: Raphael
-  gender: 0
-  last_name: Swift
-  overall_performance: '100000000000001000000000000011100100110101000100000011111111111111111001011001111100010001111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-raphael-swift
-  started: true
-  state_code: AR
-  state_name: Arkansas
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_bad_status:
-  event: hardrock_2015
-  person: bad_status
-  id: 138
-  age: 21
-  beacon_url:
-  beyond_start: true
-  bib_number: 108
-  bib_number_hardcoded:
-  birthdate: 1994-04-18
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 101556
-  finished: false
-  first_name: Bad
-  gender: 0
-  last_name: Status
-  overall_performance: '000000000000001000000000000100101001101010100100000011111111111111111000000010101111001110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-bad-status
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 101556
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_irvin_harber:
-  event: hardrock_2015
-  person: irvin_harber
-  id: 141
-  age: 19
-  beacon_url:
-  beyond_start: true
-  bib_number: 134
-  bib_number_hardcoded:
-  birthdate: 1996-07-05
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 101541
-  finished: false
-  first_name: Irvin
-  gender: 0
-  last_name: Harber
-  overall_performance: '000000000000001000000000000011100100110101000100000011111111111111111010110110011010001111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-irvin-harber
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 101541
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_cassondra_nienow:
-  event: hardrock_2015
-  person: cassondra_nienow
-  id: 155
-  age: 56
-  beacon_url:
-  beyond_start: true
-  bib_number: 155
-  bib_number_hardcoded:
-  birthdate: 1958-09-07
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 4198
-  finished: false
-  first_name: Cassondra
-  gender: 1
-  last_name: Nienow
-  overall_performance: '000000000000001000000000000001011010100001101100000011111111111111111101011010100001001011011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-cassondra-nienow
-  started: true
-  state_code: OH
-  state_name: Ohio
-  stopped: true
-  stopped_split_time_id: 4198
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2015_donn_mckenzie:
-  event: hardrock_2015
-  person: donn_mckenzie
-  id: 158
-  age: 16
-  beacon_url:
-  beyond_start: true
-  bib_number: 119
-  bib_number_hardcoded:
-  birthdate: 1998-12-29
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 4219
-  finished: false
-  first_name: Donn
-  gender: 0
-  last_name: McKenzie
-  overall_performance: '100000000000001000000000000000011101001110110100000011111111111111111111011101101010101110111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
-  slug: hardrock-2015-donn-mckenzie
-  started: true
-  state_code: WY
-  state_name: Wyoming
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ramble_finished_first:
-  event: ramble
-  person: finished_first_2019_02_01
-  id: 1040
-  age: 49
-  beacon_url:
-  beyond_start: true
-  bib_number:
-  bib_number_hardcoded:
-  birthdate: 1957-02-04
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code:
-  country_name:
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 15145
+  final_split_time_id: 190117
   finished: true
   first_name: Finished
   gender: 0
   last_name: First
-  overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111111000001000100101001111'
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111100111001111101100111111'
   phone:
   report_url:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
-  slug: ramble-finished-first
+  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  slug: ggd30-12m-finished-first
   started: true
-  state_code:
-  state_name:
+  state_code: ARA
+  state_name: Auvergne-Rhône-Alpes
   stopped: true
-  stopped_split_time_id: 15145
+  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
-ramble_finished_second:
-  event: ramble
-  person: finished_second_montana_us
-  id: 1048
-  age: 12
+ggd30_12m_finished_second:
+  event: ggd30_12m
+  person: finished_second_colorado_us
+  age: 43
   beacon_url:
   beyond_start: true
-  bib_number:
+  bib_number: 1519
   bib_number_hardcoded:
-  birthdate: 1994-08-16
+  birthdate: 1973-07-23
+  checked_in: true
+  city: Boulder
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 190273
+  finished: true
+  first_name: Finished
+  gender: 1
+  last_name: Second
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111101010101001101'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  slug: ggd30-12m-finished-second
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_12m_not_started:
+  event: ggd30_12m
+  person: not_started_colorado_us
+  age: 22
+  beacon_url:
+  beyond_start: false
+  bib_number: 1622
+  bib_number_hardcoded:
+  birthdate: 1995-03-06
+  checked_in: true
+  city: Greeley
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id:
+  finished: false
+  first_name: Not
+  gender: 1
+  last_name: Started
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  slug: ggd30-12m-not-started
+  started: false
+  state_code: CO
+  state_name: Colorado
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_12m_series_finisher:
+  event: ggd30_12m
+  person: series_finisher
+  age: 34
+  beacon_url:
+  beyond_start: true
+  bib_number: 1515
+  bib_number_hardcoded:
+  birthdate: 1983-03-03
   checked_in: false
-  city:
+  city: Superior
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 192724
+  finished: true
+  first_name: Series
+  gender: 0
+  last_name: Finisher
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111100100001011111'
+  phone:
+  report_url:
+  scheduled_start_time:
+  slug: ggd30-12m-series-finisher
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_12m_slow_finisher:
+  event: ggd30_12m
+  person: slow_finisher
+  age: 64
+  beacon_url:
+  beyond_start: true
+  bib_number: 1616
+  bib_number_hardcoded:
+  birthdate: 1953-03-03
+  checked_in: false
+  city: Orem
   comments:
   completed_laps: 1
   country_code:
@@ -1229,46 +171,45 @@ ramble_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 15161
+  final_split_time_id: 192746
   finished: true
-  first_name: Finished
-  gender: 1
-  last_name: Second
-  overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111110111011010011100000111'
+  first_name: Slow
+  gender: 0
+  last_name: Finisher
+  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111000001101101001011101111'
   phone:
   report_url:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
-  slug: ramble-finished-second
+  scheduled_start_time:
+  slug: ggd30-12m-slow-finisher
   started: true
-  state_code:
+  state_code: UT
   state_name:
   stopped: true
-  stopped_split_time_id: 15161
+  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
-ramble_start_only:
-  event: ramble
-  person: start_only_2019_02_01
-  id: 1051
-  age: 38
+ggd30_12m_start_only:
+  event: ggd30_12m
+  person: start_only_colorado_us
+  age: 27
   beacon_url:
   beyond_start: false
-  bib_number:
+  bib_number: 1506
   bib_number_hardcoded:
-  birthdate: 1968-07-11
-  checked_in: false
-  city:
+  birthdate: 1989-09-09
+  checked_in: true
+  city: Aurora
   comments:
   completed_laps: 0
-  country_code:
-  country_name:
-  data_status: 2
+  country_code: US
+  country_name: United States
+  data_status:
   dropped: false
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 15166
+  final_split_time_id: 190731
   finished: false
   first_name: Start
   gender: 1
@@ -1276,33 +217,184 @@ ramble_start_only:
   overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
   phone:
   report_url:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
-  slug: ramble-start-only
+  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
+  slug: ggd30-12m-start-only
   started: true
-  state_code:
-  state_name:
+  state_code: CO
+  state_name: Colorado
   stopped: false
   stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
-ramble_not_started:
-  event: ramble
-  person: not_started_2019_02_01
-  id: 1061
-  age: 17
+ggd30_50k_bad_finish:
+  event: ggd30_50k
+  person: bad_finish
+  age: 21
   beacon_url:
-  beyond_start: false
-  bib_number:
+  beyond_start: true
+  bib_number: 1079
   bib_number_hardcoded:
-  birthdate: 1989-03-22
-  checked_in: false
+  birthdate: 1995-07-25
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 1
+  country_code:
+  country_name:
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 189055
+  finished: true
+  first_name: Bad
+  gender: 0
+  last_name: Finish
+  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101000000010111100110001'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  slug: ggd30-50k-bad-finish
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_50k_drop_aid4:
+  event: ggd30_50k
+  person: drop_aid4
+  age: 18
+  beacon_url:
+  beyond_start: true
+  bib_number: 1029
+  bib_number_hardcoded:
+  birthdate:
+  checked_in: true
   city:
   comments:
   completed_laps: 0
   country_code:
   country_name:
   data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 189952
+  finished: false
+  first_name: Drop
+  gender: 0
+  last_name: Aid4
+  overall_performance: '000000000000001000000000000001001101000000100000000111111111111111111110100010110011100000101001'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  slug: ggd30-50k-drop-aid4
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id: 189952
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_50k_finished_first:
+  event: ggd30_50k
+  person: finished_first_colorado_us
+  age: 44
+  beacon_url:
+  beyond_start: true
+  bib_number: 1116
+  bib_number_hardcoded:
+  birthdate: 1973-05-25
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 1
+  country_code:
+  country_name:
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 188951
+  finished: true
+  first_name: Finished
+  gender: 0
+  last_name: First
+  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110110100100001000101101101'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  slug: ggd30-50k-finished-first
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_50k_finished_second:
+  event: ggd30_50k
+  person:
+  age: 43
+  beacon_url:
+  beyond_start: true
+  bib_number: 1117
+  bib_number_hardcoded:
+  birthdate: 1975-07-25
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code:
+  country_name:
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 192722
+  finished: true
+  first_name: Finished
+  gender: 1
+  last_name: Second
+  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101010110110110001111111'
+  phone:
+  report_url:
+  scheduled_start_time:
+  slug: ggd30-50k-finished-second
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_50k_not_started:
+  event: ggd30_50k
+  person: not_started
+  age: 31
+  beacon_url:
+  beyond_start: false
+  bib_number: 49
+  bib_number_hardcoded:
+  birthdate: 1986-03-23
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 0
+  country_code:
+  country_name:
+  data_status:
   dropped: false
   email:
   emergency_contact:
@@ -1315,8 +407,8 @@ ramble_not_started:
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
   phone:
   report_url:
-  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
-  slug: ramble-not-started
+  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  slug: ggd30-50k-not-started
   started: false
   state_code:
   state_name:
@@ -1325,10 +417,237 @@ ramble_not_started:
   synced_at:
   topic_resource_key:
   wave:
+ggd30_50k_progress_aid3:
+  event: ggd30_50k
+  person: progress_aid3
+  age: 31
+  beacon_url:
+  beyond_start: true
+  bib_number: 219
+  bib_number_hardcoded:
+  birthdate: 1986-03-04
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 0
+  country_code:
+  country_name:
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 189850
+  finished: false
+  first_name: Progress
+  gender: 0
+  last_name: Aid3
+  overall_performance: '100000000000001000000000000000110110000100000000000111111111111111111111000000001001000101011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  slug: ggd30-50k-progress-aid3
+  started: true
+  state_code:
+  state_name:
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_50k_progress_aid4:
+  event: ggd30_50k
+  person: progress_aid4
+  age: 35
+  beacon_url:
+  beyond_start: true
+  bib_number: 1118
+  bib_number_hardcoded:
+  birthdate: 1982-03-29
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 0
+  country_code:
+  country_name:
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 189814
+  finished: false
+  first_name: Progress
+  gender: 1
+  last_name: Aid4
+  overall_performance: '100000000000001000000000000001001101000000100000000111111111111111111110100011000010111100011101'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  slug: ggd30-50k-progress-aid4
+  started: true
+  state_code:
+  state_name:
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ggd30_50k_start_only:
+  event: ggd30_50k
+  person: start_only_2019_02_01_07_19_53
+  age: 31
+  beacon_url:
+  beyond_start: false
+  bib_number: 433
+  bib_number_hardcoded:
+  birthdate: 1985-11-14
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 0
+  country_code:
+  country_name:
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 190761
+  finished: false
+  first_name: Start
+  gender: 1
+  last_name: Only
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
+  slug: ggd30-50k-start-only
+  started: true
+  state_code:
+  state_name:
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_clarence_goyette:
+  event: hardrock_2014
+  person: clarence_goyette
+  age: 52
+  beacon_url:
+  beyond_start: true
+  bib_number: 36
+  bib_number_hardcoded:
+  birthdate: 1961-09-18
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 93442
+  finished: true
+  first_name: Clarence
+  gender: 0
+  last_name: Goyette
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001000110110000111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-clarence-goyette
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 93442
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_claudio_wunsch:
+  event: hardrock_2014
+  person: claudio_wunsch
+  age: 33
+  beacon_url:
+  beyond_start: true
+  bib_number: 104
+  bib_number_hardcoded:
+  birthdate: 1981-04-17
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 91846
+  finished: true
+  first_name: Claudio
+  gender: 0
+  last_name: Wunsch
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000010001111111100010110111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-claudio-wunsch
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id: 91846
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_drop_ouray:
+  event: hardrock_2014
+  person: drop_ouray
+  age: 40
+  beacon_url:
+  beyond_start: true
+  bib_number: 142
+  bib_number_hardcoded:
+  birthdate: 1974-01-05
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 94483
+  finished: false
+  first_name: Drop
+  gender: 1
+  last_name: Ouray
+  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100000010011001100001111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-drop-ouray
+  started: true
+  state_code: CA
+  state_name: California
+  stopped: true
+  stopped_split_time_id: 94483
+  synced_at:
+  topic_resource_key:
+  wave:
 hardrock_2014_finished_first:
   event: hardrock_2014
   person: finished_first_japan
-  id: 4172
   age: 19
   beacon_url:
   beyond_start: true
@@ -1367,7 +686,6 @@ hardrock_2014_finished_first:
 hardrock_2014_finished_with_stop:
   event: hardrock_2014
   person: finished_with_stop
-  id: 4173
   age: 40
   beacon_url:
   beyond_start: true
@@ -1406,7 +724,6 @@ hardrock_2014_finished_with_stop:
 hardrock_2014_finished_without_stop:
   event: hardrock_2014
   person: finished_without_stop
-  id: 4174
   age: 25
   beacon_url:
   beyond_start: true
@@ -1442,166 +759,9 @@ hardrock_2014_finished_without_stop:
   synced_at:
   topic_resource_key:
   wave:
-hardrock_2014_claudio_wunsch:
-  event: hardrock_2014
-  person: claudio_wunsch
-  id: 4192
-  age: 33
-  beacon_url:
-  beyond_start: true
-  bib_number: 104
-  bib_number_hardcoded:
-  birthdate: 1981-04-17
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 91846
-  finished: true
-  first_name: Claudio
-  gender: 0
-  last_name: Wunsch
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000010001111111100010110111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-claudio-wunsch
-  started: true
-  state_code:
-  state_name:
-  stopped: true
-  stopped_split_time_id: 91846
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2014_rachelle_eichmann:
-  event: hardrock_2014
-  person: rachelle_eichmann
-  id: 4199
-  age: 22
-  beacon_url:
-  beyond_start: true
-  bib_number: 123
-  bib_number_hardcoded:
-  birthdate: 1992-01-11
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 92042
-  finished: true
-  first_name: Rachelle
-  gender: 1
-  last_name: Eichmann
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111010111001000001110111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-rachelle-eichmann
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 92042
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2014_keith_metz:
-  event: hardrock_2014
-  person: keith_metz
-  id: 4206
-  age: 42
-  beacon_url:
-  beyond_start: true
-  bib_number: 159
-  bib_number_hardcoded:
-  birthdate: 1971-11-06
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 92238
-  finished: true
-  first_name: Keith
-  gender: 0
-  last_name: Metz
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101000101000110100001111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-keith-metz
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: true
-  stopped_split_time_id: 92238
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2014_major_green:
-  event: hardrock_2014
-  person: major_green
-  id: 4207
-  age: 58
-  beacon_url:
-  beyond_start: true
-  bib_number: 121
-  bib_number_hardcoded:
-  birthdate: 1955-09-29
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 92266
-  finished: true
-  first_name: Major
-  gender: 0
-  last_name: Green
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100111100100101100110111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-major-green
-  started: true
-  state_code: NC
-  state_name: North Carolina
-  stopped: true
-  stopped_split_time_id: 92266
-  synced_at:
-  topic_resource_key:
-  wave:
 hardrock_2014_humberto_adams:
   event: hardrock_2014
   person: humberto_adams
-  id: 4221
   age: 24
   beacon_url:
   beyond_start: true
@@ -1637,10 +797,237 @@ hardrock_2014_humberto_adams:
   synced_at:
   topic_resource_key:
   wave:
+hardrock_2014_irvin_corkery:
+  event: hardrock_2014
+  person: irvin_corkery
+  age: 22
+  beacon_url:
+  beyond_start: true
+  bib_number: 120
+  bib_number_hardcoded:
+  birthdate: 1991-11-01
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 93498
+  finished: true
+  first_name: Irvin
+  gender: 0
+  last_name: Corkery
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010000001111000110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-irvin-corkery
+  started: true
+  state_code: DC
+  state_name: District of Columbia
+  stopped: true
+  stopped_split_time_id: 93498
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_keith_metz:
+  event: hardrock_2014
+  person: keith_metz
+  age: 42
+  beacon_url:
+  beyond_start: true
+  bib_number: 159
+  bib_number_hardcoded:
+  birthdate: 1971-11-06
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 92238
+  finished: true
+  first_name: Keith
+  gender: 0
+  last_name: Metz
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101000101000110100001111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-keith-metz
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: true
+  stopped_split_time_id: 92238
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_ken_bradtke:
+  event: hardrock_2014
+  person: ken_bradtke
+  age: 47
+  beacon_url:
+  beyond_start: true
+  bib_number: 158
+  bib_number_hardcoded:
+  birthdate: 1966-07-21
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 93638
+  finished: true
+  first_name: Ken
+  gender: 0
+  last_name: Bradtke
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110000010110110101001111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-ken-bradtke
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 93638
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_major_green:
+  event: hardrock_2014
+  person: major_green
+  age: 58
+  beacon_url:
+  beyond_start: true
+  bib_number: 121
+  bib_number_hardcoded:
+  birthdate: 1955-09-29
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 92266
+  finished: true
+  first_name: Major
+  gender: 0
+  last_name: Green
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100111100100101100110111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-major-green
+  started: true
+  state_code: NC
+  state_name: North Carolina
+  stopped: true
+  stopped_split_time_id: 92266
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_multiple_stops:
+  event: hardrock_2014
+  person: multiple_stops
+  age: 60
+  beacon_url:
+  beyond_start: true
+  bib_number: 187
+  bib_number_hardcoded:
+  birthdate: 1954-03-21
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 94453
+  finished: false
+  first_name: Multiple
+  gender: 1
+  last_name: Stops
+  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010100110011000110110111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-multiple-stops
+  started: true
+  state_code: HI
+  state_name: Hawaii
+  stopped: true
+  stopped_split_time_id: 94453
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_not_started:
+  event: hardrock_2014
+  person: not_started
+  age: 28
+  beacon_url:
+  beyond_start: false
+  bib_number: 115
+  bib_number_hardcoded:
+  birthdate: 1986-03-23
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id:
+  finished: false
+  first_name: Not
+  gender: 0
+  last_name: Started
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-not-started
+  started: false
+  state_code: CO
+  state_name: Colorado
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
 hardrock_2014_omer_yundt:
   event: hardrock_2014
   person: omer_yundt
-  id: 4246
   age: 40
   beacon_url:
   beyond_start: true
@@ -1679,7 +1066,6 @@ hardrock_2014_omer_yundt:
 hardrock_2014_pat_schaden:
   event: hardrock_2014
   person: pat_schaden
-  id: 4247
   age: 53
   beacon_url:
   beyond_start: true
@@ -1715,166 +1101,9 @@ hardrock_2014_pat_schaden:
   synced_at:
   topic_resource_key:
   wave:
-hardrock_2014_clarence_goyette:
-  event: hardrock_2014
-  person: clarence_goyette
-  id: 4249
-  age: 52
-  beacon_url:
-  beyond_start: true
-  bib_number: 36
-  bib_number_hardcoded:
-  birthdate: 1961-09-18
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 93442
-  finished: true
-  first_name: Clarence
-  gender: 0
-  last_name: Goyette
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001000110110000111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-clarence-goyette
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 93442
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2014_irvin_corkery:
-  event: hardrock_2014
-  person: irvin_corkery
-  id: 4251
-  age: 22
-  beacon_url:
-  beyond_start: true
-  bib_number: 120
-  bib_number_hardcoded:
-  birthdate: 1991-11-01
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 93498
-  finished: true
-  first_name: Irvin
-  gender: 0
-  last_name: Corkery
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010000001111000110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-irvin-corkery
-  started: true
-  state_code: DC
-  state_name: District of Columbia
-  stopped: true
-  stopped_split_time_id: 93498
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2014_willis_murray:
-  event: hardrock_2014
-  person: willis_murray
-  id: 4253
-  age: 16
-  beacon_url:
-  beyond_start: true
-  bib_number: 32
-  bib_number_hardcoded:
-  birthdate: 1998-02-04
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 93554
-  finished: true
-  first_name: Willis
-  gender: 0
-  last_name: Murray
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110001100101101100000111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-willis-murray
-  started: true
-  state_code: GA
-  state_name: Georgia
-  stopped: true
-  stopped_split_time_id: 93554
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2014_ken_bradtke:
-  event: hardrock_2014
-  person: ken_bradtke
-  id: 4256
-  age: 47
-  beacon_url:
-  beyond_start: true
-  bib_number: 158
-  bib_number_hardcoded:
-  birthdate: 1966-07-21
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 93638
-  finished: true
-  first_name: Ken
-  gender: 0
-  last_name: Bradtke
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110000010110110101001111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-ken-bradtke
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 93638
-  synced_at:
-  topic_resource_key:
-  wave:
 hardrock_2014_progress_sherman:
   event: hardrock_2014
   person: progress_sherman_colorado_us
-  id: 4277
   age: 36
   beacon_url:
   beyond_start: true
@@ -1910,49 +1139,85 @@ hardrock_2014_progress_sherman:
   synced_at:
   topic_resource_key:
   wave:
-hardrock_2014_multiple_stops:
+hardrock_2014_rachelle_eichmann:
   event: hardrock_2014
-  person: multiple_stops
-  id: 4293
-  age: 60
+  person: rachelle_eichmann
+  age: 22
   beacon_url:
   beyond_start: true
-  bib_number: 187
+  bib_number: 123
   bib_number_hardcoded:
-  birthdate: 1954-03-21
+  birthdate: 1992-01-11
   checked_in: false
   city:
   comments:
-  completed_laps: 0
+  completed_laps: 1
   country_code: US
   country_name: United States
   data_status:
-  dropped: true
+  dropped: false
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 94453
-  finished: false
-  first_name: Multiple
+  final_split_time_id: 92042
+  finished: true
+  first_name: Rachelle
   gender: 1
-  last_name: Stops
-  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010100110011000110110111111'
+  last_name: Eichmann
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111010111001000001110111'
   phone:
   report_url:
   scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-multiple-stops
+  slug: hardrock-2014-rachelle-eichmann
   started: true
-  state_code: HI
-  state_name: Hawaii
+  state_code: CO
+  state_name: Colorado
   stopped: true
-  stopped_split_time_id: 94453
+  stopped_split_time_id: 92042
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2014_willis_murray:
+  event: hardrock_2014
+  person: willis_murray
+  age: 16
+  beacon_url:
+  beyond_start: true
+  bib_number: 32
+  bib_number_hardcoded:
+  birthdate: 1998-02-04
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 93554
+  finished: true
+  first_name: Willis
+  gender: 0
+  last_name: Murray
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110001100101101100000111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
+  slug: hardrock-2014-willis-murray
+  started: true
+  state_code: GA
+  state_name: Georgia
+  stopped: true
+  stopped_split_time_id: 93554
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_without_start:
   event: hardrock_2014
   person: without_start
-  id: 4294
   age: 49
   beacon_url:
   beyond_start: true
@@ -1988,16 +1253,167 @@ hardrock_2014_without_start:
   synced_at:
   topic_resource_key:
   wave:
-hardrock_2014_drop_ouray:
-  event: hardrock_2014
-  person: drop_ouray
-  id: 4295
-  age: 40
+hardrock_2015_bad_status:
+  event: hardrock_2015
+  person: bad_status
+  age: 21
   beacon_url:
   beyond_start: true
-  bib_number: 142
+  bib_number: 108
   bib_number_hardcoded:
-  birthdate: 1974-01-05
+  birthdate: 1994-04-18
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 101556
+  finished: false
+  first_name: Bad
+  gender: 0
+  last_name: Status
+  overall_performance: '000000000000001000000000000100101001101010100100000011111111111111111000000010101111001110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-bad-status
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 101556
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_benedict_davis:
+  event: hardrock_2015
+  person: benedict_davis
+  age: 32
+  beacon_url:
+  beyond_start: true
+  bib_number: 122
+  bib_number_hardcoded:
+  birthdate:
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 3702
+  finished: true
+  first_name: Benedict
+  gender: 0
+  last_name: Davis
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101101101000011001001011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-benedict-davis
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 3702
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_bruno_fadel:
+  event: hardrock_2015
+  person: bruno_fadel
+  age: 27
+  beacon_url:
+  beyond_start: true
+  bib_number: 103
+  bib_number_hardcoded:
+  birthdate: 1988-05-11
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 3312
+  finished: true
+  first_name: Bruno
+  gender: 0
+  last_name: Fadel
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110110101010011000011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-bruno-fadel
+  started: true
+  state_code: CA
+  state_name: California
+  stopped: true
+  stopped_split_time_id: 3312
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_carmine_adams:
+  event: hardrock_2015
+  person: carmine_adams
+  age: 18
+  beacon_url:
+  beyond_start: true
+  bib_number: 140
+  bib_number_hardcoded:
+  birthdate: 1997-05-25
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 1
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 432
+  finished: true
+  first_name: Carmine
+  gender: 0
+  last_name: Adams
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001010110111101110110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-carmine-adams
+  started: true
+  state_code: WA
+  state_name: Washington
+  stopped: true
+  stopped_split_time_id: 432
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_cassondra_nienow:
+  event: hardrock_2015
+  person: cassondra_nienow
+  age: 56
+  beacon_url:
+  beyond_start: true
+  bib_number: 155
+  bib_number_hardcoded:
+  birthdate: 1958-09-07
   checked_in: false
   city:
   comments:
@@ -2009,40 +1425,1787 @@ hardrock_2014_drop_ouray:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 94483
+  final_split_time_id: 4198
   finished: false
-  first_name: Drop
+  first_name: Cassondra
   gender: 1
-  last_name: Ouray
-  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100000010011001100001111111'
+  last_name: Nienow
+  overall_performance: '000000000000001000000000000001011010100001101100000011111111111111111101011010100001001011011111'
   phone:
   report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-drop-ouray
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-cassondra-nienow
   started: true
-  state_code: CA
-  state_name: California
+  state_code: OH
+  state_name: Ohio
   stopped: true
-  stopped_split_time_id: 94483
+  stopped_split_time_id: 4198
   synced_at:
   topic_resource_key:
   wave:
-hardrock_2014_not_started:
-  event: hardrock_2014
-  person: not_started
-  id: 4302
-  age: 28
+hardrock_2015_cedric_windler:
+  event: hardrock_2015
+  person: cedric_windler
+  age: 36
   beacon_url:
-  beyond_start: false
-  bib_number: 115
+  beyond_start: true
+  bib_number: 9
   bib_number_hardcoded:
-  birthdate: 1986-03-23
+  birthdate: 1979-07-10
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 1332
+  finished: true
+  first_name: Cedric
+  gender: 0
+  last_name: Windler
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111111111100010001001011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-cedric-windler
+  started: true
+  state_code: TN
+  state_name: Tennessee
+  stopped: true
+  stopped_split_time_id: 1332
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_chris_rempel:
+  event: hardrock_2015
+  person: chris_rempel
+  age: 26
+  beacon_url:
+  beyond_start: true
+  bib_number: 26
+  bib_number_hardcoded:
+  birthdate: 1988-12-28
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 1512
+  finished: true
+  first_name: Chris
+  gender: 0
+  last_name: Rempel
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111100001011100111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-chris-rempel
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 1512
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_darius_jacobson:
+  event: hardrock_2015
+  person: darius_jacobson
+  age: 30
+  beacon_url:
+  beyond_start: true
+  bib_number: 8
+  bib_number_hardcoded:
+  birthdate: 1985-03-21
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 582
+  finished: true
+  first_name: Darius
+  gender: 0
+  last_name: Jacobson
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001100011100000001011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-darius-jacobson
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 582
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_demetrius_moen:
+  event: hardrock_2015
+  person: demetrius_moen
+  age: 40
+  beacon_url:
+  beyond_start: true
+  bib_number: 39
+  bib_number_hardcoded:
+  birthdate: 1975-06-06
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 2712
+  finished: true
+  first_name: Demetrius
+  gender: 0
+  last_name: Moen
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100011100001011110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-demetrius-moen
+  started: true
+  state_code: OR
+  state_name: Oregon
+  stopped: true
+  stopped_split_time_id: 2712
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_donn_mckenzie:
+  event: hardrock_2015
+  person: donn_mckenzie
+  age: 16
+  beacon_url:
+  beyond_start: true
+  bib_number: 119
+  bib_number_hardcoded:
+  birthdate: 1998-12-29
   checked_in: false
   city:
   comments:
   completed_laps: 0
   country_code: US
   country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 4219
+  finished: false
+  first_name: Donn
+  gender: 0
+  last_name: McKenzie
+  overall_performance: '100000000000001000000000000000011101001110110100000011111111111111111111011101101010101110111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-donn-mckenzie
+  started: true
+  state_code: WY
+  state_name: Wyoming
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_donte_spencer:
+  event: hardrock_2015
+  person: donte_spencer
+  age: 30
+  beacon_url:
+  beyond_start: true
+  bib_number: 157
+  bib_number_hardcoded:
+  birthdate: 1984-07-14
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 3192
+  finished: true
+  first_name: Donte
+  gender: 0
+  last_name: Spencer
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101111101010011001011111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-donte-spencer
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: true
+  stopped_split_time_id: 3192
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_elden_morissette:
+  event: hardrock_2015
+  person: elden_morissette
+  age: 42
+  beacon_url:
+  beyond_start: true
+  bib_number: 170
+  bib_number_hardcoded:
+  birthdate: 1972-11-21
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 1662
+  finished: true
+  first_name: Elden
+  gender: 0
+  last_name: Morissette
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101100110000111110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-elden-morissette
+  started: true
+  state_code: WI
+  state_name: Wisconsin
+  stopped: true
+  stopped_split_time_id: 1662
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_erich_larson:
+  event: hardrock_2015
+  person: erich_larson
+  age: 36
+  beacon_url:
+  beyond_start: true
+  bib_number: 128
+  bib_number_hardcoded:
+  birthdate: 1979-07-10
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 72
+  finished: true
+  first_name: Erich
+  gender: 0
+  last_name: Larson
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111010011110011000101001101111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-erich-larson
+  started: true
+  state_code: MT
+  state_name: Montana
+  stopped: true
+  stopped_split_time_id: 72
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_garry_kuhlman:
+  event: hardrock_2015
+  person: garry_kuhlman
+  age: 45
+  beacon_url:
+  beyond_start: true
+  bib_number: 11
+  bib_number_hardcoded:
+  birthdate: 1969-10-10
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 552
+  finished: true
+  first_name: Garry
+  gender: 0
+  last_name: Kuhlman
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001001101010110100111011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-garry-kuhlman
+  started: true
+  state_code: MT
+  state_name: Montana
+  stopped: true
+  stopped_split_time_id: 552
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_gilberto_mckenzie:
+  event: hardrock_2015
+  person: gilberto_mckenzie
+  age: 45
+  beacon_url:
+  beyond_start: true
+  bib_number: 121
+  bib_number_hardcoded:
+  birthdate: 1970-06-02
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 762
+  finished: true
+  first_name: Gilberto
+  gender: 0
+  last_name: McKenzie
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000011011001110100110111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-gilberto-mckenzie
+  started: true
+  state_code: WA
+  state_name: Washington
+  stopped: true
+  stopped_split_time_id: 762
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_gus_walker:
+  event: hardrock_2015
+  person: gus_walker
+  age: 54
+  beacon_url:
+  beyond_start: true
+  bib_number: 156
+  bib_number_hardcoded:
+  birthdate: 1960-11-23
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 3342
+  finished: true
+  first_name: Gus
+  gender: 0
+  last_name: Walker
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110101100001001000111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-gus-walker
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 3342
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_irvin_harber:
+  event: hardrock_2015
+  person: irvin_harber
+  age: 19
+  beacon_url:
+  beyond_start: true
+  bib_number: 134
+  bib_number_hardcoded:
+  birthdate: 1996-07-05
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 101541
+  finished: false
+  first_name: Irvin
+  gender: 0
+  last_name: Harber
+  overall_performance: '000000000000001000000000000011100100110101000100000011111111111111111010110110011010001111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-irvin-harber
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 101541
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_leandro_cole:
+  event: hardrock_2015
+  person: leandro_cole
+  age: 45
+  beacon_url:
+  beyond_start: true
+  bib_number: 168
+  bib_number_hardcoded:
+  birthdate: 1970-06-26
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 3582
+  finished: true
+  first_name: Leandro
+  gender: 0
+  last_name: Cole
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110010000101011010011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-leandro-cole
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: true
+  stopped_split_time_id: 3582
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_leif_carter:
+  event: hardrock_2015
+  person: leif_carter
+  age: 55
+  beacon_url:
+  beyond_start: true
+  bib_number: 146
+  bib_number_hardcoded:
+  birthdate: 1960-02-01
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: ES
+  country_name: Spain
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 282
+  finished: true
+  first_name: Leif
+  gender: 0
+  last_name: Carter
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110011000111100110111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-leif-carter
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id: 282
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_leroy_leffler:
+  event: hardrock_2015
+  person: leroy_leffler
+  age: 48
+  beacon_url:
+  beyond_start: true
+  bib_number: 34
+  bib_number_hardcoded:
+  birthdate: 1967-06-18
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 1722
+  finished: true
+  first_name: Leroy
+  gender: 0
+  last_name: Leffler
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111100101111001100001011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-leroy-leffler
+  started: true
+  state_code: NM
+  state_name: New Mexico
+  stopped: true
+  stopped_split_time_id: 1722
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_rachelle_eichmann:
+  event: hardrock_2015
+  person: rachelle_eichmann
+  age: 23
+  beacon_url:
+  beyond_start: true
+  bib_number: 22
+  bib_number_hardcoded:
+  birthdate: 1992-01-11
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 1602
+  finished: true
+  first_name: Rachelle
+  gender: 1
+  last_name: Eichmann
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111101101111010001101111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-rachelle-eichmann
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 1602
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_raphael_swift:
+  event: hardrock_2015
+  person: raphael_swift
+  age: 40
+  beacon_url:
+  beyond_start: true
+  bib_number: 171
+  bib_number_hardcoded:
+  birthdate: 1974-07-14
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 3891
+  finished: false
+  first_name: Raphael
+  gender: 0
+  last_name: Swift
+  overall_performance: '100000000000001000000000000011100100110101000100000011111111111111111001011001111100010001111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-raphael-swift
+  started: true
+  state_code: AR
+  state_name: Arkansas
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_robby_gerlach:
+  event: hardrock_2015
+  person: robby_gerlach
+  age: 45
+  beacon_url:
+  beyond_start: true
+  bib_number: 105
+  bib_number_hardcoded:
+  birthdate: 1970-05-18
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 1542
+  finished: true
+  first_name: Robby
+  gender: 0
+  last_name: Gerlach
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111110111000100001001111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-robby-gerlach
+  started: true
+  state_code: VA
+  state_name: Virginia
+  stopped: true
+  stopped_split_time_id: 1542
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_robt_wintheiser:
+  event: hardrock_2015
+  person: robt_wintheiser
+  age: 57
+  beacon_url:
+  beyond_start: true
+  bib_number: 30
+  bib_number_hardcoded:
+  birthdate: 1957-09-14
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 2652
+  finished: true
+  first_name: Robt
+  gender: 0
+  last_name: Wintheiser
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110100100101010101101111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-robt-wintheiser
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 2652
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_samara_vandervort:
+  event: hardrock_2015
+  person: samara_vandervort
+  age: 22
+  beacon_url:
+  beyond_start: true
+  bib_number: 35
+  bib_number_hardcoded:
+  birthdate: 1992-12-15
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 2022
+  finished: true
+  first_name: Samara
+  gender: 1
+  last_name: Vandervort
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110111010111000001010111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-samara-vandervort
+  started: true
+  state_code: CA
+  state_name: California
+  stopped: true
+  stopped_split_time_id: 2022
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_santa_green:
+  event: hardrock_2015
+  person: santa_green
+  age: 37
+  beacon_url:
+  beyond_start: true
+  bib_number: 133
+  bib_number_hardcoded:
+  birthdate: 1977-10-27
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 702
+  finished: true
+  first_name: Santa
+  gender: 1
+  last_name: Green
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000110101110001110100111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-santa-green
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 702
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_susanna_abshire:
+  event: hardrock_2015
+  person: susanna_abshire
+  age: 34
+  beacon_url:
+  beyond_start: true
+  bib_number: 144
+  bib_number_hardcoded:
+  birthdate: 1980-08-17
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 3462
+  finished: true
+  first_name: Susanna
+  gender: 1
+  last_name: Abshire
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110101110011011101010011011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-susanna-abshire
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 3462
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_tuan_jacobs:
+  event: hardrock_2015
+  person: tuan_jacobs
+  age: 17
+  beacon_url:
+  beyond_start: true
+  bib_number: 1
+  bib_number_hardcoded:
+  birthdate: 1998-03-19
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: ES
+  country_name: Spain
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 42
+  finished: true
+  first_name: Tuan
+  gender: 0
+  last_name: Jacobs
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111011000001001010101110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-tuan-jacobs
+  started: true
+  state_code: AN
+  state_name: Andalucía
+  stopped: true
+  stopped_split_time_id: 42
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_vern_buckridge:
+  event: hardrock_2015
+  person: vern_buckridge
+  age: 33
+  beacon_url:
+  beyond_start: true
+  bib_number: 176
+  bib_number_hardcoded:
+  birthdate: 1981-10-15
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 2982
+  finished: true
+  first_name: Vern
+  gender: 0
+  last_name: Buckridge
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111110110010001011100001111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-vern-buckridge
+  started: true
+  state_code: TX
+  state_name: Texas
+  stopped: true
+  stopped_split_time_id: 2982
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2015_vince_willms:
+  event: hardrock_2015
+  person: vince_willms
+  age: 50
+  beacon_url:
+  beyond_start: true
+  bib_number: 182
+  bib_number_hardcoded:
+  birthdate: 1964-10-22
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 1242
+  finished: true
+  first_name: Vince
+  gender: 0
+  last_name: Willms
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111000000100010101110000111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2015-07-10 12:00:00.000000000 Z
+  slug: hardrock-2015-vince-willms
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 1242
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_benito_moen:
+  event: hardrock_2016
+  person: benito_moen
+  age: 52
+  beacon_url:
+  beyond_start: true
+  bib_number: 177
+  bib_number_hardcoded:
+  birthdate: 1964-01-16
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 148819
+  finished: false
+  first_name: Benito
+  gender: 0
+  last_name: Moen
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101011100100001101011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-benito-moen
+  started: true
+  state_code: OH
+  state_name: Ohio
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_brinda_fisher:
+  event: hardrock_2016
+  person: brinda_fisher
+  age: 22
+  beacon_url:
+  beyond_start: true
+  bib_number: 37
+  bib_number_hardcoded:
+  birthdate:
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 149907
+  finished: false
+  first_name: Brinda
+  gender: 1
+  last_name: Fisher
+  overall_performance: '100000000000001000000000000010110111010000000100000011111111111111111010010110100110000111011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-brinda-fisher
+  started: true
+  state_code: SC
+  state_name: South Carolina
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_charlie_mueller:
+  event: hardrock_2016
+  person: charlie_mueller
+  age: 27
+  beacon_url:
+  beyond_start: true
+  bib_number: 159
+  bib_number_hardcoded:
+  birthdate: 1989-06-10
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 148987
+  finished: false
+  first_name: Charlie
+  gender: 0
+  last_name: Mueller
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001110000100110011110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-charlie-mueller
+  started: true
+  state_code: OR
+  state_name: Oregon
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_douglas_vandervort:
+  event: hardrock_2016
+  person: douglas_vandervort
+  age: 52
+  beacon_url:
+  beyond_start: true
+  bib_number: 26
+  bib_number_hardcoded:
+  birthdate: 1964-02-16
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 147839
+  finished: false
+  first_name: Douglas
+  gender: 0
+  last_name: Vandervort
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010010110100110000111011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-douglas-vandervort
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_dropped_grouse:
+  event: hardrock_2016
+  person: dropped_grouse
+  age: 47
+  beacon_url:
+  beyond_start: true
+  bib_number: 117
+  bib_number_hardcoded:
+  birthdate: 1969-05-13
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 150335
+  finished: false
+  first_name: Dropped
+  gender: 0
+  last_name: Grouse
+  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111100110110100101010111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-dropped-grouse
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 150335
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_eddy_goldner:
+  event: hardrock_2016
+  person: eddy_goldner
+  age: 18
+  beacon_url:
+  beyond_start: true
+  bib_number: 9
+  bib_number_hardcoded:
+  birthdate: 1997-07-26
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 148203
+  finished: false
+  first_name: Eddy
+  gender: 0
+  last_name: Goldner
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001101001101100001111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-eddy-goldner
+  started: true
+  state_code: WA
+  state_name: Washington
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_hoyt_macejkovic:
+  event: hardrock_2016
+  person: hoyt_macejkovic
+  age: 55
+  beacon_url:
+  beyond_start: true
+  bib_number: 125
+  bib_number_hardcoded:
+  birthdate: 1960-07-23
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 150506
+  finished: false
+  first_name: Hoyt
+  gender: 0
+  last_name: Macejkovic
+  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100001100000000110000111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-hoyt-macejkovic
+  started: true
+  state_code: MD
+  state_name: Maryland
+  stopped: true
+  stopped_split_time_id: 150506
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_junior_lesch:
+  event: hardrock_2016
+  person: junior_lesch
+  age: 49
+  beacon_url:
+  beyond_start: true
+  bib_number: 135
+  bib_number_hardcoded:
+  birthdate: 1967-02-21
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 148091
+  finished: false
+  first_name: Junior
+  gender: 0
+  last_name: Lesch
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010000011001000111111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-junior-lesch
+  started: true
+  state_code: NM
+  state_name: New Mexico
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_kendall_koch:
+  event: hardrock_2016
+  person: kendall_koch
+  age: 40
+  beacon_url:
+  beyond_start: true
+  bib_number: 188
+  bib_number_hardcoded:
+  birthdate: 1976-02-05
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 148903
+  finished: false
+  first_name: Kendall
+  gender: 0
+  last_name: Koch
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101010011010111101111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-kendall-koch
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_kory_kulas:
+  event: hardrock_2016
+  person: kory_kulas
+  age: 42
+  beacon_url:
+  beyond_start: true
+  bib_number: 118
+  bib_number_hardcoded:
+  birthdate: 1974-01-25
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 147481
+  finished: false
+  first_name: Kory
+  gender: 0
+  last_name: Kulas
+  overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111000111011010001011000111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-kory-kulas
+  started: true
+  state_code: CA
+  state_name: California
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_lavon_paucek:
+  event: hardrock_2016
+  person: lavon_paucek
+  age: 41
+  beacon_url:
+  beyond_start: true
+  bib_number: 4
+  bib_number_hardcoded:
+  birthdate: 1974-07-29
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: NZ
+  country_name: New Zealand
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 146950
+  finished: true
+  first_name: Lavon
+  gender: 1
+  last_name: Paucek
+  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110001010000001110010111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-lavon-paucek
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id: 146950
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_mervin_smitham:
+  event: hardrock_2016
+  person: mervin_smitham
+  age: 24
+  beacon_url:
+  beyond_start: true
+  bib_number: 109
+  bib_number_hardcoded:
+  birthdate: 1991-10-08
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 150403
+  finished: false
+  first_name: Mervin
+  gender: 0
+  last_name: Smitham
+  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010111000000000110010011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-mervin-smitham
+  started: true
+  state_code: NM
+  state_name: New Mexico
+  stopped: true
+  stopped_split_time_id: 150403
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_missing_telluride_out:
+  event: hardrock_2016
+  person:
+  age: 20
+  beacon_url:
+  beyond_start: true
+  bib_number: 121
+  bib_number_hardcoded:
+  birthdate: 1996-02-11
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 148007
+  finished: false
+  first_name: Missing
+  gender: 0
+  last_name: Telluride Out
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001010001111000110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-missing-telluride-out
+  started: true
+  state_code: AK
+  state_name: Alaska
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_progress_sherman:
+  event: hardrock_2016
+  person: progress_sherman
+  age: 33
+  beacon_url:
+  beyond_start: true
+  bib_number: 150
+  bib_number_hardcoded:
+  birthdate: 1982-07-28
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 0
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 148567
+  finished: false
+  first_name: Progress
+  gender: 0
+  last_name: Sherman
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010111000001111011011111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-progress-sherman
+  started: true
+  state_code: VA
+  state_name: Virginia
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_rene_mclaughlin:
+  event: hardrock_2016
+  person: rene_mclaughlin
+  age: 32
+  beacon_url:
+  beyond_start: true
+  bib_number: 113
+  bib_number_hardcoded:
+  birthdate: 1984-04-30
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 150016
+  finished: false
+  first_name: Rene
+  gender: 0
+  last_name: McLaughlin
+  overall_performance: '100000000000001000000000000011100001010111101000000111111111111111111000111111001010011010011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-rene-mclaughlin
+  started: true
+  state_code: TX
+  state_name: Texas
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_rhett_auer:
+  event: hardrock_2016
+  person:
+  age: 41
+  beacon_url:
+  beyond_start: true
+  bib_number: 131
+  bib_number_hardcoded:
+  birthdate: 1974-11-07
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 150467
+  finished: false
+  first_name: Rhett
+  gender: 0
+  last_name: Auer
+  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111101111000010001011110011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-rhett-auer
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 150467
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_shad_hirthe:
+  event: hardrock_2016
+  person: shad_hirthe
+  age: 40
+  beacon_url:
+  beyond_start: true
+  bib_number: 133
+  bib_number_hardcoded:
+  birthdate: 1975-09-05
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 147699
+  finished: false
+  first_name: Shad
+  gender: 0
+  last_name: Hirthe
+  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010101000111001111111011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-shad-hirthe
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_start_only:
+  event: hardrock_2016
+  person: start_only_maine_us
+  age: 26
+  beacon_url:
+  beyond_start: false
+  bib_number: 199
+  bib_number_hardcoded:
+  birthdate: 1990-04-23
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 192705
+  finished: false
+  first_name: Start
+  gender: 0
+  last_name: Only
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-start-only
+  started: true
+  state_code: ME
+  state_name: Maine
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+hardrock_2016_vesta_borer:
+  event: hardrock_2016
+  person: vesta_borer
+  age: 21
+  beacon_url:
+  beyond_start: true
+  bib_number: 24
+  bib_number_hardcoded:
+  birthdate: 1995-04-24
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 147341
+  finished: false
+  first_name: Vesta
+  gender: 1
+  last_name: Borer
+  overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111001010101001000101010011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
+  slug: hardrock-2016-vesta-borer
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ramble_finished_first:
+  event: ramble
+  person: finished_first_2019_02_01
+  age: 49
+  beacon_url:
+  beyond_start: true
+  bib_number:
+  bib_number_hardcoded:
+  birthdate: 1957-02-04
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code:
+  country_name:
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 15145
+  finished: true
+  first_name: Finished
+  gender: 0
+  last_name: First
+  overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111111000001000100101001111'
+  phone:
+  report_url:
+  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  slug: ramble-finished-first
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id: 15145
+  synced_at:
+  topic_resource_key:
+  wave:
+ramble_finished_second:
+  event: ramble
+  person: finished_second_montana_us
+  age: 12
+  beacon_url:
+  beyond_start: true
+  bib_number:
+  bib_number_hardcoded:
+  birthdate: 1994-08-16
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code:
+  country_name:
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 15161
+  finished: true
+  first_name: Finished
+  gender: 1
+  last_name: Second
+  overall_performance: '100000000000001000000000000000001101001100111000000111111111111111111111110111011010011100000111'
+  phone:
+  report_url:
+  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  slug: ramble-finished-second
+  started: true
+  state_code:
+  state_name:
+  stopped: true
+  stopped_split_time_id: 15161
+  synced_at:
+  topic_resource_key:
+  wave:
+ramble_not_started:
+  event: ramble
+  person: not_started_2019_02_01
+  age: 17
+  beacon_url:
+  beyond_start: false
+  bib_number:
+  bib_number_hardcoded:
+  birthdate: 1989-03-22
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code:
+  country_name:
   data_status: 2
   dropped: false
   email:
@@ -2056,11 +3219,49 @@ hardrock_2014_not_started:
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
   phone:
   report_url:
-  scheduled_start_time: 2014-07-11 12:00:00.000000000 Z
-  slug: hardrock-2014-not-started
+  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  slug: ramble-not-started
   started: false
-  state_code: CO
-  state_name: Colorado
+  state_code:
+  state_name:
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+ramble_start_only:
+  event: ramble
+  person: start_only_2019_02_01
+  age: 38
+  beacon_url:
+  beyond_start: false
+  bib_number:
+  bib_number_hardcoded:
+  birthdate: 1968-07-11
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code:
+  country_name:
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 15166
+  finished: false
+  first_name: Start
+  gender: 1
+  last_name: Only
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2006-09-16 14:00:00.000000000 Z
+  slug: ramble-start-only
+  started: true
+  state_code:
+  state_name:
   stopped: false
   stopped_split_time_id:
   synced_at:
@@ -2069,7 +3270,6 @@ hardrock_2014_not_started:
 rufa_2016_finished_first:
   event: rufa_2016
   person:
-  id: 6518
   age: 35
   beacon_url:
   beyond_start: true
@@ -2108,7 +3308,6 @@ rufa_2016_finished_first:
 rufa_2016_finished_second:
   event: rufa_2016
   person:
-  id: 6520
   age: 32
   beacon_url:
   beyond_start: true
@@ -2144,49 +3343,9 @@ rufa_2016_finished_second:
   synced_at:
   topic_resource_key:
   wave:
-rufa_2016_progress_lap1:
-  event: rufa_2016
-  person:
-  id: 6560
-  age: 25
-  beacon_url:
-  beyond_start: true
-  bib_number: 48
-  bib_number_hardcoded:
-  birthdate: 1991-01-16
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code:
-  country_name:
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 132439
-  finished: false
-  first_name: Progress
-  gender: 0
-  last_name: Lap1
-  overall_performance: '100000000000001000000000000000001000011111001000000111111111111111111111101100100010111000011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
-  slug: rufa-2016-progress-lap1
-  started: true
-  state_code:
-  state_name:
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
 rufa_2016_not_started:
   event: rufa_2016
   person:
-  id: 6561
   age: 57
   beacon_url:
   beyond_start: false
@@ -2222,1717 +3381,39 @@ rufa_2016_not_started:
   synced_at:
   topic_resource_key:
   wave:
-rufa_2017_24h_finished_first:
-  event: rufa_2017_24h
-  person: finished_first_utah_us
-  id: 6693
-  age: 47
+rufa_2016_progress_lap1:
+  event: rufa_2016
+  person:
+  age: 25
   beacon_url:
   beyond_start: true
-  bib_number: 16
+  bib_number: 48
   bib_number_hardcoded:
-  birthdate: 1969-04-04
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 7
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 133983
-  finished: true
-  first_name: Finished
-  gender: 1
-  last_name: First
-  overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111100010110111111111000111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-11 13:10:00.000000000 Z
-  slug: rufa-2017-24h-finished-first
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: true
-  stopped_split_time_id: 133983
-  synced_at:
-  topic_resource_key:
-  wave:
-rufa_2017_24h_progress_lap6:
-  event: rufa_2017_24h
-  person: progress_lap6
-  id: 6695
-  age: 33
-  beacon_url:
-  beyond_start: true
-  bib_number: 60
-  bib_number_hardcoded:
-  birthdate: 1983-03-13
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 6
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 134018
-  finished: false
-  first_name: Progress
-  gender: 0
-  last_name: Lap6
-  overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111101110010000101111101111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
-  slug: rufa-2017-24h-progress-lap6
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-rufa_2017_24h_multiple_stops:
-  event: rufa_2017_24h
-  person: multiple_stops_utah_us
-  id: 6756
-  age: 43
-  beacon_url:
-  beyond_start: true
-  bib_number: 142
-  bib_number_hardcoded:
-  birthdate: 1973-11-14
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 3
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 134812
-  finished: true
-  first_name: Multiple
-  gender: 1
-  last_name: Stops
-  overall_performance: '100000000000011000000000000000010000111110010000000111111111111111111110110001101110001110111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
-  slug: rufa-2017-24h-multiple-stops
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: true
-  stopped_split_time_id: 134812
-  synced_at:
-  topic_resource_key:
-  wave:
-rufa_2017_24h_finished_last:
-  event: rufa_2017_24h
-  person: finished_last
-  id: 6780
-  age: 40
-  beacon_url:
-  beyond_start: true
-  bib_number: 112
-  bib_number_hardcoded:
-  birthdate: 1976-05-03
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 2
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 135012
-  finished: true
-  first_name: Finished
-  gender: 0
-  last_name: Last
-  overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111001001110000010100011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
-  slug: rufa-2017-24h-finished-last
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: true
-  stopped_split_time_id: 135012
-  synced_at:
-  topic_resource_key:
-  wave:
-rufa_2017_24h_not_started:
-  event: rufa_2017_24h
-  person: not_started
-  id: 6782
-  age: 30
-  beacon_url:
-  beyond_start: false
-  bib_number: 149
-  bib_number_hardcoded:
-  birthdate: 1986-03-23
+  birthdate: 1991-01-16
   checked_in: false
   city:
   comments:
   completed_laps: 0
-  country_code: US
-  country_name: United States
+  country_code:
+  country_name:
   data_status: 2
   dropped: false
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
-  finished: false
-  first_name: Not
-  gender: 0
-  last_name: Started
-  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-12 01:00:00.000000000 Z
-  slug: rufa-2017-24h-not-started
-  started: false
-  state_code: UT
-  state_name: Utah
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-rufa_2017_24h_progress_lap1:
-  event: rufa_2017_24h
-  person: progress_lap1
-  id: 6805
-  age: 49
-  beacon_url:
-  beyond_start: true
-  bib_number: 134
-  bib_number_hardcoded:
-  birthdate: 1967-03-21
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 1
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 135134
+  final_split_time_id: 132439
   finished: false
   first_name: Progress
   gender: 0
   last_name: Lap1
-  overall_performance: '100000000000001000000000000000010000111110010000000111111111111111111111011000011001110100011111'
+  overall_performance: '100000000000001000000000000000001000011111001000000111111111111111111111101100100010111000011111'
   phone:
   report_url:
-  scheduled_start_time: 2017-02-11 16:00:00.000000000 Z
-  slug: rufa-2017-24h-progress-lap1
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_lavon_paucek:
-  event: hardrock_2016
-  person: lavon_paucek
-  id: 7270
-  age: 41
-  beacon_url:
-  beyond_start: true
-  bib_number: 4
-  bib_number_hardcoded:
-  birthdate: 1974-07-29
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: NZ
-  country_name: New Zealand
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 146950
-  finished: true
-  first_name: Lavon
-  gender: 1
-  last_name: Paucek
-  overall_performance: '100000000000001000000000000100111011111001011000000111111111111111111001110001010000001110010111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-lavon-paucek
+  scheduled_start_time: 2016-02-13 13:00:00.000000000 Z
+  slug: rufa-2016-progress-lap1
   started: true
   state_code:
   state_name:
-  stopped: true
-  stopped_split_time_id: 146950
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_vesta_borer:
-  event: hardrock_2016
-  person: vesta_borer
-  id: 7284
-  age: 21
-  beacon_url:
-  beyond_start: true
-  bib_number: 24
-  bib_number_hardcoded:
-  birthdate: 1995-04-24
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 147341
-  finished: false
-  first_name: Vesta
-  gender: 1
-  last_name: Borer
-  overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111001010101001000101010011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-vesta-borer
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_kory_kulas:
-  event: hardrock_2016
-  person: kory_kulas
-  id: 7289
-  age: 42
-  beacon_url:
-  beyond_start: true
-  bib_number: 118
-  bib_number_hardcoded:
-  birthdate: 1974-01-25
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 147481
-  finished: false
-  first_name: Kory
-  gender: 0
-  last_name: Kulas
-  overall_performance: '100000000000001000000000000100011110101010100100000011111111111111111000111011010001011000111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-kory-kulas
-  started: true
-  state_code: CA
-  state_name: California
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_shad_hirthe:
-  event: hardrock_2016
-  person: shad_hirthe
-  id: 7297
-  age: 40
-  beacon_url:
-  beyond_start: true
-  bib_number: 133
-  bib_number_hardcoded:
-  birthdate: 1975-09-05
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 147699
-  finished: false
-  first_name: Shad
-  gender: 0
-  last_name: Hirthe
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010101000111001111111011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-shad-hirthe
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_douglas_vandervort:
-  event: hardrock_2016
-  person: douglas_vandervort
-  id: 7302
-  age: 52
-  beacon_url:
-  beyond_start: true
-  bib_number: 26
-  bib_number_hardcoded:
-  birthdate: 1964-02-16
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 147839
-  finished: false
-  first_name: Douglas
-  gender: 0
-  last_name: Vandervort
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010010110100110000111011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-douglas-vandervort
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_missing_telluride_out:
-  event: hardrock_2016
-  person:
-  id: 7308
-  age: 20
-  beacon_url:
-  beyond_start: true
-  bib_number: 121
-  bib_number_hardcoded:
-  birthdate: 1996-02-11
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 148007
-  finished: false
-  first_name: Missing
-  gender: 0
-  last_name: Telluride Out
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001010001111000110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-missing-telluride-out
-  started: true
-  state_code: AK
-  state_name: Alaska
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_junior_lesch:
-  event: hardrock_2016
-  person: junior_lesch
-  id: 7311
-  age: 49
-  beacon_url:
-  beyond_start: true
-  bib_number: 135
-  bib_number_hardcoded:
-  birthdate: 1967-02-21
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 148091
-  finished: false
-  first_name: Junior
-  gender: 0
-  last_name: Lesch
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010000011001000111111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-junior-lesch
-  started: true
-  state_code: NM
-  state_name: New Mexico
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_eddy_goldner:
-  event: hardrock_2016
-  person: eddy_goldner
-  id: 7315
-  age: 18
-  beacon_url:
-  beyond_start: true
-  bib_number: 9
-  bib_number_hardcoded:
-  birthdate: 1997-07-26
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 148203
-  finished: false
-  first_name: Eddy
-  gender: 0
-  last_name: Goldner
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010001101001101100001111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-eddy-goldner
-  started: true
-  state_code: WA
-  state_name: Washington
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_progress_sherman:
-  event: hardrock_2016
-  person: progress_sherman
-  id: 7328
-  age: 33
-  beacon_url:
-  beyond_start: true
-  bib_number: 150
-  bib_number_hardcoded:
-  birthdate: 1982-07-28
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 148567
-  finished: false
-  first_name: Progress
-  gender: 0
-  last_name: Sherman
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111010111000001111011011111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-progress-sherman
-  started: true
-  state_code: VA
-  state_name: Virginia
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_benito_moen:
-  event: hardrock_2016
-  person: benito_moen
-  id: 7337
-  age: 52
-  beacon_url:
-  beyond_start: true
-  bib_number: 177
-  bib_number_hardcoded:
-  birthdate: 1964-01-16
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 148819
-  finished: false
-  first_name: Benito
-  gender: 0
-  last_name: Moen
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101011100100001101011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-benito-moen
-  started: true
-  state_code: OH
-  state_name: Ohio
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_kendall_koch:
-  event: hardrock_2016
-  person: kendall_koch
-  id: 7340
-  age: 40
-  beacon_url:
-  beyond_start: true
-  bib_number: 188
-  bib_number_hardcoded:
-  birthdate: 1976-02-05
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 148903
-  finished: false
-  first_name: Kendall
-  gender: 0
-  last_name: Koch
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001101010011010111101111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-kendall-koch
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_charlie_mueller:
-  event: hardrock_2016
-  person: charlie_mueller
-  id: 7343
-  age: 27
-  beacon_url:
-  beyond_start: true
-  bib_number: 159
-  bib_number_hardcoded:
-  birthdate: 1989-06-10
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 148987
-  finished: false
-  first_name: Charlie
-  gender: 0
-  last_name: Mueller
-  overall_performance: '100000000000001000000000000011100001010111101100000011111111111111111001110000100110011110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-charlie-mueller
-  started: true
-  state_code: OR
-  state_name: Oregon
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_brinda_fisher:
-  event: hardrock_2016
-  person: brinda_fisher
-  id: 7376
-  age: 22
-  beacon_url:
-  beyond_start: true
-  bib_number: 37
-  bib_number_hardcoded:
-  birthdate:
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 149907
-  finished: false
-  first_name: Brinda
-  gender: 1
-  last_name: Fisher
-  overall_performance: '100000000000001000000000000010110111010000000100000011111111111111111010010110100110000111011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-brinda-fisher
-  started: true
-  state_code: SC
-  state_name: South Carolina
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_rene_mclaughlin:
-  event: hardrock_2016
-  person: rene_mclaughlin
-  id: 7380
-  age: 32
-  beacon_url:
-  beyond_start: true
-  bib_number: 113
-  bib_number_hardcoded:
-  birthdate: 1984-04-30
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 150016
-  finished: false
-  first_name: Rene
-  gender: 0
-  last_name: McLaughlin
-  overall_performance: '100000000000001000000000000011100001010111101000000111111111111111111000111111001010011010011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-rene-mclaughlin
-  started: true
-  state_code: TX
-  state_name: Texas
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_dropped_grouse:
-  event: hardrock_2016
-  person: dropped_grouse
-  id: 7396
-  age: 47
-  beacon_url:
-  beyond_start: true
-  bib_number: 117
-  bib_number_hardcoded:
-  birthdate: 1969-05-13
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 150335
-  finished: false
-  first_name: Dropped
-  gender: 0
-  last_name: Grouse
-  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111100110110100101010111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-dropped-grouse
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 150335
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_mervin_smitham:
-  event: hardrock_2016
-  person: mervin_smitham
-  id: 7400
-  age: 24
-  beacon_url:
-  beyond_start: true
-  bib_number: 109
-  bib_number_hardcoded:
-  birthdate: 1991-10-08
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 150403
-  finished: false
-  first_name: Mervin
-  gender: 0
-  last_name: Smitham
-  overall_performance: '000000000000001000000000000010110111010000000100000011111111111111111010111000000000110010011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-mervin-smitham
-  started: true
-  state_code: NM
-  state_name: New Mexico
-  stopped: true
-  stopped_split_time_id: 150403
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_rhett_auer:
-  event: hardrock_2016
-  person:
-  id: 7404
-  age: 41
-  beacon_url:
-  beyond_start: true
-  bib_number: 131
-  bib_number_hardcoded:
-  birthdate: 1974-11-07
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 150467
-  finished: false
-  first_name: Rhett
-  gender: 0
-  last_name: Auer
-  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111101111000010001011110011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-rhett-auer
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 150467
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_hoyt_macejkovic:
-  event: hardrock_2016
-  person: hoyt_macejkovic
-  id: 7407
-  age: 55
-  beacon_url:
-  beyond_start: true
-  bib_number: 125
-  bib_number_hardcoded:
-  birthdate: 1960-07-23
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 150506
-  finished: false
-  first_name: Hoyt
-  gender: 0
-  last_name: Macejkovic
-  overall_performance: '000000000000001000000000000010001001111111010100000011111111111111111100001100000000110000111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-hoyt-macejkovic
-  started: true
-  state_code: MD
-  state_name: Maryland
-  stopped: true
-  stopped_split_time_id: 150506
-  synced_at:
-  topic_resource_key:
-  wave:
-hardrock_2016_start_only:
-  event: hardrock_2016
-  person: start_only_maine_us
-  id: 7411
-  age: 26
-  beacon_url:
-  beyond_start: false
-  bib_number: 199
-  bib_number_hardcoded:
-  birthdate: 1990-04-23
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 192705
-  finished: false
-  first_name: Start
-  gender: 0
-  last_name: Only
-  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2016-07-15 12:00:00.000000000 Z
-  slug: hardrock-2016-start-only
-  started: true
-  state_code: ME
-  state_name: Maine
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_50k_finished_first:
-  event: ggd30_50k
-  person: finished_first_colorado_us
-  id: 15626
-  age: 44
-  beacon_url:
-  beyond_start: true
-  bib_number: 1116
-  bib_number_hardcoded:
-  birthdate: 1973-05-25
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 1
-  country_code:
-  country_name:
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 188951
-  finished: true
-  first_name: Finished
-  gender: 0
-  last_name: First
-  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110110100100001000101101101'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
-  slug: ggd30-50k-finished-first
-  started: true
-  state_code:
-  state_name:
-  stopped: true
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_50k_bad_finish:
-  event: ggd30_50k
-  person: bad_finish
-  id: 15664
-  age: 21
-  beacon_url:
-  beyond_start: true
-  bib_number: 1079
-  bib_number_hardcoded:
-  birthdate: 1995-07-25
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 1
-  country_code:
-  country_name:
-  data_status: 0
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 189055
-  finished: true
-  first_name: Bad
-  gender: 0
-  last_name: Finish
-  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101000000010111100110001'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
-  slug: ggd30-50k-bad-finish
-  started: true
-  state_code:
-  state_name:
-  stopped: true
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_50k_progress_aid4:
-  event: ggd30_50k
-  person: progress_aid4
-  id: 15891
-  age: 35
-  beacon_url:
-  beyond_start: true
-  bib_number: 1118
-  bib_number_hardcoded:
-  birthdate: 1982-03-29
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code:
-  country_name:
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 189814
-  finished: false
-  first_name: Progress
-  gender: 1
-  last_name: Aid4
-  overall_performance: '100000000000001000000000000001001101000000100000000111111111111111111110100011000010111100011101'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
-  slug: ggd30-50k-progress-aid4
-  started: true
-  state_code:
-  state_name:
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_50k_progress_aid3:
-  event: ggd30_50k
-  person: progress_aid3
-  id: 15901
-  age: 31
-  beacon_url:
-  beyond_start: true
-  bib_number: 219
-  bib_number_hardcoded:
-  birthdate: 1986-03-04
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code:
-  country_name:
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 189850
-  finished: false
-  first_name: Progress
-  gender: 0
-  last_name: Aid3
-  overall_performance: '100000000000001000000000000000110110000100000000000111111111111111111111000000001001000101011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
-  slug: ggd30-50k-progress-aid3
-  started: true
-  state_code:
-  state_name:
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_50k_drop_aid4:
-  event: ggd30_50k
-  person: drop_aid4
-  id: 15931
-  age: 18
-  beacon_url:
-  beyond_start: true
-  bib_number: 1029
-  bib_number_hardcoded:
-  birthdate:
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code:
-  country_name:
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 189952
-  finished: false
-  first_name: Drop
-  gender: 0
-  last_name: Aid4
-  overall_performance: '000000000000001000000000000001001101000000100000000111111111111111111110100010110011100000101001'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
-  slug: ggd30-50k-drop-aid4
-  started: true
-  state_code:
-  state_name:
-  stopped: true
-  stopped_split_time_id: 189952
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_50k_start_only:
-  event: ggd30_50k
-  person: start_only_2019_02_01_07_19_53
-  id: 16023
-  age: 31
-  beacon_url:
-  beyond_start: false
-  bib_number: 433
-  bib_number_hardcoded:
-  birthdate: 1985-11-14
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code:
-  country_name:
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190761
-  finished: false
-  first_name: Start
-  gender: 1
-  last_name: Only
-  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
-  slug: ggd30-50k-start-only
-  started: true
-  state_code:
-  state_name:
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_50k_not_started:
-  event: ggd30_50k
-  person: not_started
-  id: 16032
-  age: 31
-  beacon_url:
-  beyond_start: false
-  bib_number: 49
-  bib_number_hardcoded:
-  birthdate: 1986-03-23
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code:
-  country_name:
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id:
-  finished: false
-  first_name: Not
-  gender: 0
-  last_name: Started
-  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 13:00:00.000000000 Z
-  slug: ggd30-50k-not-started
-  started: false
-  state_code:
-  state_name:
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_12m_start_only:
-  event: ggd30_12m
-  person: start_only_colorado_us
-  id: 16094
-  age: 27
-  beacon_url:
-  beyond_start: false
-  bib_number: 1506
-  bib_number_hardcoded:
-  birthdate: 1989-09-09
-  checked_in: true
-  city: Aurora
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190731
-  finished: false
-  first_name: Start
-  gender: 1
-  last_name: Only
-  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
-  slug: ggd30-12m-start-only
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_12m_finished_second:
-  event: ggd30_12m
-  person: finished_second_colorado_us
-  id: 16107
-  age: 43
-  beacon_url:
-  beyond_start: true
-  bib_number: 1519
-  bib_number_hardcoded:
-  birthdate: 1973-07-23
-  checked_in: true
-  city: Boulder
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190273
-  finished: true
-  first_name: Finished
-  gender: 1
-  last_name: Second
-  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111101010101001101'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
-  slug: ggd30-12m-finished-second
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_12m_finished_first:
-  event: ggd30_12m
-  person: finished_first_france
-  id: 16173
-  age: 23
-  beacon_url:
-  beyond_start: true
-  bib_number: 1586
-  bib_number_hardcoded:
-  birthdate: 1993-06-05
-  checked_in: true
-  city: LE VIBAL
-  comments:
-  completed_laps: 1
-  country_code: FR
-  country_name: France
-  data_status:
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190117
-  finished: true
-  first_name: Finished
-  gender: 0
-  last_name: First
-  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111100111001111101100111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
-  slug: ggd30-12m-finished-first
-  started: true
-  state_code: ARA
-  state_name: Auvergne-Rhône-Alpes
-  stopped: true
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-ggd30_12m_not_started:
-  event: ggd30_12m
-  person: not_started_colorado_us
-  id: 16209
-  age: 22
-  beacon_url:
-  beyond_start: false
-  bib_number: 1622
-  bib_number_hardcoded:
-  birthdate: 1995-03-06
-  checked_in: true
-  city: Greeley
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id:
-  finished: false
-  first_name: Not
-  gender: 1
-  last_name: Started
-  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-06-03 16:00:00.000000000 Z
-  slug: ggd30-12m-not-started
-  started: false
-  state_code: CO
-  state_name: Colorado
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_55k_finished_first:
-  event: sum_55k
-  person: finished_first_colorado_us
-  id: 16227
-  age: 44
-  beacon_url:
-  beyond_start: true
-  bib_number: 134
-  bib_number_hardcoded:
-  birthdate: 1973-08-18
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190508
-  finished: true
-  first_name: Finished
-  gender: 0
-  last_name: First
-  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000100110101101011001111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
-  slug: sum-55k-finished-first
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 190508
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_55k_finished_second:
-  event: sum_55k
-  person: finished_second_colorado_us
-  id: 16229
-  age: 44
-  beacon_url:
-  beyond_start: true
-  bib_number: 101
-  bib_number_hardcoded:
-  birthdate: 1973-07-23
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 1
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190528
-  finished: true
-  first_name: Finished
-  gender: 1
-  last_name: Second
-  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000010101010000001101111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
-  slug: sum-55k-finished-second
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 190528
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_55k_not_started:
-  event: sum_55k
-  person: not_started_colorado_us_2019_02_01
-  id: 16242
-  age: 36
-  beacon_url:
-  beyond_start: false
-  bib_number: 114
-  bib_number_hardcoded:
-  birthdate: 1981-03-31
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id:
-  finished: false
-  first_name: Not
-  gender: 2
-  last_name: Started
-  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
-  slug: sum-55k-not-started
-  started: false
-  state_code: CO
-  state_name: Colorado
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_55k_progress_rolling:
-  event: sum_55k
-  person: progress_rolling
-  id: 16244
-  age: 55
-  beacon_url:
-  beyond_start: true
-  bib_number: 111
-  bib_number_hardcoded:
-  birthdate: 1962-04-23
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190672
-  finished: false
-  first_name: Progress
-  gender: 1
-  last_name: Rolling
-  overall_performance: '100000000000001000000000000001000100111011101100000011111111111111111111000101101000101001011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
-  slug: sum-55k-progress-rolling
-  started: true
-  state_code: CA
-  state_name: California
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_55k_drop_bandera:
-  event: sum_55k
-  person: drop_bandera
-  id: 16245
-  age: 19
-  beacon_url:
-  beyond_start: true
-  bib_number: 109
-  bib_number_hardcoded:
-  birthdate: 1998-08-31
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190683
-  finished: false
-  first_name: Drop
-  gender: 1
-  last_name: Bandera
-  overall_performance: '000000000000001000000000000001001111100111101000000111111111111111111101111111100001010101111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
-  slug: sum-55k-drop-bandera
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: true
-  stopped_split_time_id: 190683
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_55k_start_only:
-  event: sum_55k
-  person: start_only_colorado_us_2019_02_01
-  id: 16246
-  age: 49
-  beacon_url:
-  beyond_start: false
-  bib_number: 132
-  bib_number_hardcoded:
-  birthdate: 1967-10-27
-  checked_in: true
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190816
-  finished: false
-  first_name: Start
-  gender: 0
-  last_name: Only
-  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
-  slug: sum-55k-start-only
-  started: true
-  state_code: CO
-  state_name: Colorado
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_100k_drop_anvil:
-  event: sum_100k
-  person: drop_anvil
-  id: 16247
-  age: 28
-  beacon_url:
-  beyond_start: true
-  bib_number: 999
-  bib_number_hardcoded:
-  birthdate: 1988-09-29
-  checked_in: false
-  city: Akron
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: true
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 190695
-  finished: false
-  first_name: Drop
-  gender: 0
-  last_name: Anvil
-  overall_performance: '000000000000001000000000000010110000010011100100000011111111111111111100111010111011101100011111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
-  slug: sum-100k-drop-anvil
-  started: true
-  state_code: OH
-  state_name: Ohio
-  stopped: true
-  stopped_split_time_id: 190695
-  synced_at:
-  topic_resource_key:
-  wave:
-sum_100k_progress_cascade:
-  event: sum_100k
-  person: progress_cascade
-  id: 16248
-  age: 20
-  beacon_url:
-  beyond_start: true
-  bib_number: 777
-  bib_number_hardcoded:
-  birthdate: 1997-05-20
-  checked_in: true
-  city: Provo
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 192704
-  finished: false
-  first_name: Progress
-  gender: 0
-  last_name: Cascade
-  overall_performance: '100000000000001000000000000001011010011101101100000011111111111111111110011100101010100100111111'
-  phone:
-  report_url:
-  scheduled_start_time:
-  slug: sum-100k-progress-cascade
-  started: true
-  state_code: UT
-  state_name: Utah
   stopped: false
   stopped_split_time_id:
   synced_at:
@@ -3941,7 +3422,6 @@ sum_100k_progress_cascade:
 rufa_2017_12h_finished_first:
   event: rufa_2017_12h
   person: finished_first
-  id: 16643
   age: 20
   beacon_url:
   beyond_start: true
@@ -3980,7 +3460,6 @@ rufa_2017_12h_finished_first:
 rufa_2017_12h_finished_lap6:
   event: rufa_2017_12h
   person: finished_lap6
-  id: 16648
   age: 53
   beacon_url:
   beyond_start: true
@@ -4016,127 +3495,9 @@ rufa_2017_12h_finished_lap6:
   synced_at:
   topic_resource_key:
   wave:
-rufa_2017_12h_progress_lap5_partial:
-  event: rufa_2017_12h
-  person: progress_lap5_partial
-  id: 16657
-  age: 28
-  beacon_url:
-  beyond_start: true
-  bib_number: 53
-  bib_number_hardcoded:
-  birthdate: 1988-09-15
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 4
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 192433
-  finished: false
-  first_name: Progress
-  gender: 0
-  last_name: Lap5 Partial
-  overall_performance: '100000000000101000000000000000001000011111001000000111111111111111111101101111111101111110110111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
-  slug: rufa-2017-12h-progress-lap5-partial
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-rufa_2017_12h_progress_lap2:
-  event: rufa_2017_12h
-  person: progress_lap2
-  id: 16663
-  age: 24
-  beacon_url:
-  beyond_start: true
-  bib_number: 68
-  bib_number_hardcoded:
-  birthdate:
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 2
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 192502
-  finished: false
-  first_name: Progress
-  gender: 1
-  last_name: Lap2
-  overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111000101111000110000101111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
-  slug: rufa-2017-12h-progress-lap2
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
-rufa_2017_12h_start_only:
-  event: rufa_2017_12h
-  person: start_only
-  id: 16667
-  age: 44
-  beacon_url:
-  beyond_start: false
-  bib_number: 73
-  bib_number_hardcoded:
-  birthdate: 1972-12-19
-  checked_in: false
-  city:
-  comments:
-  completed_laps: 0
-  country_code: US
-  country_name: United States
-  data_status: 2
-  dropped: false
-  email:
-  emergency_contact:
-  emergency_phone:
-  final_split_time_id: 192542
-  finished: false
-  first_name: Start
-  gender: 0
-  last_name: Only
-  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
-  phone:
-  report_url:
-  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
-  slug: rufa-2017-12h-start-only
-  started: true
-  state_code: UT
-  state_name: Utah
-  stopped: false
-  stopped_split_time_id:
-  synced_at:
-  topic_resource_key:
-  wave:
 rufa_2017_12h_not_started:
   event: rufa_2017_12h
   person: not_started_utah_us
-  id: 16673
   age: 49
   beacon_url:
   beyond_start: false
@@ -4172,79 +3533,343 @@ rufa_2017_12h_not_started:
   synced_at:
   topic_resource_key:
   wave:
-sum_100k_un_started:
-  event: sum_100k
-  person: un_started
-  id: 16683
-  age: 29
+rufa_2017_12h_progress_lap2:
+  event: rufa_2017_12h
+  person: progress_lap2
+  age: 24
+  beacon_url:
+  beyond_start: true
+  bib_number: 68
+  bib_number_hardcoded:
+  birthdate:
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 2
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 192502
+  finished: false
+  first_name: Progress
+  gender: 1
+  last_name: Lap2
+  overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111000101111000110000101111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  slug: rufa-2017-12h-progress-lap2
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+rufa_2017_12h_progress_lap5_partial:
+  event: rufa_2017_12h
+  person: progress_lap5_partial
+  age: 28
+  beacon_url:
+  beyond_start: true
+  bib_number: 53
+  bib_number_hardcoded:
+  birthdate: 1988-09-15
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 4
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 192433
+  finished: false
+  first_name: Progress
+  gender: 0
+  last_name: Lap5 Partial
+  overall_performance: '100000000000101000000000000000001000011111001000000111111111111111111101101111111101111110110111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  slug: rufa-2017-12h-progress-lap5-partial
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+rufa_2017_12h_start_only:
+  event: rufa_2017_12h
+  person: start_only
+  age: 44
   beacon_url:
   beyond_start: false
-  bib_number: 444
+  bib_number: 73
   bib_number_hardcoded:
-  birthdate: 1988-09-01
+  birthdate: 1972-12-19
   checked_in: false
-  city: Fort Collins
+  city:
   comments:
   completed_laps: 0
   country_code: US
   country_name: United States
-  data_status:
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 192542
+  finished: false
+  first_name: Start
+  gender: 0
+  last_name: Only
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-02-11 14:00:00.000000000 Z
+  slug: rufa-2017-12h-start-only
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+rufa_2017_24h_finished_first:
+  event: rufa_2017_24h
+  person: finished_first_utah_us
+  age: 47
+  beacon_url:
+  beyond_start: true
+  bib_number: 16
+  bib_number_hardcoded:
+  birthdate: 1969-04-04
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 7
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 133983
+  finished: true
+  first_name: Finished
+  gender: 1
+  last_name: First
+  overall_performance: '100000000000111000000000000000010000111110010000000111111111111111111100010110111111111000111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-02-11 13:10:00.000000000 Z
+  slug: rufa-2017-24h-finished-first
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: true
+  stopped_split_time_id: 133983
+  synced_at:
+  topic_resource_key:
+  wave:
+rufa_2017_24h_finished_last:
+  event: rufa_2017_24h
+  person: finished_last
+  age: 40
+  beacon_url:
+  beyond_start: true
+  bib_number: 112
+  bib_number_hardcoded:
+  birthdate: 1976-05-03
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 2
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 135012
+  finished: true
+  first_name: Finished
+  gender: 0
+  last_name: Last
+  overall_performance: '100000000000010000000000000000010000111110010000000111111111111111111111001001110000010100011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
+  slug: rufa-2017-24h-finished-last
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: true
+  stopped_split_time_id: 135012
+  synced_at:
+  topic_resource_key:
+  wave:
+rufa_2017_24h_multiple_stops:
+  event: rufa_2017_24h
+  person: multiple_stops_utah_us
+  age: 43
+  beacon_url:
+  beyond_start: true
+  bib_number: 142
+  bib_number_hardcoded:
+  birthdate: 1973-11-14
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 3
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 134812
+  finished: true
+  first_name: Multiple
+  gender: 1
+  last_name: Stops
+  overall_performance: '100000000000011000000000000000010000111110010000000111111111111111111110110001101110001110111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
+  slug: rufa-2017-24h-multiple-stops
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: true
+  stopped_split_time_id: 134812
+  synced_at:
+  topic_resource_key:
+  wave:
+rufa_2017_24h_not_started:
+  event: rufa_2017_24h
+  person: not_started
+  age: 30
+  beacon_url:
+  beyond_start: false
+  bib_number: 149
+  bib_number_hardcoded:
+  birthdate: 1986-03-23
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
   dropped: false
   email:
   emergency_contact:
   emergency_phone:
   final_split_time_id:
   finished: false
-  first_name: Un
-  gender: 1
+  first_name: Not
+  gender: 0
   last_name: Started
   overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
   phone:
   report_url:
-  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
-  slug: sum-100k-un-started
+  scheduled_start_time: 2017-02-12 01:00:00.000000000 Z
+  slug: rufa-2017-24h-not-started
   started: false
-  state_code: CO
-  state_name: Colorado
+  state_code: UT
+  state_name: Utah
   stopped: false
   stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
-sum_100k_on_dst_change:
-  event: sum_100k
-  person: on_dst_change
-  id: 16684
-  age:
+rufa_2017_24h_progress_lap1:
+  event: rufa_2017_24h
+  person: progress_lap1
+  age: 49
   beacon_url:
   beyond_start: true
-  bib_number: 333
+  bib_number: 134
   bib_number_hardcoded:
-  birthdate:
+  birthdate: 1967-03-21
   checked_in: false
   city:
   comments:
-  completed_laps: 0
-  country_code:
-  country_name:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 1
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 135134
+  finished: false
+  first_name: Progress
+  gender: 0
+  last_name: Lap1
+  overall_performance: '100000000000001000000000000000010000111110010000000111111111111111111111011000011001110100011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-02-11 16:00:00.000000000 Z
+  slug: rufa-2017-24h-progress-lap1
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+rufa_2017_24h_progress_lap6:
+  event: rufa_2017_24h
+  person: progress_lap6
+  age: 33
+  beacon_url:
+  beyond_start: true
+  bib_number: 60
+  bib_number_hardcoded:
+  birthdate: 1983-03-13
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 6
+  country_code: US
+  country_name: United States
   data_status: 2
   dropped: false
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192715
+  final_split_time_id: 134018
   finished: false
-  first_name: 'On'
-  gender: 1
-  last_name: DST Change
-  overall_performance: '100000000000001000000000000000100011110101011000000111111111111111111111011110110011111110011111'
+  first_name: Progress
+  gender: 0
+  last_name: Lap6
+  overall_performance: '100000000000110000000000000000010000111110010000000111111111111111111101110010000101111101111111'
   phone:
   report_url:
-  scheduled_start_time:
-  slug: sum-100k-on-dst-change
+  scheduled_start_time: 2017-02-11 15:00:00.000000000 Z
+  slug: rufa-2017-24h-progress-lap6
   started: true
-  state_code:
-  state_name:
+  state_code: UT
+  state_name: Utah
   stopped: false
   stopped_split_time_id:
   synced_at:
@@ -4253,7 +3878,6 @@ sum_100k_on_dst_change:
 sum_100k_across_dst_change:
   event: sum_100k
   person: across_dst_change
-  id: 16685
   age:
   beacon_url:
   beyond_start: true
@@ -4289,20 +3913,57 @@ sum_100k_across_dst_change:
   synced_at:
   topic_resource_key:
   wave:
-ggd30_50k_finished_second:
-  event: ggd30_50k
-  person:
-  id: 16686
-  age: 43
+sum_100k_drop_anvil:
+  event: sum_100k
+  person: drop_anvil
+  age: 28
   beacon_url:
   beyond_start: true
-  bib_number: 1117
+  bib_number: 999
   bib_number_hardcoded:
-  birthdate: 1975-07-25
+  birthdate: 1988-09-29
+  checked_in: false
+  city: Akron
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 190695
+  finished: false
+  first_name: Drop
+  gender: 0
+  last_name: Anvil
+  overall_performance: '000000000000001000000000000010110000010011100100000011111111111111111100111010111011101100011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
+  slug: sum-100k-drop-anvil
+  started: true
+  state_code: OH
+  state_name: Ohio
+  stopped: true
+  stopped_split_time_id: 190695
+  synced_at:
+  topic_resource_key:
+  wave:
+sum_100k_on_dst_change:
+  event: sum_100k
+  person: on_dst_change
+  age:
+  beacon_url:
+  beyond_start: true
+  bib_number: 333
+  bib_number_hardcoded:
+  birthdate:
   checked_in: false
   city:
   comments:
-  completed_laps: 1
+  completed_laps: 0
   country_code:
   country_name:
   data_status: 2
@@ -4310,36 +3971,149 @@ ggd30_50k_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192722
-  finished: true
-  first_name: Finished
+  final_split_time_id: 192715
+  finished: false
+  first_name: 'On'
   gender: 1
-  last_name: Second
-  overall_performance: '100000000000001000000000000001100001011100001000000111111111111111111110101010110110110001111111'
+  last_name: DST Change
+  overall_performance: '100000000000001000000000000000100011110101011000000111111111111111111111011110110011111110011111'
   phone:
   report_url:
   scheduled_start_time:
-  slug: ggd30-50k-finished-second
+  slug: sum-100k-on-dst-change
   started: true
   state_code:
   state_name:
-  stopped: true
+  stopped: false
   stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
-ggd30_12m_series_finisher:
-  event: ggd30_12m
-  person: series_finisher
-  id: 16687
-  age: 34
+sum_100k_progress_cascade:
+  event: sum_100k
+  person: progress_cascade
+  age: 20
   beacon_url:
   beyond_start: true
-  bib_number: 1515
+  bib_number: 777
   bib_number_hardcoded:
-  birthdate: 1983-03-03
+  birthdate: 1997-05-20
+  checked_in: true
+  city: Provo
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 192704
+  finished: false
+  first_name: Progress
+  gender: 0
+  last_name: Cascade
+  overall_performance: '100000000000001000000000000001011010011101101100000011111111111111111110011100101010100100111111'
+  phone:
+  report_url:
+  scheduled_start_time:
+  slug: sum-100k-progress-cascade
+  started: true
+  state_code: UT
+  state_name: Utah
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+sum_100k_un_started:
+  event: sum_100k
+  person: un_started
+  age: 29
+  beacon_url:
+  beyond_start: false
+  bib_number: 444
+  bib_number_hardcoded:
+  birthdate: 1988-09-01
   checked_in: false
-  city: Superior
+  city: Fort Collins
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status:
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id:
+  finished: false
+  first_name: Un
+  gender: 1
+  last_name: Started
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-09-23 13:00:00.000000000 Z
+  slug: sum-100k-un-started
+  started: false
+  state_code: CO
+  state_name: Colorado
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+sum_55k_drop_bandera:
+  event: sum_55k
+  person: drop_bandera
+  age: 19
+  beacon_url:
+  beyond_start: true
+  bib_number: 109
+  bib_number_hardcoded:
+  birthdate: 1998-08-31
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: true
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 190683
+  finished: false
+  first_name: Drop
+  gender: 1
+  last_name: Bandera
+  overall_performance: '000000000000001000000000000001001111100111101000000111111111111111111101111111100001010101111111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  slug: sum-55k-drop-bandera
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 190683
+  synced_at:
+  topic_resource_key:
+  wave:
+sum_55k_finished_first:
+  event: sum_55k
+  person: finished_first_colorado_us
+  age: 44
+  beacon_url:
+  beyond_start: true
+  bib_number: 134
+  bib_number_hardcoded:
+  birthdate: 1973-08-18
+  checked_in: false
+  city:
   comments:
   completed_laps: 1
   country_code: US
@@ -4349,20 +4123,134 @@ ggd30_12m_series_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192724
+  final_split_time_id: 190508
   finished: true
-  first_name: Series
+  first_name: Finished
   gender: 0
-  last_name: Finisher
-  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111010111111100100001011111'
+  last_name: First
+  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000100110101101011001111'
   phone:
   report_url:
-  scheduled_start_time:
-  slug: ggd30-12m-series-finisher
+  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  slug: sum-55k-finished-first
   started: true
   state_code: CO
   state_name: Colorado
   stopped: true
+  stopped_split_time_id: 190508
+  synced_at:
+  topic_resource_key:
+  wave:
+sum_55k_finished_second:
+  event: sum_55k
+  person: finished_second_colorado_us
+  age: 44
+  beacon_url:
+  beyond_start: true
+  bib_number: 101
+  bib_number_hardcoded:
+  birthdate: 1973-07-23
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 1
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 190528
+  finished: true
+  first_name: Finished
+  gender: 1
+  last_name: Second
+  overall_performance: '100000000000001000000000000001101111110111101000000111111111111111111110000010101010000001101111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  slug: sum-55k-finished-second
+  started: true
+  state_code: CO
+  state_name: Colorado
+  stopped: true
+  stopped_split_time_id: 190528
+  synced_at:
+  topic_resource_key:
+  wave:
+sum_55k_not_started:
+  event: sum_55k
+  person: not_started_colorado_us_2019_02_01
+  age: 36
+  beacon_url:
+  beyond_start: false
+  bib_number: 114
+  bib_number_hardcoded:
+  birthdate: 1981-03-31
+  checked_in: true
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id:
+  finished: false
+  first_name: Not
+  gender: 2
+  last_name: Started
+  overall_performance: '000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  slug: sum-55k-not-started
+  started: false
+  state_code: CO
+  state_name: Colorado
+  stopped: false
+  stopped_split_time_id:
+  synced_at:
+  topic_resource_key:
+  wave:
+sum_55k_progress_rolling:
+  event: sum_55k
+  person: progress_rolling
+  age: 55
+  beacon_url:
+  beyond_start: true
+  bib_number: 111
+  bib_number_hardcoded:
+  birthdate: 1962-04-23
+  checked_in: false
+  city:
+  comments:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
+  data_status: 2
+  dropped: false
+  email:
+  emergency_contact:
+  emergency_phone:
+  final_split_time_id: 190672
+  finished: false
+  first_name: Progress
+  gender: 1
+  last_name: Rolling
+  overall_performance: '100000000000001000000000000001000100111011101100000011111111111111111111000101101000101001011111'
+  phone:
+  report_url:
+  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  slug: sum-55k-progress-rolling
+  started: true
+  state_code: CA
+  state_name: California
+  stopped: false
   stopped_split_time_id:
   synced_at:
   topic_resource_key:
@@ -4370,7 +4258,6 @@ ggd30_12m_series_finisher:
 sum_55k_series_finisher:
   event: sum_55k
   person: series_finisher
-  id: 16688
   age: 34
   beacon_url:
   beyond_start: true
@@ -4409,7 +4296,6 @@ sum_55k_series_finisher:
 sum_55k_slow_finisher:
   event: sum_55k
   person: slow_finisher
-  id: 16689
   age: 64
   beacon_url:
   beyond_start: true
@@ -4445,41 +4331,40 @@ sum_55k_slow_finisher:
   synced_at:
   topic_resource_key:
   wave:
-ggd30_12m_slow_finisher:
-  event: ggd30_12m
-  person: slow_finisher
-  id: 16690
-  age: 64
+sum_55k_start_only:
+  event: sum_55k
+  person: start_only_colorado_us_2019_02_01
+  age: 49
   beacon_url:
-  beyond_start: true
-  bib_number: 1616
+  beyond_start: false
+  bib_number: 132
   bib_number_hardcoded:
-  birthdate: 1953-03-03
-  checked_in: false
-  city: Orem
+  birthdate: 1967-10-27
+  checked_in: true
+  city:
   comments:
-  completed_laps: 1
-  country_code:
-  country_name:
+  completed_laps: 0
+  country_code: US
+  country_name: United States
   data_status: 2
   dropped: false
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192746
-  finished: true
-  first_name: Slow
+  final_split_time_id: 190816
+  finished: false
+  first_name: Start
   gender: 0
-  last_name: Finisher
-  overall_performance: '100000000000001000000000000000100110000010001000000111111111111111111111000001101101001011101111'
+  last_name: Only
+  overall_performance: '100000000000001000000000000000000000000000000000000111111111111111111111111111111111111111111111'
   phone:
   report_url:
-  scheduled_start_time:
-  slug: ggd30-12m-slow-finisher
+  scheduled_start_time: 2017-10-07 15:00:00.000000000 Z
+  slug: sum-55k-start-only
   started: true
-  state_code: UT
-  state_name:
-  stopped: true
+  state_code: CO
+  state_name: Colorado
+  stopped: false
   stopped_split_time_id:
   synced_at:
   topic_resource_key:

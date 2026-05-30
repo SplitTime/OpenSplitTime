@@ -52,6 +52,7 @@ module FixtureHelper
     :organizations,
     :partners,
     :people,
+    :projection_assessment_runs,
     :results_categories,
     :results_templates,
     :results_template_categories,
@@ -70,6 +71,9 @@ module FixtureHelper
     event_series_events: "event_series_id, event_id",
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",
     partners: "partnerable_type, partnerable_id, name",
+    projection_assessment_runs:
+      "event_id, completed_lap, completed_split_id, completed_bitkey, " \
+      "projected_lap, projected_split_id, projected_bitkey",
     results_template_categories: "results_template_id, position, results_category_id",
     stewardships: "user_id, organization_id",
   }.freeze

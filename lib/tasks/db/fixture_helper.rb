@@ -43,6 +43,7 @@ module FixtureHelper
     :credentials,
     :efforts,
     :event_groups,
+    :event_series,
     :events,
     :historical_facts,
     :lotteries,

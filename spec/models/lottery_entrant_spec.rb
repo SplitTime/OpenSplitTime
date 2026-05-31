@@ -18,8 +18,8 @@ RSpec.describe LotteryEntrant, type: :model do
       let(:result) { existing_scope.belonging_to_user(user) }
       let(:user) { users(:fifth_user) }
       let(:division) { LotteryDivision.find_by!(name: "Never Ever Evers") }
-      let(:entrant_1) { lottery_entrants(:lottery_entrant_0001) }
-      let(:entrant_2) { lottery_entrants(:lottery_entrant_0002) }
+      let(:entrant_1) { division.entrants.find_by!(first_name: "Emeline", last_name: "Runolfsson") }
+      let(:entrant_2) { division.entrants.find_by!(first_name: "Norris", last_name: "Wilkinson") }
       let(:person) { people(:bruno_fadel) }
 
       context "when the user's avatar is the lottery entrant's person" do

@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe LotterySimulation, type: :model do
   describe "#build" do
-    let(:subject) { build(:lottery_simulation, simulation_run: simulation_run) }
+    subject { build(:lottery_simulation, simulation_run: simulation_run) }
+
     let(:simulation_run) { create(:lottery_simulation_run, lottery: lottery, requested_count: 2) }
     let(:lottery) { lotteries(:lottery_with_tickets_and_draws) }
 
@@ -11,6 +12,7 @@ RSpec.describe LotterySimulation, type: :model do
         before { subject.build }
 
         let(:expected_ticket_ids) { [18, 3, 10, 17, 9, 13, 6] }
+        let(:entrant_id) { ->(first, last) { LotteryEntrant.find_by!(first_name: first, last_name: last).id } }
         let(:expected_results) do
           {
             "Elses" => {
@@ -18,7 +20,7 @@ RSpec.describe LotterySimulation, type: :model do
                 "male" => 0,
                 "male_entrant_ids" => [],
                 "female" => 2,
-                "female_entrant_ids" => contain_exactly(24, 27),
+                "female_entrant_ids" => contain_exactly(entrant_id["Denisha", "Carter"], entrant_id["Melina", "Conroy"]),
               },
               "wait_list" => {
                 "male" => 0,
@@ -30,15 +32,15 @@ RSpec.describe LotterySimulation, type: :model do
             "Never Ever Evers" => {
               "accepted" => {
                 "male" => 1,
-                "male_entrant_ids" => [9],
+                "male_entrant_ids" => [entrant_id["Nenita", "Heaney"]],
                 "female" => 2,
-                "female_entrant_ids" => contain_exactly(7, 13),
+                "female_entrant_ids" => contain_exactly(entrant_id["Jospeh", "Barrows"], entrant_id["Mitsuko", "Wilkinson"]),
               },
               "wait_list" => {
                 "male" => 1,
-                "male_entrant_ids" => [4],
+                "male_entrant_ids" => [entrant_id["Emeline", "Runolfsson"]],
                 "female" => 1,
-                "female_entrant_ids" => [11],
+                "female_entrant_ids" => [entrant_id["Modesta", "Raynor"]],
               },
             },
             "Veterans" => {

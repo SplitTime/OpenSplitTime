@@ -1,50 +1,50 @@
 ---
 lottery_draw_0001:
   division: lottery_division_0002
+  ticket: lottery_ticket_0018
   id: 110
   created_at: 2021-10-02 16:24:20.181722000 Z
   lottery_id:
-  lottery_ticket_id: 18
   position:
 lottery_draw_0002:
   division: lottery_division_0002
+  ticket: lottery_ticket_0010
   id: 111
   created_at: 2021-10-02 16:29:20.183865000 Z
   lottery_id:
-  lottery_ticket_id: 10
   position:
 lottery_draw_0003:
   division: lottery_division_0002
+  ticket: lottery_ticket_0017
   id: 112
   created_at: 2021-10-02 16:43:20.186126000 Z
   lottery_id:
-  lottery_ticket_id: 17
   position:
 lottery_draw_0004:
   division: lottery_division_0002
+  ticket: lottery_ticket_0013
   id: 113
   created_at: 2021-10-02 16:46:20.188331000 Z
   lottery_id:
-  lottery_ticket_id: 13
   position:
 lottery_draw_0005:
   division: lottery_division_0002
+  ticket: lottery_ticket_0009
   id: 114
   created_at: 2021-10-02 16:45:20.190595000 Z
   lottery_id:
-  lottery_ticket_id: 9
   position:
 lottery_draw_0006:
   division: lottery_division_0001
+  ticket: lottery_ticket_0003
   id: 119
   created_at: 2021-10-02 16:28:20.202115000 Z
   lottery_id:
-  lottery_ticket_id: 3
   position:
 lottery_draw_0007:
   division: lottery_division_0001
+  ticket: lottery_ticket_0006
   id: 124
   created_at: 2021-10-02 17:25:58.420681000 Z
   lottery_id:
-  lottery_ticket_id: 6
   position:

@@ -11,7 +11,10 @@ RSpec.describe LotterySimulation, type: :model do
       context "when draws exist" do
         before { subject.build }
 
-        let(:expected_ticket_ids) { [18, 3, 10, 17, 9, 13, 6] }
+        let(:expected_ticket_ids) do
+          %i[lottery_ticket_0018 lottery_ticket_0003 lottery_ticket_0010 lottery_ticket_0017
+             lottery_ticket_0009 lottery_ticket_0013 lottery_ticket_0006].map { |label| lottery_tickets(label).id }
+        end
         let(:entrant_id) { ->(first, last) { LotteryEntrant.find_by!(first_name: first, last_name: last).id } }
         let(:expected_results) do
           {

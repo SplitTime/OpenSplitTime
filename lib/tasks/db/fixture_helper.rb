@@ -53,6 +53,7 @@ module FixtureHelper
     :lottery_divisions,
     :lottery_entrants,
     :lottery_simulation_runs,
+    :lottery_tickets,
     :monetary_donations,
     :organizations,
     :partners,
@@ -81,6 +82,7 @@ module FixtureHelper
     lottery_divisions: "lottery_id, name",
     lottery_entrants: "lottery_division_id, first_name, last_name, birthdate",
     lottery_simulation_runs: "lottery_id, started_at, name",
+    lottery_tickets: "lottery_id, reference_number",
     monetary_donations: "received_on, organization_id, amount, source",
     partners: "partnerable_type, partnerable_id, name",
     projection_assessment_runs:

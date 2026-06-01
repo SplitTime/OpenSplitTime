@@ -40,6 +40,7 @@ module FixtureHelper
   PORTABLE_FIXTURE_TABLES = [
     :aid_stations,
     :connections,
+    :course_group_courses,
     :course_groups,
     :courses,
     :credentials,
@@ -77,6 +78,7 @@ module FixtureHelper
     aid_stations: "event_id, split_id",
     connections:
       "service_identifier, source_type, source_id, destination_type, destination_id",
+    course_group_courses: "course_group_id, course_id",
     credentials: "service_identifier, key, user_id",
     event_series_events: "event_series_id, event_id",
     historical_facts: "last_name, first_name, year, kind, personal_info_hash",

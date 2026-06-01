@@ -3,7 +3,6 @@ raw_time_0001:
   event_group: hardrock_2015
   creator: admin_user
   reviewer: admin_user
-  id: 49
   absolute_time: 2017-07-07 16:31:00.000000000 Z
   bib_number: '102'
   bitkey: 1
@@ -25,7 +24,6 @@ raw_time_0002:
   event_group: hardrock_2015
   creator: admin_user
   reviewer: admin_user
-  id: 50
   absolute_time: 2017-07-07 20:20:00.000000000 Z
   bib_number: '103'
   bitkey: 64
@@ -46,690 +44,7 @@ raw_time_0002:
 raw_time_0003:
   event_group: sum
   creator: admin_user
-  reviewer:
-  id: 67
-  absolute_time:
-  bib_number: '130'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '12:34:00'
-  matchable_bib_number: 130
-  parameterized_split_name: molas-pass-aid1
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 130
-  source: ost-live-entry
-  split_name: Molas Pass (Aid1)
-  split_time_id:
-  stopped_here:
-  with_pacer: false
-raw_time_0004:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 68
-  absolute_time:
-  bib_number: '130'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '12:44:00'
-  matchable_bib_number: 130
-  parameterized_split_name: molas-pass-aid1
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 130
-  source: ost-live-entry
-  split_name: Molas Pass (Aid1)
-  split_time_id:
-  stopped_here:
-  with_pacer: false
-raw_time_0005:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 69
-  absolute_time:
-  bib_number: '999'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '21:11:00'
-  matchable_bib_number: 999
-  parameterized_split_name: anvil-cg-aid6
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Anvil CG (Aid6)
-  split_time_id: 190694
-  stopped_here:
-  with_pacer: false
-raw_time_0006:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 70
-  absolute_time:
-  bib_number: '999'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '21:21:00'
-  matchable_bib_number: 999
-  parameterized_split_name: anvil-cg-aid6
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Anvil CG (Aid6)
-  split_time_id: 190695
-  stopped_here:
-  with_pacer: false
-raw_time_0007:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 73
-  absolute_time:
-  bib_number: '999'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '09:09:00'
-  matchable_bib_number: 999
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Rolling Pass (Aid2)
-  split_time_id: 190696
-  stopped_here:
-  with_pacer: false
-raw_time_0008:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 74
-  absolute_time:
-  bib_number: '999'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '09:10:00'
-  matchable_bib_number: 999
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Rolling Pass (Aid2)
-  split_time_id: 190697
-  stopped_here:
-  with_pacer: false
-raw_time_0009:
-  event_group: sum
-  creator: admin_user
   reviewer: admin_user
-  id: 75
-  absolute_time:
-  bib_number: '130'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '13:13:00'
-  matchable_bib_number: 130
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  sortable_bib_number: 130
-  source: ost-live-entry
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here:
-  with_pacer: false
-raw_time_0010:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 76
-  absolute_time:
-  bib_number: '130'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '13:14:00'
-  matchable_bib_number: 130
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  sortable_bib_number: 130
-  source: ost-live-entry
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here:
-  with_pacer: false
-raw_time_0011:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 77
-  absolute_time:
-  bib_number: '999'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '07:00:00'
-  matchable_bib_number: 999
-  parameterized_split_name: start
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Start
-  split_time_id: 190698
-  stopped_here:
-  with_pacer: false
-raw_time_0012:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 78
-  absolute_time:
-  bib_number: '999'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '08:30:00'
-  matchable_bib_number: 999
-  parameterized_split_name: molas-pass-aid1
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Molas Pass (Aid1)
-  split_time_id: 190699
-  stopped_here:
-  with_pacer: false
-raw_time_0013:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 79
-  absolute_time:
-  bib_number: '999'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '08:32:00'
-  matchable_bib_number: 999
-  parameterized_split_name: molas-pass-aid1
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Molas Pass (Aid1)
-  split_time_id: 190700
-  stopped_here:
-  with_pacer: false
-raw_time_0014:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 80
-  absolute_time:
-  bib_number: '999'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:24:00'
-  matchable_bib_number: 999
-  parameterized_split_name: cascade-creek-rd-aid3
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Cascade Creek Rd (Aid3)
-  split_time_id: 190701
-  stopped_here:
-  with_pacer: false
-raw_time_0015:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 81
-  absolute_time:
-  bib_number: '999'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:28:00'
-  matchable_bib_number: 999
-  parameterized_split_name: cascade-creek-rd-aid3
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Cascade Creek Rd (Aid3)
-  split_time_id: 190702
-  stopped_here:
-  with_pacer: false
-raw_time_0016:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 82
-  absolute_time:
-  bib_number: '999'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '09:09:00'
-  matchable_bib_number: 999
-  parameterized_split_name: engineer-mtn-th-aid4
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Engineer Mtn TH (Aid4)
-  split_time_id: 190703
-  stopped_here:
-  with_pacer: false
-raw_time_0017:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 83
-  absolute_time:
-  bib_number: '999'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '09:09:09'
-  matchable_bib_number: 999
-  parameterized_split_name: engineer-mtn-th-aid4
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 999
-  source: ost-live-entry
-  split_name: Engineer Mtn TH (Aid4)
-  split_time_id: 190704
-  stopped_here:
-  with_pacer: false
-raw_time_0018:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 84
-  absolute_time:
-  bib_number: '101'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '22:22:00'
-  matchable_bib_number: 101
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  sortable_bib_number: 101
-  source: ost-live-entry
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here:
-  with_pacer: false
-raw_time_0019:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 85
-  absolute_time:
-  bib_number: '101'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '23:23:00'
-  matchable_bib_number: 101
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  sortable_bib_number: 101
-  source: ost-live-entry
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here:
-  with_pacer: false
-raw_time_0020:
-  event_group: sum
-  creator:
-  reviewer: admin_user
-  id: 86
-  absolute_time:
-  bib_number: '999'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:02:03'
-  matchable_bib_number: 999
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  sortable_bib_number: 999
-  source: internal
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here:
-  with_pacer:
-raw_time_0021:
-  event_group: sum
-  creator:
-  reviewer: admin_user
-  id: 87
-  absolute_time:
-  bib_number: '999'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:03:04'
-  matchable_bib_number: 999
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-04-30 22:46:06.425174000 Z
-  sortable_bib_number: 999
-  source: internal
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here:
-  with_pacer:
-raw_time_0022:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 88
-  absolute_time:
-  bib_number: '999'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:03:05'
-  matchable_bib_number: 999
-  parameterized_split_name: rolling-pass-aid2
-  remarks: ''
-  reviewed_at: 2018-07-27 03:39:21.949460000 Z
-  sortable_bib_number: 999
-  source: internal
-  split_name: Rolling Pass (Aid2)
-  split_time_id: 190697
-  stopped_here:
-  with_pacer:
-raw_time_0023:
-  event_group: sum
-  creator: admin_user
-  reviewer:
-  id: 89
-  absolute_time:
-  bib_number: '130'
-  bitkey: 64
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '13:14:00'
-  matchable_bib_number: 130
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at:
-  sortable_bib_number: 130
-  source: ost-live-entry
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0024:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 91
-  absolute_time: 2018-06-30 13:00:00.000000000 Z
-  bib_number: '777'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '07:00:00'
-  matchable_bib_number: 777
-  parameterized_split_name: start
-  remarks: ''
-  reviewed_at: 2018-07-27 03:40:08.987644000 Z
-  sortable_bib_number: 777
-  source: internal
-  split_name: Start
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0025:
-  event_group: sum
-  creator:
-  reviewer: admin_user
-  id: 92
-  absolute_time:
-  bib_number: '777'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '09:mm:ss'
-  matchable_bib_number: 777
-  parameterized_split_name: start
-  remarks:
-  reviewed_at: 2018-07-27 03:24:12.907737000 Z
-  sortable_bib_number: 777
-  source: internal
-  split_name: Start
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0026:
-  event_group: sum
-  creator:
-  reviewer: admin_user
-  id: 176
-  absolute_time:
-  bib_number: '130'
-  bitkey: 1
-  data_status:
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '13:13:13'
-  matchable_bib_number: 130
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-11-14 05:48:02.521295000 Z
-  sortable_bib_number: 130
-  source: another
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0027:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 177
-  absolute_time:
-  bib_number: '130'
-  bitkey: 1
-  data_status: 0
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '13:13:15'
-  matchable_bib_number: 130
-  parameterized_split_name: rolling-pass-aid2
-  remarks: ''
-  reviewed_at: 2018-11-14 05:48:25.812628000 Z
-  sortable_bib_number: 130
-  source: another
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0028:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 178
-  absolute_time:
-  bib_number: '130'
-  bitkey: 1
-  data_status: 0
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '13:13:11'
-  matchable_bib_number: 130
-  parameterized_split_name: rolling-pass-aid2
-  remarks: ''
-  reviewed_at: 2018-11-14 05:48:27.582171000 Z
-  sortable_bib_number: 130
-  source: another
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0029:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 1100
-  absolute_time:
-  bib_number: '130'
-  bitkey: 1
-  data_status: 2
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '13:13:13'
-  matchable_bib_number: 130
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2018-11-14 05:48:22.553830000 Z
-  sortable_bib_number: 130
-  source: Live Entry (1)
-  split_name: Rolling Pass (Aid2)
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0030:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 1106
-  absolute_time:
-  bib_number: '103'
-  bitkey: 64
-  data_status: 2
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '23:41:00'
-  matchable_bib_number: 103
-  parameterized_split_name: bandera-mine-aid5
-  remarks:
-  reviewed_at: 2018-12-09 02:24:15.750492000 Z
-  sortable_bib_number: 103
-  source: Live Entry (1)
-  split_name: Bandera Mine (Aid5)
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0031:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 1110
-  absolute_time:
-  bib_number: '103'
-  bitkey: 1
-  data_status: 2
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:00:00'
-  matchable_bib_number: 103
-  parameterized_split_name: anvil-cg-aid6
-  remarks:
-  reviewed_at: 2018-12-09 02:25:03.158304000 Z
-  sortable_bib_number: 103
-  source: Live Entry (1)
-  split_name: Anvil CG (Aid6)
-  split_time_id:
-  stopped_here: false
-  with_pacer: false
-raw_time_0032:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 1111
-  absolute_time:
-  bib_number: '103'
-  bitkey: 64
-  data_status: 2
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:05:00'
-  matchable_bib_number: 103
-  parameterized_split_name: anvil-cg-aid6
-  remarks:
-  reviewed_at: 2018-12-09 02:26:54.169992000 Z
-  sortable_bib_number: 103
-  source: Live Entry (1)
-  split_name: Anvil CG (Aid6)
-  split_time_id:
-  stopped_here: true
-  with_pacer: false
-raw_time_0033:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 1117
-  absolute_time:
-  bib_number: '103'
-  bitkey: 1
-  data_status: 2
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '01:40:00'
-  matchable_bib_number: 103
-  parameterized_split_name: anvil-cg-aid6
-  remarks:
-  reviewed_at: 2018-12-15 17:29:59.171376000 Z
-  sortable_bib_number: 103
-  source: Live Entry (1)
-  split_name: Anvil CG (Aid6)
-  split_time_id:
-  stopped_here: true
-  with_pacer: false
-raw_time_0034:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 1122
   absolute_time:
   bib_number: '101'
   bitkey: 1
@@ -747,33 +62,10 @@ raw_time_0034:
   split_time_id: 190522
   stopped_here: false
   with_pacer: false
-raw_time_0035:
+raw_time_0004:
   event_group: sum
   creator: admin_user
   reviewer: admin_user
-  id: 1123
-  absolute_time:
-  bib_number: '101'
-  bitkey: 64
-  data_status: 2
-  disassociated_from_effort:
-  entered_lap:
-  entered_time: '21:40:00'
-  matchable_bib_number: 101
-  parameterized_split_name: rolling-pass-aid2
-  remarks:
-  reviewed_at: 2019-01-25 00:23:15.075358000 Z
-  sortable_bib_number: 101
-  source: Live Entry (1)
-  split_name: Rolling Pass (Aid2)
-  split_time_id: 190523
-  stopped_here: false
-  with_pacer: false
-raw_time_0036:
-  event_group: sum
-  creator: admin_user
-  reviewer: admin_user
-  id: 1124
   absolute_time:
   bib_number: '101'
   bitkey: 1
@@ -791,11 +83,31 @@ raw_time_0036:
   split_time_id: 190522
   stopped_here: false
   with_pacer: false
-raw_time_0037:
+raw_time_0005:
   event_group: sum
   creator: admin_user
   reviewer: admin_user
-  id: 1125
+  absolute_time:
+  bib_number: '101'
+  bitkey: 64
+  data_status: 2
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '21:40:00'
+  matchable_bib_number: 101
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2019-01-25 00:23:15.075358000 Z
+  sortable_bib_number: 101
+  source: Live Entry (1)
+  split_name: Rolling Pass (Aid2)
+  split_time_id: 190523
+  stopped_here: false
+  with_pacer: false
+raw_time_0006:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
   absolute_time:
   bib_number: '101'
   bitkey: 64
@@ -813,11 +125,94 @@ raw_time_0037:
   split_time_id: 190523
   stopped_here: false
   with_pacer: false
-raw_time_0038:
+raw_time_0007:
   event_group: sum
   creator: admin_user
   reviewer: admin_user
-  id: 1126
+  absolute_time:
+  bib_number: '103'
+  bitkey: 1
+  data_status: 2
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:00:00'
+  matchable_bib_number: 103
+  parameterized_split_name: anvil-cg-aid6
+  remarks:
+  reviewed_at: 2018-12-09 02:25:03.158304000 Z
+  sortable_bib_number: 103
+  source: Live Entry (1)
+  split_name: Anvil CG (Aid6)
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0008:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '103'
+  bitkey: 1
+  data_status: 2
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:40:00'
+  matchable_bib_number: 103
+  parameterized_split_name: anvil-cg-aid6
+  remarks:
+  reviewed_at: 2018-12-15 17:29:59.171376000 Z
+  sortable_bib_number: 103
+  source: Live Entry (1)
+  split_name: Anvil CG (Aid6)
+  split_time_id:
+  stopped_here: true
+  with_pacer: false
+raw_time_0009:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '103'
+  bitkey: 64
+  data_status: 2
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:05:00'
+  matchable_bib_number: 103
+  parameterized_split_name: anvil-cg-aid6
+  remarks:
+  reviewed_at: 2018-12-09 02:26:54.169992000 Z
+  sortable_bib_number: 103
+  source: Live Entry (1)
+  split_name: Anvil CG (Aid6)
+  split_time_id:
+  stopped_here: true
+  with_pacer: false
+raw_time_0010:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '103'
+  bitkey: 64
+  data_status: 2
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '23:41:00'
+  matchable_bib_number: 103
+  parameterized_split_name: bandera-mine-aid5
+  remarks:
+  reviewed_at: 2018-12-09 02:24:15.750492000 Z
+  sortable_bib_number: 103
+  source: Live Entry (1)
+  split_name: Bandera Mine (Aid5)
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0011:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
   absolute_time:
   bib_number: '114'
   bitkey: 1
@@ -834,4 +229,571 @@ raw_time_0038:
   split_name: Start
   split_time_id:
   stopped_here: false
+  with_pacer: false
+raw_time_0012:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '130'
+  bitkey: 1
+  data_status: 2
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '13:13:13'
+  matchable_bib_number: 130
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-11-14 05:48:22.553830000 Z
+  sortable_bib_number: 130
+  source: Live Entry (1)
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0013:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '130'
+  bitkey: 1
+  data_status: 0
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '13:13:11'
+  matchable_bib_number: 130
+  parameterized_split_name: rolling-pass-aid2
+  remarks: ''
+  reviewed_at: 2018-11-14 05:48:27.582171000 Z
+  sortable_bib_number: 130
+  source: another
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0014:
+  event_group: sum
+  creator:
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '130'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '13:13:13'
+  matchable_bib_number: 130
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-11-14 05:48:02.521295000 Z
+  sortable_bib_number: 130
+  source: another
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0015:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '130'
+  bitkey: 1
+  data_status: 0
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '13:13:15'
+  matchable_bib_number: 130
+  parameterized_split_name: rolling-pass-aid2
+  remarks: ''
+  reviewed_at: 2018-11-14 05:48:25.812628000 Z
+  sortable_bib_number: 130
+  source: another
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0016:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time: 2018-06-30 13:00:00.000000000 Z
+  bib_number: '777'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '07:00:00'
+  matchable_bib_number: 777
+  parameterized_split_name: start
+  remarks: ''
+  reviewed_at: 2018-07-27 03:40:08.987644000 Z
+  sortable_bib_number: 777
+  source: internal
+  split_name: Start
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0017:
+  event_group: sum
+  creator:
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '777'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '09:mm:ss'
+  matchable_bib_number: 777
+  parameterized_split_name: start
+  remarks:
+  reviewed_at: 2018-07-27 03:24:12.907737000 Z
+  sortable_bib_number: 777
+  source: internal
+  split_name: Start
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0018:
+  event_group: sum
+  creator:
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '999'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:02:03'
+  matchable_bib_number: 999
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  sortable_bib_number: 999
+  source: internal
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here:
+  with_pacer:
+raw_time_0019:
+  event_group: sum
+  creator:
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '999'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:03:04'
+  matchable_bib_number: 999
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  sortable_bib_number: 999
+  source: internal
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here:
+  with_pacer:
+raw_time_0020:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '999'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:03:05'
+  matchable_bib_number: 999
+  parameterized_split_name: rolling-pass-aid2
+  remarks: ''
+  reviewed_at: 2018-07-27 03:39:21.949460000 Z
+  sortable_bib_number: 999
+  source: internal
+  split_name: Rolling Pass (Aid2)
+  split_time_id: 190697
+  stopped_here:
+  with_pacer:
+raw_time_0021:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '101'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '22:22:00'
+  matchable_bib_number: 101
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  sortable_bib_number: 101
+  source: ost-live-entry
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here:
+  with_pacer: false
+raw_time_0022:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '101'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '23:23:00'
+  matchable_bib_number: 101
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  sortable_bib_number: 101
+  source: ost-live-entry
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here:
+  with_pacer: false
+raw_time_0023:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '130'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '12:34:00'
+  matchable_bib_number: 130
+  parameterized_split_name: molas-pass-aid1
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 130
+  source: ost-live-entry
+  split_name: Molas Pass (Aid1)
+  split_time_id:
+  stopped_here:
+  with_pacer: false
+raw_time_0024:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '130'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '12:44:00'
+  matchable_bib_number: 130
+  parameterized_split_name: molas-pass-aid1
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 130
+  source: ost-live-entry
+  split_name: Molas Pass (Aid1)
+  split_time_id:
+  stopped_here:
+  with_pacer: false
+raw_time_0025:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '130'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '13:13:00'
+  matchable_bib_number: 130
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  sortable_bib_number: 130
+  source: ost-live-entry
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here:
+  with_pacer: false
+raw_time_0026:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '130'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '13:14:00'
+  matchable_bib_number: 130
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 130
+  source: ost-live-entry
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here: false
+  with_pacer: false
+raw_time_0027:
+  event_group: sum
+  creator: admin_user
+  reviewer: admin_user
+  absolute_time:
+  bib_number: '130'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '13:14:00'
+  matchable_bib_number: 130
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at: 2018-04-30 22:46:06.425174000 Z
+  sortable_bib_number: 130
+  source: ost-live-entry
+  split_name: Rolling Pass (Aid2)
+  split_time_id:
+  stopped_here:
+  with_pacer: false
+raw_time_0028:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '21:11:00'
+  matchable_bib_number: 999
+  parameterized_split_name: anvil-cg-aid6
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Anvil CG (Aid6)
+  split_time_id: 190694
+  stopped_here:
+  with_pacer: false
+raw_time_0029:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '21:21:00'
+  matchable_bib_number: 999
+  parameterized_split_name: anvil-cg-aid6
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Anvil CG (Aid6)
+  split_time_id: 190695
+  stopped_here:
+  with_pacer: false
+raw_time_0030:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:24:00'
+  matchable_bib_number: 999
+  parameterized_split_name: cascade-creek-rd-aid3
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Cascade Creek Rd (Aid3)
+  split_time_id: 190701
+  stopped_here:
+  with_pacer: false
+raw_time_0031:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '01:28:00'
+  matchable_bib_number: 999
+  parameterized_split_name: cascade-creek-rd-aid3
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Cascade Creek Rd (Aid3)
+  split_time_id: 190702
+  stopped_here:
+  with_pacer: false
+raw_time_0032:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '09:09:00'
+  matchable_bib_number: 999
+  parameterized_split_name: engineer-mtn-th-aid4
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Engineer Mtn TH (Aid4)
+  split_time_id: 190703
+  stopped_here:
+  with_pacer: false
+raw_time_0033:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '09:09:09'
+  matchable_bib_number: 999
+  parameterized_split_name: engineer-mtn-th-aid4
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Engineer Mtn TH (Aid4)
+  split_time_id: 190704
+  stopped_here:
+  with_pacer: false
+raw_time_0034:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '08:30:00'
+  matchable_bib_number: 999
+  parameterized_split_name: molas-pass-aid1
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Molas Pass (Aid1)
+  split_time_id: 190699
+  stopped_here:
+  with_pacer: false
+raw_time_0035:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '08:32:00'
+  matchable_bib_number: 999
+  parameterized_split_name: molas-pass-aid1
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Molas Pass (Aid1)
+  split_time_id: 190700
+  stopped_here:
+  with_pacer: false
+raw_time_0036:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '09:09:00'
+  matchable_bib_number: 999
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Rolling Pass (Aid2)
+  split_time_id: 190696
+  stopped_here:
+  with_pacer: false
+raw_time_0037:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 64
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '09:10:00'
+  matchable_bib_number: 999
+  parameterized_split_name: rolling-pass-aid2
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Rolling Pass (Aid2)
+  split_time_id: 190697
+  stopped_here:
+  with_pacer: false
+raw_time_0038:
+  event_group: sum
+  creator: admin_user
+  reviewer:
+  absolute_time:
+  bib_number: '999'
+  bitkey: 1
+  data_status:
+  disassociated_from_effort:
+  entered_lap:
+  entered_time: '07:00:00'
+  matchable_bib_number: 999
+  parameterized_split_name: start
+  remarks:
+  reviewed_at:
+  sortable_bib_number: 999
+  source: ost-live-entry
+  split_name: Start
+  split_time_id: 190698
+  stopped_here:
   with_pacer: false

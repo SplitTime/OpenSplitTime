@@ -1,47 +1,42 @@
 ---
 notification_0001:
-  effort: rufa_2017_12h_progress_lap2
-  id: 1
+  effort: rufa_2017_24h_finished_first
   bitkey: 1
-  distance: 8690
+  distance: 0
   follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0002:
-  effort: rufa_2017_12h_start_only
-  id: 2
+  effort: rufa_2017_24h_finished_first
   bitkey: 1
   distance: 0
-  follower_ids: "{4,3}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0003:
-  effort: rufa_2017_12h_start_only
-  id: 3
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{3}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0004:
-  effort: rufa_2017_12h_start_only
-  id: 4
-  bitkey: 1
-  distance: 4345
   follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
+notification_0003:
+  effort: rufa_2017_24h_finished_first
+  bitkey: 1
+  distance: 0
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0004:
+  effort: rufa_2017_24h_finished_first
+  bitkey: 1
+  distance: 0
+  follower_ids: "{4,1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
 notification_0005:
-  effort: rufa_2017_24h_progress_lap1
-  id: 5
+  effort: rufa_2017_24h_finished_first
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -50,38 +45,34 @@ notification_0005:
   subject:
   topic_resource_key:
 notification_0006:
-  effort: rufa_2017_12h_progress_lap2
-  id: 6
+  effort: rufa_2017_24h_progress_lap6
   bitkey: 1
-  distance: 8690
-  follower_ids: "{11,4}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0007:
-  effort: rufa_2017_12h_finished_lap6
-  id: 7
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{11}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0008:
-  effort: rufa_2017_24h_progress_lap1
-  id: 8
-  bitkey: 1
-  distance: 4345
+  distance: 0
   follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
+notification_0007:
+  effort: rufa_2017_24h_progress_lap6
+  bitkey: 1
+  distance: 0
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0008:
+  effort: rufa_2017_24h_progress_lap6
+  bitkey: 1
+  distance: 0
+  follower_ids: "{1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
 notification_0009:
-  effort: rufa_2017_12h_finished_first
-  id: 9
+  effort: rufa_2017_24h_progress_lap6
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -90,8 +81,7 @@ notification_0009:
   subject:
   topic_resource_key:
 notification_0010:
-  effort: rufa_2017_24h_finished_first
-  id: 10
+  effort: rufa_2017_24h_progress_lap6
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -100,138 +90,16 @@ notification_0010:
   subject:
   topic_resource_key:
 notification_0011:
-  effort: rufa_2017_24h_multiple_stops
-  id: 11
+  effort: rufa_2017_24h_progress_lap6
   bitkey: 1
-  distance: 0
-  follower_ids: "{}"
+  distance: 4345
+  follower_ids: "{4,11}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0012:
   effort: rufa_2017_24h_progress_lap6
-  id: 12
-  bitkey: 1
-  distance: 0
-  follower_ids: "{1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0013:
-  effort: rufa_2017_12h_start_only
-  id: 13
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{11,1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0014:
-  effort: rufa_2017_24h_not_started
-  id: 14
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0015:
-  effort: rufa_2017_12h_not_started
-  id: 15
-  bitkey: 1
-  distance: 0
-  follower_ids: "{1,11}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0016:
-  effort: rufa_2017_12h_not_started
-  id: 16
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{1,11}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0017:
-  effort: rufa_2017_12h_progress_lap2
-  id: 17
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0018:
-  effort: rufa_2017_12h_finished_first
-  id: 18
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0019:
-  effort: rufa_2017_24h_progress_lap1
-  id: 19
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0020:
-  effort: rufa_2017_12h_finished_lap6
-  id: 20
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{3,1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0021:
-  effort: rufa_2017_12h_progress_lap2
-  id: 21
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{4}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0022:
-  effort: rufa_2017_12h_finished_first
-  id: 22
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0023:
-  effort: rufa_2017_12h_start_only
-  id: 23
-  bitkey: 1
-  distance: 0
-  follower_ids: "{3,1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0024:
-  effort: rufa_2017_24h_progress_lap6
-  id: 24
   bitkey: 1
   distance: 8690
   follower_ids: "{4,1}"
@@ -239,29 +107,17 @@ notification_0024:
   notice_text:
   subject:
   topic_resource_key:
-notification_0025:
-  effort: rufa_2017_24h_progress_lap1
-  id: 25
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0026:
-  effort: rufa_2017_12h_finished_first
-  id: 26
+notification_0013:
+  effort: rufa_2017_24h_multiple_stops
   bitkey: 1
   distance: 0
-  follower_ids: "{3,1}"
+  follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
-notification_0027:
-  effort: rufa_2017_24h_progress_lap1
-  id: 27
+notification_0014:
+  effort: rufa_2017_24h_multiple_stops
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -269,29 +125,62 @@ notification_0027:
   notice_text:
   subject:
   topic_resource_key:
-notification_0028:
-  effort: rufa_2017_12h_not_started
-  id: 28
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{1,11}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0029:
-  effort: rufa_2017_12h_progress_lap2
-  id: 29
+notification_0015:
+  effort: rufa_2017_24h_multiple_stops
   bitkey: 1
   distance: 4345
-  follower_ids: "{1}"
+  follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
-notification_0030:
+notification_0016:
+  effort: rufa_2017_24h_multiple_stops
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0017:
+  effort: rufa_2017_24h_multiple_stops
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0018:
   effort: rufa_2017_24h_finished_last
-  id: 30
+  bitkey: 1
+  distance: 0
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0019:
+  effort: rufa_2017_24h_finished_last
+  bitkey: 1
+  distance: 0
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0020:
+  effort: rufa_2017_24h_finished_last
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0021:
+  effort: rufa_2017_24h_finished_last
   bitkey: 1
   distance: 4345
   follower_ids: "{3,11}"
@@ -299,9 +188,35 @@ notification_0030:
   notice_text:
   subject:
   topic_resource_key:
-notification_0031:
+notification_0022:
+  effort: rufa_2017_24h_finished_last
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0023:
+  effort: rufa_2017_24h_finished_last
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0024:
+  effort: rufa_2017_24h_finished_last
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{3,11}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0025:
   effort: rufa_2017_24h_not_started
-  id: 31
   bitkey: 1
   distance: 0
   follower_ids: "{11,4}"
@@ -309,9 +224,62 @@ notification_0031:
   notice_text:
   subject:
   topic_resource_key:
+notification_0026:
+  effort: rufa_2017_24h_not_started
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0027:
+  effort: rufa_2017_24h_not_started
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0028:
+  effort: rufa_2017_24h_not_started
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0029:
+  effort: rufa_2017_24h_progress_lap1
+  bitkey: 1
+  distance: 0
+  follower_ids: "{3,4}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0030:
+  effort: rufa_2017_24h_progress_lap1
+  bitkey: 1
+  distance: 0
+  follower_ids: "{11,1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0031:
+  effort: rufa_2017_24h_progress_lap1
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
 notification_0032:
-  effort: rufa_2017_12h_start_only
-  id: 32
+  effort: rufa_2017_24h_progress_lap1
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -320,28 +288,25 @@ notification_0032:
   subject:
   topic_resource_key:
 notification_0033:
-  effort: rufa_2017_24h_finished_first
-  id: 33
+  effort: rufa_2017_24h_progress_lap1
   bitkey: 1
-  distance: 0
+  distance: 4345
   follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0034:
-  effort: rufa_2017_12h_not_started
-  id: 34
+  effort: rufa_2017_24h_progress_lap1
   bitkey: 1
-  distance: 0
+  distance: 8690
   follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0035:
-  effort: rufa_2017_24h_finished_last
-  id: 35
+  effort: rufa_2017_24h_progress_lap1
   bitkey: 1
   distance: 8690
   follower_ids: "{}"
@@ -350,18 +315,25 @@ notification_0035:
   subject:
   topic_resource_key:
 notification_0036:
-  effort: rufa_2017_12h_finished_lap6
-  id: 36
+  effort: rufa_2017_24h_progress_lap1
   bitkey: 1
   distance: 8690
-  follower_ids: "{3,4}"
+  follower_ids: "{1}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0037:
-  effort: rufa_2017_24h_multiple_stops
-  id: 37
+  effort: rufa_2017_12h_finished_first
+  bitkey: 1
+  distance: 0
+  follower_ids: "{3,1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0038:
+  effort: rufa_2017_12h_finished_first
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -369,29 +341,80 @@ notification_0037:
   notice_text:
   subject:
   topic_resource_key:
-notification_0038:
-  effort: rufa_2017_12h_finished_lap6
-  id: 38
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{3,11}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
 notification_0039:
-  effort: rufa_2017_12h_not_started
-  id: 39
+  effort: rufa_2017_12h_finished_first
   bitkey: 1
-  distance: 8690
+  distance: 4345
   follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0040:
+  effort: rufa_2017_12h_finished_first
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0041:
+  effort: rufa_2017_12h_finished_first
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{11,3}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0042:
+  effort: rufa_2017_12h_finished_first
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{11,1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0043:
   effort: rufa_2017_12h_finished_lap6
-  id: 40
+  bitkey: 1
+  distance: 0
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0044:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 0
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0045:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{3}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0046:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{3,1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0047:
+  effort: rufa_2017_12h_finished_lap6
   bitkey: 1
   distance: 4345
   follower_ids: "{4}"
@@ -399,19 +422,62 @@ notification_0040:
   notice_text:
   subject:
   topic_resource_key:
-notification_0041:
-  effort: rufa_2017_24h_progress_lap6
-  id: 41
+notification_0048:
+  effort: rufa_2017_12h_finished_lap6
   bitkey: 1
-  distance: 4345
-  follower_ids: "{4,11}"
+  distance: 8690
+  follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
-notification_0042:
-  effort: rufa_2017_12h_not_started
-  id: 42
+notification_0049:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0050:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0051:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{3}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0052:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{3,4}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0053:
+  effort: rufa_2017_12h_finished_lap6
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{3,11}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0054:
+  effort: rufa_2017_12h_finished_lap6
   bitkey: 1
   distance: 8690
   follower_ids: "{11}"
@@ -419,129 +485,8 @@ notification_0042:
   notice_text:
   subject:
   topic_resource_key:
-notification_0043:
-  effort: rufa_2017_24h_progress_lap1
-  id: 43
-  bitkey: 1
-  distance: 0
-  follower_ids: "{3,4}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0044:
-  effort: rufa_2017_24h_finished_first
-  id: 44
-  bitkey: 1
-  distance: 0
-  follower_ids: "{4,1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0045:
-  effort: rufa_2017_24h_progress_lap1
-  id: 45
-  bitkey: 1
-  distance: 0
-  follower_ids: "{11,1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0046:
-  effort: rufa_2017_24h_multiple_stops
-  id: 46
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0047:
-  effort: rufa_2017_12h_not_started
-  id: 47
-  bitkey: 1
-  distance: 0
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0048:
-  effort: rufa_2017_12h_progress_lap5_partial
-  id: 48
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{11,1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0049:
-  effort: rufa_2017_12h_not_started
-  id: 49
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0050:
-  effort: rufa_2017_12h_finished_first
-  id: 50
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{11,1}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0051:
-  effort: rufa_2017_12h_finished_lap6
-  id: 51
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0052:
-  effort: rufa_2017_24h_progress_lap1
-  id: 52
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0053:
-  effort: rufa_2017_12h_finished_lap6
-  id: 53
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{3}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0054:
-  effort: rufa_2017_12h_finished_lap6
-  id: 54
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{3}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
 notification_0055:
-  effort: rufa_2017_24h_progress_lap6
-  id: 55
+  effort: rufa_2017_12h_progress_lap5_partial
   bitkey: 1
   distance: 0
   follower_ids: "{}"
@@ -550,48 +495,106 @@ notification_0055:
   subject:
   topic_resource_key:
 notification_0056:
-  effort: rufa_2017_12h_finished_first
-  id: 56
+  effort: rufa_2017_12h_progress_lap5_partial
   bitkey: 1
   distance: 4345
-  follower_ids: "{11,3}"
+  follower_ids: "{3,11}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0057:
-  effort: rufa_2017_24h_finished_last
-  id: 57
+  effort: rufa_2017_12h_progress_lap5_partial
   bitkey: 1
   distance: 8690
-  follower_ids: "{3,11}"
+  follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0058:
-  effort: rufa_2017_12h_start_only
-  id: 58
+  effort: rufa_2017_12h_progress_lap5_partial
   bitkey: 1
   distance: 8690
-  follower_ids: "{3,11}"
+  follower_ids: "{11,1}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0059:
-  effort: rufa_2017_12h_not_started
-  id: 59
+  effort: rufa_2017_12h_progress_lap2
   bitkey: 1
-  distance: 8690
-  follower_ids: "{3}"
+  distance: 0
+  follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0060:
+  effort: rufa_2017_12h_progress_lap2
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0061:
+  effort: rufa_2017_12h_progress_lap2
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0062:
+  effort: rufa_2017_12h_progress_lap2
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0063:
+  effort: rufa_2017_12h_progress_lap2
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{4}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0064:
+  effort: rufa_2017_12h_progress_lap2
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{11,4}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0065:
   effort: rufa_2017_12h_start_only
-  id: 60
+  bitkey: 1
+  distance: 0
+  follower_ids: "{3,1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0066:
+  effort: rufa_2017_12h_start_only
+  bitkey: 1
+  distance: 0
+  follower_ids: "{4,3}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0067:
+  effort: rufa_2017_12h_start_only
   bitkey: 1
   distance: 0
   follower_ids: "{11}"
@@ -599,79 +602,8 @@ notification_0060:
   notice_text:
   subject:
   topic_resource_key:
-notification_0061:
-  effort: rufa_2017_12h_progress_lap5_partial
-  id: 61
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{3,11}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0062:
-  effort: rufa_2017_24h_finished_first
-  id: 62
-  bitkey: 1
-  distance: 0
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0063:
-  effort: rufa_2017_24h_finished_first
-  id: 63
-  bitkey: 1
-  distance: 0
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0064:
-  effort: rufa_2017_24h_progress_lap6
-  id: 64
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0065:
-  effort: rufa_2017_24h_progress_lap6
-  id: 65
-  bitkey: 1
-  distance: 0
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0066:
-  effort: rufa_2017_12h_progress_lap5_partial
-  id: 66
-  bitkey: 1
-  distance: 0
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0067:
-  effort: rufa_2017_12h_finished_lap6
-  id: 67
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
 notification_0068:
-  effort: rufa_2017_24h_not_started
-  id: 68
+  effort: rufa_2017_12h_start_only
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -680,8 +612,43 @@ notification_0068:
   subject:
   topic_resource_key:
 notification_0069:
-  effort: rufa_2017_12h_finished_lap6
-  id: 69
+  effort: rufa_2017_12h_start_only
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0070:
+  effort: rufa_2017_12h_start_only
+  bitkey: 1
+  distance: 4345
+  follower_ids: "{11,1}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0071:
+  effort: rufa_2017_12h_start_only
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{3}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0072:
+  effort: rufa_2017_12h_start_only
+  bitkey: 1
+  distance: 8690
+  follower_ids: "{3,11}"
+  kind:
+  notice_text:
+  subject:
+  topic_resource_key:
+notification_0073:
+  effort: rufa_2017_12h_not_started
   bitkey: 1
   distance: 0
   follower_ids: "{}"
@@ -689,49 +656,8 @@ notification_0069:
   notice_text:
   subject:
   topic_resource_key:
-notification_0070:
-  effort: rufa_2017_12h_finished_lap6
-  id: 70
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0071:
-  effort: rufa_2017_24h_multiple_stops
-  id: 71
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0072:
-  effort: rufa_2017_24h_progress_lap6
-  id: 72
-  bitkey: 1
-  distance: 4345
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
-notification_0073:
-  effort: rufa_2017_12h_progress_lap5_partial
-  id: 73
-  bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
-  kind:
-  notice_text:
-  subject:
-  topic_resource_key:
 notification_0074:
-  effort: rufa_2017_24h_finished_last
-  id: 74
+  effort: rufa_2017_12h_not_started
   bitkey: 1
   distance: 0
   follower_ids: "{}"
@@ -740,18 +666,16 @@ notification_0074:
   subject:
   topic_resource_key:
 notification_0075:
-  effort: rufa_2017_24h_finished_last
-  id: 75
+  effort: rufa_2017_12h_not_started
   bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
+  distance: 0
+  follower_ids: "{1,11}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0076:
-  effort: rufa_2017_24h_finished_last
-  id: 76
+  effort: rufa_2017_12h_not_started
   bitkey: 1
   distance: 4345
   follower_ids: "{}"
@@ -760,51 +684,46 @@ notification_0076:
   subject:
   topic_resource_key:
 notification_0077:
-  effort: rufa_2017_24h_not_started
-  id: 77
+  effort: rufa_2017_12h_not_started
   bitkey: 1
-  distance: 8690
-  follower_ids: "{}"
+  distance: 4345
+  follower_ids: "{1,11}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0078:
-  effort: rufa_2017_24h_finished_last
-  id: 78
+  effort: rufa_2017_12h_not_started
   bitkey: 1
-  distance: 0
+  distance: 8690
   follower_ids: "{}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0079:
-  effort: rufa_2017_12h_finished_lap6
-  id: 79
+  effort: rufa_2017_12h_not_started
   bitkey: 1
-  distance: 0
-  follower_ids: "{}"
+  distance: 8690
+  follower_ids: "{1,11}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0080:
-  effort: rufa_2017_12h_progress_lap2
-  id: 80
+  effort: rufa_2017_12h_not_started
   bitkey: 1
-  distance: 0
-  follower_ids: "{}"
+  distance: 8690
+  follower_ids: "{3}"
   kind:
   notice_text:
   subject:
   topic_resource_key:
 notification_0081:
-  effort: rufa_2017_24h_multiple_stops
-  id: 81
+  effort: rufa_2017_12h_not_started
   bitkey: 1
   distance: 8690
-  follower_ids: "{}"
+  follower_ids: "{11}"
   kind:
   notice_text:
   subject:

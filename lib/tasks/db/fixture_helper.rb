@@ -35,47 +35,9 @@ module FixtureHelper
     :users,
   ].freeze
 
-  # Portable fixture tables are assigned an :id by Rails and are referenced by title
-  # rather than id in other fixture tables.
-  PORTABLE_FIXTURE_TABLES = [
-    :aid_stations,
-    :connections,
-    :course_group_courses,
-    :course_groups,
-    :courses,
-    :credentials,
-    :efforts,
-    :event_groups,
-    :event_series,
-    :event_series_events,
-    :events,
-    :historical_facts,
-    :lotteries,
-    :lottery_divisions,
-    :lottery_draws,
-    :lottery_entrants,
-    :lottery_simulation_runs,
-    :lottery_tickets,
-    :monetary_donations,
-    :notifications,
-    :organizations,
-    :partners,
-    :people,
-    :projection_assessment_runs,
-    :raw_times,
-    :results_categories,
-    :results_templates,
-    :results_template_categories,
-    :split_times,
-    :splits,
-    :stewardships,
-    :subscriptions,
-    :users,
-  ].freeze
-
-  # ORDER BY clause used when dumping fixtures. Required for any non-slug portable table
-  # so labels are stable across regenerations and across schema changes (otherwise a new
-  # column could become an unexpected sort key, scrambling every label and FK reference).
+  # ORDER BY clause used when dumping fixtures. Required for any non-slug table so labels
+  # are stable across regenerations and across schema changes (otherwise a new column
+  # could become an unexpected sort key, scrambling every label and FK reference).
   # Pick columns that uniquely identify a row by its real-world identity.
   ORDER_BY_MAP = {
     aid_stations: "event_id, split_id",

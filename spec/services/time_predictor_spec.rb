@@ -14,7 +14,7 @@ RSpec.describe TimePredictor do
   let(:vert_gain_factor) { SegmentTimeCalculator::UP_VERT_GAIN_FACTOR }
   let(:event) { events(:sum_55k) }
   let(:effort) { efforts(:sum_55k_progress_rolling) }
-  let(:subject_split_times) { effort.split_times }
+  let(:subject_split_times) { effort.split_times.ordered }
   let(:ordered_splits) { event.ordered_splits }
   let(:start) { ordered_splits.first }
   let(:aid_1) { ordered_splits.second }

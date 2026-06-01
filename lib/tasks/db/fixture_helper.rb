@@ -66,6 +66,7 @@ module FixtureHelper
     :results_categories,
     :results_templates,
     :results_template_categories,
+    :split_times,
     :splits,
     :stewardships,
     :subscriptions,
@@ -99,6 +100,7 @@ module FixtureHelper
       "event_group_id, source, bib_number, parameterized_split_name, bitkey, " \
       "entered_time, absolute_time",
     results_template_categories: "results_template_id, position, results_category_id",
+    split_times: "effort_id, lap, split_id, sub_split_bitkey",
     stewardships: "user_id, organization_id",
     subscriptions: "user_id, subscribable_type, subscribable_id, protocol, endpoint",
   }.freeze

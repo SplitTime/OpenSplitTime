@@ -2,6 +2,8 @@
 ggd30_12m_finished_first:
   event: ggd30_12m
   person: finished_first_france
+  final_split_time: ggd30_12m_finished_first_finish_1
+  stopped_split_time:
   age: 23
   beacon_url:
   beyond_start: true
@@ -19,7 +21,6 @@ ggd30_12m_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190117
   finished: true
   first_name: Finished
   gender: 0
@@ -33,13 +34,14 @@ ggd30_12m_finished_first:
   state_code: ARA
   state_name: Auvergne-Rhône-Alpes
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_12m_finished_second:
   event: ggd30_12m
   person: finished_second_colorado_us
+  final_split_time: ggd30_12m_finished_second_finish_1
+  stopped_split_time:
   age: 43
   beacon_url:
   beyond_start: true
@@ -57,7 +59,6 @@ ggd30_12m_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190273
   finished: true
   first_name: Finished
   gender: 1
@@ -71,13 +72,14 @@ ggd30_12m_finished_second:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_12m_not_started:
   event: ggd30_12m
   person: not_started_colorado_us
+  final_split_time:
+  stopped_split_time:
   age: 22
   beacon_url:
   beyond_start: false
@@ -95,7 +97,6 @@ ggd30_12m_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 1
@@ -109,13 +110,14 @@ ggd30_12m_not_started:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_12m_series_finisher:
   event: ggd30_12m
   person: series_finisher
+  final_split_time: ggd30_12m_series_finisher_finish_1
+  stopped_split_time:
   age: 34
   beacon_url:
   beyond_start: true
@@ -133,7 +135,6 @@ ggd30_12m_series_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192724
   finished: true
   first_name: Series
   gender: 0
@@ -147,13 +148,14 @@ ggd30_12m_series_finisher:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_12m_slow_finisher:
   event: ggd30_12m
   person: slow_finisher
+  final_split_time: ggd30_12m_slow_finisher_finish_1
+  stopped_split_time:
   age: 64
   beacon_url:
   beyond_start: true
@@ -171,7 +173,6 @@ ggd30_12m_slow_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192746
   finished: true
   first_name: Slow
   gender: 0
@@ -185,13 +186,14 @@ ggd30_12m_slow_finisher:
   state_code: UT
   state_name:
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_12m_start_only:
   event: ggd30_12m
   person: start_only_colorado_us
+  final_split_time: ggd30_12m_start_only_start_1
+  stopped_split_time:
   age: 27
   beacon_url:
   beyond_start: false
@@ -209,7 +211,6 @@ ggd30_12m_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190731
   finished: false
   first_name: Start
   gender: 1
@@ -223,13 +224,14 @@ ggd30_12m_start_only:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_bad_finish:
   event: ggd30_50k
   person: bad_finish
+  final_split_time: ggd30_50k_bad_finish_finish_1
+  stopped_split_time:
   age: 21
   beacon_url:
   beyond_start: true
@@ -247,7 +249,6 @@ ggd30_50k_bad_finish:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 189055
   finished: true
   first_name: Bad
   gender: 0
@@ -261,13 +262,14 @@ ggd30_50k_bad_finish:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_drop_aid4:
   event: ggd30_50k
   person: drop_aid4
+  final_split_time: ggd30_50k_drop_aid4_aid_4_1
+  stopped_split_time: ggd30_50k_drop_aid4_aid_4_1
   age: 18
   beacon_url:
   beyond_start: true
@@ -285,7 +287,6 @@ ggd30_50k_drop_aid4:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 189952
   finished: false
   first_name: Drop
   gender: 0
@@ -299,13 +300,14 @@ ggd30_50k_drop_aid4:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 189952
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_finished_first:
   event: ggd30_50k
   person: finished_first_colorado_us
+  final_split_time: ggd30_50k_finished_first_finish_1
+  stopped_split_time:
   age: 44
   beacon_url:
   beyond_start: true
@@ -323,7 +325,6 @@ ggd30_50k_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 188951
   finished: true
   first_name: Finished
   gender: 0
@@ -337,13 +338,14 @@ ggd30_50k_finished_first:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_finished_second:
   event: ggd30_50k
   person:
+  final_split_time: ggd30_50k_finished_second_finish_1
+  stopped_split_time:
   age: 43
   beacon_url:
   beyond_start: true
@@ -361,7 +363,6 @@ ggd30_50k_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192722
   finished: true
   first_name: Finished
   gender: 1
@@ -375,13 +376,14 @@ ggd30_50k_finished_second:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_not_started:
   event: ggd30_50k
   person: not_started
+  final_split_time:
+  stopped_split_time:
   age: 31
   beacon_url:
   beyond_start: false
@@ -399,7 +401,6 @@ ggd30_50k_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 0
@@ -413,13 +414,14 @@ ggd30_50k_not_started:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_progress_aid3:
   event: ggd30_50k
   person: progress_aid3
+  final_split_time: ggd30_50k_progress_aid3_aid_3_1
+  stopped_split_time:
   age: 31
   beacon_url:
   beyond_start: true
@@ -437,7 +439,6 @@ ggd30_50k_progress_aid3:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 189850
   finished: false
   first_name: Progress
   gender: 0
@@ -451,13 +452,14 @@ ggd30_50k_progress_aid3:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_progress_aid4:
   event: ggd30_50k
   person: progress_aid4
+  final_split_time: ggd30_50k_progress_aid4_aid_4_1
+  stopped_split_time:
   age: 35
   beacon_url:
   beyond_start: true
@@ -475,7 +477,6 @@ ggd30_50k_progress_aid4:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 189814
   finished: false
   first_name: Progress
   gender: 1
@@ -489,13 +490,14 @@ ggd30_50k_progress_aid4:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ggd30_50k_start_only:
   event: ggd30_50k
   person: start_only_2019_02_01_07_19_53
+  final_split_time: ggd30_50k_start_only_start_1
+  stopped_split_time:
   age: 31
   beacon_url:
   beyond_start: false
@@ -513,7 +515,6 @@ ggd30_50k_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190761
   finished: false
   first_name: Start
   gender: 1
@@ -527,13 +528,14 @@ ggd30_50k_start_only:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_clarence_goyette:
   event: hardrock_2014
   person: clarence_goyette
+  final_split_time: hardrock_2014_clarence_goyette_finish_1
+  stopped_split_time: hardrock_2014_clarence_goyette_finish_1
   age: 52
   beacon_url:
   beyond_start: true
@@ -551,7 +553,6 @@ hardrock_2014_clarence_goyette:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 93442
   finished: true
   first_name: Clarence
   gender: 0
@@ -565,13 +566,14 @@ hardrock_2014_clarence_goyette:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 93442
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_claudio_wunsch:
   event: hardrock_2014
   person: claudio_wunsch
+  final_split_time: hardrock_2014_claudio_wunsch_finish_1
+  stopped_split_time: hardrock_2014_claudio_wunsch_finish_1
   age: 33
   beacon_url:
   beyond_start: true
@@ -589,7 +591,6 @@ hardrock_2014_claudio_wunsch:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 91846
   finished: true
   first_name: Claudio
   gender: 0
@@ -603,13 +604,14 @@ hardrock_2014_claudio_wunsch:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 91846
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_drop_ouray:
   event: hardrock_2014
   person: drop_ouray
+  final_split_time: hardrock_2014_drop_ouray_ouray_out_1
+  stopped_split_time: hardrock_2014_drop_ouray_ouray_out_1
   age: 40
   beacon_url:
   beyond_start: true
@@ -627,7 +629,6 @@ hardrock_2014_drop_ouray:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 94483
   finished: false
   first_name: Drop
   gender: 1
@@ -641,13 +642,14 @@ hardrock_2014_drop_ouray:
   state_code: CA
   state_name: California
   stopped: true
-  stopped_split_time_id: 94483
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_finished_first:
   event: hardrock_2014
   person: finished_first_japan
+  final_split_time: hardrock_2014_finished_first_finish_1
+  stopped_split_time: hardrock_2014_finished_first_finish_1
   age: 19
   beacon_url:
   beyond_start: true
@@ -665,7 +667,6 @@ hardrock_2014_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 91286
   finished: true
   first_name: Finished
   gender: 0
@@ -679,13 +680,14 @@ hardrock_2014_finished_first:
   state_code: '01'
   state_name: Hokkaido
   stopped: true
-  stopped_split_time_id: 91286
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_finished_with_stop:
   event: hardrock_2014
   person: finished_with_stop
+  final_split_time: hardrock_2014_finished_with_stop_finish_1
+  stopped_split_time: hardrock_2014_finished_with_stop_finish_1
   age: 40
   beacon_url:
   beyond_start: true
@@ -703,7 +705,6 @@ hardrock_2014_finished_with_stop:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 91314
   finished: true
   first_name: Finished
   gender: 0
@@ -717,13 +718,14 @@ hardrock_2014_finished_with_stop:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 91314
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_finished_without_stop:
   event: hardrock_2014
   person: finished_without_stop
+  final_split_time: hardrock_2014_finished_without_stop_finish_1
+  stopped_split_time:
   age: 25
   beacon_url:
   beyond_start: true
@@ -741,7 +743,6 @@ hardrock_2014_finished_without_stop:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 91342
   finished: true
   first_name: Finished
   gender: 0
@@ -755,13 +756,14 @@ hardrock_2014_finished_without_stop:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_humberto_adams:
   event: hardrock_2014
   person: humberto_adams
+  final_split_time: hardrock_2014_humberto_adams_finish_1
+  stopped_split_time: hardrock_2014_humberto_adams_finish_1
   age: 24
   beacon_url:
   beyond_start: true
@@ -779,7 +781,6 @@ hardrock_2014_humberto_adams:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 92658
   finished: true
   first_name: Humberto
   gender: 0
@@ -793,13 +794,14 @@ hardrock_2014_humberto_adams:
   state_code: NM
   state_name: New Mexico
   stopped: true
-  stopped_split_time_id: 92658
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_irvin_corkery:
   event: hardrock_2014
   person: irvin_corkery
+  final_split_time: hardrock_2014_irvin_corkery_finish_1
+  stopped_split_time: hardrock_2014_irvin_corkery_finish_1
   age: 22
   beacon_url:
   beyond_start: true
@@ -817,7 +819,6 @@ hardrock_2014_irvin_corkery:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 93498
   finished: true
   first_name: Irvin
   gender: 0
@@ -831,13 +832,14 @@ hardrock_2014_irvin_corkery:
   state_code: DC
   state_name: District of Columbia
   stopped: true
-  stopped_split_time_id: 93498
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_keith_metz:
   event: hardrock_2014
   person: keith_metz
+  final_split_time: hardrock_2014_keith_metz_finish_1
+  stopped_split_time: hardrock_2014_keith_metz_finish_1
   age: 42
   beacon_url:
   beyond_start: true
@@ -855,7 +857,6 @@ hardrock_2014_keith_metz:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 92238
   finished: true
   first_name: Keith
   gender: 0
@@ -869,13 +870,14 @@ hardrock_2014_keith_metz:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 92238
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_ken_bradtke:
   event: hardrock_2014
   person: ken_bradtke
+  final_split_time: hardrock_2014_ken_bradtke_finish_1
+  stopped_split_time: hardrock_2014_ken_bradtke_finish_1
   age: 47
   beacon_url:
   beyond_start: true
@@ -893,7 +895,6 @@ hardrock_2014_ken_bradtke:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 93638
   finished: true
   first_name: Ken
   gender: 0
@@ -907,13 +908,14 @@ hardrock_2014_ken_bradtke:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 93638
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_major_green:
   event: hardrock_2014
   person: major_green
+  final_split_time: hardrock_2014_major_green_finish_1
+  stopped_split_time: hardrock_2014_major_green_finish_1
   age: 58
   beacon_url:
   beyond_start: true
@@ -931,7 +933,6 @@ hardrock_2014_major_green:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 92266
   finished: true
   first_name: Major
   gender: 0
@@ -945,13 +946,14 @@ hardrock_2014_major_green:
   state_code: NC
   state_name: North Carolina
   stopped: true
-  stopped_split_time_id: 92266
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_multiple_stops:
   event: hardrock_2014
   person: multiple_stops
+  final_split_time: hardrock_2014_multiple_stops_grouse_out_1
+  stopped_split_time: hardrock_2014_multiple_stops_grouse_out_1
   age: 60
   beacon_url:
   beyond_start: true
@@ -969,7 +971,6 @@ hardrock_2014_multiple_stops:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 94453
   finished: false
   first_name: Multiple
   gender: 1
@@ -983,13 +984,14 @@ hardrock_2014_multiple_stops:
   state_code: HI
   state_name: Hawaii
   stopped: true
-  stopped_split_time_id: 94453
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_not_started:
   event: hardrock_2014
   person: not_started
+  final_split_time:
+  stopped_split_time:
   age: 28
   beacon_url:
   beyond_start: false
@@ -1007,7 +1009,6 @@ hardrock_2014_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 0
@@ -1021,13 +1022,14 @@ hardrock_2014_not_started:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_omer_yundt:
   event: hardrock_2014
   person: omer_yundt
+  final_split_time: hardrock_2014_omer_yundt_finish_1
+  stopped_split_time: hardrock_2014_omer_yundt_finish_1
   age: 40
   beacon_url:
   beyond_start: true
@@ -1045,7 +1047,6 @@ hardrock_2014_omer_yundt:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 93358
   finished: true
   first_name: Omer
   gender: 0
@@ -1059,13 +1060,14 @@ hardrock_2014_omer_yundt:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 93358
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_pat_schaden:
   event: hardrock_2014
   person: pat_schaden
+  final_split_time: hardrock_2014_pat_schaden_cunningham_in_1
+  stopped_split_time: hardrock_2014_pat_schaden_cunningham_in_1
   age: 53
   beacon_url:
   beyond_start: true
@@ -1083,7 +1085,6 @@ hardrock_2014_pat_schaden:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 93384
   finished: false
   first_name: Pat
   gender: 0
@@ -1097,13 +1098,14 @@ hardrock_2014_pat_schaden:
   state_code: AZ
   state_name: Arizona
   stopped: true
-  stopped_split_time_id: 93384
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_progress_sherman:
   event: hardrock_2014
   person: progress_sherman_colorado_us
+  final_split_time: hardrock_2014_progress_sherman_sherman_out_1
+  stopped_split_time:
   age: 36
   beacon_url:
   beyond_start: true
@@ -1121,7 +1123,6 @@ hardrock_2014_progress_sherman:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 94175
   finished: false
   first_name: Progress
   gender: 0
@@ -1135,13 +1136,14 @@ hardrock_2014_progress_sherman:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_rachelle_eichmann:
   event: hardrock_2014
   person: rachelle_eichmann
+  final_split_time: hardrock_2014_rachelle_eichmann_finish_1
+  stopped_split_time: hardrock_2014_rachelle_eichmann_finish_1
   age: 22
   beacon_url:
   beyond_start: true
@@ -1159,7 +1161,6 @@ hardrock_2014_rachelle_eichmann:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 92042
   finished: true
   first_name: Rachelle
   gender: 1
@@ -1173,13 +1174,14 @@ hardrock_2014_rachelle_eichmann:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 92042
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_willis_murray:
   event: hardrock_2014
   person: willis_murray
+  final_split_time: hardrock_2014_willis_murray_finish_1
+  stopped_split_time: hardrock_2014_willis_murray_finish_1
   age: 16
   beacon_url:
   beyond_start: true
@@ -1197,7 +1199,6 @@ hardrock_2014_willis_murray:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 93554
   finished: true
   first_name: Willis
   gender: 0
@@ -1211,13 +1212,14 @@ hardrock_2014_willis_murray:
   state_code: GA
   state_name: Georgia
   stopped: true
-  stopped_split_time_id: 93554
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2014_without_start:
   event: hardrock_2014
   person: without_start
+  final_split_time: hardrock_2014_without_start_grouse_out_1
+  stopped_split_time: hardrock_2014_without_start_grouse_out_1
   age: 49
   beacon_url:
   beyond_start: true
@@ -1235,7 +1237,6 @@ hardrock_2014_without_start:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 94470
   finished: false
   first_name: Without
   gender: 0
@@ -1249,13 +1250,14 @@ hardrock_2014_without_start:
   state_code: MT
   state_name: Montana
   stopped: true
-  stopped_split_time_id: 94470
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_bad_status:
   event: hardrock_2015
   person: bad_status
+  final_split_time: hardrock_2015_bad_status_putnam_out_1
+  stopped_split_time: hardrock_2015_bad_status_putnam_out_1
   age: 21
   beacon_url:
   beyond_start: true
@@ -1273,7 +1275,6 @@ hardrock_2015_bad_status:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 101556
   finished: false
   first_name: Bad
   gender: 0
@@ -1287,13 +1288,14 @@ hardrock_2015_bad_status:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 101556
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_benedict_davis:
   event: hardrock_2015
   person: benedict_davis
+  final_split_time: hardrock_2015_benedict_davis_finish_1
+  stopped_split_time: hardrock_2015_benedict_davis_finish_1
   age: 32
   beacon_url:
   beyond_start: true
@@ -1311,7 +1313,6 @@ hardrock_2015_benedict_davis:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 3702
   finished: true
   first_name: Benedict
   gender: 0
@@ -1325,13 +1326,14 @@ hardrock_2015_benedict_davis:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 3702
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_bruno_fadel:
   event: hardrock_2015
   person: bruno_fadel
+  final_split_time: hardrock_2015_bruno_fadel_finish_1
+  stopped_split_time: hardrock_2015_bruno_fadel_finish_1
   age: 27
   beacon_url:
   beyond_start: true
@@ -1349,7 +1351,6 @@ hardrock_2015_bruno_fadel:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 3312
   finished: true
   first_name: Bruno
   gender: 0
@@ -1363,13 +1364,14 @@ hardrock_2015_bruno_fadel:
   state_code: CA
   state_name: California
   stopped: true
-  stopped_split_time_id: 3312
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_carmine_adams:
   event: hardrock_2015
   person: carmine_adams
+  final_split_time: hardrock_2015_carmine_adams_finish_1
+  stopped_split_time: hardrock_2015_carmine_adams_finish_1
   age: 18
   beacon_url:
   beyond_start: true
@@ -1387,7 +1389,6 @@ hardrock_2015_carmine_adams:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 432
   finished: true
   first_name: Carmine
   gender: 0
@@ -1401,13 +1402,14 @@ hardrock_2015_carmine_adams:
   state_code: WA
   state_name: Washington
   stopped: true
-  stopped_split_time_id: 432
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_cassondra_nienow:
   event: hardrock_2015
   person: cassondra_nienow
+  final_split_time: hardrock_2015_cassondra_nienow_sherman_out_1
+  stopped_split_time: hardrock_2015_cassondra_nienow_sherman_out_1
   age: 56
   beacon_url:
   beyond_start: true
@@ -1425,7 +1427,6 @@ hardrock_2015_cassondra_nienow:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 4198
   finished: false
   first_name: Cassondra
   gender: 1
@@ -1439,13 +1440,14 @@ hardrock_2015_cassondra_nienow:
   state_code: OH
   state_name: Ohio
   stopped: true
-  stopped_split_time_id: 4198
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_cedric_windler:
   event: hardrock_2015
   person: cedric_windler
+  final_split_time: hardrock_2015_cedric_windler_finish_1
+  stopped_split_time: hardrock_2015_cedric_windler_finish_1
   age: 36
   beacon_url:
   beyond_start: true
@@ -1463,7 +1465,6 @@ hardrock_2015_cedric_windler:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1332
   finished: true
   first_name: Cedric
   gender: 0
@@ -1477,13 +1478,14 @@ hardrock_2015_cedric_windler:
   state_code: TN
   state_name: Tennessee
   stopped: true
-  stopped_split_time_id: 1332
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_chris_rempel:
   event: hardrock_2015
   person: chris_rempel
+  final_split_time: hardrock_2015_chris_rempel_finish_1
+  stopped_split_time: hardrock_2015_chris_rempel_finish_1
   age: 26
   beacon_url:
   beyond_start: true
@@ -1501,7 +1503,6 @@ hardrock_2015_chris_rempel:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1512
   finished: true
   first_name: Chris
   gender: 0
@@ -1515,13 +1516,14 @@ hardrock_2015_chris_rempel:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 1512
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_darius_jacobson:
   event: hardrock_2015
   person: darius_jacobson
+  final_split_time: hardrock_2015_darius_jacobson_finish_1
+  stopped_split_time: hardrock_2015_darius_jacobson_finish_1
   age: 30
   beacon_url:
   beyond_start: true
@@ -1539,7 +1541,6 @@ hardrock_2015_darius_jacobson:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 582
   finished: true
   first_name: Darius
   gender: 0
@@ -1553,13 +1554,14 @@ hardrock_2015_darius_jacobson:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 582
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_demetrius_moen:
   event: hardrock_2015
   person: demetrius_moen
+  final_split_time: hardrock_2015_demetrius_moen_finish_1
+  stopped_split_time: hardrock_2015_demetrius_moen_finish_1
   age: 40
   beacon_url:
   beyond_start: true
@@ -1577,7 +1579,6 @@ hardrock_2015_demetrius_moen:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 2712
   finished: true
   first_name: Demetrius
   gender: 0
@@ -1591,13 +1592,14 @@ hardrock_2015_demetrius_moen:
   state_code: OR
   state_name: Oregon
   stopped: true
-  stopped_split_time_id: 2712
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_donn_mckenzie:
   event: hardrock_2015
   person: donn_mckenzie
+  final_split_time: hardrock_2015_donn_mckenzie_cunningham_out_1
+  stopped_split_time:
   age: 16
   beacon_url:
   beyond_start: true
@@ -1615,7 +1617,6 @@ hardrock_2015_donn_mckenzie:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 4219
   finished: false
   first_name: Donn
   gender: 0
@@ -1629,13 +1630,14 @@ hardrock_2015_donn_mckenzie:
   state_code: WY
   state_name: Wyoming
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_donte_spencer:
   event: hardrock_2015
   person: donte_spencer
+  final_split_time: hardrock_2015_donte_spencer_finish_1
+  stopped_split_time: hardrock_2015_donte_spencer_finish_1
   age: 30
   beacon_url:
   beyond_start: true
@@ -1653,7 +1655,6 @@ hardrock_2015_donte_spencer:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 3192
   finished: true
   first_name: Donte
   gender: 0
@@ -1667,13 +1668,14 @@ hardrock_2015_donte_spencer:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 3192
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_elden_morissette:
   event: hardrock_2015
   person: elden_morissette
+  final_split_time: hardrock_2015_elden_morissette_finish_1
+  stopped_split_time: hardrock_2015_elden_morissette_finish_1
   age: 42
   beacon_url:
   beyond_start: true
@@ -1691,7 +1693,6 @@ hardrock_2015_elden_morissette:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1662
   finished: true
   first_name: Elden
   gender: 0
@@ -1705,13 +1706,14 @@ hardrock_2015_elden_morissette:
   state_code: WI
   state_name: Wisconsin
   stopped: true
-  stopped_split_time_id: 1662
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_erich_larson:
   event: hardrock_2015
   person: erich_larson
+  final_split_time: hardrock_2015_erich_larson_finish_1
+  stopped_split_time: hardrock_2015_erich_larson_finish_1
   age: 36
   beacon_url:
   beyond_start: true
@@ -1729,7 +1731,6 @@ hardrock_2015_erich_larson:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 72
   finished: true
   first_name: Erich
   gender: 0
@@ -1743,13 +1744,14 @@ hardrock_2015_erich_larson:
   state_code: MT
   state_name: Montana
   stopped: true
-  stopped_split_time_id: 72
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_garry_kuhlman:
   event: hardrock_2015
   person: garry_kuhlman
+  final_split_time: hardrock_2015_garry_kuhlman_finish_1
+  stopped_split_time: hardrock_2015_garry_kuhlman_finish_1
   age: 45
   beacon_url:
   beyond_start: true
@@ -1767,7 +1769,6 @@ hardrock_2015_garry_kuhlman:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 552
   finished: true
   first_name: Garry
   gender: 0
@@ -1781,13 +1782,14 @@ hardrock_2015_garry_kuhlman:
   state_code: MT
   state_name: Montana
   stopped: true
-  stopped_split_time_id: 552
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_gilberto_mckenzie:
   event: hardrock_2015
   person: gilberto_mckenzie
+  final_split_time: hardrock_2015_gilberto_mckenzie_finish_1
+  stopped_split_time: hardrock_2015_gilberto_mckenzie_finish_1
   age: 45
   beacon_url:
   beyond_start: true
@@ -1805,7 +1807,6 @@ hardrock_2015_gilberto_mckenzie:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 762
   finished: true
   first_name: Gilberto
   gender: 0
@@ -1819,13 +1820,14 @@ hardrock_2015_gilberto_mckenzie:
   state_code: WA
   state_name: Washington
   stopped: true
-  stopped_split_time_id: 762
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_gus_walker:
   event: hardrock_2015
   person: gus_walker
+  final_split_time: hardrock_2015_gus_walker_finish_1
+  stopped_split_time: hardrock_2015_gus_walker_finish_1
   age: 54
   beacon_url:
   beyond_start: true
@@ -1843,7 +1845,6 @@ hardrock_2015_gus_walker:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 3342
   finished: true
   first_name: Gus
   gender: 0
@@ -1857,13 +1858,14 @@ hardrock_2015_gus_walker:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 3342
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_irvin_harber:
   event: hardrock_2015
   person: irvin_harber
+  final_split_time: hardrock_2015_irvin_harber_telluride_out_1
+  stopped_split_time: hardrock_2015_irvin_harber_telluride_out_1
   age: 19
   beacon_url:
   beyond_start: true
@@ -1881,7 +1883,6 @@ hardrock_2015_irvin_harber:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 101541
   finished: false
   first_name: Irvin
   gender: 0
@@ -1895,13 +1896,14 @@ hardrock_2015_irvin_harber:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 101541
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_leandro_cole:
   event: hardrock_2015
   person: leandro_cole
+  final_split_time: hardrock_2015_leandro_cole_finish_1
+  stopped_split_time: hardrock_2015_leandro_cole_finish_1
   age: 45
   beacon_url:
   beyond_start: true
@@ -1919,7 +1921,6 @@ hardrock_2015_leandro_cole:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 3582
   finished: true
   first_name: Leandro
   gender: 0
@@ -1933,13 +1934,14 @@ hardrock_2015_leandro_cole:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 3582
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_leif_carter:
   event: hardrock_2015
   person: leif_carter
+  final_split_time: hardrock_2015_leif_carter_finish_1
+  stopped_split_time: hardrock_2015_leif_carter_finish_1
   age: 55
   beacon_url:
   beyond_start: true
@@ -1957,7 +1959,6 @@ hardrock_2015_leif_carter:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 282
   finished: true
   first_name: Leif
   gender: 0
@@ -1971,13 +1972,14 @@ hardrock_2015_leif_carter:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 282
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_leroy_leffler:
   event: hardrock_2015
   person: leroy_leffler
+  final_split_time: hardrock_2015_leroy_leffler_finish_1
+  stopped_split_time: hardrock_2015_leroy_leffler_finish_1
   age: 48
   beacon_url:
   beyond_start: true
@@ -1995,7 +1997,6 @@ hardrock_2015_leroy_leffler:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1722
   finished: true
   first_name: Leroy
   gender: 0
@@ -2009,13 +2010,14 @@ hardrock_2015_leroy_leffler:
   state_code: NM
   state_name: New Mexico
   stopped: true
-  stopped_split_time_id: 1722
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_rachelle_eichmann:
   event: hardrock_2015
   person: rachelle_eichmann
+  final_split_time: hardrock_2015_rachelle_eichmann_finish_1
+  stopped_split_time: hardrock_2015_rachelle_eichmann_finish_1
   age: 23
   beacon_url:
   beyond_start: true
@@ -2033,7 +2035,6 @@ hardrock_2015_rachelle_eichmann:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1602
   finished: true
   first_name: Rachelle
   gender: 1
@@ -2047,13 +2048,14 @@ hardrock_2015_rachelle_eichmann:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 1602
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_raphael_swift:
   event: hardrock_2015
   person: raphael_swift
+  final_split_time: hardrock_2015_raphael_swift_telluride_out_1
+  stopped_split_time:
   age: 40
   beacon_url:
   beyond_start: true
@@ -2071,7 +2073,6 @@ hardrock_2015_raphael_swift:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 3891
   finished: false
   first_name: Raphael
   gender: 0
@@ -2085,13 +2086,14 @@ hardrock_2015_raphael_swift:
   state_code: AR
   state_name: Arkansas
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_robby_gerlach:
   event: hardrock_2015
   person: robby_gerlach
+  final_split_time: hardrock_2015_robby_gerlach_finish_1
+  stopped_split_time: hardrock_2015_robby_gerlach_finish_1
   age: 45
   beacon_url:
   beyond_start: true
@@ -2109,7 +2111,6 @@ hardrock_2015_robby_gerlach:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1542
   finished: true
   first_name: Robby
   gender: 0
@@ -2123,13 +2124,14 @@ hardrock_2015_robby_gerlach:
   state_code: VA
   state_name: Virginia
   stopped: true
-  stopped_split_time_id: 1542
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_robt_wintheiser:
   event: hardrock_2015
   person: robt_wintheiser
+  final_split_time: hardrock_2015_robt_wintheiser_finish_1
+  stopped_split_time: hardrock_2015_robt_wintheiser_finish_1
   age: 57
   beacon_url:
   beyond_start: true
@@ -2147,7 +2149,6 @@ hardrock_2015_robt_wintheiser:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 2652
   finished: true
   first_name: Robt
   gender: 0
@@ -2161,13 +2162,14 @@ hardrock_2015_robt_wintheiser:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 2652
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_samara_vandervort:
   event: hardrock_2015
   person: samara_vandervort
+  final_split_time: hardrock_2015_samara_vandervort_finish_1
+  stopped_split_time: hardrock_2015_samara_vandervort_finish_1
   age: 22
   beacon_url:
   beyond_start: true
@@ -2185,7 +2187,6 @@ hardrock_2015_samara_vandervort:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 2022
   finished: true
   first_name: Samara
   gender: 1
@@ -2199,13 +2200,14 @@ hardrock_2015_samara_vandervort:
   state_code: CA
   state_name: California
   stopped: true
-  stopped_split_time_id: 2022
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_santa_green:
   event: hardrock_2015
   person: santa_green
+  final_split_time: hardrock_2015_santa_green_finish_1
+  stopped_split_time: hardrock_2015_santa_green_finish_1
   age: 37
   beacon_url:
   beyond_start: true
@@ -2223,7 +2225,6 @@ hardrock_2015_santa_green:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 702
   finished: true
   first_name: Santa
   gender: 1
@@ -2237,13 +2238,14 @@ hardrock_2015_santa_green:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 702
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_susanna_abshire:
   event: hardrock_2015
   person: susanna_abshire
+  final_split_time: hardrock_2015_susanna_abshire_finish_1
+  stopped_split_time: hardrock_2015_susanna_abshire_finish_1
   age: 34
   beacon_url:
   beyond_start: true
@@ -2261,7 +2263,6 @@ hardrock_2015_susanna_abshire:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 3462
   finished: true
   first_name: Susanna
   gender: 1
@@ -2275,13 +2276,14 @@ hardrock_2015_susanna_abshire:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 3462
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_tuan_jacobs:
   event: hardrock_2015
   person: tuan_jacobs
+  final_split_time: hardrock_2015_tuan_jacobs_finish_1
+  stopped_split_time: hardrock_2015_tuan_jacobs_finish_1
   age: 17
   beacon_url:
   beyond_start: true
@@ -2299,7 +2301,6 @@ hardrock_2015_tuan_jacobs:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 42
   finished: true
   first_name: Tuan
   gender: 0
@@ -2313,13 +2314,14 @@ hardrock_2015_tuan_jacobs:
   state_code: AN
   state_name: Andalucía
   stopped: true
-  stopped_split_time_id: 42
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_vern_buckridge:
   event: hardrock_2015
   person: vern_buckridge
+  final_split_time: hardrock_2015_vern_buckridge_finish_1
+  stopped_split_time: hardrock_2015_vern_buckridge_finish_1
   age: 33
   beacon_url:
   beyond_start: true
@@ -2337,7 +2339,6 @@ hardrock_2015_vern_buckridge:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 2982
   finished: true
   first_name: Vern
   gender: 0
@@ -2351,13 +2352,14 @@ hardrock_2015_vern_buckridge:
   state_code: TX
   state_name: Texas
   stopped: true
-  stopped_split_time_id: 2982
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2015_vince_willms:
   event: hardrock_2015
   person: vince_willms
+  final_split_time: hardrock_2015_vince_willms_finish_1
+  stopped_split_time: hardrock_2015_vince_willms_finish_1
   age: 50
   beacon_url:
   beyond_start: true
@@ -2375,7 +2377,6 @@ hardrock_2015_vince_willms:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 1242
   finished: true
   first_name: Vince
   gender: 0
@@ -2389,13 +2390,14 @@ hardrock_2015_vince_willms:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 1242
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_benito_moen:
   event: hardrock_2016
   person: benito_moen
+  final_split_time: hardrock_2016_benito_moen_sherman_out_1
+  stopped_split_time:
   age: 52
   beacon_url:
   beyond_start: true
@@ -2413,7 +2415,6 @@ hardrock_2016_benito_moen:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 148819
   finished: false
   first_name: Benito
   gender: 0
@@ -2427,13 +2428,14 @@ hardrock_2016_benito_moen:
   state_code: OH
   state_name: Ohio
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_brinda_fisher:
   event: hardrock_2016
   person: brinda_fisher
+  final_split_time: hardrock_2016_brinda_fisher_grouse_out_1
+  stopped_split_time:
   age: 22
   beacon_url:
   beyond_start: true
@@ -2451,7 +2453,6 @@ hardrock_2016_brinda_fisher:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 149907
   finished: false
   first_name: Brinda
   gender: 1
@@ -2465,13 +2466,14 @@ hardrock_2016_brinda_fisher:
   state_code: SC
   state_name: South Carolina
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_charlie_mueller:
   event: hardrock_2016
   person: charlie_mueller
+  final_split_time: hardrock_2016_charlie_mueller_sherman_out_1
+  stopped_split_time:
   age: 27
   beacon_url:
   beyond_start: true
@@ -2489,7 +2491,6 @@ hardrock_2016_charlie_mueller:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 148987
   finished: false
   first_name: Charlie
   gender: 0
@@ -2503,13 +2504,14 @@ hardrock_2016_charlie_mueller:
   state_code: OR
   state_name: Oregon
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_douglas_vandervort:
   event: hardrock_2016
   person: douglas_vandervort
+  final_split_time: hardrock_2016_douglas_vandervort_sherman_out_1
+  stopped_split_time:
   age: 52
   beacon_url:
   beyond_start: true
@@ -2527,7 +2529,6 @@ hardrock_2016_douglas_vandervort:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 147839
   finished: false
   first_name: Douglas
   gender: 0
@@ -2541,13 +2542,14 @@ hardrock_2016_douglas_vandervort:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_dropped_grouse:
   event: hardrock_2016
   person: dropped_grouse
+  final_split_time: hardrock_2016_dropped_grouse_grouse_out_1
+  stopped_split_time: hardrock_2016_dropped_grouse_grouse_out_1
   age: 47
   beacon_url:
   beyond_start: true
@@ -2565,7 +2567,6 @@ hardrock_2016_dropped_grouse:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 150335
   finished: false
   first_name: Dropped
   gender: 0
@@ -2579,13 +2580,14 @@ hardrock_2016_dropped_grouse:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 150335
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_eddy_goldner:
   event: hardrock_2016
   person: eddy_goldner
+  final_split_time: hardrock_2016_eddy_goldner_sherman_out_1
+  stopped_split_time:
   age: 18
   beacon_url:
   beyond_start: true
@@ -2603,7 +2605,6 @@ hardrock_2016_eddy_goldner:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 148203
   finished: false
   first_name: Eddy
   gender: 0
@@ -2617,13 +2618,14 @@ hardrock_2016_eddy_goldner:
   state_code: WA
   state_name: Washington
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_hoyt_macejkovic:
   event: hardrock_2016
   person: hoyt_macejkovic
+  final_split_time: hardrock_2016_hoyt_macejkovic_ouray_out_1
+  stopped_split_time: hardrock_2016_hoyt_macejkovic_ouray_out_1
   age: 55
   beacon_url:
   beyond_start: true
@@ -2641,7 +2643,6 @@ hardrock_2016_hoyt_macejkovic:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 150506
   finished: false
   first_name: Hoyt
   gender: 0
@@ -2655,13 +2656,14 @@ hardrock_2016_hoyt_macejkovic:
   state_code: MD
   state_name: Maryland
   stopped: true
-  stopped_split_time_id: 150506
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_junior_lesch:
   event: hardrock_2016
   person: junior_lesch
+  final_split_time: hardrock_2016_junior_lesch_sherman_out_1
+  stopped_split_time:
   age: 49
   beacon_url:
   beyond_start: true
@@ -2679,7 +2681,6 @@ hardrock_2016_junior_lesch:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 148091
   finished: false
   first_name: Junior
   gender: 0
@@ -2693,13 +2694,14 @@ hardrock_2016_junior_lesch:
   state_code: NM
   state_name: New Mexico
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_kendall_koch:
   event: hardrock_2016
   person: kendall_koch
+  final_split_time: hardrock_2016_kendall_koch_sherman_out_1
+  stopped_split_time:
   age: 40
   beacon_url:
   beyond_start: true
@@ -2717,7 +2719,6 @@ hardrock_2016_kendall_koch:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 148903
   finished: false
   first_name: Kendall
   gender: 0
@@ -2731,13 +2732,14 @@ hardrock_2016_kendall_koch:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_kory_kulas:
   event: hardrock_2016
   person: kory_kulas
+  final_split_time: hardrock_2016_kory_kulas_cunningham_out_1
+  stopped_split_time:
   age: 42
   beacon_url:
   beyond_start: true
@@ -2755,7 +2757,6 @@ hardrock_2016_kory_kulas:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 147481
   finished: false
   first_name: Kory
   gender: 0
@@ -2769,13 +2770,14 @@ hardrock_2016_kory_kulas:
   state_code: CA
   state_name: California
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_lavon_paucek:
   event: hardrock_2016
   person: lavon_paucek
+  final_split_time: hardrock_2016_lavon_paucek_finish_1
+  stopped_split_time: hardrock_2016_lavon_paucek_finish_1
   age: 41
   beacon_url:
   beyond_start: true
@@ -2793,7 +2795,6 @@ hardrock_2016_lavon_paucek:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 146950
   finished: true
   first_name: Lavon
   gender: 1
@@ -2807,13 +2808,14 @@ hardrock_2016_lavon_paucek:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 146950
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_mervin_smitham:
   event: hardrock_2016
   person: mervin_smitham
+  final_split_time: hardrock_2016_mervin_smitham_grouse_out_1
+  stopped_split_time: hardrock_2016_mervin_smitham_grouse_out_1
   age: 24
   beacon_url:
   beyond_start: true
@@ -2831,7 +2833,6 @@ hardrock_2016_mervin_smitham:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 150403
   finished: false
   first_name: Mervin
   gender: 0
@@ -2845,13 +2846,14 @@ hardrock_2016_mervin_smitham:
   state_code: NM
   state_name: New Mexico
   stopped: true
-  stopped_split_time_id: 150403
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_missing_telluride_out:
   event: hardrock_2016
   person:
+  final_split_time: hardrock_2016_missing_telluride_out_sherman_out_1
+  stopped_split_time:
   age: 20
   beacon_url:
   beyond_start: true
@@ -2869,7 +2871,6 @@ hardrock_2016_missing_telluride_out:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 148007
   finished: false
   first_name: Missing
   gender: 0
@@ -2883,13 +2884,14 @@ hardrock_2016_missing_telluride_out:
   state_code: AK
   state_name: Alaska
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_progress_sherman:
   event: hardrock_2016
   person: progress_sherman
+  final_split_time: hardrock_2016_progress_sherman_sherman_out_1
+  stopped_split_time:
   age: 33
   beacon_url:
   beyond_start: true
@@ -2907,7 +2909,6 @@ hardrock_2016_progress_sherman:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 148567
   finished: false
   first_name: Progress
   gender: 0
@@ -2921,13 +2922,14 @@ hardrock_2016_progress_sherman:
   state_code: VA
   state_name: Virginia
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_rene_mclaughlin:
   event: hardrock_2016
   person: rene_mclaughlin
+  final_split_time: hardrock_2016_rene_mclaughlin_sherman_in_1
+  stopped_split_time:
   age: 32
   beacon_url:
   beyond_start: true
@@ -2945,7 +2947,6 @@ hardrock_2016_rene_mclaughlin:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 150016
   finished: false
   first_name: Rene
   gender: 0
@@ -2959,13 +2960,14 @@ hardrock_2016_rene_mclaughlin:
   state_code: TX
   state_name: Texas
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_rhett_auer:
   event: hardrock_2016
   person:
+  final_split_time: hardrock_2016_rhett_auer_ouray_out_1
+  stopped_split_time: hardrock_2016_rhett_auer_ouray_out_1
   age: 41
   beacon_url:
   beyond_start: true
@@ -2983,7 +2985,6 @@ hardrock_2016_rhett_auer:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 150467
   finished: false
   first_name: Rhett
   gender: 0
@@ -2997,13 +2998,14 @@ hardrock_2016_rhett_auer:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 150467
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_shad_hirthe:
   event: hardrock_2016
   person: shad_hirthe
+  final_split_time: hardrock_2016_shad_hirthe_sherman_out_1
+  stopped_split_time:
   age: 40
   beacon_url:
   beyond_start: true
@@ -3021,7 +3023,6 @@ hardrock_2016_shad_hirthe:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 147699
   finished: false
   first_name: Shad
   gender: 0
@@ -3035,13 +3036,14 @@ hardrock_2016_shad_hirthe:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_start_only:
   event: hardrock_2016
   person: start_only_maine_us
+  final_split_time: hardrock_2016_start_only_start_1
+  stopped_split_time:
   age: 26
   beacon_url:
   beyond_start: false
@@ -3059,7 +3061,6 @@ hardrock_2016_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192705
   finished: false
   first_name: Start
   gender: 0
@@ -3073,13 +3074,14 @@ hardrock_2016_start_only:
   state_code: ME
   state_name: Maine
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 hardrock_2016_vesta_borer:
   event: hardrock_2016
   person: vesta_borer
+  final_split_time: hardrock_2016_vesta_borer_cunningham_out_1
+  stopped_split_time:
   age: 21
   beacon_url:
   beyond_start: true
@@ -3097,7 +3099,6 @@ hardrock_2016_vesta_borer:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 147341
   finished: false
   first_name: Vesta
   gender: 1
@@ -3111,13 +3112,14 @@ hardrock_2016_vesta_borer:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ramble_finished_first:
   event: ramble
   person: finished_first_2019_02_01
+  final_split_time: ramble_finished_first_finish_1
+  stopped_split_time: ramble_finished_first_finish_1
   age: 49
   beacon_url:
   beyond_start: true
@@ -3135,7 +3137,6 @@ ramble_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 15145
   finished: true
   first_name: Finished
   gender: 0
@@ -3149,13 +3150,14 @@ ramble_finished_first:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 15145
   synced_at:
   topic_resource_key:
   wave:
 ramble_finished_second:
   event: ramble
   person: finished_second_montana_us
+  final_split_time: ramble_finished_second_finish_1
+  stopped_split_time: ramble_finished_second_finish_1
   age: 12
   beacon_url:
   beyond_start: true
@@ -3173,7 +3175,6 @@ ramble_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 15161
   finished: true
   first_name: Finished
   gender: 1
@@ -3187,13 +3188,14 @@ ramble_finished_second:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 15161
   synced_at:
   topic_resource_key:
   wave:
 ramble_not_started:
   event: ramble
   person: not_started_2019_02_01
+  final_split_time:
+  stopped_split_time:
   age: 17
   beacon_url:
   beyond_start: false
@@ -3211,7 +3213,6 @@ ramble_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 0
@@ -3225,13 +3226,14 @@ ramble_not_started:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 ramble_start_only:
   event: ramble
   person: start_only_2019_02_01
+  final_split_time: ramble_start_only_start_1
+  stopped_split_time:
   age: 38
   beacon_url:
   beyond_start: false
@@ -3249,7 +3251,6 @@ ramble_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 15166
   finished: false
   first_name: Start
   gender: 1
@@ -3263,13 +3264,14 @@ ramble_start_only:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2016_finished_first:
   event: rufa_2016
   person:
+  final_split_time: rufa_2016_finished_first_finish_7
+  stopped_split_time: rufa_2016_finished_first_finish_7
   age: 35
   beacon_url:
   beyond_start: true
@@ -3287,7 +3289,6 @@ rufa_2016_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 132059
   finished: true
   first_name: Finished
   gender: 0
@@ -3301,13 +3302,14 @@ rufa_2016_finished_first:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 132059
   synced_at:
   topic_resource_key:
   wave:
 rufa_2016_finished_second:
   event: rufa_2016
   person:
+  final_split_time: rufa_2016_finished_second_finish_6
+  stopped_split_time: rufa_2016_finished_second_finish_6
   age: 32
   beacon_url:
   beyond_start: true
@@ -3325,7 +3327,6 @@ rufa_2016_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 132090
   finished: true
   first_name: Finished
   gender: 0
@@ -3339,13 +3340,14 @@ rufa_2016_finished_second:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id: 132090
   synced_at:
   topic_resource_key:
   wave:
 rufa_2016_not_started:
   event: rufa_2016
   person:
+  final_split_time:
+  stopped_split_time:
   age: 57
   beacon_url:
   beyond_start: false
@@ -3363,7 +3365,6 @@ rufa_2016_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 1
@@ -3377,13 +3378,14 @@ rufa_2016_not_started:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2016_progress_lap1:
   event: rufa_2016
   person:
+  final_split_time: rufa_2016_progress_lap1_grandeur_peak_1
+  stopped_split_time:
   age: 25
   beacon_url:
   beyond_start: true
@@ -3401,7 +3403,6 @@ rufa_2016_progress_lap1:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 132439
   finished: false
   first_name: Progress
   gender: 0
@@ -3415,13 +3416,14 @@ rufa_2016_progress_lap1:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_12h_finished_first:
   event: rufa_2017_12h
   person: finished_first
+  final_split_time: rufa_2017_12h_finished_first_finish_7
+  stopped_split_time: rufa_2017_12h_finished_first_finish_7
   age: 20
   beacon_url:
   beyond_start: true
@@ -3439,7 +3441,6 @@ rufa_2017_12h_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192201
   finished: true
   first_name: Finished
   gender: 0
@@ -3453,13 +3454,14 @@ rufa_2017_12h_finished_first:
   state_code: AZ
   state_name: Arizona
   stopped: true
-  stopped_split_time_id: 192201
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_12h_finished_lap6:
   event: rufa_2017_12h
   person: finished_lap6
+  final_split_time: rufa_2017_12h_finished_lap6_finish_6
+  stopped_split_time: rufa_2017_12h_finished_lap6_finish_6
   age: 53
   beacon_url:
   beyond_start: true
@@ -3477,7 +3479,6 @@ rufa_2017_12h_finished_lap6:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192295
   finished: true
   first_name: Finished
   gender: 0
@@ -3491,13 +3492,14 @@ rufa_2017_12h_finished_lap6:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 192295
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_12h_not_started:
   event: rufa_2017_12h
   person: not_started_utah_us
+  final_split_time:
+  stopped_split_time:
   age: 49
   beacon_url:
   beyond_start: false
@@ -3515,7 +3517,6 @@ rufa_2017_12h_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 1
@@ -3529,13 +3530,14 @@ rufa_2017_12h_not_started:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_12h_progress_lap2:
   event: rufa_2017_12h
   person: progress_lap2
+  final_split_time: rufa_2017_12h_progress_lap2_finish_2
+  stopped_split_time:
   age: 24
   beacon_url:
   beyond_start: true
@@ -3553,7 +3555,6 @@ rufa_2017_12h_progress_lap2:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192502
   finished: false
   first_name: Progress
   gender: 1
@@ -3567,13 +3568,14 @@ rufa_2017_12h_progress_lap2:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_12h_progress_lap5_partial:
   event: rufa_2017_12h
   person: progress_lap5_partial
+  final_split_time: rufa_2017_12h_progress_lap5_partial_grandeur_peak_5
+  stopped_split_time:
   age: 28
   beacon_url:
   beyond_start: true
@@ -3591,7 +3593,6 @@ rufa_2017_12h_progress_lap5_partial:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192433
   finished: false
   first_name: Progress
   gender: 0
@@ -3605,13 +3606,14 @@ rufa_2017_12h_progress_lap5_partial:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_12h_start_only:
   event: rufa_2017_12h
   person: start_only
+  final_split_time: rufa_2017_12h_start_only_start_1
+  stopped_split_time:
   age: 44
   beacon_url:
   beyond_start: false
@@ -3629,7 +3631,6 @@ rufa_2017_12h_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192542
   finished: false
   first_name: Start
   gender: 0
@@ -3643,13 +3644,14 @@ rufa_2017_12h_start_only:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_24h_finished_first:
   event: rufa_2017_24h
   person: finished_first_utah_us
+  final_split_time: rufa_2017_24h_finished_first_finish_7
+  stopped_split_time: rufa_2017_24h_finished_first_finish_7
   age: 47
   beacon_url:
   beyond_start: true
@@ -3667,7 +3669,6 @@ rufa_2017_24h_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 133983
   finished: true
   first_name: Finished
   gender: 1
@@ -3681,13 +3682,14 @@ rufa_2017_24h_finished_first:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 133983
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_24h_finished_last:
   event: rufa_2017_24h
   person: finished_last
+  final_split_time: rufa_2017_24h_finished_last_finish_2
+  stopped_split_time: rufa_2017_24h_finished_last_finish_2
   age: 40
   beacon_url:
   beyond_start: true
@@ -3705,7 +3707,6 @@ rufa_2017_24h_finished_last:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 135012
   finished: true
   first_name: Finished
   gender: 0
@@ -3719,13 +3720,14 @@ rufa_2017_24h_finished_last:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 135012
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_24h_multiple_stops:
   event: rufa_2017_24h
   person: multiple_stops_utah_us
+  final_split_time: rufa_2017_24h_multiple_stops_finish_3
+  stopped_split_time: rufa_2017_24h_multiple_stops_finish_3
   age: 43
   beacon_url:
   beyond_start: true
@@ -3743,7 +3745,6 @@ rufa_2017_24h_multiple_stops:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 134812
   finished: true
   first_name: Multiple
   gender: 1
@@ -3757,13 +3758,14 @@ rufa_2017_24h_multiple_stops:
   state_code: UT
   state_name: Utah
   stopped: true
-  stopped_split_time_id: 134812
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_24h_not_started:
   event: rufa_2017_24h
   person: not_started
+  final_split_time:
+  stopped_split_time:
   age: 30
   beacon_url:
   beyond_start: false
@@ -3781,7 +3783,6 @@ rufa_2017_24h_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 0
@@ -3795,13 +3796,14 @@ rufa_2017_24h_not_started:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_24h_progress_lap1:
   event: rufa_2017_24h
   person: progress_lap1
+  final_split_time: rufa_2017_24h_progress_lap1_finish_1
+  stopped_split_time:
   age: 49
   beacon_url:
   beyond_start: true
@@ -3819,7 +3821,6 @@ rufa_2017_24h_progress_lap1:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 135134
   finished: false
   first_name: Progress
   gender: 0
@@ -3833,13 +3834,14 @@ rufa_2017_24h_progress_lap1:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 rufa_2017_24h_progress_lap6:
   event: rufa_2017_24h
   person: progress_lap6
+  final_split_time: rufa_2017_24h_progress_lap6_finish_6
+  stopped_split_time:
   age: 33
   beacon_url:
   beyond_start: true
@@ -3857,7 +3859,6 @@ rufa_2017_24h_progress_lap6:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 134018
   finished: false
   first_name: Progress
   gender: 0
@@ -3871,13 +3872,14 @@ rufa_2017_24h_progress_lap6:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_100k_across_dst_change:
   event: sum_100k
   person: across_dst_change
+  final_split_time: sum_100k_across_dst_change_molas_pass_aid1_in_1
+  stopped_split_time:
   age:
   beacon_url:
   beyond_start: true
@@ -3895,7 +3897,6 @@ sum_100k_across_dst_change:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192710
   finished: false
   first_name: Across
   gender: 1
@@ -3909,13 +3910,14 @@ sum_100k_across_dst_change:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_100k_drop_anvil:
   event: sum_100k
   person: drop_anvil
+  final_split_time: sum_100k_drop_anvil_anvil_cg_aid6_out_1
+  stopped_split_time: sum_100k_drop_anvil_anvil_cg_aid6_out_1
   age: 28
   beacon_url:
   beyond_start: true
@@ -3933,7 +3935,6 @@ sum_100k_drop_anvil:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190695
   finished: false
   first_name: Drop
   gender: 0
@@ -3947,13 +3948,14 @@ sum_100k_drop_anvil:
   state_code: OH
   state_name: Ohio
   stopped: true
-  stopped_split_time_id: 190695
   synced_at:
   topic_resource_key:
   wave:
 sum_100k_on_dst_change:
   event: sum_100k
   person: on_dst_change
+  final_split_time: sum_100k_on_dst_change_molas_pass_aid1_in_1
+  stopped_split_time:
   age:
   beacon_url:
   beyond_start: true
@@ -3971,7 +3973,6 @@ sum_100k_on_dst_change:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192715
   finished: false
   first_name: 'On'
   gender: 1
@@ -3985,13 +3986,14 @@ sum_100k_on_dst_change:
   state_code:
   state_name:
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_100k_progress_cascade:
   event: sum_100k
   person: progress_cascade
+  final_split_time: sum_100k_progress_cascade_cascade_creek_rd_aid3_out_1
+  stopped_split_time:
   age: 20
   beacon_url:
   beyond_start: true
@@ -4009,7 +4011,6 @@ sum_100k_progress_cascade:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192704
   finished: false
   first_name: Progress
   gender: 0
@@ -4023,13 +4024,14 @@ sum_100k_progress_cascade:
   state_code: UT
   state_name: Utah
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_100k_un_started:
   event: sum_100k
   person: un_started
+  final_split_time:
+  stopped_split_time:
   age: 29
   beacon_url:
   beyond_start: false
@@ -4047,7 +4049,6 @@ sum_100k_un_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Un
   gender: 1
@@ -4061,13 +4062,14 @@ sum_100k_un_started:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_drop_bandera:
   event: sum_55k
   person: drop_bandera
+  final_split_time: sum_55k_drop_bandera_bandera_mine_aid5_in_1
+  stopped_split_time: sum_55k_drop_bandera_bandera_mine_aid5_in_1
   age: 19
   beacon_url:
   beyond_start: true
@@ -4085,7 +4087,6 @@ sum_55k_drop_bandera:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190683
   finished: false
   first_name: Drop
   gender: 1
@@ -4099,13 +4100,14 @@ sum_55k_drop_bandera:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 190683
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_finished_first:
   event: sum_55k
   person: finished_first_colorado_us
+  final_split_time: sum_55k_finished_first_finish_1
+  stopped_split_time: sum_55k_finished_first_finish_1
   age: 44
   beacon_url:
   beyond_start: true
@@ -4123,7 +4125,6 @@ sum_55k_finished_first:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190508
   finished: true
   first_name: Finished
   gender: 0
@@ -4137,13 +4138,14 @@ sum_55k_finished_first:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 190508
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_finished_second:
   event: sum_55k
   person: finished_second_colorado_us
+  final_split_time: sum_55k_finished_second_finish_1
+  stopped_split_time: sum_55k_finished_second_finish_1
   age: 44
   beacon_url:
   beyond_start: true
@@ -4161,7 +4163,6 @@ sum_55k_finished_second:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190528
   finished: true
   first_name: Finished
   gender: 1
@@ -4175,13 +4176,14 @@ sum_55k_finished_second:
   state_code: CO
   state_name: Colorado
   stopped: true
-  stopped_split_time_id: 190528
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_not_started:
   event: sum_55k
   person: not_started_colorado_us_2019_02_01
+  final_split_time:
+  stopped_split_time:
   age: 36
   beacon_url:
   beyond_start: false
@@ -4199,7 +4201,6 @@ sum_55k_not_started:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id:
   finished: false
   first_name: Not
   gender: 2
@@ -4213,13 +4214,14 @@ sum_55k_not_started:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_progress_rolling:
   event: sum_55k
   person: progress_rolling
+  final_split_time: sum_55k_progress_rolling_rolling_pass_aid2_out_1
+  stopped_split_time:
   age: 55
   beacon_url:
   beyond_start: true
@@ -4237,7 +4239,6 @@ sum_55k_progress_rolling:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190672
   finished: false
   first_name: Progress
   gender: 1
@@ -4251,13 +4252,14 @@ sum_55k_progress_rolling:
   state_code: CA
   state_name: California
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_series_finisher:
   event: sum_55k
   person: series_finisher
+  final_split_time: sum_55k_series_finisher_finish_1
+  stopped_split_time:
   age: 34
   beacon_url:
   beyond_start: true
@@ -4275,7 +4277,6 @@ sum_55k_series_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192734
   finished: true
   first_name: Series
   gender: 0
@@ -4289,13 +4290,14 @@ sum_55k_series_finisher:
   state_code:
   state_name:
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_slow_finisher:
   event: sum_55k
   person: slow_finisher
+  final_split_time: sum_55k_slow_finisher_finish_1
+  stopped_split_time:
   age: 64
   beacon_url:
   beyond_start: true
@@ -4313,7 +4315,6 @@ sum_55k_slow_finisher:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 192744
   finished: true
   first_name: Slow
   gender: 0
@@ -4327,13 +4328,14 @@ sum_55k_slow_finisher:
   state_code: UT
   state_name:
   stopped: true
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:
 sum_55k_start_only:
   event: sum_55k
   person: start_only_colorado_us_2019_02_01
+  final_split_time: sum_55k_start_only_start_1
+  stopped_split_time:
   age: 49
   beacon_url:
   beyond_start: false
@@ -4351,7 +4353,6 @@ sum_55k_start_only:
   email:
   emergency_contact:
   emergency_phone:
-  final_split_time_id: 190816
   finished: false
   first_name: Start
   gender: 0
@@ -4365,7 +4366,6 @@ sum_55k_start_only:
   state_code: CO
   state_name: Colorado
   stopped: false
-  stopped_split_time_id:
   synced_at:
   topic_resource_key:
   wave:

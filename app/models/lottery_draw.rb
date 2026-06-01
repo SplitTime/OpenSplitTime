@@ -1,7 +1,4 @@
 class LotteryDraw < ApplicationRecord
-
-  self.ignored_columns = ["lottery_id"]
-
   belongs_to :division, class_name: "LotteryDivision", foreign_key: :lottery_division_id, touch: true
   belongs_to :ticket, class_name: "LotteryTicket", foreign_key: :lottery_ticket_id
   has_one :lottery, through: :division
@@ -13,11 +10,13 @@ class LotteryDraw < ApplicationRecord
   scope :most_recent_first, -> { reorder(created_at: :desc) }
   scope :with_entrant_and_ticket, -> { includes(ticket: :entrant) }
   scope :with_sortable_entrant_attributes, lambda {
-    from(select("lottery_draws.*, lottery_divisions.name as division_name, first_name, last_name, gender, birthdate, city, state_code, state_name, country_code, country_name")
-           .joins(ticket: { entrant: :division }), :lottery_draws)
+    select_cols = "lottery_draws.*, lottery_divisions.name as division_name, " \
+                  "first_name, last_name, gender, birthdate, city, " \
+                  "state_code, state_name, country_code, country_name"
+    from(select(select_cols).joins(ticket: { entrant: :division }), :lottery_draws)
   }
 
-  validates_uniqueness_of :lottery_ticket_id
+  validates :lottery_ticket_id, uniqueness: true
 
   before_create :add_position
   after_create_commit :set_entrant_drawn_at
@@ -51,20 +50,24 @@ class LotteryDraw < ApplicationRecord
 
   def unset_entrant_drawn_at
     remaining_draw_time = LotteryDraw
-      .joins(:ticket)
-      .where(lottery_tickets: { lottery_entrant_id: entrant.id })
-      .minimum(:created_at)
+                          .joins(:ticket)
+                          .where(lottery_tickets: { lottery_entrant_id: entrant.id })
+                          .minimum(:created_at)
 
     entrant.update_columns(drawn_at: remaining_draw_time)
   end
 
   def broadcast_lottery_draw_created
-    broadcast_render_later_to lottery, :lottery_draws, partial: "lotteries/draws/created", locals: { lottery_draw: self, lottery_division: division }
-    broadcast_render_later_to division, :lottery_draws_admin, partial: "lotteries/draws/created_admin", locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_later_to lottery, :lottery_draws, partial: "lotteries/draws/created",
+                                                       locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_later_to division, :lottery_draws_admin, partial: "lotteries/draws/created_admin",
+                                                              locals: { lottery_draw: self, lottery_division: division }
   end
 
   def broadcast_lottery_draw_destroyed
-    broadcast_render_to lottery, :lottery_draws, partial: "lotteries/draws/destroyed", locals: { lottery_draw: self, lottery_division: division }
-    broadcast_render_to division, :lottery_draws_admin, partial: "lotteries/draws/destroyed_admin", locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_to lottery, :lottery_draws, partial: "lotteries/draws/destroyed",
+                                                 locals: { lottery_draw: self, lottery_division: division }
+    broadcast_render_to division, :lottery_draws_admin, partial: "lotteries/draws/destroyed_admin",
+                                                        locals: { lottery_draw: self, lottery_division: division }
   end
 end

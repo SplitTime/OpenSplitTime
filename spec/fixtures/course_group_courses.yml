@@ -2,8 +2,6 @@
 course_group_course_0001:
   course_group: both_directions
   course: hardrock_ccw
-  id: 4
 course_group_course_0002:
   course_group: both_directions
   course: hardrock_cw
-  id: 6

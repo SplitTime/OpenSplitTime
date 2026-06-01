@@ -61,6 +61,7 @@ module FixtureHelper
     :partners,
     :people,
     :projection_assessment_runs,
+    :raw_times,
     :results_categories,
     :results_templates,
     :results_template_categories,
@@ -92,6 +93,9 @@ module FixtureHelper
     projection_assessment_runs:
       "event_id, completed_lap, completed_split_id, completed_bitkey, " \
       "projected_lap, projected_split_id, projected_bitkey",
+    raw_times:
+      "event_group_id, source, bib_number, parameterized_split_name, bitkey, " \
+      "entered_time, absolute_time",
     results_template_categories: "results_template_id, position, results_category_id",
     stewardships: "user_id, organization_id",
     subscriptions: "user_id, subscribable_type, subscribable_id, protocol, endpoint",

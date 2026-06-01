@@ -57,6 +57,7 @@ module FixtureHelper
     :lottery_simulation_runs,
     :lottery_tickets,
     :monetary_donations,
+    :notifications,
     :organizations,
     :partners,
     :people,
@@ -89,6 +90,7 @@ module FixtureHelper
     lottery_simulation_runs: "lottery_id, started_at, name",
     lottery_tickets: "lottery_id, reference_number",
     monetary_donations: "received_on, organization_id, amount, source",
+    notifications: "effort_id, bitkey, distance, follower_ids",
     partners: "partnerable_type, partnerable_id, name",
     projection_assessment_runs:
       "event_id, completed_lap, completed_split_id, completed_bitkey, " \

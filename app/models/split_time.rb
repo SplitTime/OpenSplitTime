@@ -97,6 +97,10 @@ class SplitTime < ApplicationRecord
     "#{effort || '[unknown effort]'} at #{split || '[unknown split]'}"
   end
 
+  def slug
+    "#{effort.slug.underscore}_#{split.name(sub_split_bitkey).parameterize.underscore}_#{lap}"
+  end
+
   def course_is_consistent
     return unless effort&.event && split && (effort.event.course_id != split.course_id)
 

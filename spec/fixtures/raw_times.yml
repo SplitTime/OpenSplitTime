@@ -1,6 +1,7 @@
 ---
 raw_time_0001:
   event_group: hardrock_2015
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time: 2017-07-07 16:31:00.000000000 Z
@@ -17,11 +18,11 @@ raw_time_0001:
   sortable_bib_number: 102
   source: internal
   split_name: Pole Creek
-  split_time_id:
   stopped_here:
   with_pacer:
 raw_time_0002:
   event_group: hardrock_2015
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time: 2017-07-07 20:20:00.000000000 Z
@@ -38,11 +39,11 @@ raw_time_0002:
   sortable_bib_number: 103
   source: internal
   split_name: Pole Creek
-  split_time_id:
   stopped_here:
   with_pacer:
 raw_time_0003:
   event_group: sum
+  split_time: sum_55k_finished_second_rolling_pass_aid2_in_1
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -59,11 +60,11 @@ raw_time_0003:
   sortable_bib_number: 101
   source: Live Entry (1)
   split_name: Rolling Pass (Aid2)
-  split_time_id: 190522
   stopped_here: false
   with_pacer: false
 raw_time_0004:
   event_group: sum
+  split_time: sum_55k_finished_second_rolling_pass_aid2_in_1
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -80,11 +81,11 @@ raw_time_0004:
   sortable_bib_number: 101
   source: Live Entry (1)
   split_name: Rolling Pass (Aid2)
-  split_time_id: 190522
   stopped_here: false
   with_pacer: false
 raw_time_0005:
   event_group: sum
+  split_time: sum_55k_finished_second_rolling_pass_aid2_out_1
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -101,11 +102,11 @@ raw_time_0005:
   sortable_bib_number: 101
   source: Live Entry (1)
   split_name: Rolling Pass (Aid2)
-  split_time_id: 190523
   stopped_here: false
   with_pacer: false
 raw_time_0006:
   event_group: sum
+  split_time: sum_55k_finished_second_rolling_pass_aid2_out_1
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -122,11 +123,11 @@ raw_time_0006:
   sortable_bib_number: 101
   source: Live Entry (1)
   split_name: Rolling Pass (Aid2)
-  split_time_id: 190523
   stopped_here: false
   with_pacer: false
 raw_time_0007:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -143,11 +144,11 @@ raw_time_0007:
   sortable_bib_number: 103
   source: Live Entry (1)
   split_name: Anvil CG (Aid6)
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0008:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -164,11 +165,11 @@ raw_time_0008:
   sortable_bib_number: 103
   source: Live Entry (1)
   split_name: Anvil CG (Aid6)
-  split_time_id:
   stopped_here: true
   with_pacer: false
 raw_time_0009:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -185,11 +186,11 @@ raw_time_0009:
   sortable_bib_number: 103
   source: Live Entry (1)
   split_name: Anvil CG (Aid6)
-  split_time_id:
   stopped_here: true
   with_pacer: false
 raw_time_0010:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -206,11 +207,11 @@ raw_time_0010:
   sortable_bib_number: 103
   source: Live Entry (1)
   split_name: Bandera Mine (Aid5)
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0011:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -227,11 +228,11 @@ raw_time_0011:
   sortable_bib_number: 114
   source: Live Entry (1)
   split_name: Start
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0012:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -248,11 +249,11 @@ raw_time_0012:
   sortable_bib_number: 130
   source: Live Entry (1)
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0013:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -269,11 +270,11 @@ raw_time_0013:
   sortable_bib_number: 130
   source: another
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0014:
   event_group: sum
+  split_time:
   creator:
   reviewer: admin_user
   absolute_time:
@@ -290,11 +291,11 @@ raw_time_0014:
   sortable_bib_number: 130
   source: another
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0015:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -311,11 +312,11 @@ raw_time_0015:
   sortable_bib_number: 130
   source: another
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0016:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time: 2018-06-30 13:00:00.000000000 Z
@@ -332,11 +333,11 @@ raw_time_0016:
   sortable_bib_number: 777
   source: internal
   split_name: Start
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0017:
   event_group: sum
+  split_time:
   creator:
   reviewer: admin_user
   absolute_time:
@@ -353,11 +354,11 @@ raw_time_0017:
   sortable_bib_number: 777
   source: internal
   split_name: Start
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0018:
   event_group: sum
+  split_time:
   creator:
   reviewer: admin_user
   absolute_time:
@@ -374,11 +375,11 @@ raw_time_0018:
   sortable_bib_number: 999
   source: internal
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here:
   with_pacer:
 raw_time_0019:
   event_group: sum
+  split_time:
   creator:
   reviewer: admin_user
   absolute_time:
@@ -395,11 +396,11 @@ raw_time_0019:
   sortable_bib_number: 999
   source: internal
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here:
   with_pacer:
 raw_time_0020:
   event_group: sum
+  split_time: sum_100k_drop_anvil_rolling_pass_aid2_out_1
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -416,11 +417,11 @@ raw_time_0020:
   sortable_bib_number: 999
   source: internal
   split_name: Rolling Pass (Aid2)
-  split_time_id: 190697
   stopped_here:
   with_pacer:
 raw_time_0021:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -437,11 +438,11 @@ raw_time_0021:
   sortable_bib_number: 101
   source: ost-live-entry
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here:
   with_pacer: false
 raw_time_0022:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -458,11 +459,11 @@ raw_time_0022:
   sortable_bib_number: 101
   source: ost-live-entry
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here:
   with_pacer: false
 raw_time_0023:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer:
   absolute_time:
@@ -479,11 +480,11 @@ raw_time_0023:
   sortable_bib_number: 130
   source: ost-live-entry
   split_name: Molas Pass (Aid1)
-  split_time_id:
   stopped_here:
   with_pacer: false
 raw_time_0024:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer:
   absolute_time:
@@ -500,11 +501,11 @@ raw_time_0024:
   sortable_bib_number: 130
   source: ost-live-entry
   split_name: Molas Pass (Aid1)
-  split_time_id:
   stopped_here:
   with_pacer: false
 raw_time_0025:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -521,11 +522,11 @@ raw_time_0025:
   sortable_bib_number: 130
   source: ost-live-entry
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here:
   with_pacer: false
 raw_time_0026:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer:
   absolute_time:
@@ -542,11 +543,11 @@ raw_time_0026:
   sortable_bib_number: 130
   source: ost-live-entry
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here: false
   with_pacer: false
 raw_time_0027:
   event_group: sum
+  split_time:
   creator: admin_user
   reviewer: admin_user
   absolute_time:
@@ -563,11 +564,11 @@ raw_time_0027:
   sortable_bib_number: 130
   source: ost-live-entry
   split_name: Rolling Pass (Aid2)
-  split_time_id:
   stopped_here:
   with_pacer: false
 raw_time_0028:
   event_group: sum
+  split_time: sum_100k_drop_anvil_anvil_cg_aid6_in_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -584,11 +585,11 @@ raw_time_0028:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Anvil CG (Aid6)
-  split_time_id: 190694
   stopped_here:
   with_pacer: false
 raw_time_0029:
   event_group: sum
+  split_time: sum_100k_drop_anvil_anvil_cg_aid6_out_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -605,11 +606,11 @@ raw_time_0029:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Anvil CG (Aid6)
-  split_time_id: 190695
   stopped_here:
   with_pacer: false
 raw_time_0030:
   event_group: sum
+  split_time: sum_100k_drop_anvil_cascade_creek_rd_aid3_in_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -626,11 +627,11 @@ raw_time_0030:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Cascade Creek Rd (Aid3)
-  split_time_id: 190701
   stopped_here:
   with_pacer: false
 raw_time_0031:
   event_group: sum
+  split_time: sum_100k_drop_anvil_cascade_creek_rd_aid3_out_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -647,11 +648,11 @@ raw_time_0031:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Cascade Creek Rd (Aid3)
-  split_time_id: 190702
   stopped_here:
   with_pacer: false
 raw_time_0032:
   event_group: sum
+  split_time: sum_100k_drop_anvil_engineer_mtn_th_aid4_in_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -668,11 +669,11 @@ raw_time_0032:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Engineer Mtn TH (Aid4)
-  split_time_id: 190703
   stopped_here:
   with_pacer: false
 raw_time_0033:
   event_group: sum
+  split_time: sum_100k_drop_anvil_engineer_mtn_th_aid4_out_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -689,11 +690,11 @@ raw_time_0033:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Engineer Mtn TH (Aid4)
-  split_time_id: 190704
   stopped_here:
   with_pacer: false
 raw_time_0034:
   event_group: sum
+  split_time: sum_100k_drop_anvil_molas_pass_aid1_in_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -710,11 +711,11 @@ raw_time_0034:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Molas Pass (Aid1)
-  split_time_id: 190699
   stopped_here:
   with_pacer: false
 raw_time_0035:
   event_group: sum
+  split_time: sum_100k_drop_anvil_molas_pass_aid1_out_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -731,11 +732,11 @@ raw_time_0035:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Molas Pass (Aid1)
-  split_time_id: 190700
   stopped_here:
   with_pacer: false
 raw_time_0036:
   event_group: sum
+  split_time: sum_100k_drop_anvil_rolling_pass_aid2_in_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -752,11 +753,11 @@ raw_time_0036:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Rolling Pass (Aid2)
-  split_time_id: 190696
   stopped_here:
   with_pacer: false
 raw_time_0037:
   event_group: sum
+  split_time: sum_100k_drop_anvil_rolling_pass_aid2_out_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -773,11 +774,11 @@ raw_time_0037:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Rolling Pass (Aid2)
-  split_time_id: 190697
   stopped_here:
   with_pacer: false
 raw_time_0038:
   event_group: sum
+  split_time: sum_100k_drop_anvil_start_1
   creator: admin_user
   reviewer:
   absolute_time:
@@ -794,6 +795,5 @@ raw_time_0038:
   sortable_bib_number: 999
   source: ost-live-entry
   split_name: Start
-  split_time_id: 190698
   stopped_here:
   with_pacer: false

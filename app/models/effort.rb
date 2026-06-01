@@ -31,6 +31,8 @@ class Effort < ApplicationRecord
 
   belongs_to :event, counter_cache: true, touch: true
   belongs_to :person, optional: true
+  belongs_to :final_split_time, class_name: "SplitTime", optional: true
+  belongs_to :stopped_split_time, class_name: "SplitTime", optional: true
 
   scope :standard_includes, -> { includes(:person) }
 

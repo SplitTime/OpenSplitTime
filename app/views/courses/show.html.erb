@@ -35,7 +35,8 @@
   <% if @presenter.course_has_location_data? %>
     <div style="width: 100%; height: 350px;"
          data-controller="maps"
-         data-maps-course-id-value="<%= @presenter.id %>"></div>
+         data-maps-course-id-value="<%= @presenter.id %>"
+         data-maps-map-id-value="<%= OstConfig.google_maps_map_id %>"></div>
   <% end %>
   <br>
 

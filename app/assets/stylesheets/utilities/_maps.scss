@@ -1,0 +1,31 @@
+// Content element for google.maps.marker.AdvancedMarkerElement location markers.
+// AdvancedMarkerElement anchors its content at the bottom-center; translateY(50%)
+// re-centers the dot on the geographic point (matching the old icon anchor of 16,16).
+.map-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  transform: translateY(50%);
+
+  &--bounce {
+    animation: map-marker-bounce 0.3s ease;
+  }
+}
+
+@keyframes map-marker-bounce {
+  0%,
+  100% {
+    transform: translateY(50%);
+  }
+  50% {
+    transform: translateY(calc(50% - 8px));
+  }
+}

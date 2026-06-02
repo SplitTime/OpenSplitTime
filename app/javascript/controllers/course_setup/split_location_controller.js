@@ -10,7 +10,12 @@ export default class extends Controller {
     "map",
   ]
 
-  connect() {
+  async connect() {
+    await Promise.all([
+      google.maps.importLibrary("elevation"), // ElevationService
+      google.maps.importLibrary("core"),      // LatLng
+    ])
+
     this._elevator = new google.maps.ElevationService();
   }
 

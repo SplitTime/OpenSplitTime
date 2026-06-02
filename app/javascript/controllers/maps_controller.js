@@ -12,7 +12,13 @@ export default class extends Controller {
     editable: Boolean,
   }
 
-  connect() {
+  async connect() {
+    await Promise.all([
+      google.maps.importLibrary("maps"),    // Map, Polyline, InfoWindow
+      google.maps.importLibrary("marker"),  // Marker
+      google.maps.importLibrary("core"),    // LatLng, LatLngBounds, Point, event, Animation
+    ])
+
     const controller = this
     const courseId = this.courseIdValue;
     const eventId = this.eventIdValue;

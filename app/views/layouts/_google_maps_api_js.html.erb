@@ -1,7 +1,13 @@
 <% unless Rails.env.test? %>
-<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?libraries=places" \
-                           "&callback=Function.prototype" \
-                           "&key=#{::OstConfig.google_maps_api_key}" %>
+  <%# Google's official inline bootstrap loader. Loads the API with loading=async %>
+  <%# (no console warning) and exposes google.maps.importLibrary() for on-demand %>
+  <%# library loading. Consuming Stimulus controllers await importLibrary in connect(). %>
+  <script>
+    (g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })({
+      key: "<%= ::OstConfig.google_maps_api_key %>",
+      v: "weekly",
+    });
+  </script>
 <% else %>
   <!-- Test env: provide a minimal stub so any code that references google.maps.places won't crash -->
   <script>
@@ -28,6 +34,7 @@
       maps.LatLngBounds = function () {};
       maps.LatLngBounds.prototype.extend = function () {};
       maps.LatLngBounds.prototype.getCenter = function () { return new maps.LatLng(0, 0); };
+      maps.LatLngBounds.prototype.isEmpty = function () { return true; };
 
       // Map
       maps.Map = function (el, opts) {
@@ -35,8 +42,10 @@
       };
       maps.Map.prototype.setCenter = function () {};
       maps.Map.prototype.setZoom = function () {};
+      maps.Map.prototype.getZoom = function () { return 4; };
       maps.Map.prototype.fitBounds = function () {};
       maps.Map.prototype.getBounds = function () { return new maps.LatLngBounds(); };
+      maps.Map.prototype.addListener = function () { return { remove: function () {} }; };
 
       // Marker
       maps.Marker = function (opts) {
@@ -74,6 +83,19 @@
         this.addListener = function () { return { remove: function () {} }; };
         this.getPlace = function () { return {}; };
       };
+
+      // Marker animations
+      maps.Animation = { BOUNCE: 1, DROP: 2 };
+
+      // Elevation service
+      maps.ElevationService = function () {
+        this.getElevationForLocations = function () {
+          return Promise.resolve({ results: [] });
+        };
+      };
+
+      // Async loader shim: controllers await google.maps.importLibrary() in connect().
+      maps.importLibrary = function () { return Promise.resolve(maps); };
 
       maps.__stubbed = true;
     }());

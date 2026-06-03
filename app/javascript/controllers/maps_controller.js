@@ -7,6 +7,7 @@ export default class extends Controller {
     courseId: String,
     eventId: String,
     splitId: String,
+    mapId: String,
     activeMarkerUrl: String,
     inactiveMarkerUrl: String,
     editable: Boolean,
@@ -15,8 +16,8 @@ export default class extends Controller {
   async connect() {
     await Promise.all([
       google.maps.importLibrary("maps"),    // Map, Polyline, InfoWindow
-      google.maps.importLibrary("marker"),  // Marker
-      google.maps.importLibrary("core"),    // LatLng, LatLngBounds, Point, event, Animation
+      google.maps.importLibrary("marker"),  // AdvancedMarkerElement
+      google.maps.importLibrary("core"),    // LatLng, LatLngBounds, event
     ])
 
     const controller = this
@@ -35,6 +36,7 @@ export default class extends Controller {
     controller._bounds = new google.maps.LatLngBounds();
 
     const mapOptions = {
+      mapId: this.mapIdValue,
       mapTypeId: "terrain",
       center: defaultLatLng,
       zoom: defaultZoom,
@@ -52,15 +54,15 @@ export default class extends Controller {
       this.setZoom(Math.min(this.getZoom(), this.maxDefaultZoom))
     });
 
-    controller._splitMarker = new google.maps.Marker({
+    controller._splitMarker = new google.maps.marker.AdvancedMarkerElement({
       map: controller._gmap,
       position: null,
       zIndex: 1000,
-      draggable: true,
+      gmpDraggable: true,
     })
 
-    controller._splitMarker.addListener("dragend", (event) => {
-      this.dispatchClicked(event.latLng);
+    controller._splitMarker.addListener("dragend", () => {
+      this.dispatchClicked(this.latLngFrom(controller._splitMarker.position));
     })
 
     controller.fetchData().then(() => {
@@ -167,7 +169,7 @@ export default class extends Controller {
     const latLng = this.latLngFromLocation(location);
 
     controller._bounds.extend(latLng);
-    controller._splitMarker.setPosition(latLng);
+    controller._splitMarker.position = latLng;
     controller.fitBounds();
   }
 
@@ -181,13 +183,14 @@ export default class extends Controller {
         let point = controller.latLngFromLocation(location);
         controller.conditionallyExtendBounds(point);
 
-        let marker = new google.maps.Marker({
+        let marker = new google.maps.marker.AdvancedMarkerElement({
           position: point,
           map: controller._gmap,
-          splitId: location.id,
+          gmpClickable: true,
         });
+        marker.splitId = location.id;
 
-        controller.setMarkerIcon(marker, location, markerIndex)
+        controller.setMarkerContent(marker, location, markerIndex)
         controller.setMarkerInfoWindow(marker, location)
         if (location.active) { markerIndex++ }
 
@@ -227,19 +230,30 @@ export default class extends Controller {
     const controller = this
 
     controller._markers.forEach(function (marker) {
-      if (marker.splitId === event.detail.splitId) {
-        marker.setAnimation(google.maps.Animation.BOUNCE)
-        setTimeout(function () {
-          marker.setAnimation(null)
-        }, 300)
-      } else {
-        marker.setAnimation(null)
-      }
+      if (!marker || !marker.content) { return }
+      if (marker.splitId !== event.detail.splitId) { return }
+
+      // A single bounce. translateY(50%) is the marker's resting transform (see
+      // setMarkerContent); the animation lifts it 8px and settles back.
+      marker.content.animate(
+        [
+          { transform: "translateY(50%)" },
+          { transform: "translateY(calc(50% - 8px))" },
+          { transform: "translateY(50%)" },
+        ],
+        { duration: 300, easing: "ease" }
+      )
     })
   }
 
   latLngFromLocation(location) {
     return new google.maps.LatLng(location.latitude, location.longitude);
+  }
+
+  latLngFrom(position) {
+    return position instanceof google.maps.LatLng
+      ? position
+      : new google.maps.LatLng(position.lat, position.lng);
   }
 
   refreshMarkers() {
@@ -252,27 +266,40 @@ export default class extends Controller {
     const controller = this
 
     controller._markers.forEach(function (marker) {
-      marker.setMap(null)
+      if (marker) { marker.map = null }
     })
     controller._markers.length = 0
   }
 
-  setMarkerIcon(marker, location, markerIndex) {
+  setMarkerContent(marker, location, markerIndex) {
     const controller = this
 
-    if (location.active && controller.hasActiveMarkerUrlValue) {
-      marker.setLabel((markerIndex).toString())
-      marker.setIcon({
-        url: controller.activeMarkerUrlValue,
-        labelOrigin: new google.maps.Point(16, 14),
-        anchor: new google.maps.Point(16, 16)
-      })
-    } else if (!location.active && controller.hasInactiveMarkerUrlValue) {
-      marker.setIcon({
-        url: controller.inactiveMarkerUrlValue,
-        anchor: new google.maps.Point(16, 16)
-      })
-    }
+    const url = location.active ? controller.activeMarkerUrlValue : controller.inactiveMarkerUrlValue
+    if (!url) { return }
+
+    // The dot SVG is 32x32 with its optical center at (16, 14). Center the numeric
+    // label on the dot, and translateY(50%) re-centers the whole element on the
+    // geographic point (AdvancedMarkerElement otherwise anchors at bottom-center).
+    const content = document.createElement("div")
+    Object.assign(content.style, {
+      width: "32px",
+      height: "32px",
+      boxSizing: "border-box",
+      paddingBottom: "4px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundImage: `url(${url})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      fontSize: "12px",
+      fontWeight: "700",
+      color: "#000",
+      transform: "translateY(50%)",
+    })
+    if (location.active) { content.textContent = (markerIndex).toString() }
+
+    marker.content = content
   }
 
   setMarkerInfoWindow(marker, location) {
@@ -288,13 +315,13 @@ export default class extends Controller {
         "<div class='p'>" + location.latitude + ", " + location.longitude + "</div>"
     });
 
-    marker.addListener('click', function () {
+    marker.addEventListener('gmp-click', function () {
       controller._markers.map(function (v) {
         if (v.infowindow) {
           v.infowindow.close();
         }
       });
-      marker.infowindow.open(controller._gmap, marker);
+      marker.infowindow.open({ map: controller._gmap, anchor: marker });
     });
   }
 

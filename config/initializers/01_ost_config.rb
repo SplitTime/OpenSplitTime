@@ -116,6 +116,10 @@ module OstConfig
     Rails.application.credentials.dig(:google, :maps, :api_key)
   end
 
+  def self.google_maps_map_id
+    Rails.application.credentials.dig(:google, :maps, :map_id)
+  end
+
   def self.google_oauth_client_id
     Rails.application.credentials.dig(:google, :oauth, :client_id)
   end

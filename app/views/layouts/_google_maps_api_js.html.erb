@@ -47,20 +47,16 @@
       maps.Map.prototype.getBounds = function () { return new maps.LatLngBounds(); };
       maps.Map.prototype.addListener = function () { return { remove: function () {} }; };
 
-      // Marker
-      maps.Marker = function (opts) {
-        this.__opts = opts || {};
-        this.__position = opts && opts.position ? opts.position : new maps.LatLng(0, 0);
-        this.__map = opts && opts.map ? opts.map : null;
-        this.__label = null;
+      // AdvancedMarkerElement (google.maps.marker namespace)
+      if (!maps.marker) maps.marker = {};
+      maps.marker.AdvancedMarkerElement = function (opts) {
+        opts = opts || {};
+        this.position = opts.position || null;
+        this.map = opts.map || null;
+        this.content = opts.content || null;
+        this.addListener = function () { return { remove: function () {} }; };
+        this.addEventListener = function () {};
       };
-      maps.Marker.prototype.setMap = function (map) { this.__map = map || null; };
-      maps.Marker.prototype.setPosition = function (pos) { this.__position = pos; };
-      maps.Marker.prototype.getPosition = function () { return this.__position; };
-      maps.Marker.prototype.setIcon = function () {};
-      maps.Marker.prototype.setLabel = function (label) { this.__label = label; };
-      maps.Marker.prototype.setZIndex = function () {};
-      maps.Marker.prototype.addListener = function () { return { remove: function () {} }; };
 
       // Polyline/Polygon
       maps.Polyline = function (opts) { this.__opts = opts || {}; };
@@ -83,9 +79,6 @@
         this.addListener = function () { return { remove: function () {} }; };
         this.getPlace = function () { return {}; };
       };
-
-      // Marker animations
-      maps.Animation = { BOUNCE: 1, DROP: 2 };
 
       // Elevation service
       maps.ElevationService = function () {

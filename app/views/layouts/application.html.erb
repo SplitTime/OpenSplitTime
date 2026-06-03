@@ -8,7 +8,7 @@
   <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
   <%= render "layouts/google_maps_api_js" %>
   <%= csrf_meta_tags %>
-  <%= render "layouts/cloudflare_analytics" if Rails.env.production? %>
+  <%= render "layouts/cloudflare_analytics" if OstConfig.cloudflare_analytics_enabled? %>
   <%= render "layouts/favicon" %>
 </head>
 

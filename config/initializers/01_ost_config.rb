@@ -65,6 +65,14 @@ module OstConfig
     Rails.application.credentials.dig(:cloudflare, :analytics, :token)
   end
 
+  # The Web Analytics token is registered for the production hostname, so the
+  # beacon only works there. Staging runs as Rails.env.production? but with
+  # CREDENTIALS_ENV=staging; loading the beacon there just 404s against the RUM
+  # endpoint and spams the console.
+  def self.cloudflare_analytics_enabled?
+    Rails.env.production? && credentials_env != "staging" && cloudflare_analytics_token.present?
+  end
+
   def self.cloudflare_turnstile_secret_key
     Rails.application.credentials.dig(:cloudflare, :turnstile, :secret_key)
   end

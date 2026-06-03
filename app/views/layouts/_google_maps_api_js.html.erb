@@ -55,6 +55,7 @@
         this.map = opts.map || null;
         this.content = opts.content || null;
         this.addListener = function () { return { remove: function () {} }; };
+        this.addEventListener = function () {};
       };
 
       // Polyline/Polygon

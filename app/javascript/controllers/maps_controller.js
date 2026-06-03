@@ -231,15 +231,18 @@ export default class extends Controller {
 
     controller._markers.forEach(function (marker) {
       if (!marker || !marker.content) { return }
+      if (marker.splitId !== event.detail.splitId) { return }
 
-      if (marker.splitId === event.detail.splitId) {
-        marker.content.classList.add("map-marker--bounce")
-        setTimeout(function () {
-          marker.content.classList.remove("map-marker--bounce")
-        }, 300)
-      } else {
-        marker.content.classList.remove("map-marker--bounce")
-      }
+      // A single bounce. translateY(50%) is the marker's resting transform (see
+      // setMarkerContent); the animation lifts it 8px and settles back.
+      marker.content.animate(
+        [
+          { transform: "translateY(50%)" },
+          { transform: "translateY(calc(50% - 8px))" },
+          { transform: "translateY(50%)" },
+        ],
+        { duration: 300, easing: "ease" }
+      )
     })
   }
 
@@ -274,9 +277,26 @@ export default class extends Controller {
     const url = location.active ? controller.activeMarkerUrlValue : controller.inactiveMarkerUrlValue
     if (!url) { return }
 
+    // The dot SVG is 32x32 with its optical center at (16, 14). Center the numeric
+    // label on the dot, and translateY(50%) re-centers the whole element on the
+    // geographic point (AdvancedMarkerElement otherwise anchors at bottom-center).
     const content = document.createElement("div")
-    content.className = "map-marker"
-    content.style.backgroundImage = `url(${url})`
+    Object.assign(content.style, {
+      width: "32px",
+      height: "32px",
+      boxSizing: "border-box",
+      paddingBottom: "4px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundImage: `url(${url})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      fontSize: "12px",
+      fontWeight: "700",
+      color: "#000",
+      transform: "translateY(50%)",
+    })
     if (location.active) { content.textContent = (markerIndex).toString() }
 
     marker.content = content
@@ -295,7 +315,7 @@ export default class extends Controller {
         "<div class='p'>" + location.latitude + ", " + location.longitude + "</div>"
     });
 
-    marker.addListener('click', function () {
+    marker.addEventListener('gmp-click', function () {
       controller._markers.map(function (v) {
         if (v.infowindow) {
           v.infowindow.close();

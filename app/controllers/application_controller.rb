@@ -120,7 +120,19 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:alert] = "Access denied."
-    redirect_to(request.referrer || root_path)
+    redirect_to(safe_referrer || root_path)
+  end
+
+  # Returns request.referrer only when it points at our own host, otherwise nil.
+  # Prevents ActionController::Redirecting::OpenRedirectError (a 500) when a user
+  # arrives from an external origin such as accounts.google.com after OAuth sign-in.
+  def safe_referrer
+    referrer = request.referrer
+    return if referrer.blank?
+
+    URI(referrer).host == request.host ? referrer : nil
+  rescue URI::InvalidURIError
+    nil
   end
 
   def set_current_url_options

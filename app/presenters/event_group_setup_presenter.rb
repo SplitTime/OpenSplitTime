@@ -127,6 +127,8 @@ class EventGroupSetupPresenter < BasePresenter
       :events_and_courses
     elsif controller_name == "partners"
       :partners
+    elsif controller_name == "gating_locations"
+      :gating_locations
     else
       :entrants
     end

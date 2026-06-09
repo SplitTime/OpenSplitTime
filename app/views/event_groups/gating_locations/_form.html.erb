@@ -1,0 +1,48 @@
+<%= render "shared/errors", obj: @gating_location %>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= form_with(model: [@event_group.organization, @event_group, @gating_location], html: { class: "form-horizontal", role: "form" }) do |f| %>
+      <div class="mb-3 col-md-6">
+        <%= f.label :name, class: "mb-1 required" %>
+        <%= f.text_field :name, class: "form-control", placeholder: "Gating location name, e.g., Highway 50 Turnoff", autofocus: true %>
+      </div>
+
+      <p class="text-body-secondary">
+        For each gated event, choose the gating aid station (where runners are timed) and the target aid station
+        (where crews are headed). Leave both blank if this location does not apply to an event.
+      </p>
+
+      <% sorted_gating_location_events = @gating_location.gating_location_events.sort_by { |gle| gle.event.guaranteed_short_name } %>
+      <%= f.fields_for :gating_location_events, sorted_gating_location_events do |gle_fields| %>
+        <% event = gle_fields.object.event %>
+        <% aid_station_options = event.aid_stations.ordered.map { |aid_station| [aid_station.split_name, aid_station.id] } %>
+        <div class="card mb-3 col-md-6">
+          <div class="card-header">
+            <strong><%= event.guaranteed_short_name %></strong>
+          </div>
+          <div class="card-body">
+            <%= gle_fields.hidden_field :event_id %>
+            <div class="mb-3">
+              <%= gle_fields.label :gating_aid_station_id, "Gating aid station", class: "mb-1" %>
+              <%= gle_fields.select :gating_aid_station_id, aid_station_options, { include_blank: "Not gated" }, { class: "form-select" } %>
+            </div>
+            <div class="mb-3">
+              <%= gle_fields.label :target_aid_station_id, "Target aid station", class: "mb-1" %>
+              <%= gle_fields.select :target_aid_station_id, aid_station_options, { include_blank: "Not gated" }, { class: "form-select" } %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row">
+        <div class="col">
+          <%= f.submit class: "btn btn-primary" %>
+          <%= link_to "Cancel",
+                      organization_event_group_gating_locations_path(@event_group.organization, @event_group),
+                      class: "btn btn-outline-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_01_222550) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_09_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -314,6 +314,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_222550) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "gating_location_events", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "event_id", null: false
+    t.integer "gating_aid_station_id", null: false
+    t.bigint "gating_location_id", null: false
+    t.integer "target_aid_station_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_gating_location_events_on_event_id"
+    t.index ["gating_aid_station_id"], name: "index_gating_location_events_on_gating_aid_station_id"
+    t.index ["gating_location_id", "event_id"], name: "idx_on_gating_location_id_event_id_587c564f97", unique: true
+    t.index ["gating_location_id"], name: "index_gating_location_events_on_gating_location_id"
+    t.index ["target_aid_station_id"], name: "index_gating_location_events_on_target_aid_station_id"
+  end
+
+  create_table "gating_locations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "event_group_id", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_group_id", "name"], name: "index_gating_locations_on_event_group_id_and_name", unique: true
+    t.index ["event_group_id"], name: "index_gating_locations_on_event_group_id"
   end
 
   create_table "historical_facts", force: :cascade do |t|
@@ -962,6 +985,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_01_222550) do
   add_foreign_key "events", "courses"
   add_foreign_key "events", "event_groups"
   add_foreign_key "export_jobs", "users"
+  add_foreign_key "gating_location_events", "aid_stations", column: "gating_aid_station_id"
+  add_foreign_key "gating_location_events", "aid_stations", column: "target_aid_station_id"
+  add_foreign_key "gating_location_events", "events"
+  add_foreign_key "gating_location_events", "gating_locations"
+  add_foreign_key "gating_locations", "event_groups"
   add_foreign_key "historical_facts", "organizations"
   add_foreign_key "historical_facts", "people"
   add_foreign_key "import_jobs", "users"

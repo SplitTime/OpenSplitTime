@@ -20,6 +20,8 @@ namespace :madmin do
   end
   resources :best_effort_segments
   resources :aid_stations
+  resources :gating_locations
+  resources :gating_location_events
   resources :subscriptions
   namespace :paper_trail do
     resources :versions

@@ -1,0 +1,11 @@
+---
+sum_bandera_gate_100k:
+  gating_location: sum_bandera_gate
+  event: sum_100k
+  gating_aid_station: aid_station_0021
+  target_aid_station: aid_station_0020
+sum_bandera_gate_55k:
+  gating_location: sum_bandera_gate
+  event: sum_55k
+  gating_aid_station: aid_station_0038
+  target_aid_station: aid_station_0039

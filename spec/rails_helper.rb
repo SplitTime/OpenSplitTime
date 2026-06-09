@@ -63,6 +63,8 @@ RSpec.configure do |config|
     :event_series,
     :event_series_events,
     :events,
+    :gating_locations,
+    :gating_location_events,
     :historical_facts,
     :lotteries,
     :lottery_divisions,

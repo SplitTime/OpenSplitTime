@@ -3,10 +3,12 @@ class AidStation < ApplicationRecord
 
   belongs_to :event, touch: true
   belongs_to :split
+  has_many :gating_location_events_as_gating, class_name: "GatingLocationEvent", foreign_key: :gating_aid_station_id,
+                                              dependent: :destroy, inverse_of: :gating_aid_station
+  has_many :gating_location_events_as_target, class_name: "GatingLocationEvent", foreign_key: :target_aid_station_id,
+                                              dependent: :destroy, inverse_of: :target_aid_station
 
-  validates_uniqueness_of :split_id, scope: :event_id,
-                                     message: "only one of any given split permitted within an event"
-  validates_presence_of :event_id, :split_id
+  validates :split_id, uniqueness: { scope: :event_id, message: "only one of any given split permitted within an event" } # rubocop:disable Rails/UniqueValidationWithoutIndex, Layout/LineLength
   validates_with AidStationAttributesValidator
 
   attr_accessor :efforts_dropped_at_station, :efforts_in_aid, :efforts_recorded_out,

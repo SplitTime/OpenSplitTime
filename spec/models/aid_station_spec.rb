@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe AidStation, type: :model do
-  subject(:aid_station) { AidStation.new(event: event, split: split) }
+  subject(:aid_station) { described_class.new(event: event, split: split) }
 
   let(:event) { events(:sum_100k) }
   let(:split) { splits(:sum_100k_course_finish) }
@@ -23,11 +23,11 @@ RSpec.describe AidStation, type: :model do
 
       it "is invalid" do
         expect(aid_station).not_to be_valid
-        expect(aid_station.errors[:event_id]).to include("can't be blank")
+        expect(aid_station.errors[:event]).to include("must exist")
       end
     end
 
-    context "if event course and split course are inconsistent" do
+    context "when event course and split course are inconsistent" do
       let(:split) { splits(:sum_55k_course_finish) }
 
       it "is invalid" do
@@ -43,7 +43,7 @@ RSpec.describe AidStation, type: :model do
       end
     end
 
-    context "for event_group split location validations" do
+    context "with event_group split location validations" do
       let(:event_1) { create(:event, :with_short_name, course: course_1, event_group: event_group) }
       let(:event_2) { create(:event, :with_short_name, course: course_2, event_group: event_group) }
       let(:event_group) { create(:event_group, home_time_zone: "Arizona") }

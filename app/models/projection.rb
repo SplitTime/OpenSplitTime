@@ -27,7 +27,7 @@ class Projection < ::ApplicationQuery
     starting_lap, starting_split_id, starting_bitkey = starting_time_point.values
     ignore_timestamp = ApplicationRecord.connection.quote(ignore_times_beyond.presence)
 
-    return NULL_QUERY if completed_seconds == 0 || subject_time_points.empty?
+    return NULL_QUERY if completed_seconds.zero? || subject_time_points.empty?
 
     projected_where_array = subject_time_points.map do |tp|
       "(lap = #{tp.lap} and split_id = #{tp.split_id} and sub_split_bitkey = #{tp.bitkey})"
@@ -35,7 +35,7 @@ class Projection < ::ApplicationQuery
     projected_where_clause = projected_where_array.join(" or ").presence || "true"
 
     <<~SQL.squish
-      with 
+      with
         relevant_event_ids as (
           select events.id as event_id
           from events
@@ -44,18 +44,19 @@ class Projection < ::ApplicationQuery
             join splits on splits.course_id = courses.id
           where splits.id = #{starting_split_id}
             and (event_groups.concealed is false or event_groups.concealed is null)
+            and (#{ignore_timestamp} is null or events.scheduled_start_time <= #{ignore_timestamp})
           order by scheduled_start_time desc
           limit #{EVENT_LOOKBACK_COUNT}
         ),
 
         completed_split_times as (
-          select cst.effort_id, 
+          select cst.effort_id,
                  cst.absolute_time,
                  extract(epoch from(cst.absolute_time - sst.absolute_time)) as completed_segment_seconds,
                  abs(extract(epoch from(cst.absolute_time - sst.absolute_time)) - #{completed_seconds}) as difference
           from split_times cst
-            inner join split_times sst 
-                    on sst.effort_id = cst.effort_id 
+            inner join split_times sst
+                    on sst.effort_id = cst.effort_id
                    and sst.lap = #{starting_lap}
                    and sst.split_id = #{starting_split_id}
                    and sst.sub_split_bitkey = #{starting_bitkey}
@@ -76,7 +77,7 @@ class Projection < ::ApplicationQuery
         ),
 
         main_subquery as (
-          select pst.effort_id, 
+          select pst.effort_id,
               lap,
               split_id,
               sub_split_bitkey,
@@ -92,29 +93,29 @@ class Projection < ::ApplicationQuery
 
         ratio_subquery as (
           select *,
-              case when completed_segment_seconds = 0 
-                   then null 
+              case when completed_segment_seconds = 0
+                   then null
                    else round((projected_segment_seconds / completed_segment_seconds)::numeric, 6) end as ratio
           from main_subquery
         ),
-          
+
         order_count_subquery as (
           select *,
               row_number() over (partition by lap, split_id, sub_split_bitkey order by ratio) as row_number,
               sum(1) over (partition by lap, split_id, sub_split_bitkey) as total
           from ratio_subquery
         ),
-          
+
         quartiles as (
-          select lap, 
-                 effort_id, 
-                 split_id, 
+          select lap,
+                 effort_id,
+                 split_id,
                  sub_split_bitkey,
                  effort_year,
                  ratio,
                  avg(case when row_number >= (floor(total/2.0)/2.0)
                            and row_number <= (floor(total/2.0)/2.0) + 1
-                     then ratio else null end) 
+                     then ratio else null end)
                  over (partition by lap, split_id, sub_split_bitkey) as q1,
                  avg(case when row_number >= (total/2.0)
                            and row_number <= (total/2.0) + 1
@@ -126,7 +127,7 @@ class Projection < ::ApplicationQuery
                  over (partition by lap, split_id, sub_split_bitkey) as q3
           from order_count_subquery
         ),
-              
+
         bounds as (
           select *,
               q3 - q1 as iqr,
@@ -139,15 +140,15 @@ class Projection < ::ApplicationQuery
           select *
           from bounds
           where effort_id not in (
-            select distinct effort_id 
-            from bounds 
+            select distinct effort_id
+            from bounds
             where ratio not between lower_bound and upper_bound
           )
         ),
 
         stats_subquery as (
-          select lap, 
-                 split_id, 
+          select lap,
+                 split_id,
                  sub_split_bitkey,
                  array_to_string(array_agg(distinct effort_year), ',') as effort_years,
                  count(ratio) as effort_count,
@@ -156,22 +157,22 @@ class Projection < ::ApplicationQuery
           from valid_ratios
           group by lap, split_id, sub_split_bitkey
         ),
-      
+
         final_subquery as (
-          select lap, 
-                 split_id, 
+          select lap,
+                 split_id,
                  sub_split_bitkey,
                  effort_count,
                  effort_years,
                  case when average >= 0 and (average - std2) is not null
-                      then greatest(0, average - std2) 
+                      then greatest(0, average - std2)
                       else average - std2 end as low_ratio,
                  average as average_ratio,
                  average + std2 as high_ratio
           from stats_subquery
         )
-          
-      select final_subquery.*, 
+
+      select final_subquery.*,
           round(low_ratio * #{completed_seconds})::int as low_seconds,
           round(average_ratio * #{completed_seconds})::int as average_seconds,
           round(high_ratio * #{completed_seconds})::int as high_seconds

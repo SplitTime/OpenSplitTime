@@ -30,6 +30,7 @@ RSpec.describe "Visit the cutoff analysis page", :js do
       RawTime.delete_all
       SplitTime.delete_all
       Effort.delete_all
+      GatingLocationEvent.delete_all
       AidStation.delete_all
       ProjectionAssessment.delete_all
       ProjectionAssessmentRun.delete_all

@@ -68,4 +68,21 @@ RSpec.describe ProjectionAssessments::Runner do
       end
     end
   end
+
+  describe "#perform! when the projection query returns no results" do
+    let(:effort) { efforts(:hardrock_2016_lavon_paucek) }
+
+    before { allow(Projection).to receive(:execute_query).and_return([]) }
+
+    it "records the actual time without projections and finishes the run" do
+      subject.perform!
+
+      assessment = assessment_run.assessments.find_by(effort_id: effort.id)
+      expect(assessment.projected_early).to be_nil
+      expect(assessment.projected_best).to be_nil
+      expect(assessment.projected_late).to be_nil
+      expect(assessment.actual).to eq("2016-07-15 20:36:00 -0600")
+      expect(assessment_run.reload).to be_finished
+    end
+  end
 end

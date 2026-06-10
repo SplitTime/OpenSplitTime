@@ -81,11 +81,13 @@ module ProjectionAssessments
         ignore_times_beyond: completed_absolute_time,
       ).first
 
+      current_assessment.assign_attributes(actual: projected_absolute_time)
+      return unless projection
+
       current_assessment.assign_attributes(
         projected_early: completed_absolute_time + projection.low_seconds,
         projected_best: completed_absolute_time + projection.average_seconds,
         projected_late: completed_absolute_time + projection.high_seconds,
-        actual: projected_absolute_time,
       )
     end
 

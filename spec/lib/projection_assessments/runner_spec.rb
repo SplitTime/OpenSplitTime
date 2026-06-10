@@ -25,6 +25,16 @@ RSpec.describe ProjectionAssessments::Runner do
       expect(assessment_run.assessments.count).to eq(event.efforts.count)
     end
 
+    context "when given a progress block" do
+      subject { described_class.new(assessment_run) { progress_calls << 1 } }
+
+      let(:progress_calls) { [] }
+
+      it "calls the block once per effort" do
+        expect(progress_calls.size).to eq(event.efforts.count)
+      end
+    end
+
     context "when the effort has completed and projected split_times" do
       let(:effort) { efforts(:hardrock_2016_lavon_paucek) }
 

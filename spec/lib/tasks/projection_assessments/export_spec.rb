@@ -76,6 +76,31 @@ RSpec.describe "projection_assessments:export", type: :task do
     end
   end
 
+  context "when no projections are available" do
+    it "includes rows with actual times and blank predictions" do
+      Tempfile.open(["assessments", ".csv"]) do |file|
+        env = {
+          "EVENTS" => events(:hardrock_2016).slug,
+          "COMPLETED_SPLIT" => "Telluride",
+          "PROJECTED_SPLIT" => "Grouse",
+          "OUTPUT" => file.path,
+        }
+
+        allow(Projection).to receive(:execute_query).and_return([])
+        with_env(env) { silent_invoke }
+
+        table = CSV.read(file.path, headers: true)
+
+        no_prediction = table.find { |row| row["Runner name"] == efforts(:hardrock_2016_lavon_paucek).full_name }
+        expect(no_prediction["Earliest predicted arrival"]).to be_nil
+        expect(no_prediction["Actual arrival"]).to eq("2016-07-15 20:36:00")
+
+        no_anchor = table.find { |row| row["Runner name"] == efforts(:hardrock_2016_start_only).full_name }
+        expect(no_anchor).to be_nil
+      end
+    end
+  end
+
   context "with missing arguments" do
     it "aborts with usage instructions" do
       expect { silent_invoke }.to raise_error(SystemExit)

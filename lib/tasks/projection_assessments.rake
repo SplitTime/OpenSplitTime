@@ -55,11 +55,11 @@ namespace :projection_assessments do
         time_zone = event.home_time_zone
         year = event.scheduled_start_time.in_time_zone(time_zone).year
 
-        run.assessments.includes(:effort).reject { |assessment| assessment.projected_early.blank? }.map do |assessment|
+        run.assessments.includes(:effort).reject { |a| a.projected_early.blank? && a.actual.blank? }.map do |assessment|
           [
             assessment.effort.full_name,
             year,
-            assessment.projected_early.in_time_zone(time_zone).strftime("%Y-%m-%d %H:%M:%S"),
+            assessment.projected_early&.in_time_zone(time_zone)&.strftime("%Y-%m-%d %H:%M:%S"),
             assessment.actual&.in_time_zone(time_zone)&.strftime("%Y-%m-%d %H:%M:%S"),
           ]
         end

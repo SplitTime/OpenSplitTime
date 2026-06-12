@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_09_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_11_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -155,6 +155,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_200000) do
     t.bigint "user_id", null: false
     t.string "value", null: false
     t.index ["user_id"], name: "index_credentials_on_user_id"
+  end
+
+  create_table "crew_passages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "effort_id", null: false
+    t.bigint "gating_location_id", null: false
+    t.datetime "passed_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["effort_id"], name: "index_crew_passages_on_effort_id"
+    t.index ["gating_location_id", "effort_id"], name: "index_crew_passages_on_gating_location_id_and_effort_id", unique: true
+    t.index ["gating_location_id"], name: "index_crew_passages_on_gating_location_id"
   end
 
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
@@ -975,6 +986,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_09_200000) do
   add_foreign_key "course_groups", "organizations"
   add_foreign_key "courses", "organizations"
   add_foreign_key "credentials", "users"
+  add_foreign_key "crew_passages", "efforts"
+  add_foreign_key "crew_passages", "gating_locations"
   add_foreign_key "efforts", "events"
   add_foreign_key "efforts", "people"
   add_foreign_key "event_groups", "organizations"

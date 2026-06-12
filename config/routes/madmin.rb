@@ -22,6 +22,7 @@ namespace :madmin do
   resources :aid_stations
   resources :gating_locations
   resources :gating_location_events
+  resources :crew_passages
   resources :subscriptions
   namespace :paper_trail do
     resources :versions

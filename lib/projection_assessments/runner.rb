@@ -5,13 +5,15 @@ module ProjectionAssessments
     UPDATE_INTERVAL = 5
 
     # @param [::ProjectionAssessmentRun] assessment_run
+    # @yield optional block called after each effort is assessed
     # @return [Integer]
-    def self.perform!(assessment_run)
-      new(assessment_run).perform!
+    def self.perform!(assessment_run, &)
+      new(assessment_run, &).perform!
     end
 
-    def initialize(assessment_run)
+    def initialize(assessment_run, &block)
       @assessment_run = assessment_run
+      @progress_callback = block
       @current_effort = nil
       @errors = []
     end
@@ -26,7 +28,7 @@ module ProjectionAssessments
 
     private
 
-    attr_reader :assessment_run, :errors
+    attr_reader :assessment_run, :errors, :progress_callback
     attr_accessor :current_assessment, :current_effort
 
     delegate :completed_lap, :completed_split_id, :completed_bitkey,
@@ -45,6 +47,7 @@ module ProjectionAssessments
         self.current_effort = effort
         assess_effort
         save_assessment!
+        progress_callback&.call
       end
 
       assessment_run.finished! if errors.empty?
@@ -78,11 +81,13 @@ module ProjectionAssessments
         ignore_times_beyond: completed_absolute_time,
       ).first
 
+      current_assessment.assign_attributes(actual: projected_absolute_time)
+      return unless projection
+
       current_assessment.assign_attributes(
         projected_early: completed_absolute_time + projection.low_seconds,
         projected_best: completed_absolute_time + projection.average_seconds,
         projected_late: completed_absolute_time + projection.high_seconds,
-        actual: projected_absolute_time,
       )
     end
 

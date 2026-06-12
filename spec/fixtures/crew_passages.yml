@@ -1,0 +1,5 @@
+---
+sum_bandera_gate_progress_cascade:
+  gating_location: sum_bandera_gate
+  effort: sum_100k_progress_cascade
+  passed_at: 2017-09-23 20:00:00

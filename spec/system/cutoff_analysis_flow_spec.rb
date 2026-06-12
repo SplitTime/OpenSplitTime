@@ -29,6 +29,7 @@ RSpec.describe "Visit the cutoff analysis page", :js do
       Notification.delete_all
       RawTime.delete_all
       SplitTime.delete_all
+      CrewPassage.delete_all
       Effort.delete_all
       GatingLocationEvent.delete_all
       AidStation.delete_all

@@ -25,6 +25,16 @@ RSpec.describe ProjectionAssessments::Runner do
       expect(assessment_run.assessments.count).to eq(event.efforts.count)
     end
 
+    context "when given a progress block" do
+      subject { described_class.new(assessment_run) { progress_calls << 1 } }
+
+      let(:progress_calls) { [] }
+
+      it "calls the block once per effort" do
+        expect(progress_calls.size).to eq(event.efforts.count)
+      end
+    end
+
     context "when the effort has completed and projected split_times" do
       let(:effort) { efforts(:hardrock_2016_lavon_paucek) }
 
@@ -56,6 +66,23 @@ RSpec.describe ProjectionAssessments::Runner do
         expect(assessment.projected_late).to be_nil
         expect(assessment.actual).to be_nil
       end
+    end
+  end
+
+  describe "#perform! when the projection query returns no results" do
+    let(:effort) { efforts(:hardrock_2016_lavon_paucek) }
+
+    before { allow(Projection).to receive(:execute_query).and_return([]) }
+
+    it "records the actual time without projections and finishes the run" do
+      subject.perform!
+
+      assessment = assessment_run.assessments.find_by(effort_id: effort.id)
+      expect(assessment.projected_early).to be_nil
+      expect(assessment.projected_best).to be_nil
+      expect(assessment.projected_late).to be_nil
+      expect(assessment.actual).to eq("2016-07-15 20:36:00 -0600")
+      expect(assessment_run.reload).to be_finished
     end
   end
 end

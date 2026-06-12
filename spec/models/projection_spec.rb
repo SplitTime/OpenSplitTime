@@ -12,6 +12,7 @@ RSpec.describe ::Projection, type: :model do
         ignore_times_beyond: ignore_times_beyond,
       )
     end
+
     let(:split_time) { effort.ordered_split_times.last }
     let(:effort) { efforts(:hardrock_2016_rene_mclaughlin) }
     let(:time_points) { effort.event.required_time_points }
@@ -54,6 +55,34 @@ RSpec.describe ::Projection, type: :model do
           expect(projection.high_seconds).to be_within(100).of(44_700)
         end
       end
+
+      context "when ignore_times_beyond predates newer events on the same course" do
+        let(:effort) { efforts(:hardrock_2014_finished_without_stop) }
+        let(:split_time) { effort.ordered_split_times[5] }
+        let(:subject_time_points) { [time_points[6]] }
+        let(:ignore_times_beyond) { split_time.absolute_time }
+
+        before do
+          4.times do |i|
+            create(
+              :event,
+              :with_short_name,
+              course: courses(:hardrock_cw),
+              event_group: event_groups(:hardrock_2016),
+              scheduled_start_time: Time.zone.parse("#{2017 + i}-07-14 12:00:00"),
+            )
+          end
+        end
+
+        it "draws its sample only from events available at that time" do
+          expect(subject).to be_present
+
+          projection = subject.first
+          expect(projection.time_point).to eq(subject_time_points.first)
+          expect(projection.effort_years).to eq([2014])
+          expect(projection.effort_count).to be_positive
+        end
+      end
     end
 
     context "when given a starting split time" do
@@ -73,6 +102,7 @@ RSpec.describe ::Projection, type: :model do
 
   describe "#time_point" do
     subject { described_class.new(lap: lap, split_id: split_id, sub_split_bitkey: bitkey) }
+
     let(:lap) { 1 }
     let(:split_id) { 2 }
     let(:bitkey) { out_bitkey }

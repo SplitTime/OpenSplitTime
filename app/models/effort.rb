@@ -43,6 +43,7 @@ class Effort < ApplicationRecord
   has_many :effort_segments, dependent: false
   has_many :split_times, dependent: :destroy, autosave: true
   has_many :notifications, dependent: :destroy
+  has_many :crew_passages, dependent: :destroy
   has_one_attached :photo do |photo|
     photo.variant :thumbnail, resize_to_limit: [50, 50]
     photo.variant :small, resize_to_limit: [150, 150]

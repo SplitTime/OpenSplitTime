@@ -52,9 +52,11 @@ class TimeConversion
   # Converts attempted military times like "12:45:ss" to real military times i.e. "12:45:00".
   # Pads with `0` where needed, i.e. "5:33" => 05:33:00.
   # Also converts timestamps like "2022-07-15 15:45:00-0600" to military times i.e. "15:45:00".
+  # When a zone is given, timestamps are localized to that zone before formatting, so a UTC
+  # timestamp such as "2014-07-11T10:45:00Z" renders as local military time rather than UTC.
   #
   # Returns nil when the argument does not match any valid pattern.
-  def self.user_entered_to_military(time_string)
+  def self.user_entered_to_military(time_string, zone = nil)
     return if time_string.blank? || time_string.length < 3
 
     subbed_string = time_string.gsub(/[a-zA-Z]/, "0")
@@ -68,7 +70,10 @@ class TimeConversion
     return if invalid_military?(new_string)
 
     datetime = time_string.to_datetime
-    absolute_to_hms(datetime) if datetime.present?
+    return if datetime.blank?
+
+    datetime = datetime.in_time_zone(zone) if zone
+    absolute_to_hms(datetime)
   rescue Date::Error
     nil
   end

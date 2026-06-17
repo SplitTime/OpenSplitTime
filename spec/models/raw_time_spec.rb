@@ -133,6 +133,15 @@ RSpec.describe RawTime, type: :model do
       let(:entered_time) { "2025-16-08 05:01:55.61" } # Day and month are switched
       it { expect(subject).to be_nil }
     end
+
+    context "when absolute_time is not present and entered_time is a UTC timestamp" do
+      let(:entered_time) { "2014-07-11T10:45:00Z" }
+      let(:time_zone) { "Mountain Time (US & Canada)" }
+
+      it "returns the time localized to the zone rather than UTC" do
+        expect(subject).to eq("04:45:00")
+      end
+    end
   end
 
   describe "#data_status" do

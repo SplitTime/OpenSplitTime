@@ -228,6 +228,7 @@ Rails.application.routes.draw do
     end
 
     resources :event_groups, except: [:index, :show] do
+      resources :gating_locations, except: [:show], module: "event_groups"
       resources :partners, except: [:show], module: "event_groups"
     end
 

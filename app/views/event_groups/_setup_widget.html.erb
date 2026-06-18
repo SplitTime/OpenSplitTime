@@ -31,6 +31,12 @@
       <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_partners(presenter) %>
     </div>
 
+    <!-- Crew Gating Card-->
+    <div class="col border-end">
+      <%= render "event_groups/setup_widget_header", title: "Crew Gating" %>
+      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_gating_locations(presenter) %>
+    </div>
+
     <!-- Summary Card-->
     <div class="col">
       <%= render "event_groups/setup_widget_header", title: "Status" %>

@@ -4,6 +4,8 @@
   <% "OpenSplitTime: Event Group - Connect Service - #{connect_service_presenter.service_name} - #{event_group_setup_presenter.event_group.name}" %>
 <% end %>
 
+<%= turbo_stream_from current_user %>
+
 <%= render "shared/mode_widget", event_group: event_group_setup_presenter.event_group %>
 <%= render "event_groups/setup_header",
            presenter: event_group_setup_presenter,

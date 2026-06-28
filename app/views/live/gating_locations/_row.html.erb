@@ -1,0 +1,19 @@
+<%# locals: (row:, home_time_zone:) -%>
+
+<tr>
+  <td><%= row.bib_number %></td>
+  <td><%= row.full_name %></td>
+  <td><%= row.gating_time_in_zone(home_time_zone)&.strftime("%-l:%M %p") %></td>
+  <td>
+    <% if row.stopped? %>
+      <span class="badge bg-secondary">Stopped</span>
+    <% elsif row.arrived_at_target? %>
+      <span class="badge bg-secondary">Arrived</span>
+    <% elsif (predicted_arrival = row.predicted_target_arrival) %>
+      <span data-gating-release-target="release"
+            data-predicted-arrival="<%= predicted_arrival.iso8601 %>"></span>
+    <% else %>
+      <span class="text-body-secondary">Insufficient data</span>
+    <% end %>
+  </td>
+</tr>

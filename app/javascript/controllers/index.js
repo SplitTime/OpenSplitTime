@@ -43,6 +43,9 @@ application.register("event-connections--switch", EventConnections__SwitchContro
 import EventSetupController from "./event_setup_controller"
 application.register("event-setup", EventSetupController)
 
+import FieldMappingRowController from "./field_mapping_row_controller"
+application.register("field-mapping-row", FieldMappingRowController)
+
 import FlatpickrController from "./flatpickr_controller"
 application.register("flatpickr", FlatpickrController)
 
@@ -52,14 +55,11 @@ application.register("form-auto-submit", FormAutoSubmitController)
 import FormDisableSubmitController from "./form_disable_submit_controller"
 application.register("form-disable-submit", FormDisableSubmitController)
 
-import FieldMappingRowController from "./field_mapping_row_controller"
-application.register("field-mapping-row", FieldMappingRowController)
-
-import PhoneConsentController from "./phone_consent_controller"
-application.register("phone-consent", PhoneConsentController)
-
 import FormModalController from "./form_modal_controller"
 application.register("form-modal", FormModalController)
+
+import GatingReleaseController from "./gating_release_controller"
+application.register("gating-release", GatingReleaseController)
 
 import HighlightController from "./highlight_controller"
 application.register("highlight", HighlightController)
@@ -93,6 +93,9 @@ application.register("navigation", NavigationController)
 
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)
+
+import PhoneConsentController from "./phone_consent_controller"
+application.register("phone-consent", PhoneConsentController)
 
 import PopoverController from "./popover_controller"
 application.register("popover", PopoverController)

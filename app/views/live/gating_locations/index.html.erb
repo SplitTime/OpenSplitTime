@@ -1,0 +1,42 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Crew Access - #{@presenter.event_group.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1 class="fw-bold">Crew Access</h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active">Crew Access</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= render "events/view_buttons", view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <% if @presenter.event_group.gating_locations.exists? %>
+    <% @presenter.event_group.gating_locations.each do |gating_location| %>
+      <%= link_to live_event_group_gating_location_path(@presenter.event_group, gating_location), class: "text-decoration-none" do %>
+        <div class="card my-2">
+          <div class="card-body d-flex align-items-center justify-content-between">
+            <h5 class="fw-bold mb-0"><%= gating_location.name %></h5>
+            <span class="text-body-secondary">&rarr;</span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="callout callout-info">
+      <h5>No gating locations are configured for this event group.</h5>
+      <p>Set up Crew Access gating locations in the event group setup area.</p>
+    </div>
+  <% end %>
+</article>

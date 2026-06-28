@@ -1,0 +1,65 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Crew Access - #{@display.name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1 class="fw-bold">Crew Access: <%= @display.name %></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to "Crew Access", live_event_group_gating_locations_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active"><%= @display.name %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= render "events/view_buttons", view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <% @display.gated_events.each do |gating_location_event| %>
+    <div class="card my-3" data-controller="gating-release">
+      <div class="card-header">
+        <div class="row align-items-center">
+          <div class="col">
+            <h5 class="fw-bold mb-0"><%= gating_location_event.event.guaranteed_short_name %></h5>
+          </div>
+          <div class="col-auto d-flex align-items-center">
+            <label class="me-2 mb-0" for="buffer_<%= gating_location_event.id %>">Travel buffer (min)</label>
+            <input type="number" id="buffer_<%= gating_location_event.id %>" min="0" max="1200"
+                   value="<%= gating_location_event.default_travel_buffer %>"
+                   class="form-control" style="width: 6rem;" autocomplete="off"
+                   data-gating-release-target="buffer"
+                   data-action="input->gating-release#bufferChanged">
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% rows = @display.rows_for(gating_location_event) %>
+        <% if rows.any? %>
+          <table class="table table-striped mb-0">
+            <thead>
+            <tr>
+              <th>Bib</th>
+              <th>Name</th>
+              <th>At gate</th>
+              <th>Release</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%= render partial: "row", collection: rows, as: :row, locals: { home_time_zone: @display.event_group.home_time_zone } %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="text-body-secondary mb-0">No runners have reached the gating aid station yet.</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</article>

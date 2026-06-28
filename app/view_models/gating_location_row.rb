@@ -27,6 +27,11 @@ class GatingLocationRow
     gating_split_time&.absolute_time&.in_time_zone(home_time_zone)
   end
 
+  # "In" or "Out", indicating which recorded time at the gating aid station anchors the projection.
+  def gating_sub_split_kind
+    SubSplit.kind(gating_split_time.bitkey) if gating_split_time
+  end
+
   # True once the runner has a recorded time at or beyond the target aid station,
   # at which point a release time is moot.
   def arrived_at_target?

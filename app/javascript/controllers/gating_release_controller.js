@@ -1,11 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Renders each runner's release time = predicted arrival at the target aid station
-// minus the travel buffer (minutes). The predicted arrival is carried on each release
-// cell as a data attribute; the buffer comes from an input the steward can adjust, so
-// release times recompute client-side without a page reload. Past times flip to "Now".
+// Renders each runner's expected arrival at the target aid station and their release time
+// (= expected arrival minus the travel buffer in minutes). The predicted arrival is carried
+// on each cell as a data attribute; the buffer comes from an input the steward can adjust, so
+// release times recompute client-side without a page reload. Past release times flip to "Now".
 export default class extends Controller {
-  static targets = ["buffer", "release"]
+  static targets = ["buffer", "expected", "release"]
 
   connect() {
     this.refresh()
@@ -22,18 +22,19 @@ export default class extends Controller {
 
   refresh() {
     const bufferMinutes = parseInt(this.bufferTarget.value, 10) || 0
-    this.releaseTargets.forEach((cell) => this.renderRelease(cell, bufferMinutes))
+    this.expectedTargets.forEach((cell) => this.renderTime(cell, 0, false))
+    this.releaseTargets.forEach((cell) => this.renderTime(cell, bufferMinutes, true))
   }
 
-  renderRelease(cell, bufferMinutes) {
+  renderTime(cell, offsetMinutes, flipToNow) {
     const iso = cell.dataset.predictedArrival
     if (!iso) return
 
-    const release = new Date(new Date(iso).getTime() - bufferMinutes * 60000)
-    if (release <= new Date()) {
+    const time = new Date(new Date(iso).getTime() - offsetMinutes * 60000)
+    if (flipToNow && time <= new Date()) {
       cell.textContent = "Now"
     } else {
-      cell.textContent = release.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+      cell.textContent = time.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
     }
   }
 }

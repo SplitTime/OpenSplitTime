@@ -3,17 +3,23 @@
 <tr>
   <td><%= row.bib_number %></td>
   <td><%= row.full_name %></td>
-  <td><%= row.gating_time_in_zone(home_time_zone)&.strftime("%-l:%M %p") %></td>
   <td>
-    <% if row.stopped? %>
-      <span class="badge bg-secondary">Stopped</span>
-    <% elsif row.arrived_at_target? %>
-      <span class="badge bg-secondary">Arrived</span>
-    <% elsif (predicted_arrival = row.predicted_target_arrival) %>
-      <span data-gating-release-target="release"
-            data-predicted-arrival="<%= predicted_arrival.iso8601 %>"></span>
-    <% else %>
-      <span class="text-body-secondary">Insufficient data</span>
-    <% end %>
+    <%= row.gating_time_in_zone(home_time_zone)&.strftime("%-l:%M %p") %>
+    <span class="text-body-secondary"><%= row.gating_sub_split_kind %></span>
   </td>
+  <% if row.stopped? %>
+    <td></td>
+    <td><span class="badge bg-secondary">Stopped</span></td>
+  <% elsif row.arrived_at_target? %>
+    <td></td>
+    <td><span class="badge bg-secondary">Arrived</span></td>
+  <% elsif (predicted_arrival = row.predicted_target_arrival) %>
+    <td data-gating-release-target="expected"
+        data-predicted-arrival="<%= predicted_arrival.iso8601 %>"></td>
+    <td data-gating-release-target="release"
+        data-predicted-arrival="<%= predicted_arrival.iso8601 %>"></td>
+  <% else %>
+    <td></td>
+    <td><span class="text-body-secondary">Insufficient data</span></td>
+  <% end %>
 </tr>

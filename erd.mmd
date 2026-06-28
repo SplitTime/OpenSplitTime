@@ -1,0 +1,813 @@
+erDiagram
+	direction TB
+	"ActiveStorage::Attachment" {
+		string name
+		string record_type
+	}
+	"ActiveStorage::Blob" {
+		integer byte_size
+		string checksum
+		string content_type
+		string filename
+		string key
+		text metadata
+		string service_name
+	}
+	"ActiveStorage::VariantRecord" {
+		string variation_digest
+	}
+	AidStation {
+	}
+	"Analytics::EmailEvent" {
+		string category
+		string email
+		string event
+		string event_type
+		string ip
+		string provider_event_id
+		string provider_message_id
+		string reason
+		string response
+		string smtp_id
+		string status
+		datetime timestamp
+		string useragent
+	}
+	"Analytics::FileDownload" {
+		string byte_size
+		string filename
+		string name
+		string record_type
+	}
+	"Analytics::SmsInboundMessage" {
+		string destination_number
+		string inbound_message_id
+		string keyword
+		string message_body
+		string origination_number
+		datetime received_at
+		string sns_message_id
+	}
+	BestEffortSegment {
+		integer age
+		text age_group
+		integer begin_bitkey
+		integer begin_split_id
+		integer begin_split_kind
+		datetime begin_time
+		integer bib_number
+		string city
+		string country_code
+		string course_name
+		integer elapsed_seconds
+		integer end_bitkey
+		integer end_split_id
+		integer end_split_kind
+		integer event_id
+		boolean finished
+		string first_name
+		boolean full_course
+		integer gender
+		string home_time_zone
+		integer lap
+		string last_name
+		boolean multiple_laps
+		string slug
+		string state_code
+	}
+	Connection {
+		string destination_type
+		jsonb field_mappings
+		string service_identifier
+		string source_id
+		string source_type
+	}
+	Course {
+		boolean concealed
+		text description
+		string name
+		datetime next_start_time
+		string slug
+		json track_points
+	}
+	CourseGroup {
+		string name
+		string slug
+	}
+	CourseGroupCourse {
+	}
+	CourseGroupFinisher {
+		string city
+		string country_code
+		string country_name
+		integer finish_count
+		string first_name
+		integer gender
+		string last_name
+		string slug
+		string state_code
+		string state_name
+	}
+	Credential {
+		string key
+		string service_identifier
+		string value
+	}
+	CrewPassage {
+		datetime passed_at
+	}
+	Effort {
+		integer age
+		string beacon_url
+		boolean beyond_start
+		integer bib_number
+		boolean bib_number_hardcoded
+		date birthdate
+		boolean checked_in
+		string city
+		string comments
+		integer completed_laps
+		string country_code
+		string country_name
+		integer data_status
+		boolean dropped
+		string email
+		string emergency_contact
+		string emergency_phone
+		boolean finished
+		string first_name
+		integer gender
+		string last_name
+		bit overall_performance
+		string phone
+		string report_url
+		datetime scheduled_start_time
+		string slug
+		boolean started
+		string state_code
+		string state_name
+		boolean stopped
+		datetime synced_at
+		string topic_resource_key
+		string wave
+	}
+	EffortSegment {
+		integer begin_bitkey
+		integer begin_split_id
+		integer begin_split_kind
+		datetime begin_time
+		integer course_id
+		integer elapsed_seconds
+		integer end_bitkey
+		integer end_split_id
+		integer end_split_kind
+		datetime end_time
+		integer lap
+	}
+	Event {
+		string beacon_url
+		integer efforts_count
+		string historical_name
+		integer laps_required
+		string notice_text
+		datetime scheduled_start_time
+		string short_name
+		string slug
+		string topic_resource_key
+	}
+	EventGroup {
+		boolean available_live
+		boolean concealed
+		integer data_entry_grouping_strategy
+		string home_time_zone
+		boolean monitor_pacers
+		string name
+		string slug
+		string webhook_token
+	}
+	EventSeries {
+		string name
+		integer scoring_method
+		string slug
+	}
+	EventSeriesEvent {
+	}
+	ExportJob {
+		string controller_name
+		integer elapsed_time
+		string error_message
+		string resource_class_name
+		string source_url
+		string sql_string
+		datetime started_at
+		integer status
+	}
+	"FriendlyId::Slug" {
+		string scope
+		string slug
+		string sluggable_type
+	}
+	GatingLocation {
+		string name
+	}
+	GatingLocationEvent {
+		integer default_travel_buffer
+	}
+	HistoricalFact {
+		string address
+		date birthdate
+		string city
+		string comments
+		string country_code
+		string country_name
+		string email
+		string external_id
+		string first_name
+		integer gender
+		integer kind
+		string last_name
+		string personal_info_hash
+		string phone
+		integer quantity
+		string state_code
+		string state_name
+		integer year
+	}
+	ImportJob {
+		integer elapsed_time
+		string error_message
+		integer failed_count
+		string format
+		integer ignored_count
+		integer parent_id
+		string parent_type
+		integer row_count
+		datetime started_at
+		integer status
+		integer succeeded_count
+	}
+	"Lotteries::Calculations::Hardrock2025" {
+		text division
+		integer dns_ticket_count
+		string external_id
+		integer finish_ticket_count
+		boolean finisher
+		integer gender
+		integer organization_id
+		integer person_id
+		integer ticket_count
+		integer volunteer_major_ticket_count
+		integer volunteer_ticket_count
+	}
+	"Lotteries::Calculations::Hardrock2026" {
+		text division
+		integer dns_ticket_count
+		string external_id
+		integer finish_ticket_count
+		boolean finisher
+		integer gender
+		integer organization_id
+		integer person_id
+		integer ticket_count
+		integer volunteer_major_ticket_count
+		integer volunteer_ticket_count
+	}
+	"Lotteries::Calculations::Hilo2025" {
+		integer application_count
+		text division
+		string external_id
+		integer gender
+		decimal last_reset_year
+		integer organization_id
+		integer person_id
+		integer ticket_count
+		integer trail_work_shifts
+		integer volunteer_points
+		decimal weighted_finish_count
+	}
+	"Lotteries::Calculations::SingleTicket2025" {
+		text division
+		string external_id
+		integer gender
+		integer organization_id
+		integer person_id
+		integer ticket_count
+	}
+	"Lotteries::DivisionRanking" {
+		string division_name
+		integer division_rank
+		integer draw_status
+	}
+	"Lotteries::EntrantServiceDetail" {
+		date completed_date
+		datetime form_accepted_at
+		string form_accepted_comments
+		datetime form_rejected_at
+		string form_rejected_comments
+	}
+	Lottery {
+		string calculation_class
+		boolean concealed
+		string name
+		date scheduled_start_date
+		string slug
+		integer status
+	}
+	LotteryDivision {
+		integer maximum_entries
+		integer maximum_wait_list
+		string name
+	}
+	LotteryDivisionTicketStat {
+		integer accepted_entrants_count
+		integer division_id
+		string division_name
+		integer entrants_count
+		integer number_of_tickets
+		integer waitlisted_entrants_count
+	}
+	LotteryDraw {
+		integer position
+	}
+	LotteryEntrant {
+		string birthdate
+		string city
+		string country_code
+		string country_name
+		datetime drawn_at
+		string email
+		string external_id
+		string first_name
+		integer gender
+		string last_name
+		integer number_of_tickets
+		string phone
+		boolean pre_selected
+		date service_completed_date
+		string state_code
+		string state_name
+		boolean withdrawn
+	}
+	LotterySimulation {
+		jsonb results
+		integer ticket_ids
+	}
+	LotterySimulationRun {
+		jsonb context
+		integer elapsed_time
+		string error_message
+		integer failure_count
+		string name
+		integer requested_count
+		datetime started_at
+		integer status
+		integer success_count
+	}
+	LotteryTicket {
+		integer reference_number
+	}
+	MonetaryDonation {
+		decimal amount
+		text note
+		date received_on
+		string source
+	}
+	Notification {
+		integer bitkey
+		integer distance
+		integer follower_ids
+		integer kind
+		text notice_text
+		string subject
+		string topic_resource_key
+	}
+	Organization {
+		boolean concealed
+		text description
+		date good_standing_through
+		string name
+		boolean non_profit
+		string slug
+	}
+	"PaperTrail::Version" {
+		string event
+		string item_type
+		json object
+		json object_changes
+		string whodunnit
+	}
+	Partner {
+		string banner_link
+		string name
+		string partnerable_type
+		integer weight
+	}
+	Person {
+		date birthdate
+		string city
+		boolean concealed
+		string country_code
+		string country_name
+		string email
+		string first_name
+		integer gender
+		boolean hide_age
+		string last_name
+		boolean obscure_name
+		string phone
+		string slug
+		string state_code
+		string state_name
+	}
+	ProjectionAssessment {
+		datetime actual
+		datetime projected_best
+		datetime projected_early
+		datetime projected_late
+	}
+	ProjectionAssessmentRun {
+		integer completed_bitkey
+		integer completed_lap
+		integer elapsed_time
+		string error_message
+		integer failure_count
+		integer projected_bitkey
+		integer projected_lap
+		datetime started_at
+		integer status
+		integer success_count
+	}
+	RawTime {
+		datetime absolute_time
+		string bib_number
+		integer bitkey
+		integer data_status
+		boolean disassociated_from_effort
+		integer entered_lap
+		string entered_time
+		integer matchable_bib_number
+		string parameterized_split_name
+		string remarks
+		datetime reviewed_at
+		integer sortable_bib_number
+		string source
+		string split_name
+		boolean stopped_here
+		boolean with_pacer
+	}
+	ResultsCategory {
+		boolean female
+		integer high_age
+		integer low_age
+		boolean male
+		string name
+		boolean nonbinary
+		string slug
+	}
+	ResultsTemplate {
+		integer aggregation_method
+		string name
+		integer podium_size
+		integer point_system
+		string slug
+	}
+	ResultsTemplateCategory {
+		boolean fixed_position
+		integer position
+	}
+	"Shortener::ShortenedUrl" {
+		string category
+		datetime expires_at
+		integer owner_id
+		string owner_type
+		string unique_key
+		text url
+		integer use_count
+	}
+	"SolidCable::Message" {
+		binary channel
+		integer channel_hash
+		binary payload
+	}
+	"SolidCache::Entry" {
+		integer byte_size
+		binary key
+		integer key_hash
+		binary value
+	}
+	"SolidCacheDashboard::CacheEvent" {
+		integer byte_size
+		float duration
+		string event_type
+		integer key_hash
+		string key_string
+	}
+	"SolidQueue::BlockedExecution" {
+		string concurrency_key
+		datetime expires_at
+		integer priority
+		string queue_name
+	}
+	"SolidQueue::ClaimedExecution" {
+	}
+	"SolidQueue::FailedExecution" {
+		text error
+	}
+	"SolidQueue::Job" {
+		string active_job_id
+		text arguments
+		string class_name
+		string concurrency_key
+		datetime finished_at
+		integer priority
+		string queue_name
+		datetime scheduled_at
+	}
+	"SolidQueue::Pause" {
+		string queue_name
+	}
+	"SolidQueue::Process" {
+		string hostname
+		string kind
+		datetime last_heartbeat_at
+		text metadata
+		string name
+		integer pid
+	}
+	"SolidQueue::ReadyExecution" {
+		integer priority
+		string queue_name
+	}
+	"SolidQueue::RecurringExecution" {
+		datetime run_at
+	}
+	"SolidQueue::RecurringTask" {
+		text arguments
+		string class_name
+		string command
+		text description
+		string key
+		integer priority
+		string queue_name
+		string schedule
+		boolean static
+	}
+	"SolidQueue::ScheduledExecution" {
+		integer priority
+		string queue_name
+		datetime scheduled_at
+	}
+	"SolidQueue::Semaphore" {
+		datetime expires_at
+		integer value
+	}
+	Split {
+		string base_name
+		string description
+		integer distance_from_start
+		float elevation
+		integer kind
+		decimal latitude
+		decimal longitude
+		string parameterized_base_name
+		string slug
+		integer sub_split_bitmap
+		float vert_gain_from_start
+		float vert_loss_from_start
+	}
+	SplitTime {
+		datetime absolute_time
+		integer data_status
+		float elapsed_seconds
+		integer lap
+		boolean pacer
+		string remarks
+		string status_reason
+		boolean stopped_here
+		integer sub_split_bitkey
+	}
+	Stewardship {
+		integer level
+	}
+	Subscription {
+		string endpoint
+		integer protocol
+		string resource_key
+		string subscribable_type
+	}
+	User {
+		datetime confirmation_sent_at
+		string confirmation_token
+		datetime confirmed_at
+		datetime current_sign_in_at
+		string current_sign_in_ip
+		string email
+		string encrypted_password
+		datetime exports_viewed_at
+		string first_name
+		string http_endpoint
+		string https_endpoint
+		string last_name
+		datetime last_sign_in_at
+		string last_sign_in_ip
+		string phone
+		datetime phone_confirmation_sent_at
+		string phone_confirmation_token
+		datetime phone_confirmed_at
+		integer pref_distance_unit
+		integer pref_elevation_unit
+		string provider
+		datetime remember_created_at
+		datetime reset_password_sent_at
+		string reset_password_token
+		integer role
+		integer sign_in_count
+		string slug
+		datetime sms_carrier_opted_out_at
+		string uid
+		string unconfirmed_email
+	}
+	Sluggable ||--}o "FriendlyId::Slug" : ""
+	Course ||--}o "FriendlyId::Slug" : ""
+	CourseGroup ||--}o "FriendlyId::Slug" : ""
+	Effort ||--}o "FriendlyId::Slug" : ""
+	Event ||--}o "FriendlyId::Slug" : ""
+	EventGroup ||--}o "FriendlyId::Slug" : ""
+	EventSeries ||--}o "FriendlyId::Slug" : ""
+	Lottery ||--}o "FriendlyId::Slug" : ""
+	Organization ||--}o "FriendlyId::Slug" : ""
+	Person ||--}o "FriendlyId::Slug" : ""
+	ResultsCategory ||--}o "FriendlyId::Slug" : ""
+	ResultsTemplate ||--}o "FriendlyId::Slug" : ""
+	Split ||--}o "FriendlyId::Slug" : ""
+	User ||--}o "FriendlyId::Slug" : ""
+	Item ||--}o "PaperTrail::Version" : ""
+	Course ||--}o "PaperTrail::Version" : ""
+	CourseGroup ||--}o "PaperTrail::Version" : ""
+	Effort ||--}o "PaperTrail::Version" : ""
+	Event ||--}o "PaperTrail::Version" : ""
+	EventGroup ||--}o "PaperTrail::Version" : ""
+	EventSeries ||--}o "PaperTrail::Version" : ""
+	HistoricalFact ||--}o "PaperTrail::Version" : ""
+	MonetaryDonation ||--}o "PaperTrail::Version" : ""
+	Organization ||--}o "PaperTrail::Version" : ""
+	Partner ||--}o "PaperTrail::Version" : ""
+	Person ||--}o "PaperTrail::Version" : ""
+	RawTime ||--}o "PaperTrail::Version" : ""
+	Split ||--}o "PaperTrail::Version" : ""
+	SplitTime ||--}o "PaperTrail::Version" : ""
+	Stewardship ||--}o "PaperTrail::Version" : ""
+	Subscription ||--}o "PaperTrail::Version" : ""
+	"SolidQueue::RecurringTask" o|--}o "SolidQueue::RecurringExecution" : ""
+	"SolidQueue::Process" ||--}o "SolidQueue::ClaimedExecution" : ""
+	"SolidQueue::Process" o|--}o "SolidQueue::Process" : ""
+	"SolidQueue::Job" o|--|o "SolidQueue::RecurringExecution" : ""
+	"SolidQueue::Job" o|--|o "SolidQueue::FailedExecution" : ""
+	"SolidQueue::Job" o|--|o "SolidQueue::ScheduledExecution" : ""
+	"SolidQueue::Job" o|--|o "SolidQueue::BlockedExecution" : ""
+	"SolidQueue::Job" o|--|o "SolidQueue::ReadyExecution" : ""
+	"SolidQueue::Job" o|--|o "SolidQueue::ClaimedExecution" : ""
+	"SolidQueue::BlockedExecution" o|--|o "SolidQueue::Semaphore" : ""
+	"ActiveStorage::VariantRecord" ||--}o "ActiveStorage::Blob" : ""
+	Record ||--}o "ActiveStorage::Attachment" : ""
+	"ActiveStorage::Blob" ||--}o "ActiveStorage::Attachment" : ""
+	"ActiveStorage::VariantRecord" ||--}o "ActiveStorage::Attachment" : ""
+	Course ||--}o "ActiveStorage::Attachment" : ""
+	Effort ||--}o "ActiveStorage::Attachment" : ""
+	EventGroup ||--}o "ActiveStorage::Attachment" : ""
+	ExportJob ||--}o "ActiveStorage::Attachment" : ""
+	ImportJob ||--}o "ActiveStorage::Attachment" : ""
+	"Lotteries::EntrantServiceDetail" ||--}o "ActiveStorage::Attachment" : ""
+	Lottery ||--}o "ActiveStorage::Attachment" : ""
+	Partner ||--}o "ActiveStorage::Attachment" : ""
+	Person ||--}o "ActiveStorage::Attachment" : ""
+	User ||--}o "ActiveStorage::Attachment" : ""
+	"ActiveStorage::Blob" o|..|o "ActiveStorage::Blob" : ""
+	Organization ||--}o "Lotteries::Calculations::Base" : ""
+	Organization ||--}o "Lotteries::Calculations::Hardrock2025" : ""
+	Organization ||--}o "Lotteries::Calculations::Hardrock2026" : ""
+	Organization ||--}o "Lotteries::Calculations::Hilo2025" : ""
+	Organization ||--}o "Lotteries::Calculations::SingleTicket2025" : ""
+	Person ||--}o "Lotteries::Calculations::Base" : ""
+	Person ||--}o "Lotteries::Calculations::Hardrock2025" : ""
+	Person ||--}o "Lotteries::Calculations::Hardrock2026" : ""
+	Person ||--}o "Lotteries::Calculations::Hilo2025" : ""
+	Person ||--}o "Lotteries::Calculations::SingleTicket2025" : ""
+	LotteryEntrant ||--|o "Lotteries::DivisionRanking" : ""
+	Event ||--}o ProjectionAssessmentRun : ""
+	Split ||--}o ProjectionAssessmentRun : ""
+	ProjectionAssessmentRun ||--}o ProjectionAssessment : ""
+	Effort ||--}o ProjectionAssessment : ""
+	Lottery ||--}o LotteryDivisionTicketStat : ""
+	User ||--}o Credential : ""
+	Course ||--}o BestEffortSegment : ""
+	Effort ||--}o BestEffortSegment : ""
+	Person ||--}o BestEffortSegment : ""
+	LotteryEntrant ||--|o "Lotteries::EntrantServiceDetail" : ""
+	"Lotteries::EntrantServiceDetail" o|..|o "ActiveStorage::Blob" : ""
+	User ||--}o "Analytics::FileDownload" : ""
+	Record ||--}o "Analytics::FileDownload" : ""
+	"ActiveStorage::Blob" ||--}o "Analytics::FileDownload" : ""
+	"ActiveStorage::VariantRecord" ||--}o "Analytics::FileDownload" : ""
+	Course ||--}o "Analytics::FileDownload" : ""
+	Effort ||--}o "Analytics::FileDownload" : ""
+	EventGroup ||--}o "Analytics::FileDownload" : ""
+	ExportJob ||--}o "Analytics::FileDownload" : ""
+	ImportJob ||--}o "Analytics::FileDownload" : ""
+	"Lotteries::EntrantServiceDetail" ||--}o "Analytics::FileDownload" : ""
+	Lottery ||--}o "Analytics::FileDownload" : ""
+	Partner ||--}o "Analytics::FileDownload" : ""
+	Person ||--}o "Analytics::FileDownload" : ""
+	User ||--}o Subscription : ""
+	Subscribable ||--}o Subscription : ""
+	Effort ||--}o Subscription : ""
+	Event ||--}o Subscription : ""
+	User ||--}o Stewardship : ""
+	Organization ||--}o Stewardship : ""
+	Effort ||--}o SplitTime : ""
+	Split ||--}o SplitTime : ""
+	SplitTime o|--}o RawTime : ""
+	Course ||--}o Split : ""
+	Split ||--}o AidStation : ""
+	Split o|..}o Event : ""
+	Organization o|--}o ResultsTemplate : ""
+	ResultsTemplate ||--}o ResultsTemplateCategory : ""
+	ResultsTemplate o|..}o ResultsCategory : ""
+	ResultsCategory ||--}o ResultsTemplateCategory : ""
+	Organization o|--}o ResultsCategory : ""
+	EventGroup ||--}o RawTime : ""
+	User o|--}o RawTime : ""
+	Person o|--}o Effort : ""
+	Person o|--}o HistoricalFact : ""
+	Person o|--}o LotteryEntrant : ""
+	User o|--|o Person : ""
+	Person o|..|o "ActiveStorage::Blob" : ""
+	Partnerable ||--}o Partner : ""
+	EventGroup ||--}o Partner : ""
+	Lottery ||--}o Partner : ""
+	Partner o|..|o "ActiveStorage::Blob" : ""
+	Organization ||..}o User : ""
+	Organization ||--}o Course : ""
+	Organization ||--}o CourseGroup : ""
+	Organization ||--}o EventGroup : ""
+	Organization ||--}o HistoricalFact : ""
+	Organization ||--}o Lottery : ""
+	Organization ||--}o MonetaryDonation : ""
+	Organization ||--}o EventSeries : ""
+	Effort ||--}o Notification : ""
+	Notification o|..|o Event : ""
+	Lottery ||--}o LotteryTicket : ""
+	LotteryDivision ||..}o LotteryTicket : ""
+	LotteryEntrant ||--}o LotteryTicket : ""
+	LotteryTicket ||--|o LotteryDraw : ""
+	Lottery ||--}o LotterySimulationRun : ""
+	LotterySimulationRun ||--}o LotterySimulation : ""
+	Lottery ||--}o LotteryDivision : ""
+	Lottery o|..}o LotteryEntrant : ""
+	Lottery o|..}o "Lotteries::EntrantServiceDetail" : ""
+	Lottery o|..|o "ActiveStorage::Blob" : ""
+	LotteryDivision ||--}o LotteryEntrant : ""
+	LotteryEntrant o|..}o HistoricalFact : ""
+	LotteryEntrant o|..|o Organization : ""
+	LotteryDivision ||--}o LotteryDraw : ""
+	LotteryDraw o|..|o Lottery : ""
+	User ||--}o ImportJob : ""
+	ImportJob o|..}o "ActiveStorage::Blob" : ""
+	EventGroup ||--}o GatingLocation : ""
+	GatingLocation ||--}o GatingLocationEvent : ""
+	GatingLocation o|..}o Event : ""
+	GatingLocation ||--}o CrewPassage : ""
+	Event ||--}o GatingLocationEvent : ""
+	AidStation ||--}o GatingLocationEvent : ""
+	User ||--}o ExportJob : ""
+	ExportJob o|..|o "ActiveStorage::Blob" : ""
+	ResultsTemplate ||--}o EventSeries : ""
+	EventSeries ||--}o EventSeriesEvent : ""
+	EventSeries o|..}o Event : ""
+	EventSeries o|..}o Effort : ""
+	Event ||--}o EventSeriesEvent : ""
+	Effort o|..}o User : ""
+	Event ||--}o Effort : ""
+	Effort o|--}o EffortSegment : ""
+	Effort ||--}o CrewPassage : ""
+	Effort o|..|o "ActiveStorage::Blob" : ""
+	Course ||--}o CourseGroupCourse : ""
+	Course o|..}o CourseGroup : ""
+	Course ||--}o Event : ""
+	Course o|..|o "ActiveStorage::Blob" : ""
+	CourseGroup ||--}o CourseGroupCourse : ""
+	CourseGroup o|..}o Event : ""
+	Person ||--}o CourseGroupFinisher : ""
+	CourseGroup ||--}o CourseGroupFinisher : ""
+	Destination ||--}o Connection : ""
+	Event ||--}o Connection : ""
+	EventGroup ||--}o Connection : ""
+	Event ||--}o AidStation : ""
+	EventGroup ||--}o Event : ""
+	EventGroup o|..}o Effort : ""
+	User o|--}o EventGroup : ""
+	EventGroup o|..}o "ActiveStorage::Blob" : ""
+	Event o|..}o User : ""
+	ResultsTemplate ||--}o Event : ""
+	Event o|..}o Partner : ""
+	User o|..}o "ActiveStorage::Blob" : ""

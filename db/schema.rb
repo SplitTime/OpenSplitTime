@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_11_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_28_195206) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -329,6 +329,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_11_160000) do
 
   create_table "gating_location_events", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.integer "default_travel_buffer", default: 30, null: false
     t.integer "event_id", null: false
     t.integer "gating_aid_station_id", null: false
     t.bigint "gating_location_id", null: false

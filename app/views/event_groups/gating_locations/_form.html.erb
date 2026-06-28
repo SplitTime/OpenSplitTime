@@ -31,6 +31,10 @@
               <%= gle_fields.label :target_aid_station_id, "Target aid station", class: "mb-1" %>
               <%= gle_fields.select :target_aid_station_id, aid_station_options, { include_blank: "Not gated" }, { class: "form-select" } %>
             </div>
+            <div class="mb-3">
+              <%= gle_fields.label :default_travel_buffer, "Default travel buffer (minutes)", class: "mb-1" %>
+              <%= gle_fields.number_field :default_travel_buffer, min: 0, max: 1200, class: "form-control" %>
+            </div>
           </div>
         </div>
       <% end %>

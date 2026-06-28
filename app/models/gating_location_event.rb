@@ -6,6 +6,8 @@ class GatingLocationEvent < ApplicationRecord
 
   validates :event_id, uniqueness: { scope: :gating_location_id,
                                      message: "only one configuration permitted per event within a gating location" }
+  validates :default_travel_buffer,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1200 }
   validate :aid_stations_belong_to_event
   validate :event_belongs_to_event_group
   validate :gating_precedes_target

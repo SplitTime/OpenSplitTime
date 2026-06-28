@@ -1,0 +1,51 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Event Group Crew Access - #{@presenter.event_group.name}" %>
+<% end %>
+
+<%= render "shared/mode_widget", event_group: @presenter.event_group %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Crew Access"] %>
+
+<article class="ost-article container">
+  <div class="row flex-nowrap">
+    <div class="col px-md-4 py-3">
+      <aside class="ost-toolbar">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <%= link_to fa_icon("plus", text: "Add a gating location"),
+                          new_organization_event_group_gating_location_path(@presenter.organization, @presenter.event_group),
+                          id: "add-gating-location",
+                          class: "btn btn-success" %>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <% if @presenter.event_group.gating_locations.exists? %>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Gated Events</th>
+            <th class="text-center">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <%= render partial: "event_groups/gating_locations/gating_location",
+                     collection: @presenter.event_group.gating_locations.includes(gating_location_events: [:event, { gating_aid_station: :split, target_aid_station: :split }]),
+                     locals: { presenter: @presenter } %>
+          </tbody>
+        </table>
+      <% else %>
+        <br>
+        <div class="callout callout-info">
+          <h5>Use this tab to manage Crew Access for your Event Group</h5>
+          <p>A gating location is a place where a race official controls when crews may begin driving toward an
+            aid station with limited access. For each event, choose a gating aid station (where runners are timed)
+            and a target aid station (where crews are headed). During your event, the live Crew Access view will
+            show the proper release time for each runner's crew.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</article>

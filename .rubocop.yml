@@ -57,6 +57,11 @@ Rails/OutputSafety:
 Rails/SkipsModelValidations:
   Enabled: false
 
+# Misfires on ordinary params[:id] reads passed to .find; it targets
+# require/permit strong-parameter patterns, which we handle elsewhere.
+Rails/StrongParametersExpect:
+  Enabled: false
+
 Rails/EnvironmentVariableAccess:
   Enabled: true
   AllowReads: false

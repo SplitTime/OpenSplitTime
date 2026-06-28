@@ -75,6 +75,7 @@ RSpec.describe "EventGroups::GatingLocations" do
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("Bandera Gate")
+        expect(response.body).to include("45 min buffer")
       end
     end
 

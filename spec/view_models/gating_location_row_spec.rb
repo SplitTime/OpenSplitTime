@@ -32,7 +32,6 @@ RSpec.describe GatingLocationRow do
     it "predicts target arrival as the gating time plus the projection low estimate" do
       expect(row.passed_gating?).to be(true)
       expect(row.predicted_target_arrival).to eq(gating_time + 3600.seconds)
-      expect(row.gating_sub_split_kind).to eq("In")
     end
 
     context "when the runner is stopped" do
@@ -62,7 +61,6 @@ RSpec.describe GatingLocationRow do
 
     it "anchors on the OUT time" do
       expect(row.gating_split_time.bitkey).to eq(SubSplit::OUT_BITKEY)
-      expect(row.gating_sub_split_kind).to eq("Out")
       expect(row.predicted_target_arrival).to eq(gating_time + 5.minutes)
     end
   end

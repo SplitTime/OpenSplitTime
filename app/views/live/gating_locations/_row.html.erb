@@ -3,10 +3,7 @@
 <tr>
   <td><%= row.bib_number %></td>
   <td><%= row.full_name %></td>
-  <td>
-    <%= row.gating_time_in_zone(home_time_zone)&.strftime("%-l:%M %p") %>
-    <span class="text-body-secondary"><%= row.gating_sub_split_kind %></span>
-  </td>
+  <td><%= row.gating_time_in_zone(home_time_zone)&.strftime("%-l:%M %p") %></td>
   <% if row.stopped? %>
     <td></td>
     <td><span class="badge bg-secondary">Stopped</span></td>

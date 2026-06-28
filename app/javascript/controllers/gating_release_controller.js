@@ -32,7 +32,7 @@ export default class extends Controller {
 
     const time = new Date(new Date(iso).getTime() - offsetMinutes * 60000)
     if (flipToNow && time <= new Date()) {
-      cell.textContent = "Now"
+      cell.innerHTML = '<span class="badge bg-success">Now</span>'
     } else {
       cell.textContent = time.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
     }

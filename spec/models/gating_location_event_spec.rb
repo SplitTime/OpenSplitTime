@@ -82,6 +82,38 @@ RSpec.describe GatingLocationEvent, type: :model do
           .to include("must be farther along the course than the gating aid station")
       end
     end
+
+    describe "default_travel_buffer" do
+      it "defaults to 30" do
+        expect(gating_location_event.default_travel_buffer).to eq(30)
+      end
+
+      it "is valid at the bounds" do
+        gating_location_event.default_travel_buffer = 0
+        expect(gating_location_event).to be_valid
+
+        gating_location_event.default_travel_buffer = 1200
+        expect(gating_location_event).to be_valid
+      end
+
+      it "is invalid below 0" do
+        gating_location_event.default_travel_buffer = -1
+        expect(gating_location_event).not_to be_valid
+        expect(gating_location_event.errors[:default_travel_buffer]).to be_present
+      end
+
+      it "is invalid above 1200" do
+        gating_location_event.default_travel_buffer = 1201
+        expect(gating_location_event).not_to be_valid
+        expect(gating_location_event.errors[:default_travel_buffer]).to be_present
+      end
+
+      it "is invalid when non-integer" do
+        gating_location_event.default_travel_buffer = 15.5
+        expect(gating_location_event).not_to be_valid
+        expect(gating_location_event.errors[:default_travel_buffer]).to be_present
+      end
+    end
   end
 
   describe "fixtures" do

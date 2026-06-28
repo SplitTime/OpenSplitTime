@@ -22,20 +22,11 @@
       </aside>
 
       <% if @presenter.event_group.gating_locations.exists? %>
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Gated Events</th>
-            <th class="text-center">Actions</th>
-          </tr>
-          </thead>
-          <tbody>
+        <div id="gating_locations">
           <%= render partial: "event_groups/gating_locations/gating_location",
                      collection: @presenter.event_group.gating_locations.includes(gating_location_events: [:event, { gating_aid_station: :split, target_aid_station: :split }]),
                      locals: { presenter: @presenter } %>
-          </tbody>
-        </table>
+        </div>
       <% else %>
         <br>
         <div class="callout callout-info">

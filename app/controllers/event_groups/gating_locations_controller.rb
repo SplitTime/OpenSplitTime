@@ -68,7 +68,7 @@ module EventGroups
       attrs = params.expect(
         gating_location: [:name,
                           { gating_location_events_attributes: [[:id, :event_id, :gating_aid_station_id,
-                                                                 :target_aid_station_id]] }],
+                                                                 :target_aid_station_id, :default_travel_buffer]] }],
       ).to_h
 
       attrs["gating_location_events_attributes"]&.each_value do |gle_attrs|

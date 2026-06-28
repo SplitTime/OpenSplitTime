@@ -75,6 +75,7 @@ RSpec.describe "EventGroups::GatingLocations" do
 
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("Bandera Gate")
+        expect(response.body).to include("45 min buffer")
       end
     end
 
@@ -102,6 +103,7 @@ RSpec.describe "EventGroups::GatingLocations" do
                 event_id: events(:sum_100k).id,
                 gating_aid_station_id: aid_stations(:aid_station_0017).id,
                 target_aid_station_id: aid_stations(:aid_station_0019).id,
+                default_travel_buffer: 45,
               },
               "1" => {
                 event_id: events(:sum_55k).id,
@@ -118,6 +120,29 @@ RSpec.describe "EventGroups::GatingLocations" do
 
           gating_location = GatingLocation.find_by(name: "Engineer Gate")
           expect(gating_location.events).to contain_exactly(events(:sum_100k))
+          expect(gating_location.gating_location_events.first.default_travel_buffer).to eq(45)
+        end
+      end
+
+      context "with a travel buffer out of range" do
+        let(:params) do
+          {
+            name: "Engineer Gate",
+            gating_location_events_attributes: {
+              "0" => {
+                event_id: events(:sum_100k).id,
+                gating_aid_station_id: aid_stations(:aid_station_0017).id,
+                target_aid_station_id: aid_stations(:aid_station_0019).id,
+                default_travel_buffer: 1201,
+              },
+            },
+          }
+        end
+
+        it "does not create a gating location and renders an error" do
+          expect { make_request }.not_to change(GatingLocation, :count)
+          expect(response).to have_http_status(:unprocessable_content)
+          expect(response.body).to include("must be less than or equal to 1200")
         end
       end
 

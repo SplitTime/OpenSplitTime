@@ -1,8 +1,26 @@
 <%# locals: (gating_location:, presenter:) -%>
 
-<tr id="<%= dom_id(gating_location) %>" class="align-middle">
-  <td><%= gating_location.name %></td>
-  <td>
+<div id="<%= dom_id(gating_location) %>" class="card bg-light mt-2">
+  <div class="card-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h5 class="fw-bold mb-0"><%= gating_location.name %></h5>
+      </div>
+      <div class="col-auto">
+        <%= button_tag fa_icon("ellipsis-h"),
+                       class: "dropdown-toggle no-caret btn btn-sm btn-light",
+                       data: { bs_toggle: "dropdown" } %>
+        <div class="dropdown-menu dropdown-menu-end" style="min-width:inherit">
+          <%= link_to "Edit", [:edit, presenter.organization, presenter.event_group, gating_location],
+                      class: "dropdown-item" %>
+          <%= link_to "Delete", [presenter.organization, presenter.event_group, gating_location],
+                      class: "dropdown-item",
+                      data: { turbo_method: :delete, turbo_confirm: "This will delete the gating location and its configuration for all events. Proceed?" } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
     <% gating_location.gating_location_events.sort_by { |gle| gle.event.guaranteed_short_name }.each do |gle| %>
       <div>
         <strong><%= gle.event.guaranteed_short_name %>:</strong>
@@ -10,17 +28,5 @@
         <span class="text-body-secondary">(<%= gle.default_travel_buffer %> min buffer)</span>
       </div>
     <% end %>
-  </td>
-  <td class="text-center">
-    <%= button_tag fa_icon("ellipsis-h"),
-                   class: "dropdown-toggle no-caret btn btn-sm btn-light",
-                   data: { bs_toggle: "dropdown" } %>
-    <div class="dropdown-menu dropdown-menu-end" style="min-width:inherit">
-      <%= link_to "Edit", [:edit, presenter.organization, presenter.event_group, gating_location],
-                  class: "dropdown-item" %>
-      <%= link_to "Delete", [presenter.organization, presenter.event_group, gating_location],
-                  class: "dropdown-item",
-                  data: { turbo_method: :delete, turbo_confirm: "This will delete the gating location and its configuration for all events. Proceed?" } %>
-    </div>
-  </td>
-</tr>
+  </div>
+</div>

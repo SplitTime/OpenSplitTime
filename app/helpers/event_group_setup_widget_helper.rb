@@ -140,19 +140,19 @@ module EventGroupSetupWidgetHelper
   def link_to_setup_widget_gating_locations(presenter)
     if presenter.event_group.new_record?
       type = :regular
-      tooltip = "You'll be able to add Crew Gating after your Event Group is created"
+      tooltip = "You'll be able to add Crew Access after your Event Group is created"
       icon_only = true
     elsif presenter.active_widget_card == :gating_locations
       type = :solid
-      tooltip = "Manage your Crew Gating"
+      tooltip = "Manage your Crew Access"
       icon_only = false
     else
       type = :regular
-      tooltip = "Manage your Crew Gating"
+      tooltip = "Manage your Crew Access"
       icon_only = false
     end
 
-    icon = fa_icon("car",
+    icon = fa_icon("car-tunnel",
                    type: type,
                    size: "2x",
                    class: icon_only ? "text-black" : "",

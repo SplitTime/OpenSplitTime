@@ -14,7 +14,7 @@
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @event_group.organization.name, organization_path(@event_group.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @event_group.name, organization_event_group_path(@event_group.organization, @event_group) %></li>
-            <li class="breadcrumb-item"><%= link_to "Crew Gating", organization_event_group_gating_locations_path(@event_group.organization, @event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to "Crew Access", organization_event_group_gating_locations_path(@event_group.organization, @event_group) %></li>
             <li class="breadcrumb-item">New</li>
           </ul>
         </div>

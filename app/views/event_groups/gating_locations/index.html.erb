@@ -1,9 +1,9 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Event Group Crew Gating - #{@presenter.event_group.name}" %>
+  <% "OpenSplitTime: Event Group Crew Access - #{@presenter.event_group.name}" %>
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Crew Gating"] %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Crew Access"] %>
 
 <article class="ost-article container">
   <div class="row flex-nowrap">
@@ -39,10 +39,10 @@
       <% else %>
         <br>
         <div class="callout callout-info">
-          <h5>Use this tab to manage Crew Gating for your Event Group</h5>
+          <h5>Use this tab to manage Crew Access for your Event Group</h5>
           <p>A gating location is a place where a race official controls when crews may begin driving toward an
             aid station with limited access. For each event, choose a gating aid station (where runners are timed)
-            and a target aid station (where crews are headed). During your event, the live Crew Gating view will
+            and a target aid station (where crews are headed). During your event, the live Crew Access view will
             show the proper release time for each runner's crew.</p>
         </div>
       <% end %>

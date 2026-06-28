@@ -137,6 +137,22 @@ RSpec.describe TimeConversion do
       it { expect(result).to eq("06:34:12") }
     end
 
+    context "when provided as a UTC timestamp and a zone argument is given" do
+      let(:result) { described_class.user_entered_to_military(time_string, "Mountain Time (US & Canada)") }
+      let(:time_string) { "2014-07-11T10:45:00Z" }
+      it "localizes the timestamp to the given zone" do
+        expect(result).to eq("04:45:00")
+      end
+    end
+
+    context "when provided in hh:mm:ss format and a zone argument is given" do
+      let(:result) { described_class.user_entered_to_military(time_string, "Mountain Time (US & Canada)") }
+      let(:time_string) { "12:30:45" }
+      it "leaves the already-local military time untouched" do
+        expect(result).to eq("12:30:45")
+      end
+    end
+
     context "when provided in hh:mm:ss format" do
       let(:time_string) { "12:30:45" }
       it { expect(result).to eq("12:30:45") }

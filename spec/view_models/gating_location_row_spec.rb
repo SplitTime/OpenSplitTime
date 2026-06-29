@@ -34,6 +34,10 @@ RSpec.describe GatingLocationRow do
       expect(row.predicted_target_arrival).to eq(gating_time + 3600.seconds)
     end
 
+    it "computes the release time as the predicted arrival minus the buffer" do
+      expect(row.release_time(30)).to eq(gating_time + 3600.seconds - 30.minutes)
+    end
+
     context "when the runner is stopped" do
       before { allow(effort).to receive(:stopped?).and_return(true) }
 
@@ -42,11 +46,27 @@ RSpec.describe GatingLocationRow do
       end
     end
 
-    context "when the runner has already reached the target aid station" do
+    context "when the runner has an In time at the target aid station" do
       before { build_split_time(split: target_split, bitkey: SubSplit::IN_BITKEY, absolute_time: gating_time + 1.hour) }
 
-      it "is marked arrived and has no release time" do
-        expect(row.arrived_at_target?).to be(true)
+      it "is reached but not departed, and has no release time" do
+        expect(row.reached_target?).to be(true)
+        expect(row.departed_target?).to be(false)
+        expect(row.target_progress_absolute_time).to eq(gating_time + 1.hour)
+        expect(row.predicted_target_arrival).to be_nil
+      end
+    end
+
+    context "when the runner has departed the target aid station" do
+      before do
+        build_split_time(split: target_split, bitkey: SubSplit::IN_BITKEY, absolute_time: gating_time + 1.hour)
+        build_split_time(split: target_split, bitkey: SubSplit::OUT_BITKEY, absolute_time: gating_time + 70.minutes)
+      end
+
+      it "is marked departed, labelled by the most recent split, and has no release time" do
+        expect(row.departed_target?).to be(true)
+        expect(row.target_progress_label).to eq("Departed #{target_split.base_name}")
+        expect(row.target_progress_absolute_time).to eq(gating_time + 70.minutes)
         expect(row.predicted_target_arrival).to be_nil
       end
     end

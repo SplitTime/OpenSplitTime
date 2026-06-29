@@ -58,9 +58,6 @@ application.register("form-disable-submit", FormDisableSubmitController)
 import FormModalController from "./form_modal_controller"
 application.register("form-modal", FormModalController)
 
-import GatingReleaseController from "./gating_release_controller"
-application.register("gating-release", GatingReleaseController)
-
 import HighlightController from "./highlight_controller"
 application.register("highlight", HighlightController)
 

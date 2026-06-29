@@ -23,25 +23,58 @@ class GatingLocationRow
     gating_split_time.present?
   end
 
-  def gating_time_in_zone(home_time_zone)
-    gating_split_time&.absolute_time&.in_time_zone(home_time_zone)
+  def gating_absolute_time
+    gating_split_time&.absolute_time
   end
 
-  # True once the runner has a recorded time at or beyond the target aid station,
+  # True once the runner has any recorded time at or beyond the target aid station,
   # at which point a release time is moot.
-  def arrived_at_target?
-    effort.split_times.any? { |split_time| split_time.split.distance_from_start >= target_split.distance_from_start }
+  def reached_target?
+    furthest_target_split_time.present?
+  end
+
+  # True once the runner has progressed past the target aid station's In time — its Out time,
+  # or any later aid station.
+  def departed_target?
+    split_time = furthest_target_split_time
+    return false if split_time.nil?
+
+    split_time.split_id != target_split.id || split_time.bitkey != SubSplit::IN_BITKEY
+  end
+
+  # The runner's most recent recorded time at or beyond the target aid station.
+  def target_progress_absolute_time
+    furthest_target_split_time&.absolute_time
+  end
+
+  # A label for the most recent split time at or beyond the target, e.g. "Departed Ouray"
+  # or "Arrived Cunningham".
+  def target_progress_label
+    split_time = furthest_target_split_time
+    return if split_time.nil?
+
+    verb = split_time.bitkey == SubSplit::OUT_BITKEY ? "Departed" : "Arrived"
+    "#{verb} #{split_time.split.base_name}"
   end
 
   # The runner's earliest predicted arrival at the target aid station, or nil when no
   # release time applies (not yet gated, stopped, already arrived, or no projection).
   def predicted_target_arrival
-    return if stopped? || arrived_at_target? || !passed_gating?
+    return @predicted_target_arrival if defined?(@predicted_target_arrival)
 
-    low_seconds = projected_low_seconds
-    return if low_seconds.nil?
+    @predicted_target_arrival =
+      if stopped? || reached_target? || !passed_gating?
+        nil
+      else
+        low_seconds = projected_low_seconds
+        low_seconds && (gating_split_time.absolute_time + low_seconds.seconds)
+      end
+  end
 
-    gating_split_time.absolute_time + low_seconds.seconds
+  # Predicted target arrival minus the travel buffer, or nil when no release time applies.
+  def release_time(buffer_minutes)
+    arrival = predicted_target_arrival
+    arrival && (arrival - buffer_minutes.minutes)
   end
 
   private
@@ -49,6 +82,15 @@ class GatingLocationRow
   attr_reader :effort, :gating_location_event
 
   delegate :gating_split, :target_split, to: :gating_location_event
+
+  # The runner's most recent (furthest) recorded time at or beyond the target aid station.
+  def furthest_target_split_time
+    return @furthest_target_split_time if defined?(@furthest_target_split_time)
+
+    target_distance = target_split.distance_from_start
+    at_or_beyond = effort.split_times.select { |st| st.split.distance_from_start >= target_distance }
+    @furthest_target_split_time = at_or_beyond.max_by { |st| [st.split.distance_from_start, st.bitkey] }
+  end
 
   def projected_low_seconds
     cache_key = ["gating_prediction", gating_location_event.id, gating_split_time.id, gating_split_time.updated_at]

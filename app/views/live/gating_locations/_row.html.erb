@@ -1,22 +1,29 @@
-<%# locals: (row:, home_time_zone:) -%>
+<%# locals: (row:, home_time_zone:, buffer:) -%>
 
 <tr>
   <td><%= row.bib_number %></td>
   <td><%= row.full_name %></td>
-  <td><%= row.gating_time_in_zone(home_time_zone)&.strftime("%-l:%M %p") %></td>
+  <td class="text-center"><%= day_and_military(row.gating_absolute_time, home_time_zone) %></td>
   <% if row.stopped? %>
-    <td></td>
-    <td><span class="badge bg-secondary">Stopped</span></td>
-  <% elsif row.arrived_at_target? %>
-    <td></td>
-    <td><span class="badge bg-secondary">Arrived</span></td>
-  <% elsif (predicted_arrival = row.predicted_target_arrival) %>
-    <td data-gating-release-target="expected"
-        data-predicted-arrival="<%= predicted_arrival.iso8601 %>"></td>
-    <td data-gating-release-target="release"
-        data-predicted-arrival="<%= predicted_arrival.iso8601 %>"></td>
+    <td class="text-center"></td>
+    <td class="text-end"><span class="badge bg-secondary">Stopped</span></td>
+  <% elsif row.departed_target? %>
+    <td class="text-center"><%= row.target_progress_label %> at <%= day_and_military(row.target_progress_absolute_time, home_time_zone) %></td>
+    <td class="text-end"><span class="badge bg-secondary">Departed</span></td>
+  <% elsif row.reached_target? %>
+    <td class="text-center">Arrived at <%= day_and_military(row.target_progress_absolute_time, home_time_zone) %></td>
+    <td class="text-end"><span class="badge bg-secondary">Arrived</span></td>
+  <% elsif row.predicted_target_arrival %>
+    <td class="text-center"><%= day_and_military(row.predicted_target_arrival, home_time_zone) %></td>
+    <td class="text-end">
+      <% if row.release_time(buffer) <= Time.current %>
+        <span class="badge bg-success">Now</span>
+      <% else %>
+        <%= day_and_military(row.release_time(buffer), home_time_zone) %>
+      <% end %>
+    </td>
   <% else %>
-    <td></td>
-    <td><span class="text-body-secondary">Insufficient data</span></td>
+    <td class="text-center"></td>
+    <td class="text-end"><span class="text-body-secondary">Insufficient data</span></td>
   <% end %>
 </tr>

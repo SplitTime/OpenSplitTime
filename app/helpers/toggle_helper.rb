@@ -81,6 +81,7 @@ module ToggleHelper
 
     html_options = {
       class: "btn btn-sm btn-#{button_class}",
+      style: "min-width: 9rem;",
       method: method,
       params: params,
       data: { turbo_submits_with: fa_icon("spinner", class: "fa-spin") },

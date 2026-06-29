@@ -23,8 +23,8 @@ class GatingLocationRow
     gating_split_time.present?
   end
 
-  def gating_absolute_time
-    gating_split_time&.absolute_time
+  def gating_time_local
+    gating_split_time&.absolute_time&.in_time_zone(home_time_zone)
   end
 
   # True once the runner has any recorded time at or beyond the target aid station,
@@ -43,8 +43,8 @@ class GatingLocationRow
   end
 
   # The runner's most recent recorded time at or beyond the target aid station.
-  def target_progress_absolute_time
-    furthest_target_split_time&.absolute_time
+  def target_progress_time_local
+    furthest_target_split_time&.absolute_time&.in_time_zone(home_time_zone)
   end
 
   # A label for the most recent split time at or beyond the target, e.g. "Departed Ouray"
@@ -71,10 +71,24 @@ class GatingLocationRow
       end
   end
 
+  def predicted_target_arrival_local
+    predicted_target_arrival&.in_time_zone(home_time_zone)
+  end
+
   # Predicted target arrival minus the travel buffer, or nil when no release time applies.
   def release_time(buffer_minutes)
     arrival = predicted_target_arrival
     arrival && (arrival - buffer_minutes.minutes)
+  end
+
+  def release_time_local(buffer_minutes)
+    release_time(buffer_minutes)&.in_time_zone(home_time_zone)
+  end
+
+  # True when the buffered release time is in the past, i.e. the crew can be released now.
+  def released?(buffer_minutes)
+    release = release_time(buffer_minutes)
+    release.present? && release <= Time.current
   end
 
   private
@@ -82,6 +96,10 @@ class GatingLocationRow
   attr_reader :effort, :gating_location_event
 
   delegate :gating_split, :target_split, to: :gating_location_event
+
+  def home_time_zone
+    gating_location_event.event.home_time_zone
+  end
 
   # The runner's most recent (furthest) recorded time at or beyond the target aid station.
   def furthest_target_split_time

@@ -52,7 +52,7 @@ RSpec.describe GatingLocationRow do
       it "is reached but not departed, and has no release time" do
         expect(row.reached_target?).to be(true)
         expect(row.departed_target?).to be(false)
-        expect(row.target_progress_absolute_time).to eq(gating_time + 1.hour)
+        expect(row.target_progress_time_local).to eq(gating_time + 1.hour)
         expect(row.predicted_target_arrival).to be_nil
       end
     end
@@ -66,7 +66,7 @@ RSpec.describe GatingLocationRow do
       it "is marked departed, labelled by the most recent split, and has no release time" do
         expect(row.departed_target?).to be(true)
         expect(row.target_progress_label).to eq("Departed #{target_split.base_name}")
-        expect(row.target_progress_absolute_time).to eq(gating_time + 70.minutes)
+        expect(row.target_progress_time_local).to eq(gating_time + 70.minutes)
         expect(row.predicted_target_arrival).to be_nil
       end
     end

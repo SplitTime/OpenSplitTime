@@ -59,8 +59,7 @@
               </tr>
               </thead>
               <tbody>
-              <%= render partial: "row", collection: rows, as: :row,
-                         locals: { home_time_zone: @display.event_group.home_time_zone, buffer: buffer } %>
+              <%= render partial: "row", collection: rows, as: :row, locals: { buffer: buffer } %>
               </tbody>
             </table>
           <% else %>

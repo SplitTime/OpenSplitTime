@@ -1,10 +1,13 @@
-<%# locals: (row:, buffer:) -%>
+<%# locals: (row:, controls:, gating_location_event:, display:) -%>
 
-<tr>
+<tr class="<%= "text-body-secondary" if row.crew_passed? %>">
   <td><%= row.bib_number %></td>
   <td><%= row.full_name %></td>
   <td class="text-center"><%= day_time_military_format(row.gating_time_local) %></td>
-  <% if row.stopped? %>
+  <% if row.crew_passed? %>
+    <td class="text-center"></td>
+    <td class="text-end"><span class="badge bg-secondary">Passed</span></td>
+  <% elsif row.stopped? %>
     <td class="text-center"></td>
     <td class="text-end"><span class="badge bg-secondary">Stopped</span></td>
   <% elsif row.departed_target? %>
@@ -16,14 +19,17 @@
   <% elsif row.predicted_target_arrival %>
     <td class="text-center"><%= day_time_military_format(row.predicted_target_arrival_local) %></td>
     <td class="text-end">
-      <% if row.released?(buffer) %>
+      <% if row.released?(controls.buffer) %>
         <span class="badge bg-success">Now</span>
       <% else %>
-        <%= day_time_military_format(row.release_time_local(buffer)) %>
+        <%= day_time_military_format(row.release_time_local(controls.buffer)) %>
       <% end %>
     </td>
   <% else %>
     <td class="text-center"></td>
     <td class="text-end"><span class="text-body-secondary">Insufficient data</span></td>
   <% end %>
+  <td class="text-center">
+    <%= button_to_toggle_crew_passage(row: row, gating_location_event: gating_location_event, display: display, controls: controls) %>
+  </td>
 </tr>

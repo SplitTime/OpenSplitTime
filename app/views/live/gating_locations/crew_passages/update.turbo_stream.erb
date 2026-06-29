@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@gating_location_event, :crew_access),
+                         partial: "live/gating_locations/gated_event",
+                         locals: { gating_location_event: @gating_location_event, display: @display } %>

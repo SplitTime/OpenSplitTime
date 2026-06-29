@@ -36,4 +36,39 @@ RSpec.describe GatingLocationLiveDisplay do
       end
     end
   end
+
+  describe "#rows_for" do
+    # sum_100k_drop_anvil has a recorded time at the gating aid station, so it appears in the rows.
+    let(:passed_effort) { efforts(:sum_100k_drop_anvil) }
+
+    before { allow(Projection).to receive(:execute_query).and_return([]) }
+
+    it "includes runners who have passed the gating aid station" do
+      display = described_class.new(gating_location: gating_location)
+      expect(display.rows_for(gle_100k).map(&:bib_number)).to include(passed_effort.bib_number)
+    end
+
+    context "when the crew has been marked passed" do
+      before { gating_location.crew_passages.create!(effort: passed_effort, passed_at: Time.current) }
+
+      it "marks that runner's row as passed" do
+        display = described_class.new(gating_location: gating_location)
+        row = display.rows_for(gle_100k).find { |r| r.bib_number == passed_effort.bib_number }
+        expect(row.crew_passed?).to be(true)
+      end
+
+      it "hides passed crews when hide_passed is set for the event" do
+        display = described_class.new(gating_location: gating_location, adjusted_event_id: gle_100k.id, hide_passed: "1")
+        expect(display.rows_for(gle_100k).map(&:bib_number)).not_to include(passed_effort.bib_number)
+      end
+    end
+
+    context "with a search term" do
+      it "keeps only runners matching the bib or name" do
+        display = described_class.new(gating_location: gating_location, adjusted_event_id: gle_100k.id,
+                                      search: "no-such-runner-zzz")
+        expect(display.rows_for(gle_100k)).to be_empty
+      end
+    end
+  end
 end

@@ -80,11 +80,23 @@ RSpec.describe "Live::GatingLocations" do
     describe "GET show" do
       before { allow(Projection).to receive(:execute_query).and_return([]) }
 
-      it "renders a buffer control per gated event" do
+      it "renders the per-event controls (buffer, sort, find runner, hide filters)" do
         get live_event_group_gating_location_path(event_group, gating_location)
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Travel buffer")
+        expect(response.body).to include("Buffer (min)")
+        expect(response.body).to include("Sort by")
+        expect(response.body).to include("Find runner")
+        expect(response.body).to include("Hide departed")
+        expect(response.body).to include("Hide passed")
+      end
+
+      it "accepts the sort and filter params without error" do
+        get live_event_group_gating_location_path(event_group, gating_location),
+            params: { gating_location_event_id: gating_location_events(:sum_bandera_gate_100k).id,
+                      sort: "release", hide_departed: "1", hide_passed: "1", search: "999" }
+
+        expect(response).to have_http_status(:ok)
       end
     end
 

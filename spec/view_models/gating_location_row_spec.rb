@@ -16,6 +16,18 @@ RSpec.describe GatingLocationRow do
     effort.split_times.build(split: split, lap: lap, sub_split_bitkey: bitkey, absolute_time: absolute_time)
   end
 
+  describe "#crew_passed?" do
+    it "is false without a crew passage" do
+      expect(row.crew_passed?).to be(false)
+    end
+
+    it "is true when a crew passage is present" do
+      passed_row = described_class.new(effort: effort, gating_location_event: gating_location_event,
+                                       crew_passage: CrewPassage.new)
+      expect(passed_row.crew_passed?).to be(true)
+    end
+  end
+
   context "when the runner has not reached the gating aid station" do
     it "is not gated and has no release time" do
       expect(row.passed_gating?).to be(false)

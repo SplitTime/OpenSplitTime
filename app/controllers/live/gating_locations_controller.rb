@@ -17,9 +17,11 @@ module Live
       return if performed?
 
       @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-      @gating_location = @event_group.gating_locations.find(params[:id])
-      @display = GatingLocationLiveDisplay.new(gating_location: @gating_location)
-      @adjusted_buffers = adjusted_buffers
+      @display = GatingLocationLiveDisplay.new(
+        gating_location: @event_group.gating_locations.find(params[:id]),
+        adjusted_event_id: params[:gating_location_event_id],
+        adjusted_buffer: params[:buffer],
+      )
     end
 
     private
@@ -30,16 +32,6 @@ module Live
 
     def authorize_crew_access
       authorize @event_group, :crew_access?
-    end
-
-    # When a steward adjusts one gated event's buffer, that event_id + buffer arrive as params;
-    # every other event keeps its saved default_travel_buffer.
-    def adjusted_buffers
-      gating_location_event_id = params[:gating_location_event_id].to_i
-      buffer = params[:buffer].presence
-      return {} unless gating_location_event_id.positive? && buffer
-
-      { gating_location_event_id => buffer.to_i.clamp(0, 1200) }
     end
   end
 end

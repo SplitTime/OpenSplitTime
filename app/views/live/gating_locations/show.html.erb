@@ -25,7 +25,7 @@
 <article class="ost-article container">
   <% @display.gated_events.each do |gating_location_event| %>
     <%= turbo_frame_tag dom_id(gating_location_event, :crew_access) do %>
-      <% buffer = @adjusted_buffers.fetch(gating_location_event.id, gating_location_event.default_travel_buffer) %>
+      <% buffer = @display.buffer_for(gating_location_event) %>
       <div class="card my-3">
         <div class="card-header">
           <div class="row align-items-center">
@@ -33,7 +33,7 @@
               <h5 class="fw-bold mb-0"><%= gating_location_event.event.guaranteed_short_name %></h5>
             </div>
             <div class="col-auto">
-              <%= form_with url: live_event_group_gating_location_path(@presenter.event_group, @gating_location),
+              <%= form_with url: live_event_group_gating_location_path(@display.event_group, @display.gating_location),
                             method: :get, data: { controller: "form-auto-submit" } do |form| %>
                 <%= form.hidden_field :gating_location_event_id, value: gating_location_event.id %>
                 <div class="d-flex align-items-center">

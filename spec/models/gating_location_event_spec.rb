@@ -116,6 +116,22 @@ RSpec.describe GatingLocationEvent, type: :model do
     end
   end
 
+  describe "#gating_sub_split_kind" do
+    let(:gle) { described_class.new }
+
+    it "is 'Out' when the gating split records an out time" do
+      allow(gle).to receive(:gating_split)
+        .and_return(instance_double(Split, sub_split_bitkeys: [SubSplit::IN_BITKEY, SubSplit::OUT_BITKEY]))
+      expect(gle.gating_sub_split_kind).to eq("Out")
+    end
+
+    it "is 'In' when the gating split records only an in time" do
+      allow(gle).to receive(:gating_split)
+        .and_return(instance_double(Split, sub_split_bitkeys: [SubSplit::IN_BITKEY]))
+      expect(gle.gating_sub_split_kind).to eq("In")
+    end
+  end
+
   describe "fixtures" do
     it "are valid" do
       expect(gating_location_events(:sum_bandera_gate_100k)).to be_valid

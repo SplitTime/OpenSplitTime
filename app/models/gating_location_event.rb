@@ -22,6 +22,12 @@ class GatingLocationEvent < ApplicationRecord
     target_aid_station&.split
   end
 
+  # "In" or "Out" — the gating aid station's departure sub-split (Out when it records one),
+  # i.e. the point at which a runner is considered past the gate.
+  def gating_sub_split_kind
+    SubSplit.kind(gating_split.sub_split_bitkeys.max) if gating_split
+  end
+
   private
 
   def aid_stations_belong_to_event

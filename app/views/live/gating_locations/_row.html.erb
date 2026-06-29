@@ -1,0 +1,29 @@
+<%# locals: (row:, buffer:) -%>
+
+<tr>
+  <td><%= row.bib_number %></td>
+  <td><%= row.full_name %></td>
+  <td class="text-center"><%= day_time_military_format(row.gating_time_local) %></td>
+  <% if row.stopped? %>
+    <td class="text-center"></td>
+    <td class="text-end"><span class="badge bg-secondary">Stopped</span></td>
+  <% elsif row.departed_target? %>
+    <td class="text-center"><%= row.target_progress_label %> at <%= day_time_military_format(row.target_progress_time_local) %></td>
+    <td class="text-end"><span class="badge bg-secondary">Departed</span></td>
+  <% elsif row.reached_target? %>
+    <td class="text-center">Arrived at <%= day_time_military_format(row.target_progress_time_local) %></td>
+    <td class="text-end"><span class="badge bg-secondary">Arrived</span></td>
+  <% elsif row.predicted_target_arrival %>
+    <td class="text-center"><%= day_time_military_format(row.predicted_target_arrival_local) %></td>
+    <td class="text-end">
+      <% if row.released?(buffer) %>
+        <span class="badge bg-success">Now</span>
+      <% else %>
+        <%= day_time_military_format(row.release_time_local(buffer)) %>
+      <% end %>
+    </td>
+  <% else %>
+    <td class="text-center"></td>
+    <td class="text-end"><span class="text-body-secondary">Insufficient data</span></td>
+  <% end %>
+</tr>

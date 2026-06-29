@@ -308,6 +308,8 @@ Rails.application.routes.draw do
         get :live_entry
         get :trigger_raw_times_push
       end
+
+      resources :gating_locations, only: [:index, :show]
     end
   end
 

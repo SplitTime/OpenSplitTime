@@ -84,10 +84,12 @@ module ProjectionAssessments
       current_assessment.assign_attributes(actual: projected_absolute_time)
       return unless projection
 
+      # low/high_seconds are nil when only one historical effort matched (Postgres
+      # stddev of a single row is NULL), so guard each before adding to a Time.
       current_assessment.assign_attributes(
-        projected_early: completed_absolute_time + projection.low_seconds,
-        projected_best: completed_absolute_time + projection.average_seconds,
-        projected_late: completed_absolute_time + projection.high_seconds,
+        projected_early: projection.low_seconds && (completed_absolute_time + projection.low_seconds),
+        projected_best: projection.average_seconds && (completed_absolute_time + projection.average_seconds),
+        projected_late: projection.high_seconds && (completed_absolute_time + projection.high_seconds),
       )
     end
 

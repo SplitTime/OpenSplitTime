@@ -1,0 +1,17 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Crew Access - #{@presenter.display_full_name} - #{@presenter.event_name}" %>
+<% end %>
+
+<%= render "effort_header", view_object: @presenter, title: "Crew Access" %>
+
+<article class="ost-article container">
+  <p class="text-body-secondary">
+    Crew release times for this runner at each gated aid station. A release time is the earliest a crew may
+    leave the gate to reach the target aid station, based on the runner's projected arrival there minus a
+    travel buffer set by the event organizers.
+  </p>
+
+  <% @presenter.gating_rows.zip(@presenter.gating_location_events).each do |row, gating_location_event| %>
+    <%= render "efforts/crew_access_location", row: row, gating_location_event: gating_location_event %>
+  <% end %>
+</article>

@@ -93,6 +93,7 @@ Rails.application.routes.draw do
       get :audit
       get :projections
       get :place
+      get :crew_access
       get :show_photo
       get :edit_split_times
       get :start_form

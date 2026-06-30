@@ -1,6 +1,8 @@
 class GatingLocationLiveDisplay
   Controls = Struct.new(:buffer, :sort_order, :hide_departed, :hide_passed, :search, keyword_init: true)
 
+  DEFAULT_SORT = "release".freeze
+
   def initialize(gating_location:, adjusted_event_id: nil, adjusted_buffer: nil,
                  sort: nil, hide_departed: nil, hide_passed: nil, search: nil)
     @gating_location = gating_location
@@ -22,18 +24,18 @@ class GatingLocationLiveDisplay
   end
 
   # The controls in effect for one gated event: the steward's just-submitted values when they changed
-  # this event's controls, otherwise defaults (saved buffer, bib sort, no filters).
+  # this event's controls, otherwise defaults (saved buffer, release-time sort, no filters).
   def controls_for(gating_location_event)
     if gating_location_event.id == adjusted_event_id
       Controls.new(
         buffer: adjusted_buffer || gating_location_event.default_travel_buffer,
-        sort_order: adjusted_sort || "bib",
+        sort_order: adjusted_sort || DEFAULT_SORT,
         hide_departed: adjusted_hide_departed,
         hide_passed: adjusted_hide_passed,
         search: adjusted_search,
       )
     else
-      Controls.new(buffer: gating_location_event.default_travel_buffer, sort_order: "bib",
+      Controls.new(buffer: gating_location_event.default_travel_buffer, sort_order: DEFAULT_SORT,
                    hide_departed: false, hide_passed: false, search: nil)
     end
   end

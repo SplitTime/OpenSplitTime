@@ -1,0 +1,26 @@
+<%# locals: (gating_location_event:, display:) -%>
+
+<%= turbo_frame_tag dom_id(gating_location_event, :crew_access_rows) do %>
+  <% controls = display.controls_for(gating_location_event) %>
+  <% rows = display.rows_for(gating_location_event) %>
+  <% if rows.any? %>
+    <table class="table table-striped mb-0">
+      <thead>
+      <tr>
+        <th>Bib</th>
+        <th>Name</th>
+        <th class="text-center"><%= gating_location_event.gating_split.base_name %> <%= gating_location_event.gating_sub_split_kind %></th>
+        <th class="text-center">Expected at <%= gating_location_event.target_split.base_name %></th>
+        <th class="text-end">Release</th>
+        <th class="text-center">Crew</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render partial: "live/gating_locations/row", collection: rows, as: :row,
+                 locals: { controls: controls, gating_location_event: gating_location_event, display: display } %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-body-secondary mb-0">No runners match the current filters.</p>
+  <% end %>
+<% end %>

@@ -24,12 +24,12 @@
                                          class: "form-control form-control-sm", autocomplete: "off" %>
         </div>
         <div class="col-auto">
-          <div class="form-check">
-            <%= form.check_box :hide_departed, { checked: controls.hide_departed, class: "form-check-input" } %>
+          <div class="form-check form-switch">
+            <%= form.check_box :hide_departed, { checked: controls.hide_departed, class: "form-check-input", role: "switch" } %>
             <%= form.label :hide_departed, "Hide departed", class: "form-check-label small" %>
           </div>
-          <div class="form-check">
-            <%= form.check_box :hide_passed, { checked: controls.hide_passed, class: "form-check-input" } %>
+          <div class="form-check form-switch">
+            <%= form.check_box :hide_passed, { checked: controls.hide_passed, class: "form-check-input", role: "switch" } %>
             <%= form.label :hide_passed, "Hide passed", class: "form-check-label small" %>
           </div>
         </div>

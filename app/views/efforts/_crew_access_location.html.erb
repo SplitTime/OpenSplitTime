@@ -3,15 +3,11 @@
 <% buffer = gating_location_event.default_travel_buffer %>
 <div class="card my-3">
   <div class="card-header">
-    <h5 class="fw-bold mb-1"><%= gating_location_event.gating_location.name %></h5>
-    <div class="text-body-secondary">
-      Gate: <%= gating_location_event.gating_split.base_name %> (<%= gating_location_event.gating_sub_split_kind %>)
-      &rarr; Target: <%= gating_location_event.target_split.base_name %>
-    </div>
+    <h5 class="fw-bold mb-0"><%= gating_location_event.gating_location.name %></h5>
   </div>
   <div class="card-body">
     <dl class="row mb-0">
-      <dt class="col-sm-4">At gate</dt>
+      <dt class="col-sm-4"><%= gating_location_event.gating_split.base_name %> (<%= gating_location_event.gating_sub_split_kind %>)</dt>
       <dd class="col-sm-8">
         <% if row.passed_gating? %>
           Reached <%= day_time_military_format(row.gating_time_local) %>
@@ -20,7 +16,7 @@
         <% end %>
       </dd>
 
-      <dt class="col-sm-4">Est. arrival at <%= gating_location_event.target_split.base_name %></dt>
+      <dt class="col-sm-4">Earliest projected arrival at <%= gating_location_event.target_split.base_name %></dt>
       <dd class="col-sm-8">
         <% if row.departed_target? %>
           <%= row.target_progress_label %> at <%= day_time_military_format(row.target_progress_time_local) %>

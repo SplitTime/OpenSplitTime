@@ -85,4 +85,27 @@ RSpec.describe ProjectionAssessments::Runner do
       expect(assessment_run.reload).to be_finished
     end
   end
+
+  describe "#perform! when the projection has nil low/high seconds" do
+    let(:effort) { efforts(:hardrock_2016_lavon_paucek) }
+
+    # Postgres stddev of a single matching historical effort is NULL, so the
+    # projection comes back with an average but no low/high seconds.
+    before do
+      allow(Projection).to receive(:execute_query).and_return(
+        [Projection.new(low_seconds: nil, average_seconds: 3600, high_seconds: nil)]
+      )
+    end
+
+    it "records the average projection and the actual time without crashing" do
+      subject.perform!
+
+      assessment = assessment_run.assessments.find_by(effort_id: effort.id)
+      expect(assessment.projected_early).to be_nil
+      expect(assessment.projected_best).to be_present
+      expect(assessment.projected_late).to be_nil
+      expect(assessment.actual).to eq("2016-07-15 20:36:00 -0600")
+      expect(assessment_run.reload).to be_finished
+    end
+  end
 end

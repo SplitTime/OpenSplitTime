@@ -1,5 +1,7 @@
 module Live
   class GatingLocationsController < Live::BaseController
+    include BuildsGatingDisplay
+
     before_action :set_event_group
     before_action :authorize_crew_access
 
@@ -17,11 +19,7 @@ module Live
       return if performed?
 
       @presenter = EventGroupPresenter.new(@event_group, params, current_user)
-      @display = GatingLocationLiveDisplay.new(
-        gating_location: @event_group.gating_locations.find(params[:id]),
-        adjusted_event_id: params[:gating_location_event_id],
-        adjusted_buffer: params[:buffer],
-      )
+      @display = build_gating_display(@event_group.gating_locations.find(params[:id]))
     end
 
     private

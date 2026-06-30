@@ -1,10 +1,18 @@
 class GatingLocationRow
-  def initialize(effort:, gating_location_event:)
+  def initialize(effort:, gating_location_event:, crew_passage: nil)
     @effort = effort
     @gating_location_event = gating_location_event
+    @crew_passage = crew_passage
   end
 
+  attr_reader :crew_passage
+
   delegate :bib_number, :full_name, :stopped?, to: :effort
+  delegate :id, to: :effort, prefix: true
+
+  def crew_passed?
+    crew_passage.present?
+  end
 
   def event_short_name
     gating_location_event.event.guaranteed_short_name
@@ -89,6 +97,23 @@ class GatingLocationRow
   def released?(buffer_minutes)
     release = release_time(buffer_minutes)
     release.present? && release <= Time.current
+  end
+
+  # Ordering key for the "release time" sort: actionable runners (release now, then upcoming) first,
+  # terminal states (stopped, arrived, departed) next, passed crews last; bib breaks ties.
+  def release_sort_key(buffer_minutes)
+    release = release_time(buffer_minutes)
+    rank =
+      if crew_passed? then 6
+      elsif departed_target? then 5
+      elsif reached_target? then 4
+      elsif stopped? then 3
+      elsif release.nil? then 2
+      elsif release <= Time.current then 0
+      else 1
+      end
+    secondary = rank == 1 ? release.to_i : 0
+    [rank, secondary, bib_number.to_i]
   end
 
   private

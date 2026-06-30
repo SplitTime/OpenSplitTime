@@ -1,29 +1,43 @@
-<%# locals: (row:, buffer:) -%>
+<%# locals: (row:, controls:, gating_location_event:, display:) -%>
 
-<tr>
+<tr class="<%= "text-body-secondary" if row.crew_passed? %>">
   <td><%= row.bib_number %></td>
   <td><%= row.full_name %></td>
   <td class="text-center"><%= day_time_military_format(row.gating_time_local) %></td>
-  <% if row.stopped? %>
-    <td class="text-center"></td>
-    <td class="text-end"><span class="badge bg-secondary">Stopped</span></td>
-  <% elsif row.departed_target? %>
-    <td class="text-center"><%= row.target_progress_label %> at <%= day_time_military_format(row.target_progress_time_local) %></td>
-    <td class="text-end"><span class="badge bg-secondary">Departed</span></td>
-  <% elsif row.reached_target? %>
-    <td class="text-center">Arrived at <%= day_time_military_format(row.target_progress_time_local) %></td>
-    <td class="text-end"><span class="badge bg-secondary">Arrived</span></td>
-  <% elsif row.predicted_target_arrival %>
-    <td class="text-center"><%= day_time_military_format(row.predicted_target_arrival_local) %></td>
-    <td class="text-end">
-      <% if row.released?(buffer) %>
+
+  <%# Expected arrival reflects the runner's own progress, shown even after the crew is marked passed. %>
+  <td class="text-center">
+    <% if row.departed_target? %>
+      <%= row.target_progress_label %> at <%= day_time_military_format(row.target_progress_time_local) %>
+    <% elsif row.reached_target? %>
+      Arrived at <%= day_time_military_format(row.target_progress_time_local) %>
+    <% elsif row.predicted_target_arrival %>
+      <%= day_time_military_format(row.predicted_target_arrival_local) %>
+    <% end %>
+  </td>
+
+  <%# Release reflects whether the crew may go; "Passed" takes precedence once marked. %>
+  <td class="text-end">
+    <% if row.crew_passed? %>
+      <span class="badge bg-secondary">Passed</span>
+    <% elsif row.stopped? %>
+      <span class="badge bg-secondary">Stopped</span>
+    <% elsif row.departed_target? %>
+      <span class="badge bg-secondary">Departed</span>
+    <% elsif row.reached_target? %>
+      <span class="badge bg-secondary">Arrived</span>
+    <% elsif row.predicted_target_arrival %>
+      <% if row.released?(controls.buffer) %>
         <span class="badge bg-success">Now</span>
       <% else %>
-        <%= day_time_military_format(row.release_time_local(buffer)) %>
+        <%= day_time_military_format(row.release_time_local(controls.buffer)) %>
       <% end %>
-    </td>
-  <% else %>
-    <td class="text-center"></td>
-    <td class="text-end"><span class="text-body-secondary">Insufficient data</span></td>
-  <% end %>
+    <% else %>
+      <span class="text-body-secondary">Insufficient data</span>
+    <% end %>
+  </td>
+
+  <td class="text-center">
+    <%= button_to_toggle_crew_passage(row: row, gating_location_event: gating_location_event, display: display, controls: controls) %>
+  </td>
 </tr>

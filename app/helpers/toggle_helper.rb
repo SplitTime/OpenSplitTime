@@ -49,6 +49,47 @@ module ToggleHelper
     button_to(url, html_options) { fa_icon(icon_name, text: button_text, type: :regular) }
   end
 
+  # Toggle for marking a runner's crew as having passed through a gating location. Creates a
+  # CrewPassage when not yet passed, destroys it when already passed. Carries the frame's current
+  # controls so the re-rendered Turbo frame keeps its buffer/sort/filters.
+  def button_to_toggle_crew_passage(row:, gating_location_event:, display:, controls:)
+    control_params = {
+      gating_location_event_id: gating_location_event.id,
+      buffer: controls.buffer,
+      sort: controls.sort_order,
+      hide_departed: controls.hide_departed,
+      hide_passed: controls.hide_passed,
+      search: controls.search,
+    }
+
+    if row.crew_passed?
+      url = live_event_group_gating_location_crew_passage_path(display.event_group, display.gating_location,
+                                                               row.crew_passage)
+      method = :delete
+      icon_name = "check-square"
+      button_text = "Passed"
+      button_class = "success"
+      params = control_params
+    else
+      url = live_event_group_gating_location_crew_passages_path(display.event_group, display.gating_location)
+      method = :post
+      icon_name = "square"
+      button_text = "Mark passed"
+      button_class = "outline-secondary"
+      params = control_params.merge(effort_id: row.effort_id)
+    end
+
+    html_options = {
+      class: "btn btn-sm btn-#{button_class}",
+      style: "min-width: 9rem;",
+      method: method,
+      params: params,
+      data: { turbo_submits_with: fa_icon("spinner", class: "fa-spin") },
+    }
+
+    button_to(url, html_options) { fa_icon(icon_name, text: button_text, type: :regular) }
+  end
+
   def button_to_check_in_all(view_object)
     url = update_all_efforts_event_group_path(view_object.event_group)
     html_options = {

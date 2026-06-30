@@ -309,7 +309,9 @@ Rails.application.routes.draw do
         get :trigger_raw_times_push
       end
 
-      resources :gating_locations, only: [:index, :show]
+      resources :gating_locations, only: [:index, :show] do
+        resources :crew_passages, only: [:create, :destroy], module: :gating_locations
+      end
     end
   end
 

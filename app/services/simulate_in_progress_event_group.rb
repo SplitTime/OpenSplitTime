@@ -1,6 +1,7 @@
-# Testing tool: duplicates an event group and populates each event with `count` fabricated-identity
-# runners whose split times are real progressions from a past run, truncated at `cutoff_time` and
-# shifted so that cutoff lands at `current_time` — producing a live, in-progress event group.
+# Testing tool: duplicates an event group and stages it as an in-progress race. The duplicate's
+# group start is placed at `start_time`, and each event is populated with `count` runners frozen at
+# their position `elapsed_seconds` into the race — fabricated identities but real split-time
+# progressions from a past run, truncated at the elapsed cutoff and shifted onto the new start.
 #
 # Unlike DuplicateEventGroup (structure only, current-year-from-past-year), this copies efforts + times.
 class SimulateInProgressEventGroup
@@ -8,11 +9,11 @@ class SimulateInProgressEventGroup
     new(**).perform
   end
 
-  def initialize(source_event_group:, cutoff_time:, count:, current_time: Time.current)
+  def initialize(source_event_group:, start_time:, elapsed_seconds:, count:)
     @source_event_group = source_event_group
-    @cutoff_time = cutoff_time
+    @start_time = start_time
+    @elapsed_seconds = elapsed_seconds
     @count = count
-    @current_time = current_time
     @simulated_efforts_count = 0
   end
 
@@ -30,17 +31,22 @@ class SimulateInProgressEventGroup
 
   private
 
-  attr_reader :source_event_group, :cutoff_time, :count, :current_time, :event_pairs
+  attr_reader :source_event_group, :start_time, :elapsed_seconds, :count, :event_pairs
 
-  # Seconds to add to every source time so the cutoff moment maps to now.
+  # Seconds to add to every source time so the source group's start lands at the requested start_time.
   def offset
-    @offset ||= current_time - cutoff_time
+    @offset ||= start_time - source_event_group.scheduled_start_time
+  end
+
+  # The simulated "current moment", in source terms: `elapsed_seconds` into the race from the group start.
+  def source_cutoff
+    @source_cutoff ||= source_event_group.scheduled_start_time + elapsed_seconds
   end
 
   def build_event_group
     @new_event_group = source_event_group.dup
     new_event_group.assign_attributes(
-      name: "#{source_event_group.name} (Simulated #{current_time.strftime('%Y-%m-%d %H:%M')})",
+      name: "#{source_event_group.name} (Simulated)",
       concealed: true,
       available_live: true,
       webhook_token: nil,
@@ -78,11 +84,11 @@ class SimulateInProgressEventGroup
     end
   end
 
-  # Source efforts that had recorded their start on or before the cutoff (i.e. in progress at that moment).
+  # Source efforts that had recorded their start on or before the cutoff (in progress at that moment).
   def started_source_efforts(source_event)
     source_event.efforts.includes(split_times: :split).select do |effort|
       earliest = effort.split_times.map(&:absolute_time).min
-      earliest.present? && earliest <= cutoff_time
+      earliest.present? && earliest <= source_cutoff
     end
   end
 
@@ -93,7 +99,7 @@ class SimulateInProgressEventGroup
     end
 
     effort = new_event.efforts.new(attributes)
-    source_effort.split_times.select { |split_time| split_time.absolute_time <= cutoff_time }.each do |split_time|
+    source_effort.split_times.select { |split_time| split_time.absolute_time <= source_cutoff }.each do |split_time|
       effort.split_times.new(
         split_id: split_time.split_id,
         lap: split_time.lap,

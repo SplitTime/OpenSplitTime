@@ -1,0 +1,52 @@
+<%# locals: (row:, gating_location_event:) -%>
+
+<% buffer = gating_location_event.default_travel_buffer %>
+<div class="card my-3">
+  <div class="card-header">
+    <h5 class="fw-bold mb-0"><%= gating_location_event.gating_location.name %></h5>
+  </div>
+  <div class="card-body">
+    <dl class="row mb-0">
+      <dt class="col-sm-4"><%= gating_location_event.gating_split.base_name %> (<%= gating_location_event.gating_sub_split_kind %>)</dt>
+      <dd class="col-sm-8">
+        <% if row.passed_gating? %>
+          Reached <%= day_time_military_format(row.gating_time_local) %>
+        <% else %>
+          <span class="text-body-secondary">Not yet reached</span>
+        <% end %>
+      </dd>
+
+      <dt class="col-sm-4">Earliest projected arrival at <%= gating_location_event.target_split.base_name %></dt>
+      <dd class="col-sm-8">
+        <% if row.departed_target? %>
+          <%= row.target_progress_label %> at <%= day_time_military_format(row.target_progress_time_local) %>
+        <% elsif row.reached_target? %>
+          Arrived <%= day_time_military_format(row.target_progress_time_local) %>
+        <% elsif row.predicted_target_arrival %>
+          <%= day_time_military_format(row.predicted_target_arrival_local) %>
+        <% else %>
+          <span class="text-body-secondary">&mdash;</span>
+        <% end %>
+      </dd>
+
+      <dt class="col-sm-4">Earliest crew release</dt>
+      <dd class="col-sm-8">
+        <% if row.reached_target? %>
+          <span class="text-body-secondary">Runner has reached the target</span>
+        <% elsif row.stopped? %>
+          <span class="badge bg-secondary">Stopped</span>
+        <% elsif !row.passed_gating? %>
+          <span class="text-body-secondary">Available once <%= gating_location_event.gating_split.base_name %> is reached</span>
+        <% elsif row.predicted_target_arrival %>
+          <% if row.released?(buffer) %>
+            <span class="badge bg-success">Now</span>
+          <% else %>
+            <strong><%= day_time_military_format(row.release_time_local(buffer)) %></strong>
+          <% end %>
+        <% else %>
+          <span class="text-body-secondary">Insufficient data</span>
+        <% end %>
+      </dd>
+    </dl>
+  </div>
+</div>

@@ -1,9 +1,11 @@
 class EffortsController < ApplicationController
   before_action :authenticate_user!,
-                except: [:show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
+                except: [:show, :mini_table, :show_photo, :projections, :analyze, :place, :crew_access,
+                         :live_entry_table]
   before_action :set_effort, except: [:new, :create, :create_split_time_from_raw_time, :mini_table]
   after_action :verify_authorized,
-               except: [:show, :mini_table, :show_photo, :projections, :analyze, :place, :live_entry_table]
+               except: [:show, :mini_table, :show_photo, :projections, :analyze, :place, :crew_access,
+                        :live_entry_table]
 
   # GET /efforts/1
   def show
@@ -143,6 +145,11 @@ class EffortsController < ApplicationController
   # GET /efforts/1/place
   def place
     @presenter = EffortPlaceView.new(@effort)
+  end
+
+  # GET /efforts/1/crew_access
+  def crew_access
+    @presenter = EffortCrewAccessView.new(@effort)
   end
 
   # PATCH /efforts/1/rebuild

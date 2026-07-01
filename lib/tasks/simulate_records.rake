@@ -22,7 +22,9 @@ namespace :simulate do
     hours, minutes, seconds = args.elapsed.split(":").map(&:to_i)
     elapsed_seconds = hours.hours + minutes.to_i.minutes + seconds.to_i.seconds
 
-    count = (args.count || 40).to_i
+    # NB: use args[:count], not args.count — Rake::TaskArguments includes Enumerable, so args.count
+    # returns the number of arguments (Enumerable#count), not the :count value.
+    count = (args[:count] || 40).to_i
 
     puts "Simulating '#{source_event_group.name}': start #{start_time}, #{args.elapsed} into the race, " \
          "#{count} runners per event..."

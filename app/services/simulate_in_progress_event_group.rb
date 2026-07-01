@@ -1,6 +1,6 @@
 # Testing tool: duplicates an event group and stages it as an in-progress race. Reuses
 # DuplicateEventGroup for the structure copy, then shifts the duplicate's group start to
-# `start_time` and populates each event with `count` runners frozen at their position
+# `start_time` and populates each event with `effort_count` runners frozen at their position
 # `elapsed_seconds` into the race — fabricated identities but real split-time progressions from a
 # past run, truncated at the elapsed cutoff and shifted onto the new start.
 class SimulateInProgressEventGroup
@@ -8,11 +8,11 @@ class SimulateInProgressEventGroup
     new(**).perform
   end
 
-  def initialize(source_event_group:, start_time:, elapsed_seconds:, count:)
+  def initialize(source_event_group:, start_time:, elapsed_seconds:, effort_count:)
     @source_event_group = source_event_group
     @start_time = start_time
     @elapsed_seconds = elapsed_seconds
-    @count = count
+    @effort_count = effort_count
     @simulated_efforts_count = 0
   end
 
@@ -28,7 +28,7 @@ class SimulateInProgressEventGroup
 
   private
 
-  attr_reader :source_event_group, :start_time, :elapsed_seconds, :count
+  attr_reader :source_event_group, :start_time, :elapsed_seconds, :effort_count
 
   # Seconds to add to every source time so the source group's start lands at the requested start_time.
   def offset
@@ -59,7 +59,7 @@ class SimulateInProgressEventGroup
   def populate_efforts
     bib_number = 1
     event_pairs.each do |source_event, new_event|
-      started_source_efforts(source_event).sample(count).each do |source_effort|
+      started_source_efforts(source_event).sample(effort_count).each do |source_effort|
         create_simulated_effort(new_event, source_effort, bib_number)
         bib_number += 1
       end

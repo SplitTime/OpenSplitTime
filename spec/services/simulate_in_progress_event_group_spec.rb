@@ -3,11 +3,11 @@ require "rails_helper"
 RSpec.describe SimulateInProgressEventGroup do
   subject(:result) do
     described_class.perform(source_event_group: source, start_time: start_time,
-                            elapsed_seconds: elapsed_seconds, count: count)
+                            elapsed_seconds: elapsed_seconds, effort_count: effort_count)
   end
 
   let(:source) { event_groups(:sum) }
-  let(:count) { 50 }
+  let(:effort_count) { 50 }
   let(:start_time) { Time.zone.parse("2026-07-01 06:00:00") }
   let(:elapsed_seconds) { 100.hours }
 
@@ -49,10 +49,10 @@ RSpec.describe SimulateInProgressEventGroup do
     end
   end
 
-  context "with a small count" do
-    let(:count) { 1 }
+  context "with a small effort_count" do
+    let(:effort_count) { 1 }
 
-    it "limits each event to `count` efforts" do
+    it "limits each event to `effort_count` efforts" do
       expect(result.simulated_efforts_count).to be_positive
       expect(result.new_event_group.events.map { |event| event.efforts.count }).to all(be <= 1)
     end

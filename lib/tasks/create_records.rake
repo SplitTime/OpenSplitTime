@@ -22,20 +22,10 @@ namespace :create_records do
     events.each_with_index do |event, i|
       bib_number = (i * 100) + 1
       effort_count.times do
-        gender = %w[male female].sample
-        first_name = FFaker::Name.send("first_name_#{gender}")
-        last_name = FFaker::Name.last_name
-        birthdate = FFaker::Time.between(16.years.ago, 75.years.ago).to_date
-        country_code = "US"
-        state_code = Carmen::Country.coded("US").subregions.map(&:code).sample
-        city = FFaker::Address.city
-        emergency_contact = FFaker::Name.name
-        emergency_phone = FFaker::PhoneNumber.short_phone_number
-
-        effort = event.efforts.new(bib_number: bib_number, first_name: first_name, last_name: last_name, gender: gender,
-                                   birthdate: birthdate, country_code: country_code, state_code: state_code, city: city,
-                                   scheduled_start_time: event.scheduled_start_time, emergency_phone: emergency_phone,
-                                   emergency_contact: emergency_contact)
+        effort = event.efforts.new(RandomEffortAttributes.generate.merge(
+                                     bib_number: bib_number,
+                                     scheduled_start_time: event.scheduled_start_time,
+                                   ))
 
         effort_description = "#{effort.full_name} using bib number #{bib_number} for #{event.name}"
 

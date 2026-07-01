@@ -1,9 +1,8 @@
-# Testing tool: duplicates an event group and stages it as an in-progress race. The duplicate's
-# group start is placed at `start_time`, and each event is populated with `count` runners frozen at
-# their position `elapsed_seconds` into the race — fabricated identities but real split-time
-# progressions from a past run, truncated at the elapsed cutoff and shifted onto the new start.
-#
-# Unlike DuplicateEventGroup (structure only, current-year-from-past-year), this copies efforts + times.
+# Testing tool: duplicates an event group and stages it as an in-progress race. Reuses
+# DuplicateEventGroup for the structure copy, then shifts the duplicate's group start to
+# `start_time` and populates each event with `count` runners frozen at their position
+# `elapsed_seconds` into the race — fabricated identities but real split-time progressions from a
+# past run, truncated at the elapsed cutoff and shifted onto the new start.
 class SimulateInProgressEventGroup
   def self.perform(**)
     new(**).perform
@@ -22,8 +21,6 @@ class SimulateInProgressEventGroup
   def perform
     ActiveRecord::Base.transaction do
       build_event_group
-      new_event_group.save!
-      conform_splits
       populate_efforts
     end
     self
@@ -31,7 +28,7 @@ class SimulateInProgressEventGroup
 
   private
 
-  attr_reader :source_event_group, :start_time, :elapsed_seconds, :count, :event_pairs
+  attr_reader :source_event_group, :start_time, :elapsed_seconds, :count
 
   # Seconds to add to every source time so the source group's start lands at the requested start_time.
   def offset
@@ -43,35 +40,20 @@ class SimulateInProgressEventGroup
     @source_cutoff ||= source_event_group.scheduled_start_time + elapsed_seconds
   end
 
+  # Reuse DuplicateEventGroup for the structure copy (group + events + conformed splits), then place the
+  # duplicate's start exactly at start_time (DuplicateEventGroup only offsets by whole days) and enable live.
   def build_event_group
-    @new_event_group = source_event_group.dup
-    new_event_group.assign_attributes(
-      name: "#{source_event_group.name} (Simulated)",
-      concealed: true,
-      available_live: true,
-      webhook_token: nil,
-    )
-    @event_pairs = source_event_group.events.map do |source_event|
-      new_event = source_event.dup
-      new_event.assign_attributes(
-        scheduled_start_time: source_event.scheduled_start_time + offset,
-        historical_name: nil,
-        beacon_url: nil,
-        efforts_count: 0,
-        topic_resource_key: nil,
-      )
-      new_event_group.events << new_event
-      [source_event, new_event]
+    duplicate = DuplicateEventGroup.create(existing_id: source_event_group.id,
+                                           new_name: "#{source_event_group.name} (Simulated)",
+                                           new_start_date: start_time.to_date)
+    @new_event_group = duplicate.new_event_group
+    unless new_event_group&.persisted?
+      raise "Could not duplicate event group: #{duplicate.errors.full_messages.to_sentence}"
     end
-  end
 
-  # Saving the events attaches all course splits to each, so prune those not in the source event.
-  def conform_splits
-    event_pairs.each do |source_event, new_event|
-      new_event.aid_stations.each do |aid_station|
-        aid_station.destroy unless aid_station.split_id.in?(source_event.split_ids)
-      end
-    end
+    shift = start_time - new_event_group.scheduled_start_time
+    new_event_group.events.each { |event| event.update!(scheduled_start_time: event.scheduled_start_time + shift) }
+    new_event_group.update!(available_live: true)
   end
 
   def populate_efforts
@@ -81,6 +63,12 @@ class SimulateInProgressEventGroup
         create_simulated_effort(new_event, source_effort, bib_number)
         bib_number += 1
       end
+    end
+  end
+
+  def event_pairs
+    new_event_group.events.map do |new_event|
+      [source_event_group.events.find { |source_event| source_event.short_name == new_event.short_name }, new_event]
     end
   end
 

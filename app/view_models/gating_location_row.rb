@@ -18,13 +18,16 @@ class GatingLocationRow
     gating_location_event.event.guaranteed_short_name
   end
 
-  # The runner's recorded time at the gating aid station, latest lap, OUT preferred over IN.
+  # The runner's recorded time at the gating aid station's gate sub-split (its Out when the station
+  # records one, otherwise its In), latest lap. Nil until that time exists: a runner who has only
+  # checked In could still be at the aid station for a while, so anchoring the release projection on
+  # the In time would release the crew too early.
   def gating_split_time
     return @gating_split_time if defined?(@gating_split_time)
 
-    @gating_split_time = effort.split_times
-                               .select { |split_time| split_time.split_id == gating_split.id }
-                               .max_by { |split_time| [split_time.lap, split_time.bitkey] }
+    @gating_split_time = effort.split_times.select do |split_time|
+      split_time.split_id == gating_split.id && split_time.bitkey == gating_bitkey
+    end.max_by(&:lap)
   end
 
   def passed_gating?
@@ -120,7 +123,7 @@ class GatingLocationRow
 
   attr_reader :effort, :gating_location_event
 
-  delegate :gating_split, :target_split, to: :gating_location_event
+  delegate :gating_split, :target_split, :gating_bitkey, to: :gating_location_event
 
   def home_time_zone
     gating_location_event.event.home_time_zone

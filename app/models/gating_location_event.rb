@@ -22,10 +22,16 @@ class GatingLocationEvent < ApplicationRecord
     target_aid_station&.split
   end
 
+  # The bitkey at the gating aid station that marks a runner as past the gate: Out when the station
+  # records one, otherwise In. A release determination is made only once this time is recorded.
+  def gating_bitkey
+    gating_split&.sub_split_bitkeys&.max
+  end
+
   # "In" or "Out" — the gating aid station's departure sub-split (Out when it records one),
   # i.e. the point at which a runner is considered past the gate.
   def gating_sub_split_kind
-    SubSplit.kind(gating_split.sub_split_bitkeys.max) if gating_split
+    SubSplit.kind(gating_bitkey) if gating_bitkey
   end
 
   private

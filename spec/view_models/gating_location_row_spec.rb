@@ -35,9 +35,23 @@ RSpec.describe GatingLocationRow do
     end
   end
 
-  context "when the runner has reached the gating aid station" do
+  context "when the runner has only checked In at a gating aid station that records an Out" do
     before do
       build_split_time(split: gating_split, bitkey: SubSplit::IN_BITKEY, absolute_time: gating_time)
+    end
+
+    it "is not yet gated and makes no release determination until the Out time is recorded" do
+      expect(gating_split.out_bitkey).to be_present
+      expect(row.passed_gating?).to be(false)
+      expect(row.gating_split_time).to be_nil
+      expect(row.predicted_target_arrival).to be_nil
+    end
+  end
+
+  context "when the runner has departed the gating aid station" do
+    before do
+      build_split_time(split: gating_split, bitkey: SubSplit::IN_BITKEY, absolute_time: gating_time - 5.minutes)
+      build_split_time(split: gating_split, bitkey: SubSplit::OUT_BITKEY, absolute_time: gating_time)
       allow(Projection).to receive(:execute_query).and_return([instance_double(Projection, low_seconds: 3600)])
     end
 

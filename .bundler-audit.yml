@@ -1,0 +1,10 @@
+---
+# Advisories intentionally ignored by bundler-audit (`bin/bundle-audit check`).
+# Revisit each entry when a patched gem version becomes available.
+ignore:
+  # CVE-2026-38969 / GHSA-h4w6-wx8r-p68v — WEBrick reparses HTTP trailers.
+  # webrick is a test-only transitive dependency (pulled in by ferrum, our headless-Chrome
+  # driver for system specs); we never run WEBrick as an application server. No patched
+  # version exists as of 2026-07-06 (the advisory affects webrick through 1.9.2, the latest
+  # release). Remove this once a fixed webrick ships and the bundle picks it up.
+  - CVE-2026-38969

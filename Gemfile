@@ -87,6 +87,7 @@ group :test do
   gem "cuprite"
   gem "factory_bot_rails", require: false
   gem "pry"
+  gem "rspec-retry"
   gem "vcr", "~> 6.4"
   gem "webmock", "~> 3.5"
 end

@@ -1,7 +1,7 @@
 ---
 title: Winding Up
 parent: Managing an Event
-nav_order: 5
+nav_order: 6
 ---
 
 # Winding Up

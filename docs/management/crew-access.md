@@ -6,7 +6,7 @@ nav_order: 5
 
 # Crew Access
 
-At many events, crews drive from one aid station to the next to meet their runners. Some aid stations have
+At many events, crews are permitted to drive to certain aid stations to meet their runners. Some aid stations have
 limited parking or narrow access roads, so a race official controls when crews may begin driving toward them.
 If crews leave too early, the access road and parking fill up long before the runners arrive. If they leave too
 late, they miss their runners.

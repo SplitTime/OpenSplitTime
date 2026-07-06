@@ -24,6 +24,12 @@
           Arrived <%= day_time_military_format(row.target_progress_time_local) %>
         <% elsif row.predicted_target_arrival %>
           <%= day_time_military_format(row.predicted_target_arrival_local) %>
+          <% if row.anchored_beyond_gate? %>
+            <div class="small text-body-secondary">
+              Based on your time at <%= row.projection_anchor_label %>
+              (<%= day_time_military_format(row.projection_anchor_time_local) %>)
+            </div>
+          <% end %>
         <% else %>
           <span class="text-body-secondary">&mdash;</span>
         <% end %>

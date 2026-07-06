@@ -108,6 +108,58 @@ RSpec.describe GatingLocationRow do
     it "anchors on the OUT time" do
       expect(row.gating_split_time.bitkey).to eq(SubSplit::OUT_BITKEY)
       expect(row.predicted_target_arrival).to eq(gating_time + 5.minutes)
+      expect(row.anchored_beyond_gate?).to be(false)
+    end
+  end
+
+  # A gate far from its target, with intermediate aid stations in between, exercises the progressive
+  # projection: the gate is only the earliest anchor, and the estimate re-anchors on the runner's
+  # furthest recorded intermediate point.
+  context "with intermediate aid stations between the gate and target" do
+    subject(:row) { described_class.new(effort: effort, gating_location_event: wide_gate) }
+
+    let(:wide_gate) do
+      GatingLocationEvent.new(gating_location: gating_locations(:sum_bandera_gate), event: event,
+                              gating_aid_station: aid_stations(:aid_station_0017), # Molas Pass, distance 18347
+                              target_aid_station: aid_stations(:aid_station_0020), # Bandera Mine, distance 80741
+                              default_travel_buffer: 60)
+    end
+    let(:gate_split) { splits(:sum_100k_course_molas_pass_aid1) }
+    let(:intermediate_split) { splits(:sum_100k_course_cascade_creek_rd_aid3) } # distance 46317
+    let(:beyond_intermediate_split) { splits(:sum_100k_course_engineer_mtn_th_aid4) } # distance 59642
+
+    before { build_split_time(split: gate_split, bitkey: SubSplit::OUT_BITKEY, absolute_time: gating_time) }
+
+    context "when the runner has reached an intermediate station" do
+      before do
+        build_split_time(split: intermediate_split, bitkey: SubSplit::OUT_BITKEY, absolute_time: gating_time + 2.hours)
+        allow(Projection).to receive(:execute_query).and_return([instance_double(Projection, low_seconds: 3600)])
+      end
+
+      it "re-anchors the projection on the furthest intermediate point" do
+        expect(row.anchored_beyond_gate?).to be(true)
+        expect(row.projection_anchor_label).to eq(intermediate_split.base_name)
+        # Projected from the intermediate time (gate + 2h), not the gate time.
+        expect(row.predicted_target_arrival).to eq(gating_time + 2.hours + 3600.seconds)
+      end
+    end
+
+    context "when the furthest intermediate point has no prior-year data" do
+      before do
+        build_split_time(split: intermediate_split, bitkey: SubSplit::OUT_BITKEY, absolute_time: gating_time + 2.hours)
+        build_split_time(split: beyond_intermediate_split, bitkey: SubSplit::IN_BITKEY,
+                         absolute_time: gating_time + 3.hours)
+        # No projection from the furthest point (Engineer Mtn); the intermediate (Cascade Creek) has data.
+        allow(Projection).to receive(:execute_query) do |split_time:, **|
+          projected = split_time.split_id == intermediate_split.id ? instance_double(Projection, low_seconds: 3600) : nil
+          [projected].compact
+        end
+      end
+
+      it "falls back to the nearest earlier point that has a projection" do
+        expect(row.projection_anchor_label).to eq(intermediate_split.base_name)
+        expect(row.predicted_target_arrival).to eq(gating_time + 2.hours + 3600.seconds)
+      end
     end
   end
 end

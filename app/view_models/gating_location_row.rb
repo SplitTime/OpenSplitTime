@@ -68,8 +68,10 @@ class GatingLocationRow
     "#{verb} #{split_time.split.base_name}"
   end
 
-  # The runner's earliest predicted arrival at the target aid station, or nil when no
-  # release time applies (not yet gated, stopped, already arrived, or no projection).
+  # The runner's earliest predicted arrival at the target aid station, or nil when no release time
+  # applies (not yet gated, stopped, already arrived, or no projection). The projection is anchored
+  # on the runner's furthest recorded point between the gate and the target (see #projection_anchor),
+  # so it refines as the runner progresses toward the target.
   def predicted_target_arrival
     return @predicted_target_arrival if defined?(@predicted_target_arrival)
 
@@ -77,13 +79,28 @@ class GatingLocationRow
       if stopped? || reached_target? || !passed_gating?
         nil
       else
-        low_seconds = projected_low_seconds
-        low_seconds && (gating_split_time.absolute_time + low_seconds.seconds)
+        anchor = projection_anchor
+        anchor && (anchor.split_time.absolute_time + anchor.low_seconds.seconds)
       end
   end
 
   def predicted_target_arrival_local
     predicted_target_arrival&.in_time_zone(home_time_zone)
+  end
+
+  # The base name of the aid station the current projection is anchored on, e.g. "Cascade Creek Rd".
+  def projection_anchor_label
+    projection_anchor_split_time&.split&.base_name
+  end
+
+  def projection_anchor_time_local
+    projection_anchor_split_time&.absolute_time&.in_time_zone(home_time_zone)
+  end
+
+  # True when the projection is anchored beyond the gating aid station — on an intermediate aid
+  # station the runner has since reached — i.e. the estimate has been refined since leaving the gate.
+  def anchored_beyond_gate?
+    projection_anchor_split_time.present? && projection_anchor_split_time.split_id != gating_split.id
   end
 
   # Predicted target arrival minus the travel buffer, or nil when no release time applies.
@@ -119,11 +136,17 @@ class GatingLocationRow
     [rank, secondary, bib_number.to_i]
   end
 
+  ProjectionAnchor = Struct.new(:split_time, :low_seconds)
+
   private
 
   attr_reader :effort, :gating_location_event
 
   delegate :gating_split, :target_split, :gating_bitkey, to: :gating_location_event
+
+  def projection_anchor_split_time
+    projection_anchor&.split_time
+  end
 
   def home_time_zone
     gating_location_event.event.home_time_zone
@@ -138,13 +161,45 @@ class GatingLocationRow
     @furthest_target_split_time = at_or_beyond.max_by { |st| [st.split.distance_from_start, st.bitkey] }
   end
 
-  def projected_low_seconds
-    cache_key = ["gating_prediction", gating_location_event.id, gating_split_time.id, gating_split_time.updated_at]
+  # The point the release projection is anchored on: the runner's furthest recorded time between the
+  # gate (inclusive) and the target (exclusive) that yields a projection, walking back toward the gate
+  # when a nearer point has no prior-year data. The gating aid station is only the *earliest* possible
+  # anchor; a runner who has reached intermediate stations gets a more up-to-date estimate.
+  def projection_anchor
+    return @projection_anchor if defined?(@projection_anchor)
+
+    ordered = anchor_candidates.sort_by { |st| [st.lap, st.split.distance_from_start, st.bitkey] }.reverse
+    @projection_anchor = ordered.lazy.filter_map do |split_time|
+      low_seconds = projected_low_seconds_from(split_time)
+      ProjectionAnchor.new(split_time, low_seconds) if low_seconds
+    end.first
+  end
+
+  # Recorded split times eligible to anchor the projection: those at or beyond the gate and before the
+  # target. At the gating aid station only its gate sub-split counts (an In-only runner has not left
+  # the gate); at intermediate stations any recorded time counts.
+  def anchor_candidates
+    gating_distance = gating_split.distance_from_start
+    target_distance = target_split.distance_from_start
+
+    effort.split_times.select do |split_time|
+      distance = split_time.split.distance_from_start
+      next false unless distance >= gating_distance && distance < target_distance
+      next false if split_time.split_id == gating_split.id && split_time.bitkey != gating_bitkey
+
+      true
+    end
+  end
+
+  def projected_low_seconds_from(split_time)
+    # Keyed on the anchor split time (id + updated_at, so a correction busts it) and the target split
+    # (so re-pointing the gate's target busts it). Reaching a new station is a new split_time id.
+    cache_key = ["gating_prediction", gating_location_event.id, target_split.id, split_time.id, split_time.updated_at]
     Rails.cache.fetch(cache_key) do
       Projection.execute_query(
-        split_time: gating_split_time,
+        split_time: split_time,
         starting_time_point: gating_location_event.event.starting_time_point,
-        subject_time_points: [TimePoint.new(gating_split_time.lap, target_split.id, SubSplit::IN_BITKEY)],
+        subject_time_points: [TimePoint.new(split_time.lap, target_split.id, SubSplit::IN_BITKEY)],
       ).first&.low_seconds
     end
   end

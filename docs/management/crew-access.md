@@ -21,8 +21,11 @@ time that runner's crew should be released to make the drive.
 1. **Gating location:** A place where a race official controls when crews may begin driving toward an aid
 station with limited access. A single gating location can apply to more than one Event in your Event Group.
 
-1. **Gating aid station:** The station where runners are timed and where the gate is enforced. This is often
-the aid station the crews are waiting at, or a checkpoint the runners pass on the way.
+1. **Gating aid station:** The station where the gate is enforced — the **earliest** point from which
+OpenSplitTime will project a release. It is often chosen for its long drive to the target, so it may sit well
+before the target rather than being the station nearest to it. As a runner reaches later stations between the
+gate and the target, the release estimate re-anchors on the runner's most recent point and refines (see
+[Estimates refine as the runner progresses](#estimates-refine-as-the-runner-progresses)).
 
 1. **Target aid station:** The aid station the crews are driving toward.
 
@@ -99,6 +102,18 @@ at the gate, but on the moment the runner leaves it.
 This matters because a runner can spend a long time in an aid station. Calculating the release from the arrival
 time would release the crew too early. Until the runner's departure is recorded, the runner's Release column
 shows **Insufficient data**.
+
+### Estimates Refine as the Runner Progresses
+
+The gating aid station is only the **earliest** point from which a release is calculated, not the only one. As a
+runner reaches aid stations **between** the gate and the target, OpenSplitTime re-anchors the projection on the
+runner's most recent recorded point, producing a more accurate release time. When the estimate is based on a
+station beyond the gate, the board notes it (for example, "from Cascade Creek Rd at 13:05").
+
+This is why a distant gate still works well: a fast runner who has only reached the gate gets a release computed
+from that early point, while a slower runner's crew benefits from updated releases as the runner passes closer
+stations. If a later station has no prior-year data of its own, OpenSplitTime falls back to the most recent
+earlier point that does, so a release remains available.
 
 ### Adjusting the View
 

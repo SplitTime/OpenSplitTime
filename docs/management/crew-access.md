@@ -145,10 +145,11 @@ station.
 
 ## How the Predictions Work
 
-Release times depend on OpenSplitTime's ability to predict each runner's arrival at the target aid station. As
-with the other predictive tools, these predictions are most accurate when you have time data from at least one
-prior-year Event on the same Course. See [Power of Prediction](../monitor/#power-of-prediction) for more on how
-OpenSplitTime uses historical data.
+Release times depend on OpenSplitTime's ability to predict each runner's arrival at the target aid station.
+These predictions require time data from at least one prior-year Event on the same Course. See
+[Power of Prediction](../monitor/#power-of-prediction) for more on how OpenSplitTime uses historical data.
 
-Without prior data, OpenSplitTime falls back on distance- and elevation-based estimates, which are less precise.
-In that case, use the **Buffer** control and your own judgment to fine-tune releases during the Event.
+**If no prior-year data exists for the Course, OpenSplitTime does not predict arrival times, and no release
+time can be calculated.** The Release column will show **Insufficient data** for every runner, no matter how
+the buffer is set. Crew Access is therefore only useful for a Course that has at least one prior year of results
+in OpenSplitTime.

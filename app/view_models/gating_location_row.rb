@@ -192,7 +192,9 @@ class GatingLocationRow
   end
 
   def projected_low_seconds_from(split_time)
-    cache_key = ["gating_prediction", gating_location_event.id, split_time.id, split_time.updated_at]
+    # Keyed on the anchor split time (id + updated_at, so a correction busts it) and the target split
+    # (so re-pointing the gate's target busts it). Reaching a new station is a new split_time id.
+    cache_key = ["gating_prediction", gating_location_event.id, target_split.id, split_time.id, split_time.updated_at]
     Rails.cache.fetch(cache_key) do
       Projection.execute_query(
         split_time: split_time,

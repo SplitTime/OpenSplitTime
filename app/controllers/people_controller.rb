@@ -17,7 +17,10 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream
+      # Only the "Show More" pager (which carries a page param) wants the append-rows stream. A Turbo
+      # request without a page — e.g. the GET that follows a delete redirect, which inherits the
+      # turbo-stream Accept header — falls through to the full HTML page so Turbo does a real navigation.
+      format.turbo_stream if params[:page].present?
     end
   end
 

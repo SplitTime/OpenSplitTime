@@ -6,7 +6,7 @@ class PeopleController < ApplicationController
   def index
     # Sort will destroy fuzzy match ranking, so don't automatically
     # set it if a search param exists
-    params[:sort] ||= "last_name,first_name" unless prepared_params[:search].present?
+    params[:sort] ||= "last_name,first_name" if prepared_params[:search].blank?
 
     people_scope = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
     people_scope = people_scope.search(prepared_params[:search])
@@ -43,7 +43,8 @@ class PeopleController < ApplicationController
     authorize @person
     @person.destroy
 
-    redirect_to people_path
+    # 303 See Other so Turbo follows the redirect with a GET after the DELETE (a 302 is refetched as DELETE).
+    redirect_to people_path, status: :see_other
   end
 
   def avatar_claim
@@ -56,10 +57,10 @@ class PeopleController < ApplicationController
   def merge
     authorize @person
     @person_merge = PersonMergeView.new(@person, params[:proposed_match])
-    if @person_merge.proposed_match.nil?
-      flash[:success] = "No potential matches detected."
-      redirect_to person_path(@person)
-    end
+    return unless @person_merge.proposed_match.nil?
+
+    flash[:success] = "No potential matches detected."
+    redirect_to person_path(@person)
   end
 
   def combine

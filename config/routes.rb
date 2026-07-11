@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   draw :madmin
 
+  get "up" => "rails/health#show", as: :rails_health_check
+
   root to: "visitors#index"
   get "photo_credits", to: "visitors#photo_credits"
   get "about", to: "visitors#about"

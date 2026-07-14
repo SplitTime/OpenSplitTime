@@ -376,8 +376,7 @@ module DropdownHelper
         name: "Delete person",
         link: person_path(view_object.person),
         visible: view_object.current_user.admin?,
-        method: :delete,
-        data: { confirm: "This action cannot be undone. Proceed?" },
+        data: { turbo_method: :delete, turbo_confirm: "This action cannot be undone. Proceed?" },
         class: "text-danger",
       }
     ]
@@ -533,7 +532,7 @@ module DropdownHelper
         link: reconcile_event_group_path(view_object.event_group) },
       { name: "Set data status",
         link: set_data_status_event_group_path(view_object.event_group),
-        method: :patch },
+        data: { turbo_method: :patch } },
       { role: :separator },
       { name: "Import entrants",
         link: new_import_job_path(import_job: { parent_type: "EventGroup", parent_id: view_object.event_group.id,

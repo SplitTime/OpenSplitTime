@@ -6,7 +6,7 @@ class PeopleController < ApplicationController
   def index
     # Sort will destroy fuzzy match ranking, so don't automatically
     # set it if a search param exists
-    params[:sort] ||= "last_name,first_name" unless prepared_params[:search].present?
+    params[:sort] ||= "last_name,first_name" if prepared_params[:search].blank?
 
     people_scope = policy_class::Scope.new(current_user, controller_class).viewable.with_age_and_effort_count
     people_scope = people_scope.search(prepared_params[:search])
@@ -17,7 +17,10 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream
+      # Only the "Show More" pager (which carries a page param) wants the append-rows stream. A Turbo
+      # request without a page — e.g. the GET that follows a delete redirect, which inherits the
+      # turbo-stream Accept header — falls through to the full HTML page so Turbo does a real navigation.
+      format.turbo_stream if params[:page].present?
     end
   end
 
@@ -43,7 +46,8 @@ class PeopleController < ApplicationController
     authorize @person
     @person.destroy
 
-    redirect_to people_path
+    # 303 See Other so Turbo follows the redirect with a GET after the DELETE (a 302 is refetched as DELETE).
+    redirect_to people_path, status: :see_other
   end
 
   def avatar_claim
@@ -56,10 +60,10 @@ class PeopleController < ApplicationController
   def merge
     authorize @person
     @person_merge = PersonMergeView.new(@person, params[:proposed_match])
-    if @person_merge.proposed_match.nil?
-      flash[:success] = "No potential matches detected."
-      redirect_to person_path(@person)
-    end
+    return unless @person_merge.proposed_match.nil?
+
+    flash[:success] = "No potential matches detected."
+    redirect_to person_path(@person)
   end
 
   def combine

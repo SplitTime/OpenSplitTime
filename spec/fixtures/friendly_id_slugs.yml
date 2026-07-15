@@ -1,6 +1,0 @@
-# A historical (renamed-from) slug for the hardrock organization, whose current slug is "hardrock".
-# Looking it up exercises FriendlyId's history finder (see Organization .visible_or_authorized_for spec).
-hardrock_historical:
-  slug: hardrock-original
-  sluggable: hardrock (Organization)
-  created_at: 2020-01-01 00:00:00

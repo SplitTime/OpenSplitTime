@@ -97,4 +97,22 @@ RSpec.describe Organization, type: :model do
       end
     end
   end
+
+  describe ".visible_or_authorized_for" do
+    subject(:found) { described_class.visible_or_authorized_for(user).friendly.find(historical_slug) }
+
+    let(:user) { users(:third_user) }
+    let(:existing_organization) { organizations(:hardrock) }
+    let(:historical_slug) { "hardrock-original" }
+
+    # Give the (currently "hardrock") org a prior slug, so the lookup goes through FriendlyId history.
+    before { existing_organization.slugs.create!(slug: historical_slug) }
+
+    # Regression for #2158: the scope must not `distinct`, or FriendlyId history's `find` (which orders
+    # by friendly_id_slugs.id) raises PG::InvalidColumnReference against a SELECT DISTINCT.
+    it "finds an organization by a historical slug without a DISTINCT/ORDER BY error" do
+      expect { found }.not_to raise_error
+      expect(found).to eq(existing_organization)
+    end
+  end
 end

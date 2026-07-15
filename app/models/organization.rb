@@ -22,19 +22,24 @@ class Organization < ApplicationRecord
   has_many :results_templates, dependent: :destroy
 
   scope :owned_by, ->(user) { where(created_by: user.id) }
+  # Match by a stewardship subquery rather than a join, so results are naturally unique without
+  # `distinct`. A `distinct` here breaks when the relation is later ordered by a joined column — e.g.
+  # FriendlyId history's `find` orders by friendly_id_slugs.id, which SELECT DISTINCT organizations.*
+  # rejects (see #2158).
   scope :authorized_for, lambda { |user|
-    left_joins(:stewardships)
-      .where("organizations.created_by = ? or stewardships.user_id = ?", user.id, user.id)
-      .distinct
+    where(
+      "organizations.created_by = :user_id or organizations.id in (:steward_org_ids)",
+      user_id: user.id,
+      steward_org_ids: Stewardship.where(user_id: user.id).select(:organization_id),
+    )
   }
   scope :visible_or_authorized_for, lambda { |user|
-    left_joins(:stewardships)
-      .where(
-        "organizations.concealed is not true or organizations.created_by = ? or stewardships.user_id = ?",
-        user.id,
-        user.id,
-      )
-      .distinct
+    where(
+      "organizations.concealed is not true or organizations.created_by = :user_id " \
+      "or organizations.id in (:steward_org_ids)",
+      user_id: user.id,
+      steward_org_ids: Stewardship.where(user_id: user.id).select(:organization_id),
+    )
   }
   scope :with_visible_event_count, lambda {
     left_joins(event_groups: :events)

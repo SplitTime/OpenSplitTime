@@ -45,6 +45,13 @@ class BestEffortSegment < ::ApplicationRecord
     end_split_kind == Split.kinds[:finish]
   end
 
+  # "Place" is the user-facing label for a segment's rank within its event (the Place column on the
+  # course-group best-efforts view and the CSV export). event_rank is a runtime select alias, added by
+  # a ranking scope — not a schema attribute — so this delegates by method rather than alias_attribute.
+  def place
+    event_rank
+  end
+
   def to_param
     slug
   end

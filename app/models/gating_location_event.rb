@@ -39,10 +39,10 @@ class GatingLocationEvent < ApplicationRecord
   def interim_splits
     return [] if gating_split.blank? || target_split.blank?
 
-    event.aid_stations.map(&:split).select do |split|
+    event.ordered_splits.select do |split|
       split.distance_from_start > gating_split.distance_from_start &&
         split.distance_from_start < target_split.distance_from_start
-    end.sort_by(&:distance_from_start)
+    end
   end
 
   private

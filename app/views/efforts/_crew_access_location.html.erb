@@ -53,6 +53,11 @@
                 Best estimate available now; subject to change based on your times at
                 <%= row.interim_split_names.to_sentence %>.
               </div>
+            <% elsif row.release_held_constant? %>
+              <div class="small text-body-secondary">
+                Calculated from <%= gating_location_event.gating_split.base_name %>; will not change as you
+                reach <%= row.interim_split_names.to_sentence %> &mdash; unless you drop at one.
+              </div>
             <% end %>
           <% end %>
         <% else %>

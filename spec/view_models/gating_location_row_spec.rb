@@ -146,6 +146,7 @@ RSpec.describe GatingLocationRow do
 
       it "flags the release as subject to change and lists the interim stations" do
         expect(row.release_may_update?).to be(true)
+        expect(row.release_held_constant?).to be(false)
         expect(row.interim_split_names).to include(intermediate_split.base_name, beyond_intermediate_split.base_name)
       end
     end
@@ -163,6 +164,7 @@ RSpec.describe GatingLocationRow do
         # Anchored on the gate time, not the intermediate (gate + 2h).
         expect(row.predicted_target_arrival).to eq(gating_time + 3600.seconds)
         expect(row.release_may_update?).to be(false)
+        expect(row.release_held_constant?).to be(true)
       end
 
       it "still nullifies the release when the runner drops at an interim station" do

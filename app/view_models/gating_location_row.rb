@@ -191,6 +191,10 @@ class GatingLocationRow
   # target. At the gating aid station only its gate sub-split counts (an In-only runner has not left
   # the gate); at intermediate stations any recorded time counts.
   def anchor_candidates
+    # A non-updating gate holds its release constant from the gating time, so only the gate anchors it
+    # — interim progress is ignored (a drop still nullifies the release via the stopped? guard).
+    return [gating_split_time].compact unless update_release_times
+
     gating_distance = gating_split.distance_from_start
     target_distance = target_split.distance_from_start
 
@@ -198,9 +202,6 @@ class GatingLocationRow
       distance = split_time.split.distance_from_start
       next false unless distance >= gating_distance && distance < target_distance
       next false if split_time.split_id == gating_split.id && split_time.bitkey != gating_bitkey
-      # A non-updating gate holds its release constant from the gating time, so only the gate anchors
-      # it — interim progress is ignored (a drop still nullifies the release via the stopped? guard).
-      next false if !update_release_times && split_time.split_id != gating_split.id
 
       true
     end

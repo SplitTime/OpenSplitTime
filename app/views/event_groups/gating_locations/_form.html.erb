@@ -35,6 +35,15 @@
               <%= gle_fields.label :default_travel_buffer, "Default travel buffer (minutes)", class: "mb-1" %>
               <%= gle_fields.number_field :default_travel_buffer, min: 0, max: 1200, class: "form-control" %>
             </div>
+            <div class="mb-3 form-check form-switch">
+              <%= gle_fields.check_box :update_release_times, class: "form-check-input", role: "switch" %>
+              <%= gle_fields.label :update_release_times, "Update release times as the runner progresses",
+                                   class: "form-check-label" %>
+              <div class="form-text">
+                On: the release time refines using the runner's times at any aid stations between the gate and
+                the target. Off: the release time stays fixed from the gating time.
+              </div>
+            </div>
           </div>
         </div>
       <% end %>

@@ -25,7 +25,9 @@
       <div>
         <strong><%= gle.event.guaranteed_short_name %>:</strong>
         <%= gle.gating_split.base_name %> &rarr; <%= gle.target_split.base_name %>
-        <span class="text-body-secondary">(<%= gle.default_travel_buffer %> min buffer)</span>
+        <span class="text-body-secondary">
+          (<%= gle.default_travel_buffer %> min buffer<%= ", constant release" unless gle.update_release_times %>)
+        </span>
       </div>
     <% end %>
   </div>

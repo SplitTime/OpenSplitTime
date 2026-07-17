@@ -104,6 +104,7 @@ RSpec.describe "EventGroups::GatingLocations" do
                 gating_aid_station_id: aid_stations(:aid_station_0017).id,
                 target_aid_station_id: aid_stations(:aid_station_0019).id,
                 default_travel_buffer: 45,
+                update_release_times: "0",
               },
               "1" => {
                 event_id: events(:sum_55k).id,
@@ -120,7 +121,10 @@ RSpec.describe "EventGroups::GatingLocations" do
 
           gating_location = GatingLocation.find_by(name: "Engineer Gate")
           expect(gating_location.events).to contain_exactly(events(:sum_100k))
-          expect(gating_location.gating_location_events.first.default_travel_buffer).to eq(45)
+          gating_location_event = gating_location.gating_location_events.first
+          expect(gating_location_event.default_travel_buffer).to eq(45)
+          # Permitted and applied: DB default is true, so the submitted "0" proves the param flows through.
+          expect(gating_location_event.update_release_times).to be(false)
         end
       end
 

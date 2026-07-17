@@ -48,6 +48,12 @@
             <span class="badge bg-success">Now</span>
           <% else %>
             <strong><%= day_time_military_format(row.release_time_local(buffer)) %></strong>
+            <% if row.release_may_update? %>
+              <div class="small text-body-secondary">
+                Best estimate available now; subject to change based on your times at
+                <%= row.interim_split_names.to_sentence %>.
+              </div>
+            <% end %>
           <% end %>
         <% else %>
           <span class="text-body-secondary">Insufficient data</span>

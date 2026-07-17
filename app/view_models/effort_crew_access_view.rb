@@ -5,7 +5,8 @@ class EffortCrewAccessView < EffortWithLapSplitRows
   def gating_location_events
     @gating_location_events ||=
       event.gating_location_events
-           .includes(:gating_location, gating_aid_station: :split, target_aid_station: :split)
+           .includes(:gating_location, gating_aid_station: :split, target_aid_station: :split,
+                                       event: { aid_stations: :split })
            .sort_by { |gle| gle.gating_location.name }
   end
 

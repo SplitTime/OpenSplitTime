@@ -103,6 +103,16 @@ class GatingLocationRow
     projection_anchor_split_time.present? && projection_anchor_split_time.split_id != gating_split.id
   end
 
+  # True when the shown release time can still change as the runner reaches interim stations, so the
+  # effort view can warn crews. Only when this gate updates and has interim time points to update from.
+  def release_may_update?
+    update_release_times && interim_splits.present?
+  end
+
+  def interim_split_names
+    interim_splits.map(&:base_name)
+  end
+
   # Predicted target arrival minus the travel buffer, or nil when no release time applies.
   def release_time(buffer_minutes)
     arrival = predicted_target_arrival
@@ -142,7 +152,8 @@ class GatingLocationRow
 
   attr_reader :effort, :gating_location_event
 
-  delegate :gating_split, :target_split, :gating_bitkey, to: :gating_location_event
+  delegate :gating_split, :target_split, :gating_bitkey, :update_release_times, :interim_splits,
+           to: :gating_location_event
 
   def projection_anchor_split_time
     projection_anchor&.split_time
@@ -164,7 +175,8 @@ class GatingLocationRow
   # The point the release projection is anchored on: the runner's furthest recorded time between the
   # gate (inclusive) and the target (exclusive) that yields a projection, walking back toward the gate
   # when a nearer point has no prior-year data. The gating aid station is only the *earliest* possible
-  # anchor; a runner who has reached intermediate stations gets a more up-to-date estimate.
+  # anchor; a runner who has reached intermediate stations gets a more up-to-date estimate. A
+  # non-updating gate offers only the gate as a candidate, so its release stays constant.
   def projection_anchor
     return @projection_anchor if defined?(@projection_anchor)
 
@@ -186,6 +198,9 @@ class GatingLocationRow
       distance = split_time.split.distance_from_start
       next false unless distance >= gating_distance && distance < target_distance
       next false if split_time.split_id == gating_split.id && split_time.bitkey != gating_bitkey
+      # A non-updating gate holds its release constant from the gating time, so only the gate anchors
+      # it — interim progress is ignored (a drop still nullifies the release via the stopped? guard).
+      next false if !update_release_times && split_time.split_id != gating_split.id
 
       true
     end

@@ -26,7 +26,7 @@
           <%= day_time_military_format(row.predicted_target_arrival_local) %>
           <% if row.anchored_beyond_gate? %>
             <div class="small text-body-secondary">
-              Based on your time at <%= row.projection_anchor_label %>
+              Based on the entrant's time at <%= row.projection_anchor_label %>
               (<%= day_time_military_format(row.projection_anchor_time_local) %>)
             </div>
           <% end %>
@@ -50,8 +50,14 @@
             <strong><%= day_time_military_format(row.release_time_local(buffer)) %></strong>
             <% if row.release_may_update? %>
               <div class="small text-body-secondary">
-                Best estimate available now; subject to change based on your times at
+                Best estimate available now; subject to change based on the entrant's times at
                 <%= row.interim_split_names.to_sentence %>.
+              </div>
+            <% elsif row.release_held_constant? %>
+              <div class="small text-body-secondary">
+                Calculated from <%= gating_location_event.gating_split.base_name %>; will not change as the
+                entrant reaches <%= row.interim_split_names.to_sentence %> &mdash; unless the entrant drops
+                at one.
               </div>
             <% end %>
           <% end %>

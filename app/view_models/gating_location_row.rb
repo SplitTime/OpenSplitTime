@@ -100,6 +100,11 @@ class GatingLocationRow
     update_release_times && interim_splits.present?
   end
 
+  # The complement: the release is held constant despite interim stations — to reassure crews it's fixed.
+  def release_held_constant?
+    !update_release_times && interim_splits.present?
+  end
+
   def interim_split_names
     interim_splits.map(&:base_name)
   end

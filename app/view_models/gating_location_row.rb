@@ -18,10 +18,8 @@ class GatingLocationRow
     gating_location_event.event.guaranteed_short_name
   end
 
-  # The runner's recorded time at the gating aid station's gate sub-split (its Out when the station
-  # records one, otherwise its In), latest lap. Nil until that time exists: a runner who has only
-  # checked In could still be at the aid station for a while, so anchoring the release projection on
-  # the In time would release the crew too early.
+  # The gate's time — its Out when the station records one, else In, latest lap. Nil until recorded, so
+  # an In-only runner (possibly lingering at the aid station) doesn't release the crew early.
   def gating_split_time
     return @gating_split_time if defined?(@gating_split_time)
 
@@ -38,14 +36,12 @@ class GatingLocationRow
     gating_split_time&.absolute_time&.in_time_zone(home_time_zone)
   end
 
-  # True once the runner has any recorded time at or beyond the target aid station,
-  # at which point a release time is moot.
+  # True once the runner has a recorded time at or beyond the target, making a release moot.
   def reached_target?
     furthest_target_split_time.present?
   end
 
-  # True once the runner has progressed past the target aid station's In time — its Out time,
-  # or any later aid station.
+  # True once the runner is past the target's In — its Out, or any later station.
   def departed_target?
     split_time = furthest_target_split_time
     return false if split_time.nil?
@@ -53,7 +49,6 @@ class GatingLocationRow
     split_time.split_id != target_split.id || split_time.bitkey != SubSplit::IN_BITKEY
   end
 
-  # The runner's most recent recorded time at or beyond the target aid station.
   def target_progress_time_local
     furthest_target_split_time&.absolute_time&.in_time_zone(home_time_zone)
   end
@@ -68,10 +63,8 @@ class GatingLocationRow
     "#{verb} #{split_time.split.base_name}"
   end
 
-  # The runner's earliest predicted arrival at the target aid station, or nil when no release time
-  # applies (not yet gated, stopped, already arrived, or no projection). The projection is anchored
-  # on the runner's furthest recorded point between the gate and the target (see #projection_anchor),
-  # so it refines as the runner progresses toward the target.
+  # Earliest predicted arrival at the target, or nil (not gated, stopped, arrived, or no projection).
+  # Anchored on the runner's furthest recorded point between gate and target (see #projection_anchor).
   def predicted_target_arrival
     return @predicted_target_arrival if defined?(@predicted_target_arrival)
 
@@ -97,10 +90,18 @@ class GatingLocationRow
     projection_anchor_split_time&.absolute_time&.in_time_zone(home_time_zone)
   end
 
-  # True when the projection is anchored beyond the gating aid station — on an intermediate aid
-  # station the runner has since reached — i.e. the estimate has been refined since leaving the gate.
+  # True when the projection is anchored on an intermediate station — the estimate has refined past the gate.
   def anchored_beyond_gate?
     projection_anchor_split_time.present? && projection_anchor_split_time.split_id != gating_split.id
+  end
+
+  # Whether the shown release can still change as the runner reaches interim stations — to warn crews.
+  def release_may_update?
+    update_release_times && interim_splits.present?
+  end
+
+  def interim_split_names
+    interim_splits.map(&:base_name)
   end
 
   # Predicted target arrival minus the travel buffer, or nil when no release time applies.
@@ -142,7 +143,8 @@ class GatingLocationRow
 
   attr_reader :effort, :gating_location_event
 
-  delegate :gating_split, :target_split, :gating_bitkey, to: :gating_location_event
+  delegate :gating_split, :target_split, :gating_bitkey, :update_release_times, :interim_splits,
+           to: :gating_location_event
 
   def projection_anchor_split_time
     projection_anchor&.split_time
@@ -161,10 +163,8 @@ class GatingLocationRow
     @furthest_target_split_time = at_or_beyond.max_by { |st| [st.split.distance_from_start, st.bitkey] }
   end
 
-  # The point the release projection is anchored on: the runner's furthest recorded time between the
-  # gate (inclusive) and the target (exclusive) that yields a projection, walking back toward the gate
-  # when a nearer point has no prior-year data. The gating aid station is only the *earliest* possible
-  # anchor; a runner who has reached intermediate stations gets a more up-to-date estimate.
+  # The projection's anchor: the runner's furthest recorded point between gate (inclusive) and target
+  # (exclusive) that yields a projection, walking back toward the gate when a nearer point has no data.
   def projection_anchor
     return @projection_anchor if defined?(@projection_anchor)
 
@@ -175,10 +175,12 @@ class GatingLocationRow
     end.first
   end
 
-  # Recorded split times eligible to anchor the projection: those at or beyond the gate and before the
-  # target. At the gating aid station only its gate sub-split counts (an In-only runner has not left
-  # the gate); at intermediate stations any recorded time counts.
+  # Split times eligible to anchor the projection, gate (inclusive) to target (exclusive), counting only
+  # the gate's sub-split at the gate. A non-updating gate uses just the gate, holding its release
+  # constant (interim progress ignored; a drop still nullifies via the stopped? guard).
   def anchor_candidates
+    return [gating_split_time].compact unless update_release_times
+
     gating_distance = gating_split.distance_from_start
     target_distance = target_split.distance_from_start
 
@@ -191,9 +193,8 @@ class GatingLocationRow
     end
   end
 
+  # Cache key busts on an anchor time correction (id + updated_at) or a re-pointed target.
   def projected_low_seconds_from(split_time)
-    # Keyed on the anchor split time (id + updated_at, so a correction busts it) and the target split
-    # (so re-pointing the gate's target busts it). Reaching a new station is a new split_time id.
     cache_key = ["gating_prediction", gating_location_event.id, target_split.id, split_time.id, split_time.updated_at]
     Rails.cache.fetch(cache_key) do
       Projection.execute_query(

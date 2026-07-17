@@ -115,6 +115,17 @@ from that early point, while a slower runner's crew benefits from updated releas
 stations. If a later station has no prior-year data of its own, OpenSplitTime falls back to the most recent
 earlier point that does, so a release remains available.
 
+### Constant vs. Updating Release Times
+
+Each gate has an **Update release times as the runner progresses** switch (in the construction form, per event).
+It only matters when there are aid stations between the gate and the target.
+
+- **On (the default):** releases refine as described above. On the runner's public Crew Access tab, the release
+  time is labeled as the best estimate available now and subject to change based on the runner's interim times.
+- **Off:** the release time is computed once from the gating time and held **constant** — it does not change as
+  the runner passes interim stations. Choose this when it's more important to give a crew a time and stick with
+  it than to refine it. A runner who **drops** at an interim station still clears the release either way.
+
 ### Adjusting the View
 
 Controls above each Event's table let you tailor the board:

@@ -118,11 +118,12 @@ RSpec.describe GatingLocationRow do
   context "with intermediate aid stations between the gate and target" do
     subject(:row) { described_class.new(effort: effort, gating_location_event: wide_gate) }
 
+    let(:update_release_times) { true }
     let(:wide_gate) do
       GatingLocationEvent.new(gating_location: gating_locations(:sum_bandera_gate), event: event,
                               gating_aid_station: aid_stations(:aid_station_0017), # Molas Pass, distance 18347
                               target_aid_station: aid_stations(:aid_station_0020), # Bandera Mine, distance 80741
-                              default_travel_buffer: 60)
+                              default_travel_buffer: 60, update_release_times: update_release_times)
     end
     let(:gate_split) { splits(:sum_100k_course_molas_pass_aid1) }
     let(:intermediate_split) { splits(:sum_100k_course_cascade_creek_rd_aid3) } # distance 46317
@@ -141,6 +142,32 @@ RSpec.describe GatingLocationRow do
         expect(row.projection_anchor_label).to eq(intermediate_split.base_name)
         # Projected from the intermediate time (gate + 2h), not the gate time.
         expect(row.predicted_target_arrival).to eq(gating_time + 2.hours + 3600.seconds)
+      end
+
+      it "flags the release as subject to change and lists the interim stations" do
+        expect(row.release_may_update?).to be(true)
+        expect(row.interim_split_names).to include(intermediate_split.base_name, beyond_intermediate_split.base_name)
+      end
+    end
+
+    context "when the gate does not update release times" do
+      let(:update_release_times) { false }
+
+      before do
+        build_split_time(split: intermediate_split, bitkey: SubSplit::OUT_BITKEY, absolute_time: gating_time + 2.hours)
+        allow(Projection).to receive(:execute_query).and_return([instance_double(Projection, low_seconds: 3600)])
+      end
+
+      it "holds the release constant from the gating time, ignoring interim progress" do
+        expect(row.anchored_beyond_gate?).to be(false)
+        # Anchored on the gate time, not the intermediate (gate + 2h).
+        expect(row.predicted_target_arrival).to eq(gating_time + 3600.seconds)
+        expect(row.release_may_update?).to be(false)
+      end
+
+      it "still nullifies the release when the runner drops at an interim station" do
+        allow(effort).to receive(:stopped?).and_return(true)
+        expect(row.predicted_target_arrival).to be_nil
       end
     end
 

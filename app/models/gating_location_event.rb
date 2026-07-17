@@ -34,6 +34,16 @@ class GatingLocationEvent < ApplicationRecord
     SubSplit.kind(gating_bitkey) if gating_bitkey
   end
 
+  # Aid-station splits strictly between the gate and target — the interim time points that refine the release.
+  def interim_splits
+    return [] if gating_split.blank? || target_split.blank?
+
+    event.ordered_splits.select do |split|
+      split.distance_from_start > gating_split.distance_from_start &&
+        split.distance_from_start < target_split.distance_from_start
+    end
+  end
+
   private
 
   def aid_stations_belong_to_event

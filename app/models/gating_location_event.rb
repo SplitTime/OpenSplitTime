@@ -34,8 +34,7 @@ class GatingLocationEvent < ApplicationRecord
     SubSplit.kind(gating_bitkey) if gating_bitkey
   end
 
-  # Aid-station splits strictly between the gate and the target — the interim time points whose data
-  # refines the release when update_release_times is on. Empty when the gate and target are adjacent.
+  # Aid-station splits strictly between the gate and target — the interim time points that refine the release.
   def interim_splits
     return [] if gating_split.blank? || target_split.blank?
 

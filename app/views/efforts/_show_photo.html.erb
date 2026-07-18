@@ -1,5 +1,9 @@
 <%= turbo_frame_tag "form_modal" do %>
   <div class="text-center m-3">
-    <%= image_tag(@effort.photo.variant(:medium)) %>
+    <% if @effort.photo.attached? %>
+      <%= image_tag(@effort.photo.variant(:medium)) %>
+    <% else %>
+      <p class="text-body-secondary mb-0">No photo available.</p>
+    <% end %>
   </div>
 <% end %>

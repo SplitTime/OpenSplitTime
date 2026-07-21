@@ -14,6 +14,6 @@ Rails.application.config.to_prepare do
     "Aws::S3::Errors::NoSuchKey",
     "Aws::S3::Errors::NotFound",
   ) do
-    redirect_to helpers.image_path("small/avatar-empty.jpg"), allow_other_host: false
+    redirect_to helpers.image_path("avatar-placeholder.svg"), allow_other_host: false
   end
 end

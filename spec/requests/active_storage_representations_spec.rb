@@ -24,7 +24,7 @@ RSpec.describe "ActiveStorage representation serving", type: :request do
       get variant_path
 
       expect(response).to have_http_status(:redirect)
-      expect(response.location).to include("avatar-empty")
+      expect(response.location).to include("avatar-placeholder")
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe "ActiveStorage representation serving", type: :request do
         get variant_path
 
         expect(response).to have_http_status(:redirect)
-        expect(response.location).to include("avatar-empty")
+        expect(response.location).to include("avatar-placeholder")
       end
     end
   end

@@ -45,12 +45,11 @@ RSpec.describe "ActiveStorage representation serving", type: :request do
     end
   end
 
-  context "when the variant is intact" do
-    it "redirects to the stored representation, not the placeholder" do
-      get variant_path
+  context "when serving raises an error outside the rescued set" do
+    before { allow(ActiveStorage::Blob.service).to receive(:download).and_raise(Aws::S3::Errors::AccessDenied.new(nil, "denied")) }
 
-      expect(response).to have_http_status(:redirect)
-      expect(response.location).not_to include("avatar-empty")
+    it "does not swallow it into the placeholder (rescue stays scoped)" do
+      expect { get variant_path }.to raise_error(Aws::S3::Errors::AccessDenied)
     end
   end
 end

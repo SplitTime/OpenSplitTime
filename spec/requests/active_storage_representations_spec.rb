@@ -1,10 +1,8 @@
 require "rails_helper"
-require "aws-sdk-s3" # not auto-loaded in the test env (Disk service); needed to build the error doubles below
+require "aws-sdk-s3" # not auto-loaded in test (Disk service); needed to build the S3 error doubles below
 
-# Regression coverage for #2161: the entrant-photo management workflow can request a variant for a
-# photo whose blob/file is mid-purge or already gone, which made the stock representation controller
-# 500. config/initializers/active_storage_representations.rb rescues that class of errors and serves
-# the empty-avatar placeholder, sized to match the requested variant.
+# #2161: a variant requested for an entrant photo whose blob/file is gone used to 500; it now serves
+# the placeholder, sized to the variant.
 RSpec.describe "ActiveStorage representation serving", type: :request do
   let(:event_group) { event_groups(:sum) }
 
@@ -15,8 +13,7 @@ RSpec.describe "ActiveStorage representation serving", type: :request do
     event_group.entrant_photos.reload.first
   end
 
-  # The :small variant is resize_to_limit [200, 200], so the placeholder should come back at 200x200.
-  let(:variant_path) { rails_representation_path(attachment.variant(:small)) }
+  let(:variant_path) { rails_representation_path(attachment.variant(:small)) } # :small == resize_to_limit [200, 200]
 
   shared_examples "the sized placeholder" do
     it "renders the placeholder SVG sized to the variant instead of returning 500" do

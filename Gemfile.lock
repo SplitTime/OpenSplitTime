@@ -386,8 +386,6 @@ GEM
     memory_profiler (1.1.0)
     method_source (1.1.0)
     mini_histogram (0.3.1)
-    mini_magick (5.3.1)
-      logger
     mini_mime (1.1.5)
     minitest (6.0.6)
       drb (~> 2.0)
@@ -837,7 +835,6 @@ DEPENDENCIES
   local_time
   madmin (~> 2.0)
   mailgun-ruby
-  mini_magick
   mission_control-jobs
   name_of_person
   normalize_country

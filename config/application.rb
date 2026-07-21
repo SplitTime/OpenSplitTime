@@ -21,7 +21,7 @@ module OpenSplitTime
 
     config.action_mailer.delivery_job = "ActionMailer::MailDeliveryJob"
     config.action_mailer.deliver_later_queue_name = :mailers
-    config.active_storage.variant_processor = :mini_magick
+    config.active_storage.variant_processor = :vips
 
     # Both use the same lower-priority :storage queue
     config.active_storage.queues.analysis = :storage

@@ -4,7 +4,7 @@ require "aws-sdk-s3" # not auto-loaded in the test env (Disk service); needed to
 # Regression coverage for #2161: the entrant-photo management workflow can request a variant for a
 # photo whose blob/file is mid-purge or already gone, which made the stock representation controller
 # 500. config/initializers/active_storage_representations.rb rescues that class of errors and serves
-# the empty-avatar placeholder instead.
+# the empty-avatar placeholder, sized to match the requested variant.
 RSpec.describe "ActiveStorage representation serving", type: :request do
   let(:event_group) { event_groups(:sum) }
 
@@ -15,17 +15,23 @@ RSpec.describe "ActiveStorage representation serving", type: :request do
     event_group.entrant_photos.reload.first
   end
 
+  # The :small variant is resize_to_limit [200, 200], so the placeholder should come back at 200x200.
   let(:variant_path) { rails_representation_path(attachment.variant(:small)) }
+
+  shared_examples "the sized placeholder" do
+    it "renders the placeholder SVG sized to the variant instead of returning 500" do
+      get variant_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.media_type).to eq("image/svg+xml")
+      expect(response.body).to include(%(width="200" height="200"))
+    end
+  end
 
   context "when the underlying file is missing" do
     before { attachment.blob.service.delete(attachment.blob.key) }
 
-    it "redirects to the placeholder instead of returning 500" do
-      get variant_path
-
-      expect(response).to have_http_status(:redirect)
-      expect(response.location).to include("avatar-placeholder")
-    end
+    it_behaves_like "the sized placeholder"
   end
 
   {
@@ -36,12 +42,7 @@ RSpec.describe "ActiveStorage representation serving", type: :request do
     context "when serving the variant raises #{error_name}" do
       before { allow(ActiveStorage::Blob.service).to receive(:download).and_raise(error) }
 
-      it "redirects to the placeholder instead of returning 500" do
-        get variant_path
-
-        expect(response).to have_http_status(:redirect)
-        expect(response.location).to include("avatar-placeholder")
-      end
+      it_behaves_like "the sized placeholder"
     end
   end
 

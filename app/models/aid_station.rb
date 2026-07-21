@@ -8,7 +8,8 @@ class AidStation < ApplicationRecord
   has_many :gating_location_events_as_target, class_name: "GatingLocationEvent", foreign_key: :target_aid_station_id,
                                               dependent: :destroy, inverse_of: :target_aid_station
 
-  validates :split_id, uniqueness: { scope: :event_id, message: "only one of any given split permitted within an event" } # rubocop:disable Rails/UniqueValidationWithoutIndex, Layout/LineLength
+  validates :split_id,
+            uniqueness: { scope: :event_id, message: "only one of any given split permitted within an event" }
   validates_with AidStationAttributesValidator
 
   attr_accessor :efforts_dropped_at_station, :efforts_in_aid, :efforts_recorded_out,

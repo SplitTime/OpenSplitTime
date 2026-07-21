@@ -3,7 +3,7 @@
     <% if @effort.photo.attached? %>
       <%= image_tag(@effort.photo.variant(:medium)) %>
     <% else %>
-      <p class="text-body-secondary mb-0">No photo available.</p>
+      <%= image_tag "avatar-placeholder.svg", alt: "No photo", width: 200, height: 200 %>
     <% end %>
   </div>
 <% end %>

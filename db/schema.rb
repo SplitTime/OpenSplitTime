@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_17_205108) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_21_221108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -47,10 +47,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_17_205108) do
 
   create_table "aid_stations", id: :serial, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
-    t.integer "event_id"
-    t.integer "split_id"
+    t.integer "event_id", null: false
+    t.integer "split_id", null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.index ["event_id"], name: "index_aid_stations_on_event_id"
+    t.index ["event_id", "split_id"], name: "index_aid_stations_on_event_id_and_split_id", unique: true
     t.index ["split_id"], name: "index_aid_stations_on_split_id"
   end
 

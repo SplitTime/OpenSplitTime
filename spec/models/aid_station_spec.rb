@@ -41,6 +41,10 @@ RSpec.describe AidStation, type: :model do
         expect(aid_station).not_to be_valid
         expect(aid_station.errors.full_messages.first).to include("only one of any given split permitted within an event")
       end
+
+      it "is rejected by the database unique index even when the validation is bypassed" do
+        expect { aid_station.save(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
+      end
     end
 
     context "with event_group split location validations" do

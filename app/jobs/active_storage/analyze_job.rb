@@ -11,6 +11,10 @@ module ActiveStorage
     queue_as { ActiveStorage.queues[:analysis] }
 
     discard_on ActiveRecord::RecordNotFound
+    # A blob can be purged before this job runs (the entrant-photo workflow re-parents/deletes
+    # attachments right after upload), so the file may already be gone -- nothing to analyze, discard.
+    # Aws errors are strings so they resolve lazily at raise time; aws-sdk-s3 is require: false.
+    discard_on ActiveStorage::FileNotFoundError, "Aws::S3::Errors::NoSuchKey", "Aws::S3::Errors::NotFound"
     retry_on ActiveStorage::IntegrityError, attempts: 10, wait: :polynomially_longer
 
     def perform(blob)

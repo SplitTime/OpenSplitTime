@@ -157,6 +157,8 @@ OpenSplitTime is hosted on [Digital Ocean](https://www.digitalocean.com/) and de
 
 The infrastructure includes Digital Ocean droplets for web and worker processes, and a Digital Ocean managed PostgreSQL database. Deployments are managed through the Hatchbox dashboard.
 
+Operational procedures — load-balancer health checks, new-server provisioning, and diagnosing an outage — are documented in [OPERATIONS.md](OPERATIONS.md).
+
 Email
 -------------------------
 

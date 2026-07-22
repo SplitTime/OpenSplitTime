@@ -1,12 +1,8 @@
 require "rails_helper"
-require "aws-sdk-s3" # not auto-loaded in test (Disk service); needed to build the S3 error doubles
+require "aws-sdk-s3" # to build the S3 error doubles (not auto-loaded under the test Disk service)
 
-# #2161 / Scout #117837: a blob can be purged before its analyze job runs, so analysis hits a file that's
-# gone. ActiveStorage::AnalyzeJob (app/jobs/active_storage/analyze_job.rb) discards those errors rather
-# than failing/retrying a file that won't come back.
 RSpec.describe ActiveStorage::AnalyzeJob do
-  # potato3.jpg is a large, uncompressed image, so perform takes the compress branch; raising from there
-  # simulates the file being gone by the time the job runs.
+  # A large image takes the compress branch, so raising from CompressPhoto stands in for the missing file.
   let(:blob) do
     event_group = event_groups(:sum)
     event_group.entrant_photos.attach(

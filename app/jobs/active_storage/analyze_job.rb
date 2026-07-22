@@ -11,6 +11,8 @@ module ActiveStorage
     queue_as { ActiveStorage.queues[:analysis] }
 
     discard_on ActiveRecord::RecordNotFound
+    # Aws classes as strings so they resolve lazily: aws-sdk-s3 is require: false.
+    discard_on ActiveStorage::FileNotFoundError, "Aws::S3::Errors::NoSuchKey", "Aws::S3::Errors::NotFound"
     retry_on ActiveStorage::IntegrityError, attempts: 10, wait: :polynomially_longer
 
     def perform(blob)

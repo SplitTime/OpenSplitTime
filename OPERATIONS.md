@@ -169,6 +169,41 @@ Safe ordering:
 
 ---
 
+## Redirect-only domains belong at the Cloudflare edge, not the origin
+
+The canonical host is `www` (`<site>`). The apex and any alternate-TLD names (e.g. the bare apex and
+`.com` variants) exist only to **redirect** to it — they must **not** be added to the app's domain list in
+Hatchbox.
+
+If a redirect-only name is added there, the LB's Caddy tries to obtain a Let's Encrypt cert for it, and
+ACME fails permanently behind Cloudflare:
+
+- **tls-alpn-01** can't negotiate (`Cannot negotiate ALPN protocol "acme-tls/1"`) — Cloudflare terminates
+  TLS at its edge, so the challenge handshake never reaches Caddy.
+- **http-01** gets a **404** — the apex/`.com` challenge request is itself redirected to `www`, where no
+  matching challenge token exists (`no information found to solve challenge for identifier: www…`).
+
+The result is endless failed-renewal log noise that buries real signal (it made the #2155 outage journal
+much harder to read). Users are unaffected either way: Cloudflare serves its own edge cert on those names,
+and the origin never needs a cert for a name it only redirects.
+
+**So:** do the apex/alt-TLD → `www` redirect entirely at the Cloudflare edge (a Redirect Rule), and keep
+only the canonical `www` host in Hatchbox.
+
+If the ACME noise ever reappears, a redirect-only domain has been re-added to the app. Verify and fix on
+the LB:
+```bash
+curl -s localhost:2019/config/ | grep -oiE '<domain-pattern>' | sort -u   # should list only the www host
+ls ~/.local/share/caddy/locks/                                            # no lingering issue_cert_* locks
+sudo journalctl -u caddy --since "15 min ago" | grep -iE 'obtain|challenge|acme'   # should be quiet
+```
+Remove the offending domain(s) from the app in Hatchbox; Caddy stops attempting ACME once the regenerated
+config reaches the LB. (See #2176. A Cloudflare Origin CA cert + Full (strict) is an alternative that would
+let the origin hold a long-lived cert for all names, but it isn't needed when the extra names are pure edge
+redirects.)
+
+---
+
 ## Diagnosing an outage on the LB
 
 The LB is `<load-balancer-host>` (Caddy runs as a systemd service, logs to the journal):

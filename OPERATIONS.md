@@ -14,7 +14,8 @@ Cloudflare  ->  load balancer (Caddy)  ->  web backend 1 (Caddy -> Puma)
 ```
 
 Hostnames, IPs, and tokens are intentionally written as placeholders here (`<load-balancer-host>`,
-`<backend-host>`, `<backend-ip>`, `<db-host>`) — this file is in a public repository. Keep it that way.
+`<backend-host>`, `<backend-ip>`, `<site>`, `<db-host>`) — this file is in a public repository. Keep it
+that way.
 
 ---
 
@@ -39,87 +40,93 @@ backend that never finishes booting). See the design discussion on issue #2155 /
 
 **Why this matters (real incident).** When a new backend was added to the LB but couldn't boot (its IP
 wasn't whitelisted in the database firewall — see the provisioning checklist below), it held its port
-without accepting connections and returned 502 for every request. The LB kept sending it ~half the
-traffic and the origin overloaded. The Caddy journal for that window shows **no health-check activity at
-all** — nothing removed the bad backend automatically, and the outage lasted ~40 minutes until it was
-removed **by hand** via the admin API. Passive checks alone don't catch this: a 502 *is* a response, so
-the LB counts the backend as "responding."
+without accepting connections and its own Caddy returned 502 for every request. The LB kept sending it
+~half the traffic and the origin overloaded; the site was down for **~25 minutes** until the backend was
+removed **by hand** via the admin API.
 
-**Active** health checks fix exactly this — the LB probes each backend's `/up` directly on a fixed
-interval, independent of user traffic, and pulls a backend that fails the probe within seconds.
+The reason it wasn't pulled automatically is in the LB's *passive* health check. Hatchbox configures
+passive as `{fail_duration, max_fails}` with **no `unhealthy_status`**, so Caddy only counts
+*connection-level* failures — an HTTP 502 is a completed response, not a failure. The bad backend's 502s
+counted as "responding," so passive never removed it.
 
-### Configuration
+**Active** health checks close that gap: the LB probes each backend's `/up` on an interval and treats a
+non-2xx (or a refused/timed-out connection) as unhealthy — exactly the 502-from-the-backend's-own-Caddy
+case that passive ignored.
 
-Caddy on the LB runs its config via the admin API (there may be no static Caddyfile — the live config is
-`curl -s localhost:2019/config/`). The health-check block lives on the `reverse_proxy` handler. Expressed
-as a Caddyfile fragment (map to JSON if that's how the config is managed; **verify directive names against
-the running Caddy version** — check `caddy version`):
+### Enabling — Hatchbox does this natively; don't hand-edit Caddy
 
-```
-reverse_proxy <backend-1>:<port> <backend-2>:<port> {
-    # active checks
-    health_uri      /up
-    health_interval 10s
-    health_timeout  5s
-    health_status   2xx
+Hatchbox generates the LB's Caddy config — the `reverse_proxy` block and its `health_checks` — inside an
+opaque `%{apps}` template. **Do not** patch the running Caddy via the admin API to add active checks; the
+next deploy regenerates the config and wipes it. Instead, set the app's **health-check path to `/up`** in
+Hatchbox; it then emits the `health_checks.active` block (and sets the correct upstream `Host` header so
+the probe routes to the app).
 
-    # passive checks (backstop)
-    fail_duration    10s
-    max_fails        3
-    unhealthy_status 5xx
-}
-```
+Two things Hatchbox does **not** let you tune, worth knowing:
+- **No interval is set, so Caddy defaults to ~30s.** Failover takes up to ~30s — far better than the
+  ~25-minute outage, but during that window the bad backend still gets ~half the traffic. Tighten only if
+  Hatchbox ever exposes an interval/timeout setting.
+- The **passive block stays `max_fails: 10` with no `unhealthy_status`** — effectively inert for a 502, as
+  above. Active is doing the real work; don't rely on passive.
 
-Equivalent JSON on the reverse_proxy handler (durations are integer **nanoseconds**; `10s = 10000000000`):
+### Verifying (tested procedure)
 
-```json
-"health_checks": {
-  "active":  { "path": "/up", "interval": 10000000000, "timeout": 5000000000, "expect_status": 200 },
-  "passive": { "fail_duration": 10000000000, "max_fails": 3, "unhealthy_status": [500, 502, 503, 504] }
-}
-```
+Run on the LB host. Step 3 downs a backend, so do it in low traffic (or on staging) with the *other*
+backend confirmed healthy first.
 
-### Applying it
+1. **Confirm the active block is live** (Hatchbox generated it):
+   ```bash
+   curl -s localhost:2019/config/ | jq '.. | objects | select(.handler? == "reverse_proxy") | .health_checks'
+   ```
+   Expect an `active` object with `uri: "/up"` (and a `Host` header) alongside `passive`.
 
-Caddy on the LB is managed by Hatchbox. Apply the change through Hatchbox's Caddy configuration so it is
-**persisted** — a raw `curl` push to the admin API works until the next deploy, which regenerates the
-config and wipes it. If you must push directly for a quick test, snapshot first (see below) and
-re-persist through Hatchbox afterward.
+2. **Confirm every backend currently reads healthy** — proves the probe *succeeds* against a good backend,
+   catching a mis-set Host/path that would false-positive a healthy node:
+   ```bash
+   curl -s localhost:2019/reverse_proxy/upstreams | jq   # each upstream should show fails: 0
+   ```
 
-### Verifying
+3. **Down one backend; confirm it's pulled within ~an interval while the site stays 200.** Two ways:
 
-```bash
-# from the LB host
-curl -f http://<backend-host>:<port>/up            # 200 from each backend directly
-curl -s localhost:2019/reverse_proxy/upstreams | jq # per-backend health + in-flight request counts
-```
+   *Cleanest — block the LB's probe (no app touched, one-line toggle):* on the target backend,
+   ```bash
+   sudo iptables -I INPUT -p tcp --dport 80 -j DROP    # down (only port 80 — SSH stays open)
+   sudo iptables -D INPUT -p tcp --dport 80 -j DROP    # up
+   ```
 
-Then simulate a failure: stop Puma on one backend and confirm Caddy marks it unhealthy in
-`/reverse_proxy/upstreams` and the site keeps serving 200 from the rest (no 502s). Bring it back and
-confirm it re-enters rotation.
+   *Truer 502 reproduction — stop the app.* Hatchbox runs the app as **user** systemd services under the
+   deploy account, and web is **socket-activated** — you must stop the `.socket` too or the next probe
+   re-spawns Puma. Find the unit names first (`systemctl --user list-units --type=service` — e.g.
+   `<app>-web.service` + `<app>-web.socket`), then:
+   ```bash
+   systemctl --user stop  <app>-web.socket <app>-web.service   # down (no sudo — these are user units)
+   systemctl --user start <app>-web.socket <app>-web.service   # up
+   ```
+   (Leave the `<app>-worker` unit alone — it doesn't serve `/up`.)
+
+   Watch from the LB while it's down:
+   ```bash
+   watch -n2 'curl -s localhost:2019/reverse_proxy/upstreams | jq'                   # backend drops out
+   sudo journalctl -u caddy -f | grep -iE 'unhealthy|healthy|upstream'              # "marking upstream … unhealthy"
+   for i in $(seq 1 40); do curl -so /dev/null -w "%{http_code}\n" https://<site>/up; sleep 1; done  # stays 200
+   ```
+   The downed backend should leave the healthy set within ~30s and the site should never 502; restore it
+   and it rejoins within ~30s. (Watch for Hatchbox restarting the app on its own; the firewall method is
+   the more controllable of the two.)
 
 ---
 
-## Reverse-proxy hardening
+## Reverse-proxy hardening (not tunable on Hatchbox)
 
-In the same incident the origin didn't just return clean 502s — it **overloaded** ("Timeout after
-connect (your server may be slow or overloaded)"), because a backend that holds its port without
-accepting hangs the LB's connections rather than failing fast. Two settings on the `reverse_proxy` make
-a bad backend fail fast instead of swamping the LB (belt-and-suspenders with active checks — even before
-a probe marks a backend down, requests to it fail fast):
+In the same incident the origin didn't just return clean 502s — it **overloaded** ("Timeout after connect
+(your server may be slow or overloaded)"), because a backend that holds its port without accepting hangs
+the LB's connections rather than failing fast. Bounded backend timeouts (`dial_timeout`,
+`response_header_timeout`) plus capped retries (`lb_try_duration`, `lb_retries`) would make a bad backend
+fail fast instead of swamping the LB — belt-and-suspenders with active checks.
 
-```
-reverse_proxy <backend-1>:<port> <backend-2>:<port> {
-    transport http {
-        dial_timeout            5s   # give up quickly on a backend that isn't accepting
-        response_header_timeout 10s  # don't wait forever for a hung backend
-    }
-    lb_try_duration 5s               # cap how long a single request cycles upstreams
-    lb_retries      2                # cap failover amplification onto healthy backends
-}
-```
-
-Verify directive names/semantics against the running Caddy version before applying.
+But these live inside Hatchbox's generated `reverse_proxy` block (the opaque `%{apps}`), so there's **no
+supported way to set them on Hatchbox** — a direct admin-API push is wiped on the next deploy. Leave them
+to a Hatchbox feature/config request, or apply them directly only if the proxy is ever self-managed (e.g.
+a move to Kamal + kamal-proxy). Active health checks already cover the primary failure mode.
 
 ---
 
@@ -153,9 +160,10 @@ Safe ordering:
 3. Update the **LB first**, in a low-traffic window. Its Caddy restarts (brief blip). Verify the site
    loads and both backends show in `/reverse_proxy/upstreams`; diff the live config against the snapshot
    (watch the `reverse_proxy` and TLS/ACME sections for anything the update changed).
-4. **Re-apply** the active-health-check + hardening config if the update reset it, persisted through
-   Hatchbox.
-5. Update **backends only after** active health checks are in place — the checks turn each backend's
+4. **Confirm the active health check survived** — it's a Hatchbox app setting, so the regenerated config
+   should still contain `health_checks.active` (re-run the step-2 `jq` check). There's no manual config to
+   re-apply; that's Hatchbox's job.
+5. Update **backends only after** active health checks are confirmed — the checks turn each backend's
    restart into a graceful drain instead of a passively-handled failure. **Never update a backend while
    it is the only healthy one.**
 

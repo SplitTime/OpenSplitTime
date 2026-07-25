@@ -169,6 +169,73 @@ Safe ordering:
 
 ---
 
+## Web apps on Hatchbox (per-app Caddy → Puma)
+
+Every app server — the web backends behind the LB, and any standalone app server — runs a **local Caddy**
+that reverse-proxies to the app's **Puma**, which is socket-activated on `127.0.0.1:<port>`. Two
+Hatchbox-specific behaviors have bitten us; both apply to *any* app, so check them whenever an app 404s on
+every route or a web process won't start.
+
+### The reverse proxy is only generated for a "web role" process
+
+Hatchbox **omits the `reverse_proxy`** from a box's Caddy config — serving the app's `public/` as static
+files, so **every route including `/up` returns 404** — if the app has **no process assigned to the `web`
+role**. Assign web processes to the **web role**, not directly to a specific server; a directly-assigned
+process can be read as a static site and lose its proxy on the next config regeneration.
+
+Diagnose on the app server:
+```bash
+curl -s localhost:2019/config/ | jq '[.. | objects | select(.handler? == "reverse_proxy")] | length'
+```
+`0` means that box's Caddy has no proxy at all. Puma itself may be fine — confirm by hitting it directly
+(bypassing Caddy), supplying the forwarded-proto header so Rails' `force_ssl` doesn't 301 you:
+```bash
+curl -sI http://127.0.0.1:<port>/up -H 'Host: <site>' -H 'X-Forwarded-Proto: https'   # 200 => app is fine, Caddy is the problem
+```
+Fix by ensuring a web-role process exists, then redeploy so the config regenerates with the proxy.
+
+### The web process command must bind localhost explicitly
+
+Puma 8 changed its default bind to `tcp://[::]:<port>` (all interfaces) when a non-loopback IPv6 interface
+exists. That default breaks this setup two ways: it **doesn't match** the `127.0.0.1:<port>` systemd socket
+(so socket activation can't hand off the fd) and it **collides** with it → a Puma `EADDRINUSE` crash loop —
+and it exposes the app port on all interfaces. **Always bind localhost explicitly** in the process command:
+```
+bundle exec puma -C config/puma.rb -b tcp://127.0.0.1:${PORT}
+# equivalently:
+bin/rails server -b 127.0.0.1 -p $PORT
+```
+The bare `bundle exec puma -C config/puma.rb` (no `-b`) is the broken form. When moving a process to the web
+role, **preserve the existing command including its `-b` flag** — don't substitute the Procfile's bare puma
+line. Keep socket activation **enabled** (the reverse-proxy detection relies on it); disabling it is not a
+valid workaround.
+
+### Verifying a web app on a box
+
+```bash
+ss -ltn | grep :<port>                                                 # expect 127.0.0.1:<port> (NOT *: or [::]), Recv-Q 0
+journalctl --user -u <app>-web --since "5 min ago" --no-pager \
+  | grep -iE 'Activated|Address already in use'                        # "Activated tcp://127.0.0.1:<port>", no EADDRINUSE
+systemctl --user show <app>-web -p NRestarts,ActiveState,SubState      # NRestarts stable, active/running
+curl -s localhost:2019/config/ | jq '[.. | objects | select(.handler? == "reverse_proxy") | .upstreams]'   # dials 127.0.0.1:<port>
+curl -s -o /dev/null -w '%{http_code}\n' https://<site>/up             # 200
+```
+`Activated tcp://127.0.0.1:<port>` confirms socket activation is engaged (Puma reused the systemd socket fd);
+`* Listening on ...` without `Activated` means it bound fresh (works, but activation isn't wired).
+
+### Emergency stopgap: hand-load a corrected Caddyfile
+
+If a box's Caddy is stuck without its `reverse_proxy` and you can't wait for a Hatchbox fix, POST a corrected
+Caddyfile straight to the admin API to restore service immediately:
+```bash
+curl --max-time 15 -s --fail-with-body -X POST -H 'Content-Type: text/caddyfile' \
+  localhost:2019/load --data-binary @/path/to/Caddyfile
+```
+This is a **stopgap** — the next deploy or config update on that box overwrites it — so still fix the root
+cause (a missing web-role process, or a bind command without `-b 127.0.0.1`).
+
+---
+
 ## Redirect-only domains belong at the Cloudflare edge, not the origin
 
 The canonical host is `www` (`<site>`). The apex and any alternate-TLD names (e.g. the bare apex and

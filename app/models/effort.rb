@@ -359,11 +359,11 @@ class Effort < ApplicationRecord
     ordered_split_times.rfind(&:stopped_here)
   end
 
-  private
-
   def broadcast_update
     broadcast_render_later_to event_group, partial: "efforts/updated", locals: { effort: self }
   end
+
+  private
 
   def generate_new_topic_resource?
     !finished? && progress_notifications_timely?

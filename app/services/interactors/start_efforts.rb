@@ -31,7 +31,10 @@ module Interactors
 
           update_derived_data
         end
-        enqueue_event_notifications if errors.blank?
+        if errors.blank?
+          enqueue_event_notifications
+          broadcast_effort_updates
+        end
       end
       Interactors::Response.new(errors, response_message)
     end
@@ -98,6 +101,13 @@ module Interactors
     def enqueue_event_notifications
       events.select { |event| changed_event_ids.include?(event.id) && event.topic_resource_key? }
             .each { |event| NotifyEventUpdateJob.perform_later(event.id) }
+    end
+
+    # The roster page relies on per-effort broadcasts to update its rows;
+    # the suppressed touch chain would otherwise have fired these
+    def broadcast_effort_updates
+      changed_ids = changed_effort_ids.to_set
+      efforts.select { |effort| changed_ids.include?(effort.id) }.each(&:broadcast_update)
     end
 
     def changed_event_ids

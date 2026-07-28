@@ -8,6 +8,39 @@ RSpec.describe Interactors::StartEfforts do
 
     let(:home_time_zone) { subject_efforts.first.home_time_zone }
 
+    context "when one effort fails to save mid-batch" do
+      let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_un_started)] }
+      let(:start_time) { nil }
+
+      before do
+        # The event must be updated first; effort callbacks memoize event_start_time
+        subject_efforts.second.event.update_column(:scheduled_start_time, nil)
+        subject_efforts.first.update(scheduled_start_time: "2017-09-23 07:00:00".in_time_zone(home_time_zone))
+        subject_efforts.second.update(scheduled_start_time: nil)
+      end
+
+      it "rolls back all created split times and returns a failure response" do
+        response = nil
+        expect { response = subject.perform! }.not_to change(SplitTime, :count)
+
+        expect(response).not_to be_successful
+        expect(response.message).to eq("No efforts were started")
+      end
+
+      it "does not touch efforts or events" do
+        expect { subject.perform! }
+          .to not_change { subject_efforts.map { |effort| effort.reload.updated_at } }
+          .and(not_change { subject_efforts.map { |effort| effort.event.reload.updated_at } })
+      end
+
+      it "does not broadcast or enqueue notifications" do
+        subject_efforts.each { |effort| expect(effort).not_to receive(:broadcast_update) }
+        expect(NotifyEventUpdateJob).not_to receive(:perform_later)
+
+        subject.perform!
+      end
+    end
+
     context "when all provided efforts are valid" do
       context "when no efforts have a starting split time" do
         let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_un_started)] }

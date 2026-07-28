@@ -158,7 +158,7 @@ module Interactors
         return
       end
 
-      errors << multiple_event_groups_error(event_group_ids) if event_group_ids.uniq.many?
+      errors << multiple_event_groups_error(event_group_ids) if event_group_ids.many?
       errors << invalid_start_time_error(start_time) if invalid_start_time?
       errors << invalid_start_time_error(start_time || "nil") unless converted_start_time ||
                                                                      efforts.all?(&:scheduled_start_time?) ||
@@ -166,7 +166,7 @@ module Interactors
     end
 
     def event_group_ids
-      @event_group_ids ||= efforts.map { |effort| effort.event.event_group_id }
+      @event_group_ids ||= events.map(&:event_group_id).uniq
     end
 
     def invalid_start_time?

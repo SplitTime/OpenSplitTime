@@ -299,6 +299,43 @@ RSpec.describe SplitTime, kind: :model do
     end
   end
 
+  describe "defer_derived_data" do
+    subject { split_times(:hardrock_2016_brinda_fisher_start_1) }
+
+    let(:effort) { subject.effort }
+
+    context "when set" do
+      before { subject.defer_derived_data = true }
+
+      it "saves the record" do
+        expect { subject.update(absolute_time: "2016-07-15 11:00:00") }
+          .to(change { subject.reload.absolute_time })
+      end
+
+      it "does not sync elapsed seconds for the effort's split times" do
+        expect { subject.update(absolute_time: "2016-07-15 11:00:00") }
+          .not_to(change { effort.split_times.order(:id).pluck(:elapsed_seconds) })
+      end
+
+      it "does not set effort segments for the effort" do
+        expect { subject.update(absolute_time: "2016-07-15 11:00:00") }
+          .not_to(change { EffortSegment.where(effort_id: effort.id).count })
+      end
+    end
+
+    context "when not set" do
+      it "syncs elapsed seconds for the effort's split times" do
+        expect { subject.update(absolute_time: "2016-07-15 11:00:00") }
+          .to(change { effort.split_times.order(:id).pluck(:elapsed_seconds) })
+      end
+
+      it "sets effort segments for the effort" do
+        expect { subject.update(absolute_time: "2016-07-15 11:00:00") }
+          .to change { EffortSegment.where(effort_id: effort.id).count }.from(0)
+      end
+    end
+  end
+
   describe "before destroy" do
     context "when the starting split time has later split times" do
       subject { split_times(:hardrock_2016_brinda_fisher_start_1) }

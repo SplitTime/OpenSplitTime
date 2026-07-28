@@ -65,12 +65,18 @@ class SplitTime < ApplicationRecord
                             includes(split: :aid_stations).includes(:effort).where(aid_stations: { id: aid_station_id })
                           }
 
+  # Set by batch operations (e.g. Interactors::StartEfforts) that run the
+  # set-based equivalents of the derived-data callbacks once after saving
+  # many records. Any new callback added below must decide whether it also
+  # needs deferral and a batch equivalent.
+  attr_accessor :defer_derived_data
+
   before_validation :destroy_if_blank
   before_update :set_matching_raw_time, if: :matching_raw_time_id_changed?
   after_destroy :sync_elapsed_seconds
   after_destroy :delete_effort_segments
-  after_save :sync_elapsed_seconds
-  after_save :set_effort_segments
+  after_save :sync_elapsed_seconds, unless: :defer_derived_data
+  after_save :set_effort_segments, unless: :defer_derived_data
 
   validates :sub_split_bitkey, :absolute_time, :lap, presence: true
   validates :split_id, uniqueness: { scope: [:effort_id, :sub_split_bitkey, :lap],

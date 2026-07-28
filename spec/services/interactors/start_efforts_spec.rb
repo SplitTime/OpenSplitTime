@@ -4,7 +4,8 @@ RSpec.describe Interactors::StartEfforts do
   include BitkeyDefinitions
 
   describe ".perform!" do
-    subject { Interactors::StartEfforts.new(efforts: subject_efforts, start_time: start_time) }
+    subject { described_class.new(efforts: subject_efforts, start_time: start_time) }
+
     let(:home_time_zone) { subject_efforts.first.home_time_zone }
 
     context "when all provided efforts are valid" do
@@ -109,7 +110,7 @@ RSpec.describe Interactors::StartEfforts do
         let(:start_time) { "2017-09-23 08:00:00" }
 
         it "creates or updates starting split times as needed" do
-          expect { subject.perform! }.to change { SplitTime.count }.by(1)
+          expect { subject.perform! }.to change(SplitTime, :count).by(1)
 
           subject_efforts.each(&:reload)
           split_times = subject_efforts.map(&:starting_split_time)
@@ -120,6 +121,76 @@ RSpec.describe Interactors::StartEfforts do
 
         it "returns a successful response" do
           expect(subject.perform!).to be_successful
+        end
+
+        it "recalculates elapsed_seconds for all of the effort's split times" do
+          subject.perform!
+
+          effort = subject_efforts.second.reload
+          start_absolute_time = effort.starting_split_time.absolute_time
+          effort.split_times.each do |split_time|
+            expect(split_time.elapsed_seconds).to eq(split_time.absolute_time - start_absolute_time)
+          end
+        end
+
+        it "rebuilds effort segments from the new start time" do
+          subject.perform!
+
+          effort = subject_efforts.second.reload
+          start_split_id = effort.starting_split_time.split_id
+          start_segments = EffortSegment.where(effort_id: effort.id, begin_split_id: start_split_id)
+          expect(start_segments).to be_present
+          expect(start_segments.map(&:begin_time)).to all eq(start_time.in_time_zone(home_time_zone))
+        end
+      end
+
+      context "with respect to derived data and touches" do
+        let(:subject_efforts) { [efforts(:sum_55k_not_started), efforts(:sum_100k_un_started)] }
+        let(:start_time) { "2017-09-23 08:00:00" }
+
+        it "sets elapsed_seconds on the new starting split times" do
+          subject.perform!
+
+          split_times = subject_efforts.map { |effort| effort.reload.starting_split_time }
+          expect(split_times.map(&:elapsed_seconds)).to all eq(0)
+        end
+
+        it "sets performance data on the efforts" do
+          expect(subject_efforts.map(&:started)).to all be(false)
+          subject.perform!
+
+          subject_efforts.each(&:reload)
+          expect(subject_efforts.map(&:started)).to all be(true)
+        end
+
+        it "touches the efforts and their events" do
+          expect { subject.perform! }
+            .to change { subject_efforts.map { |effort| effort.reload.updated_at } }
+            .and(change { subject_efforts.map { |effort| effort.event.reload.updated_at } })
+        end
+
+        context "when an event has a topic resource key" do
+          let(:subscribed_event) { subject_efforts.first.event }
+
+          before { subscribed_event.update_column(:topic_resource_key, "test-resource-key") }
+
+          it "enqueues a notification job for that event only" do
+            expect(NotifyEventUpdateJob).to receive(:perform_later).with(subscribed_event.id).once
+            subject.perform!
+          end
+        end
+
+        context "when the efforts were already started at the given time" do
+          before { described_class.perform!(efforts: subject_efforts, start_time: start_time) }
+
+          it "returns a successful response but does not touch efforts or events" do
+            expect(NotifyEventUpdateJob).not_to receive(:perform_later)
+            response = nil
+            expect { response = subject.perform! }
+              .to not_change { subject_efforts.map { |effort| effort.reload.updated_at } }
+              .and(not_change { subject_efforts.map { |effort| effort.event.reload.updated_at } })
+            expect(response).to be_successful
+          end
         end
       end
     end

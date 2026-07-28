@@ -1,13 +1,18 @@
 class EffortSegmentQuery < BaseQuery
   def self.set_for_effort(effort)
-    set(effort.id)
+    set([effort.id])
+  end
+
+  def self.set_for_efforts(effort_ids)
+    set(effort_ids)
   end
 
   def self.set_for_split_time(split_time)
-    set(split_time.effort_id, split_time.lap, split_time.split_id, split_time.bitkey)
+    set([split_time.effort_id], split_time.lap, split_time.split_id, split_time.bitkey)
   end
 
-  def self.set(effort_id, lap = nil, split_id = nil, bitkey = nil)
+  def self.set(effort_ids, lap = nil, split_id = nil, bitkey = nil)
+    ids = effort_ids.map(&:to_i).join(",")
     scoping_sql =
       if lap.nil? || split_id.nil? || bitkey.nil?
         # Update all effort_segments for the entire effort
@@ -31,7 +36,7 @@ class EffortSegmentQuery < BaseQuery
                        elapsed_seconds
                 from split_times
                          join splits on splits.id = split_times.split_id
-                where split_times.effort_id = #{effort_id}),
+                where split_times.effort_id in (#{ids})),
 
            sub_split_segments as
                (select ss1.course_id,
@@ -48,7 +53,8 @@ class EffortSegmentQuery < BaseQuery
                        ss2.kind                                  as end_split_kind
                 from sub_splits ss1
                          cross join sub_splits ss2
-                where ss1.lap = ss2.lap
+                where ss1.effort_id = ss2.effort_id
+                  and ss1.lap = ss2.lap
                   #{scoping_sql}
                   and ((ss1.distance_from_start = ss2.distance_from_start and ss1.sub_split_bitkey < ss2.sub_split_bitkey)
                     or (ss1.distance_from_start < ss2.distance_from_start)))

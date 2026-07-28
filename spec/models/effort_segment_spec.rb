@@ -59,6 +59,25 @@ RSpec.describe EffortSegment do
     end
   end
 
+  describe ".set_for_efforts" do
+    let(:effort_3) { efforts(:hardrock_2015_benedict_davis) }
+
+    it "sets effort_segments for each indicated effort, identical to setting each individually" do
+      expect do
+        described_class.set_for_efforts([effort_1.id, effort_2.id])
+      end.to change(described_class, :count).from(0).to(182)
+
+      expect(effort_1.effort_segments.count).to eq(91)
+      expect(effort_2.effort_segments.count).to eq(91)
+    end
+
+    it "does not set effort_segments for other efforts" do
+      expect do
+        described_class.set_for_efforts([effort_1.id, effort_2.id])
+      end.not_to(change { effort_3.effort_segments.count })
+    end
+  end
+
   describe ".set_for_split_time" do
     let(:split_time_1) { effort_1.split_times.last }
     let(:split_time_2) { effort_2.split_times.last }

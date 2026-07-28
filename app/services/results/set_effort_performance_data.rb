@@ -1,36 +1,44 @@
 module Results
   class SetEffortPerformanceData
-    def self.perform!(effort_id)
-      new(effort_id).perform!
+    def self.perform!(effort_ids)
+      new(effort_ids).perform!
     end
 
-    def initialize(effort_id)
-      @effort_id = effort_id
+    def initialize(effort_ids)
+      @effort_ids = Array.wrap(effort_ids)
     end
 
     def perform!
+      return if effort_ids.empty?
+
       ::ActiveRecord::Base.connection.execute(query)
     end
 
     private
 
-    attr_reader :effort_id
+    attr_reader :effort_ids
+
+    def ids
+      effort_ids.map(&:to_i).join(",")
+    end
 
     def query
       <<~SQL.squish
-        with relevant_effort as (select * from efforts where id = #{effort_id}),
+        with relevant_efforts as (select id, event_id from efforts where id in (#{ids})),
 
-             starting_split_time as (
-                 select st.id, st.absolute_time
-                 from relevant_effort e
-                          left join split_times st on st.effort_id = e.id
-                          left join splits s on st.split_id = s.id
+             starting_split_times as (
+                 select st.effort_id, st.id, st.absolute_time
+                 from relevant_efforts e
+                          join split_times st on st.effort_id = e.id
+                          join splits s on st.split_id = s.id
                  where st.lap = 1
                    and s.kind = 0
              ),
 
-             last_split_time as (
-                 select st.id,
+             last_split_times as (
+                 select distinct on (e.id)
+                        e.id as effort_id,
+                        st.id,
                         st.lap,
                         st.sub_split_bitkey,
                         st.absolute_time,
@@ -39,22 +47,22 @@ module Results
                         case
                             when ev.laps_required = 0 then null
                             else ((s.kind = 1 and st.lap = ev.laps_required) or st.lap > ev.laps_required) end as fixed_lap_finish
-                 from relevant_effort e
+                 from relevant_efforts e
                           join events ev on ev.id = e.event_id
                           left join split_times st on st.effort_id = e.id
                           left join splits s on st.split_id = s.id
-                 order by st.lap desc, s.distance_from_start desc, st.sub_split_bitkey desc
-                 limit 1
+                 order by e.id, st.lap desc, s.distance_from_start desc, st.sub_split_bitkey desc
              ),
 
-             stopped_split_time as (
-                 select st.id
-                 from relevant_effort e
-                          left join split_times st on st.effort_id = e.id
-                          left join splits s on st.split_id = s.id
-                 where st.stopped_here
-                 order by st.lap desc, s.distance_from_start desc, st.sub_split_bitkey desc
-                 limit 1
+             stopped_split_times as (
+                 select distinct on (st.effort_id)
+                        st.effort_id,
+                        st.id
+                 from split_times st
+                          join splits s on st.split_id = s.id
+                 where st.effort_id in (#{ids})
+                   and st.stopped_here
+                 order by st.effort_id, st.lap desc, s.distance_from_start desc, st.sub_split_bitkey desc
              )
 
         update efforts
@@ -74,10 +82,10 @@ module Results
                                                             last_st.sub_split_bitkey::bit(7) ||
                                                             coalesce(~(extract(epoch from (last_st.absolute_time - start_st.absolute_time)) * 1000)::bigint, 0)::bigint::bit(44)
                                         else 0::bit(96) end
-        from relevant_effort ef
-                 left join starting_split_time start_st on true
-                 left join last_split_time last_st on true
-                 left join stopped_split_time stop_st on true
+        from relevant_efforts ef
+                 left join starting_split_times start_st on start_st.effort_id = ef.id
+                 left join last_split_times last_st on last_st.effort_id = ef.id
+                 left join stopped_split_times stop_st on stop_st.effort_id = ef.id
         where efforts.id = ef.id
       SQL
     end

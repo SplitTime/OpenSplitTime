@@ -6,7 +6,7 @@ RSpec.describe Results::SetEffortPerformanceData do
   describe "#perform!" do
     let(:effort_id) { effort.id }
 
-    context "for a single lap event" do
+    context "when the event is a single-lap event" do
       before { clear_performance_attributes(effort) }
 
       context "when the effort is not started" do
@@ -105,7 +105,7 @@ RSpec.describe Results::SetEffortPerformanceData do
       end
     end
 
-    context "for a multi-lap event" do
+    context "when the event is a multi-lap event" do
       before { clear_performance_attributes(effort) }
 
       context "when the effort is not started" do
@@ -182,6 +182,40 @@ RSpec.describe Results::SetEffortPerformanceData do
           expect(effort.dropped).to eq(false)
           expect(effort.finished).to eq(true)
         end
+      end
+    end
+
+    context "when given multiple effort ids" do
+      let(:subject_efforts) do
+        [
+          efforts(:hardrock_2014_not_started),
+          efforts(:hardrock_2016_start_only),
+          efforts(:hardrock_2014_progress_sherman),
+          efforts(:hardrock_2014_drop_ouray),
+          efforts(:hardrock_2014_finished_first),
+        ]
+      end
+      let(:performance_attributes) do
+        %w[overall_performance stopped_split_time_id final_split_time_id completed_laps
+           started beyond_start stopped dropped finished]
+      end
+
+      it "sets attributes for each effort identically to setting each individually" do
+        subject_efforts.each do |effort|
+          clear_performance_attributes(effort)
+          described_class.perform!(effort.id)
+        end
+        individual_results = subject_efforts.map { |effort| effort.reload.attributes.slice(*performance_attributes) }
+
+        subject_efforts.each { |effort| clear_performance_attributes(effort) }
+        described_class.perform!(subject_efforts.map(&:id))
+        batch_results = subject_efforts.map { |effort| effort.reload.attributes.slice(*performance_attributes) }
+
+        expect(batch_results).to eq(individual_results)
+      end
+
+      it "returns without error when given an empty array" do
+        expect { described_class.perform!([]) }.not_to raise_error
       end
     end
 

@@ -20,6 +20,11 @@ class EffortSegment < ApplicationRecord
     ActiveRecord::Base.connection.execute(query)
   end
 
+  def self.set_for_efforts(effort_ids)
+    query = EffortSegmentQuery.set_for_efforts(effort_ids)
+    ActiveRecord::Base.connection.execute(query)
+  end
+
   def self.set_for_split_time(split_time)
     query = EffortSegmentQuery.set_for_split_time(split_time)
     ActiveRecord::Base.connection.execute(query)

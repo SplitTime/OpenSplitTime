@@ -223,23 +223,29 @@ class SplitTimeQuery < BaseQuery
   end
 
   def self.set_effort_elapsed_times(effort_id)
+    set_efforts_elapsed_times([effort_id])
+  end
+
+  def self.set_efforts_elapsed_times(effort_ids)
+    ids = effort_ids.map(&:to_i).join(",")
     start_lap = 1
     start_kind = ::Split.kinds[:start]
     in_bitkey = ::SubSplit::IN_BITKEY
 
     <<~SQL.squish
-      with start_time as
-               (select absolute_time
+      with start_times as
+               (select effort_id, absolute_time
                 from split_times
                          join splits on splits.id = split_times.split_id
-                where effort_id = #{effort_id}
+                where effort_id in (#{ids})
                   and lap = #{start_lap}
                   and kind = #{start_kind}
                   and sub_split_bitkey = #{in_bitkey})
 
       update split_times
-      set elapsed_seconds = extract(epoch from (split_times.absolute_time - (select absolute_time from start_time)))
-      where effort_id = #{effort_id};
+      set elapsed_seconds = extract(epoch from (split_times.absolute_time -
+            (select absolute_time from start_times where start_times.effort_id = split_times.effort_id)))
+      where effort_id in (#{ids});
     SQL
   end
 

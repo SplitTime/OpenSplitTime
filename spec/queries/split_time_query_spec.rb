@@ -5,8 +5,35 @@ RSpec.describe SplitTimeQuery do
 
   let(:lap_1) { 1 }
 
+  describe ".set_efforts_elapsed_times" do
+    let(:effort_with_start) { efforts(:hardrock_2015_tuan_jacobs) }
+    let(:effort_without_start) { efforts(:hardrock_2014_without_start) }
+
+    before do
+      SplitTime.where(effort_id: [effort_with_start.id, effort_without_start.id]).update_all(elapsed_seconds: 123.0)
+      execute_query
+    end
+
+    it "computes elapsed seconds from each effort's starting split time" do
+      start_absolute_time = effort_with_start.starting_split_time.absolute_time
+      effort_with_start.split_times.reload.each do |split_time|
+        expect(split_time.elapsed_seconds).to eq(split_time.absolute_time - start_absolute_time)
+      end
+    end
+
+    it "nullifies elapsed seconds for an effort having no starting split time" do
+      expect(effort_without_start.split_times.reload.map(&:elapsed_seconds)).to all be_nil
+    end
+
+    def execute_query
+      query = SplitTimeQuery.set_efforts_elapsed_times([effort_with_start.id, effort_without_start.id])
+      ActiveRecord::Base.connection.execute(query)
+    end
+  end
+
   describe ".typical_segment_time" do
-    subject { SplitTimeQuery.typical_segment_time(segment, effort_ids) }
+    subject { described_class.typical_segment_time(segment, effort_ids) }
+
     let(:count) { subject[:effort_count] }
     let(:time) { subject[:average] }
 
@@ -21,7 +48,7 @@ RSpec.describe SplitTimeQuery do
     let(:start_to_cunningham_in) { Segment.new(begin_point: start, end_point: cunningham_in) }
     let(:in_aid_sherman) { Segment.new(begin_point: sherman_in, end_point: sherman_out) }
 
-    context "for a course segment" do
+    context "when effort_ids are not provided" do
       let(:segment) { start_to_cunningham_in }
       let(:effort_ids) { nil }
 

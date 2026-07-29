@@ -48,6 +48,15 @@ erDiagram
 		datetime received_at
 		string sns_message_id
 	}
+	AsyncTask {
+		string context_key
+		string description
+		text error_message
+		string job_class
+		integer parent_id
+		string parent_type
+		integer status
+	}
 	BestEffortSegment {
 		integer age
 		text age_group
@@ -704,6 +713,7 @@ erDiagram
 	Course ||--}o BestEffortSegment : ""
 	Effort ||--}o BestEffortSegment : ""
 	Person ||--}o BestEffortSegment : ""
+	User o|--}o AsyncTask : ""
 	LotteryEntrant ||--|o "Lotteries::EntrantServiceDetail" : ""
 	"Lotteries::EntrantServiceDetail" o|..|o "ActiveStorage::Blob" : ""
 	User ||--}o "Analytics::FileDownload" : ""

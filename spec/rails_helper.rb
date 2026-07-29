@@ -53,6 +53,7 @@ end
 RSpec.configure do |config|
   config.global_fixtures = [
     :aid_stations,
+    :async_tasks,
     :connections,
     :course_groups,
     :crew_passages,

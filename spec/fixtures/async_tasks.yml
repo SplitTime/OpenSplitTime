@@ -1,0 +1,38 @@
+sum_start_efforts_in_progress:
+  parent: sum (EventGroup)
+  user: fifth_user
+  job_class: StartEffortsJob
+  context_key: "2017-09-23T13:00:00Z"
+  description: Starting 3 entrants
+  status: 0
+  created_at: <%= 5.minutes.ago %>
+  updated_at: <%= 5.minutes.ago %>
+
+sum_start_efforts_stale:
+  parent: sum (EventGroup)
+  user: fifth_user
+  job_class: StartEffortsJob
+  context_key: "2017-09-23T14:00:00Z"
+  description: Starting 2 entrants
+  status: 0
+  created_at: <%= 2.hours.ago %>
+  updated_at: <%= 2.hours.ago %>
+
+sum_start_efforts_finished:
+  parent: sum (EventGroup)
+  user: fifth_user
+  job_class: StartEffortsJob
+  context_key: "2017-09-23T12:00:00Z"
+  description: Starting 4 entrants
+  status: 1
+  created_at: <%= 10.minutes.ago %>
+  updated_at: <%= 2.minutes.ago %>
+
+hardrock_2016_status_update_in_progress:
+  parent: hardrock_2016 (EventGroup)
+  user: admin_user
+  job_class: UpdateEffortsStatusJob
+  description: Updating status for all efforts
+  status: 0
+  created_at: <%= 1.minute.ago %>
+  updated_at: <%= 1.minute.ago %>

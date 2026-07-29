@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_21_221108) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_29_185523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -99,6 +99,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_21_221108) do
     t.index ["origination_number"], name: "index_analytics_sms_inbound_messages_on_origination_number"
     t.index ["received_at"], name: "index_analytics_sms_inbound_messages_on_received_at"
     t.index ["sns_message_id"], name: "index_analytics_sms_inbound_messages_on_sns_message_id", unique: true
+  end
+
+  create_table "async_tasks", force: :cascade do |t|
+    t.string "context_key"
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.text "error_message"
+    t.string "job_class", null: false
+    t.bigint "parent_id", null: false
+    t.string "parent_type", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["parent_type", "parent_id", "job_class", "context_key"], name: "index_async_tasks_on_parent_and_job_class_and_context_key"
+    t.index ["user_id"], name: "index_async_tasks_on_user_id"
   end
 
   create_table "connections", force: :cascade do |t|

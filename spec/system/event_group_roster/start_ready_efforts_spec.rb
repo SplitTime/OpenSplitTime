@@ -1,24 +1,23 @@
 require "rails_helper"
 
-RSpec.describe "start ready efforts from the event groups roster page", js: true do
+RSpec.describe "start ready efforts from the event groups roster page", :js do
   include ActionView::RecordIdentifier
   include ActiveJob::TestHelper
 
   let(:steward) { users(:fifth_user) }
-
-  before do
-    organization.stewards << steward
-  end
-
   let(:effort) { efforts(:hardrock_2014_not_started) }
   let(:event_group) { event_groups(:hardrock_2014) }
   let(:organization) { event_group.organization }
   let(:event_group_efforts) { event_group.efforts.roster_subquery }
 
-  context "when no efforts are ready to start" do
-    before { expect(event_group_efforts.map(&:ready_to_start)).to all eq(false) }
+  before do
+    organization.stewards << steward
+  end
 
+  context "when no efforts are ready to start" do
     scenario "start button is disabled" do
+      expect(event_group_efforts.map(&:ready_to_start)).to all eq(false)
+
       login_as steward, scope: :user
       visit_page
 
@@ -41,17 +40,40 @@ RSpec.describe "start ready efforts from the event groups roster page", js: true
           click_link("(1) scheduled at Friday, July 11, 2014 06:00 (MDT)")
         end
 
-        expect {
+        expect do
           within("#form_modal") do
             sleep 1
             fill_in "Actual start time", with: "07/11/2014 06:02"
             click_button "Start"
           end
 
-          expect(page).to have_content("Started 1 effort")
-        }.to change { effort.reload.split_times.count }.from(0).to(1)
+          expect(page).to have_content("Starting 1 entrant")
+        end.to change { effort.reload.split_times.count }.from(0).to(1)
 
         expect(effort.starting_split_time.absolute_time).to eq("2014-07-11 06:02:00".in_time_zone(event_group.home_time_zone))
+      end
+    end
+
+    scenario "the dropdown item is disabled while the batch is in progress" do
+      login_as steward, scope: :user
+      visit_page
+
+      within("##{dom_id(event_group, :start_ready_efforts_button)}") do
+        click_button("Start Entrants")
+        click_link("(1) scheduled at Friday, July 11, 2014 06:00 (MDT)")
+      end
+
+      within("#form_modal") do
+        sleep 1
+        fill_in "Actual start time", with: "07/11/2014 06:02"
+        click_button "Start"
+      end
+
+      expect(page).to have_content("Starting 1 entrant")
+
+      within("##{dom_id(event_group, :start_ready_efforts_button)}") do
+        click_button("Start Entrants")
+        expect(page).to have_css("a.dropdown-item.disabled", text: "starting now")
       end
     end
   end
@@ -73,7 +95,7 @@ RSpec.describe "start ready efforts from the event groups roster page", js: true
 
         sleep 0.5
 
-        expect {
+        expect do
           within("#form_modal") do
             expect(page).to have_button("Start")
             fill_in "Actual start time", with: "07/11/2014 06:02"
@@ -83,7 +105,7 @@ RSpec.describe "start ready efforts from the event groups roster page", js: true
           within("##{dom_id(effort, :roster_row)}") do
             expect(page).to have_content("Fri 06:02")
           end
-        }.to change { effort.reload.split_times.count }.by(1)
+        end.to change { effort.reload.split_times.count }.by(1)
 
         expect(effort.starting_split_time.absolute_time).to eq("2014-07-11 06:02:00".in_time_zone(event_group.home_time_zone))
       end

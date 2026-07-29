@@ -387,17 +387,28 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     filter = prepared_params[:filter]
-    efforts = @event_group.efforts.includes(:event, split_times: :split).roster_subquery
-    filtered_efforts = Effort.from(efforts, :efforts).where(filter)
-    start_time = params[:actual_start_time]
+    context_key = start_efforts_context_key(filter[:assumed_start_time])
+    efforts = @event_group.efforts.roster_subquery
+    effort_ids = Effort.from(efforts, :efforts).where(filter).ids
 
-    start_response = ::Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time)
-
-    # Need to pick up the new start split time before setting status
-    filtered_efforts = filtered_efforts.includes(split_times: :split)
-    set_response = ::Interactors::UpdateEffortsStatus.perform!(filtered_efforts)
-    response = start_response.merge(set_response)
-    set_flash_message(response)
+    if effort_ids.empty?
+      flash.now[:warning] = "No entrants were ready to start."
+    elsif context_key && AsyncTask.active_for?(parent: @event_group, job_class: "StartEffortsJob",
+                                               context_key: context_key)
+      flash.now[:warning] = "Entrants for this start time are already being started."
+    else
+      task = AsyncTask.create!(
+        parent: @event_group,
+        user: current_user,
+        job_class: "StartEffortsJob",
+        context_key: context_key,
+        description: "Starting #{helpers.pluralize(effort_ids.size, 'entrant')}",
+      )
+      StartEffortsJob.perform_later(task, effort_ids: effort_ids, start_time: params[:actual_start_time],
+                                          current_user: current_user)
+      flash.now[:success] =
+        "Starting #{helpers.pluralize(effort_ids.size, 'entrant')}. This may take a minute for large events."
+    end
 
     respond_to do |format|
       format.html { redirect_to request.referrer }
@@ -472,6 +483,14 @@ class EventGroupsController < ApplicationController
   end
 
   private
+
+  def start_efforts_context_key(assumed_start_time)
+    return nil if assumed_start_time.blank?
+
+    Time.zone.parse(assumed_start_time.to_s)&.utc&.iso8601
+  rescue ArgumentError
+    nil
+  end
 
   def bib_assignment_hash(event_group_params)
     event_group_params.to_unsafe_h

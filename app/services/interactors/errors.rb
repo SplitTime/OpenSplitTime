@@ -48,6 +48,11 @@ module Interactors
         detail: { messages: [message] } }
     end
 
+    def duplicate_async_task_error(job_class)
+      { title: "Task already in progress",
+        detail: { messages: ["An active #{job_class} task already exists for this context"] } }
+    end
+
     def efforts_not_provided_error
       { title: "Efforts not provided",
         detail: { messages: ["No efforts were provided"] } }

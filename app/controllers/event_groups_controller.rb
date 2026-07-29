@@ -386,39 +386,21 @@ class EventGroupsController < ApplicationController
   def start_efforts
     authorize @event_group
 
-    filter = prepared_params[:filter]
-    context_key = start_efforts_context_key(filter[:assumed_start_time])
-    efforts = @event_group.efforts.roster_subquery
-    effort_ids = Effort.from(efforts, :efforts).where(filter).ids
-
-    if effort_ids.empty?
-      level = :warning
-      message = "No entrants were found to start."
-    elsif context_key && AsyncTask.active_for?(parent: @event_group, job_class: "StartEffortsJob",
-                                               context_key: context_key)
-      level = :warning
-      message = "Entrants for this start time are already being started."
-    else
-      task = AsyncTask.create!(
-        parent: @event_group,
-        user: current_user,
-        job_class: "StartEffortsJob",
-        context_key: context_key,
-        description: "Starting #{helpers.pluralize(effort_ids.size, 'entrant')}",
-      )
-      StartEffortsJob.perform_later(task, effort_ids: effort_ids, start_time: params[:actual_start_time],
-                                          current_user: current_user)
-      level = :success
-      message = "Starting #{helpers.pluralize(effort_ids.size, 'entrant')}. This may take a minute for large events."
-    end
+    response = ::Interactors::EnqueueStartEfforts.perform!(
+      event_group: @event_group,
+      filter: prepared_params[:filter],
+      start_time: params[:actual_start_time],
+      current_user: current_user,
+    )
+    level = response.successful? ? :success : :warning
 
     respond_to do |format|
       format.html do
-        flash[level] = message
+        flash[level] = response.message
         redirect_to request.referrer
       end
       format.turbo_stream do
-        flash.now[level] = message
+        flash.now[level] = response.message
         @presenter = EventGroupRosterPresenter.new(@event_group, view_context)
       end
     end
@@ -491,14 +473,6 @@ class EventGroupsController < ApplicationController
   end
 
   private
-
-  def start_efforts_context_key(assumed_start_time)
-    return nil if assumed_start_time.blank?
-
-    Time.zone.parse(assumed_start_time.to_s)&.utc&.iso8601
-  rescue ArgumentError
-    nil
-  end
 
   def bib_assignment_hash(event_group_params)
     event_group_params.to_unsafe_h

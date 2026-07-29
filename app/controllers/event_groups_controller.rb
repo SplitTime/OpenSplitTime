@@ -392,10 +392,12 @@ class EventGroupsController < ApplicationController
     effort_ids = Effort.from(efforts, :efforts).where(filter).ids
 
     if effort_ids.empty?
-      flash.now[:warning] = "No entrants were ready to start."
+      level = :warning
+      message = "No entrants were found to start."
     elsif context_key && AsyncTask.active_for?(parent: @event_group, job_class: "StartEffortsJob",
                                                context_key: context_key)
-      flash.now[:warning] = "Entrants for this start time are already being started."
+      level = :warning
+      message = "Entrants for this start time are already being started."
     else
       task = AsyncTask.create!(
         parent: @event_group,
@@ -406,13 +408,19 @@ class EventGroupsController < ApplicationController
       )
       StartEffortsJob.perform_later(task, effort_ids: effort_ids, start_time: params[:actual_start_time],
                                           current_user: current_user)
-      flash.now[:success] =
-        "Starting #{helpers.pluralize(effort_ids.size, 'entrant')}. This may take a minute for large events."
+      level = :success
+      message = "Starting #{helpers.pluralize(effort_ids.size, 'entrant')}. This may take a minute for large events."
     end
 
     respond_to do |format|
-      format.html { redirect_to request.referrer }
-      format.turbo_stream { @presenter = EventGroupRosterPresenter.new(@event_group, view_context) }
+      format.html do
+        flash[level] = message
+        redirect_to request.referrer
+      end
+      format.turbo_stream do
+        flash.now[level] = message
+        @presenter = EventGroupRosterPresenter.new(@event_group, view_context)
+      end
     end
   end
 

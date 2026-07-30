@@ -16,9 +16,12 @@ module Interactors
     def perform!
       ActiveRecord::Base.transaction do
         Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, update_fields: :data_status)
-        Persist::SaveRecords.perform!(Effort, changed_efforts, update_fields: :data_status)
+        Persist::BulkUpdateAll.perform!(Effort, changed_efforts, update_fields: :data_status)
         raise ActiveRecord::Rollback if errors.present?
+
+        update_derived_data
       end
+      announce_changes if errors.blank?
       Interactors::Response.new(errors, message, changed_resources)
     end
 
@@ -26,12 +29,41 @@ module Interactors
 
     attr_reader :efforts, :times_container, :errors
 
+    # Bulk updates bypass the per-record callbacks that would otherwise
+    # set performance data, touch, notify, and broadcast; each is
+    # reproduced here in batch form
+    def update_derived_data
+      return if changed_efforts.empty?
+
+      ::Results::SetEffortPerformanceData.perform!(changed_effort_ids)
+      ::Effort.where(id: changed_effort_ids).touch_all
+      ::Event.where(id: changed_event_ids).touch_all
+    end
+
+    def announce_changes
+      return if changed_efforts.empty?
+
+      ActiveRecord::Associations::Preloader.new(records: changed_efforts, associations: { event: :event_group }).call
+      changed_efforts.each(&:broadcast_update)
+      ::Event.where(id: changed_event_ids).where.not(topic_resource_key: nil).find_each do |event|
+        NotifyEventUpdateJob.perform_later(event.id)
+      end
+    end
+
     def changed_resources
       @changed_resources ||= status_responses.flat_map(&:resources)
     end
 
     def changed_efforts
       changed_resources.grep(Effort)
+    end
+
+    def changed_effort_ids
+      @changed_effort_ids ||= changed_efforts.map(&:id)
+    end
+
+    def changed_event_ids
+      @changed_event_ids ||= changed_efforts.map(&:event_id).uniq
     end
 
     def changed_split_times

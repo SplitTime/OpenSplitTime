@@ -60,6 +60,49 @@ RSpec.describe Interactors::UpdateEffortsStatus do
         expect(response).to be_successful
         expect(response.message).to include("up to date")
       end
+
+      it "does not touch, broadcast, or notify" do
+        expect(NotifyEventUpdateJob).not_to receive(:perform_later)
+        expect { response }
+          .to not_change { effort.reload.updated_at }
+          .and(not_change { effort.event.reload.updated_at })
+      end
+    end
+
+    context "with respect to derived data and announcements" do
+      before do
+        effort.update(data_status: nil)
+        split_times.each { |st| st.update(data_status: nil) }
+      end
+
+      it "sets performance data for changed efforts" do
+        effort.update_columns(overall_performance: nil, final_split_time_id: nil)
+        response
+
+        effort.reload
+        expect(effort.overall_performance).to be_present
+        expect(effort.final_split_time_id).to eq(effort.ordered_split_times.last.id)
+      end
+
+      it "touches changed efforts and their events" do
+        expect { response }
+          .to change { effort.reload.updated_at }
+          .and(change { effort.event.reload.updated_at })
+      end
+
+      it "broadcasts each changed effort" do
+        expect(effort).to receive(:broadcast_update)
+        response
+      end
+
+      context "when the event has a topic resource key" do
+        before { effort.event.update_column(:topic_resource_key, "test-resource-key") }
+
+        it "enqueues a notification job for the event" do
+          expect(NotifyEventUpdateJob).to receive(:perform_later).with(effort.event_id).once
+          response
+        end
+      end
     end
 
     context "when multiple efforts are provided" do

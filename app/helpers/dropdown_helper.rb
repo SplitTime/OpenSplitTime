@@ -46,13 +46,29 @@ module DropdownHelper
   end
 
   def start_entrants_dropdown_menu(view_object)
+    event_group = view_object.event_group
+    active_context_keys = AsyncTask.active
+                                   .where(parent: event_group, job_class: "StartEffortsJob")
+                                   .pluck(:context_key)
+                                   .to_set
+
     dropdown_items = view_object.ready_efforts.count_by(&:assumed_start_time_local).sort.map do |time, effort_count|
-      {
-        name: "(#{effort_count}) scheduled at #{l(time, format: :full_day_military_and_zone)}",
-        link: start_efforts_form_event_group_path(view_object.event_group, effort_count: effort_count,
-                                                                           scheduled_start_time_local: time),
-        data: { turbo_frame: "form_modal" }
-      }
+      scheduled_time = "(#{effort_count}) scheduled at #{l(time, format: :full_day_military_and_zone)}"
+
+      if active_context_keys.include?(time.utc.iso8601)
+        {
+          name: "#{scheduled_time} — starting now",
+          link: "#",
+          disabled: true
+        }
+      else
+        {
+          name: scheduled_time,
+          link: start_efforts_form_event_group_path(event_group, effort_count: effort_count,
+                                                                 scheduled_start_time_local: time),
+          data: { turbo_frame: "form_modal" }
+        }
+      end
     end
 
     build_dropdown_menu("Start Entrants", dropdown_items, button: true, button_type: "success")

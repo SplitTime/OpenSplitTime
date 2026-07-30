@@ -29,7 +29,8 @@
         </div>
 
         <div class="mb-3">
-          <%= f.submit "Start", class: "btn btn-success" %>
+          <%= f.button "Start", class: "btn btn-success",
+                                data: { turbo_submits_with: fa_icon("spinner", class: "fa-spin", text: "Starting") } %>
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
         </div>
       <% end %>

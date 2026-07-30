@@ -386,22 +386,23 @@ class EventGroupsController < ApplicationController
   def start_efforts
     authorize @event_group
 
-    filter = prepared_params[:filter]
-    efforts = @event_group.efforts.includes(:event, split_times: :split).roster_subquery
-    filtered_efforts = Effort.from(efforts, :efforts).where(filter)
-    start_time = params[:actual_start_time]
-
-    start_response = ::Interactors::StartEfforts.perform!(efforts: filtered_efforts, start_time: start_time)
-
-    # Need to pick up the new start split time before setting status
-    filtered_efforts = filtered_efforts.includes(split_times: :split)
-    set_response = ::Interactors::UpdateEffortsStatus.perform!(filtered_efforts)
-    response = start_response.merge(set_response)
-    set_flash_message(response)
+    response = ::Interactors::EnqueueStartEfforts.perform!(
+      event_group: @event_group,
+      filter: prepared_params[:filter],
+      start_time: params[:actual_start_time],
+      current_user: current_user,
+    )
+    level = response.successful? ? :success : :warning
 
     respond_to do |format|
-      format.html { redirect_to request.referrer }
-      format.turbo_stream { @presenter = EventGroupRosterPresenter.new(@event_group, view_context) }
+      format.html do
+        flash[level] = response.message
+        redirect_to request.referrer
+      end
+      format.turbo_stream do
+        flash.now[level] = response.message
+        @presenter = EventGroupRosterPresenter.new(@event_group, view_context)
+      end
     end
   end
 

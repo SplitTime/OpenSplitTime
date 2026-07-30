@@ -1,20 +1,21 @@
 require "rails_helper"
 
 RSpec.describe "Manage start times", type: :system do
+  include ActiveJob::TestHelper
+
   let(:page_path) { manage_start_times_event_group_path(event_group) }
 
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
+  let(:organization) { organizations(:running_up_for_air) }
+  let(:event_group) { event_groups(:rufa_2017) }
+  let(:event) { events(:rufa_2017_12h) }
 
   before do
     organization.update(created_by: owner.id)
     organization.stewards << steward
   end
-
-  let(:organization) { organizations(:running_up_for_air) }
-  let(:event_group) { event_groups(:rufa_2017) }
-  let(:event) { events(:rufa_2017_12h) }
 
   scenario "The user is a visitor" do
     verify_unable_to_visit_page
@@ -59,7 +60,7 @@ RSpec.describe "Manage start times", type: :system do
     fill_in "actual_start_time", with: updated_actual_start_time_text
     cancel_button = turbo_frame.find_link(href: page_path)
 
-    expect { cancel_button.click }.not_to change { SplitTime.count }
+    expect { cancel_button.click }.not_to(change(SplitTime, :count))
     efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
     efforts.each { |effort| expect(effort.actual_start_time).to eq(actual_start_time) }
 
@@ -68,7 +69,7 @@ RSpec.describe "Manage start times", type: :system do
     fill_in "actual_start_time", with: updated_actual_start_time_text
     submit_button = turbo_frame.find('button[type="submit"]')
 
-    expect { submit_button.click }.not_to change { SplitTime.count }
+    expect { perform_enqueued_jobs { submit_button.click } }.not_to(change(SplitTime, :count))
     efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
     efforts.each { |effort| expect(effort.actual_start_time).to eq(updated_actual_start_time_text.in_time_zone(event_group.home_time_zone)) }
   end
@@ -87,7 +88,7 @@ RSpec.describe "Manage start times", type: :system do
     fill_in "actual_start_time", with: updated_actual_start_time_text
     cancel_button = turbo_frame.find_link(href: page_path)
 
-    expect { cancel_button.click }.not_to change { SplitTime.count }
+    expect { cancel_button.click }.not_to(change(SplitTime, :count))
     efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
     efforts.each { |effort| expect(effort.actual_start_time).to eq(actual_start_time) }
 
@@ -96,7 +97,7 @@ RSpec.describe "Manage start times", type: :system do
     fill_in "actual_start_time", with: updated_actual_start_time_text
     submit_button = turbo_frame.find('button[type="submit"]')
 
-    expect { submit_button.click }.to change { SplitTime.count }.by(1)
+    expect { perform_enqueued_jobs { submit_button.click } }.to change(SplitTime, :count).by(1)
     efforts = event.efforts.roster_subquery.where(actual_start_time: actual_start_time)
     efforts.each { |effort| expect(effort.actual_start_time).to eq(updated_actual_start_time_text.in_time_zone(event_group.home_time_zone)) }
   end

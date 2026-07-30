@@ -3,7 +3,7 @@ module ToggleHelper
     if effort.beyond_start?
       button_id = "disabled-effort-#{effort.id}"
       icon_name = "caret-square-right"
-      button_text = "Beyond start"
+      button_text = "Beyond\u00A0start"
       url = "#"
       params = {}
       disabled = true
@@ -19,7 +19,7 @@ module ToggleHelper
     elsif effort.checked_in?
       button_id = "un-check-in-effort-#{effort.id}"
       icon_name = "check-square"
-      button_text = "Checked in"
+      button_text = "Checked\u00A0in"
       url = effort_path(effort)
       params = { effort: { checked_in: false } }
       disabled = false
@@ -27,7 +27,7 @@ module ToggleHelper
     else
       button_id = "check-in-effort-#{effort.id}"
       icon_name = "square"
-      button_text = "Check in"
+      button_text = "Check\u00A0in"
       url = effort_path(effort)
       params = { effort: { checked_in: true } }
       disabled = false
@@ -74,7 +74,7 @@ module ToggleHelper
       url = live_event_group_gating_location_crew_passages_path(display.event_group, display.gating_location)
       method = :post
       icon_name = "square"
-      button_text = "Mark passed"
+      button_text = "Mark\u00A0passed"
       button_class = "outline-secondary"
       params = control_params.merge(effort_id: row.effort_id)
     end

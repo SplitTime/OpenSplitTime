@@ -36,7 +36,7 @@ module ToggleHelper
 
     html_options = {
       id: button_id,
-      class: "btn btn-#{button_class}",
+      class: "btn btn-#{button_class} text-nowrap",
       method: :patch,
       disabled: disabled,
       params: params,
@@ -80,7 +80,7 @@ module ToggleHelper
     end
 
     html_options = {
-      class: "btn btn-sm btn-#{button_class}",
+      class: "btn btn-sm btn-#{button_class} text-nowrap",
       style: "min-width: 9rem;",
       method: method,
       params: params,

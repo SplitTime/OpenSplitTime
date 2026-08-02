@@ -47,6 +47,17 @@ RSpec.describe StartEffortsJob do
     expect(task.reload).to be_finished
   end
 
+  it "broadcasts each started effort's row exactly once" do
+    row_broadcasts = []
+    allow(Turbo::StreamsChannel).to receive(:broadcast_render_later_to) do |_streamable, **rendering|
+      row_broadcasts << rendering.dig(:locals, :effort)&.id if rendering[:partial] == "efforts/updated"
+    end
+
+    perform_enqueued_jobs { job }
+
+    expect(row_broadcasts.sort).to eq(effort_ids.sort)
+  end
+
   it "broadcasts a completion flash and a start button replace" do
     expect(Turbo::StreamsChannel).to receive(:broadcast_replace_to).with(
       event_group,

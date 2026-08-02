@@ -8,7 +8,8 @@ class StartEffortsJob < ApplicationJob
     event_group = task.parent
 
     efforts = event_group.efforts.where(id: effort_ids).includes(:event, split_times: :split)
-    start_response = ::Interactors::StartEfforts.perform!(efforts: efforts, start_time: start_time)
+    start_response = ::Interactors::StartEfforts.perform!(efforts: efforts, start_time: start_time,
+                                                          broadcast_rows: false)
 
     status_efforts = event_group.efforts.where(id: effort_ids).includes(split_times: :split)
     set_response = ::Interactors::UpdateEffortsStatus.perform!(status_efforts)
@@ -16,6 +17,7 @@ class StartEffortsJob < ApplicationJob
     response = start_response.merge(set_response)
     if response.successful?
       task.finished!
+      broadcast_remaining_rows(effort_ids, set_response)
       broadcast_flash(event_group, message: response.message)
     else
       task.update(status: :failed, error_message: response.message_with_error_report)
@@ -30,6 +32,16 @@ class StartEffortsJob < ApplicationJob
   end
 
   private
+
+  # UpdateEffortsStatus broadcasts its changed efforts; rows whose start
+  # changed but whose status did not still need a broadcast
+  def broadcast_remaining_rows(effort_ids, set_response)
+    broadcast_ids = set_response.resources.grep(::Effort).to_set(&:id)
+    remaining_ids = effort_ids.reject { |id| broadcast_ids.include?(id) }
+    return if remaining_ids.empty?
+
+    ::Effort.where(id: remaining_ids).includes(event: :event_group).find_each(&:broadcast_update)
+  end
 
   def broadcast_start_button(event_group)
     ::Turbo::StreamsChannel.broadcast_replace_to(

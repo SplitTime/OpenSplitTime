@@ -3,15 +3,16 @@ module Interactors
     include Interactors::Errors
     include ActionView::Helpers::TextHelper
 
-    def self.perform!(efforts:, start_time: nil)
-      new(efforts: efforts, start_time: start_time).perform!
+    def self.perform!(efforts:, start_time: nil, broadcast_rows: true)
+      new(efforts: efforts, start_time: start_time, broadcast_rows: broadcast_rows).perform!
     end
 
-    def initialize(efforts:, start_time: nil)
+    def initialize(efforts:, start_time: nil, broadcast_rows: true)
       raise ArgumentError, "start_efforts must include efforts" unless efforts
 
       @efforts = efforts.to_a
       @start_time = start_time
+      @broadcast_rows = broadcast_rows
       @errors = []
       @saved_split_times = []
       @changed_effort_ids = []
@@ -41,7 +42,7 @@ module Interactors
 
     private
 
-    attr_reader :efforts, :start_time, :errors, :saved_split_times, :changed_effort_ids
+    attr_reader :efforts, :start_time, :broadcast_rows, :errors, :saved_split_times, :changed_effort_ids
 
     def preload_events
       ActiveRecord::Associations::Preloader.new(records: efforts, associations: :event).call
@@ -106,6 +107,8 @@ module Interactors
     # The roster page relies on per-effort broadcasts to update its rows;
     # the suppressed touch chain would otherwise have fired these
     def broadcast_effort_updates
+      return unless broadcast_rows
+
       changed_ids = changed_effort_ids.to_set
       efforts.select { |effort| changed_ids.include?(effort.id) }.each(&:broadcast_update)
     end

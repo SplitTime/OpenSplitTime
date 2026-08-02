@@ -69,6 +69,27 @@ RSpec.describe EventSpreadDisplay do
       expect(a).not_to eq(b)
     end
 
+    it "changes when search changes" do
+      a = presenter_with(display_style: "elapsed").cache_key
+      b = presenter_with(display_style: "elapsed", filter: { search: "bacon" }).cache_key
+
+      expect(a).not_to eq(b)
+    end
+
+    it "is identical for searches differing only by case or surrounding whitespace" do
+      a = presenter_with(display_style: "elapsed", filter: { search: "bacon" }).cache_key
+      b = presenter_with(display_style: "elapsed", filter: { search: " Bacon " }).cache_key
+
+      expect(a).to eq(b)
+    end
+
+    it "is identical for a blank search and no search" do
+      a = presenter_with(display_style: "elapsed").cache_key
+      b = presenter_with(display_style: "elapsed", filter: { search: "  " }).cache_key
+
+      expect(a).to eq(b)
+    end
+
     it "changes when sort changes" do
       a = presenter_with(display_style: "elapsed", sort: "name").cache_key
       b = presenter_with(display_style: "elapsed", sort: "-name").cache_key

@@ -84,6 +84,7 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     payload = {
       "display_style" => display_style,
       "filter" => params[:filter],
+      "search" => params[:search].to_s.strip.downcase.presence,
       "sort" => params[:sort],
     }
     ::OpenSSL::Digest::MD5.base64digest(payload.to_json)

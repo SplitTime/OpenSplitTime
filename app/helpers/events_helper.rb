@@ -75,7 +75,7 @@ module EventsHelper
 
   def spread_path_without_search(view_object)
     query = request.query_parameters.deep_dup
-    query["filter"]&.delete("search")
+    query["filter"] = query["filter"].except("search") if query["filter"].is_a?(Hash)
     query.delete("filter") if query["filter"].blank?
     spread_event_path(view_object.event, query)
   end

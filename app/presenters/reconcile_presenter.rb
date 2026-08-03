@@ -1,5 +1,6 @@
 class ReconcilePresenter < BasePresenter
   attr_reader :event_group, :view_context
+
   delegate :available_live?,
            :concealed?,
            :efforts,
@@ -18,6 +19,10 @@ class ReconcilePresenter < BasePresenter
     unreconciled_batch.each(&:suggest_close_match)
   end
 
+  def active_event
+    nil
+  end
+
   def active_widget_card
     :entrants
   end
@@ -31,7 +36,7 @@ class ReconcilePresenter < BasePresenter
   end
 
   def no_persisted_events?
-    @persisted_events ||= events.none?(&:persisted?)
+    @no_persisted_events ||= events.none?(&:persisted?)
   end
 
   def status

@@ -12,9 +12,10 @@ class FinishHistoryPresenter < BasePresenter
   end
 
   def effort_rows
-    @effort_rows ||= efforts.map do |effort|
-      effort.person = indexed_people[effort.person_id]
-      EffortRow.new(effort)
+    @effort_rows ||= begin
+      efforts_list = efforts.to_a
+      ActiveRecord::Associations::Preloader.new(records: efforts_list, associations: :person).call
+      efforts_list.map { |effort| EffortRow.new(effort) }
     end
   end
 
@@ -33,10 +34,6 @@ class FinishHistoryPresenter < BasePresenter
 
   def efforts
     @efforts ||= event.efforts.ranking_subquery
-  end
-
-  def indexed_people
-    @indexed_people ||= Person.where(id: efforts.map(&:person_id).compact).index_by(&:id)
   end
 
   # @return [Array<FinishHistory>]

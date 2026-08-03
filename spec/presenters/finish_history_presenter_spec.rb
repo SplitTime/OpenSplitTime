@@ -24,6 +24,7 @@ RSpec.describe FinishHistoryPresenter do
 
       expect(rows.size).to be > 1
       expect(person_queries).to be <= 1
+      expect(rows).to all(satisfy { |row| row.effort.association(:person).loaded? && row.effort.person&.id == row.effort.person_id })
     ensure
       ActiveSupport::Notifications.unsubscribe(subscription) if subscription
     end

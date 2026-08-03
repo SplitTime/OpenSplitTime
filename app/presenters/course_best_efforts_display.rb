@@ -29,8 +29,7 @@ class CourseBestEffortsDisplay < BasePresenter
       page: page
     )
 
-    indexed_people = Person.where(id: @filtered_segments.map(&:person_id).compact).index_by(&:id)
-    @filtered_segments.each { |segment| segment.person = indexed_people[segment.person_id] }
+    ActiveRecord::Associations::Preloader.new(records: @filtered_segments, associations: :person).call
 
     @filtered_segments
   end

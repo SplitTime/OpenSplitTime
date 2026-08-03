@@ -98,7 +98,7 @@
     <table class="table table-sm table-striped mx-sm-4">
       <thead>
       <tr>
-        <th class="align-middle">
+        <th class="text-center align-middle">
           <button type="button"
                   class="btn btn-link p-0 d-none"
                   aria-label="Clear all watches"
@@ -106,7 +106,7 @@
                   data-action="spread-watches#clear"
                   data-controller="tooltip"
                   data-bs-original-title="Clear all watches">
-            <i class="fas fa-times text-secondary"></i>
+            <i class="fas fa-star-sharp-half-stroke text-warning"></i>
           </button>
         </th>
         <th>O/G<br><%= link_to_reversing_sort_heading("Place", :overall_rank, @presenter.existing_sort) %></th>

@@ -43,29 +43,30 @@ Getting Started
 **Ruby**
 
 1. Clone the repository to your local machine by [forking the repo](https://help.github.com/articles/fork-a-repo/)
-2. Install rbenv:
+2. Install [asdf](https://asdf-vm.com/):
 
 > ### Using Homebrew on MacOS
 > - Install Homebrew http://brew.sh/
 > - `$ brew update`
-> - `$ brew install rbenv`
+> - `$ brew install asdf`
 
-> ### Using Debian/Ubuntu (Instructions from [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-18-04))
-> - Install dependencies `$ sudo apt install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm5 libgdbm-dev`
-> - Clone the rbenv repository `$ git clone https://github.com/rbenv/rbenv.git ~/.rbenv`
-> - Add to path `$ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc`
-> - Enable automatic loading `$ echo 'eval "$(rbenv init -)"' >> ~/.bashrc`
-> - Apply changes to current terminal `$ source ~/.bashrc`
-> - Add ruby-build plugin `$ git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build`
+> ### Using Debian/Ubuntu
+> - Install Ruby build dependencies `$ sudo apt install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm-dev`
+> - Download the latest `asdf` binary for your platform from the [asdf releases page](https://github.com/asdf-vm/asdf/releases) and extract it to a directory on your `$PATH` (e.g. `/usr/local/bin`)
 
-3. `$ cd` into your local `OpenSplitTime` directory
-4. `$ rbenv init` For any questions around setting up rbenv see https://github.com/rbenv/rbenv
-5. `$ rbenv install <current ruby version>`
-6. `$ rbenv rehash` then restart the terminal session
+3. Add the asdf shims directory to your path by adding this line to your shell config (`~/.zshrc` or `~/.bashrc`), then restart your terminal:
+
+> `export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"`
+
+For any questions around setting up asdf see the [asdf getting started guide](https://asdf-vm.com/guide/getting-started.html).
+
+4. `$ cd` into your local `OpenSplitTime` directory
+5. `$ asdf plugin add ruby`
+6. `$ asdf install ruby` This installs the Ruby version specified in the project's `.tool-versions` file
 
 **Rails, Gems, Databases**
 
-1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied" [rbenv is not setup correctly](https://github.com/rbenv/rbenv/issues/670)
+1. `$ gem install bundler` You should not need to `sudo` this. If it says "permission denied", asdf is not set up correctly (make sure the shims directory is on your `$PATH` and `which ruby` points to a shim)
 2. Install Postgres
 
 > ### Using Homebrew on MacOS
@@ -77,11 +78,15 @@ Getting Started
 
 3. `$ bundle install`
 
-*if running into weird errors first try `$ rbenv rehash` and restart your terminal*
+*if running into weird errors first try `$ asdf reshim ruby` and restart your terminal*
 
 **Javascript Runtime + Yarn**
 
-1. Install Node.js v24 (LTS). We recommend using [`nvm`](https://github.com/nvm-sh/nvm) or another version manager. Otherwise:
+1. Install Node.js v24 (LTS). We recommend using asdf, which reads the version from the project's `.tool-versions` file:
+- `$ asdf plugin add nodejs`
+- `$ asdf install nodejs` (run from your local `OpenSplitTime` directory)
+
+Otherwise:
 - Using MacOS: You can download the package installer from nodejs.org.
 - Using Debian/Ubuntu: `wget -qO- https://deb.nodesource.com/setup_24.x | sudo -E bash - && sudo apt-get install -y nodejs`
 

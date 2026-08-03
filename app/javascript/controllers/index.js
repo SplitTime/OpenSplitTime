@@ -64,8 +64,6 @@ application.register("gating-controls", GatingControlsController)
 import HighlightController from "./highlight_controller"
 application.register("highlight", HighlightController)
 
-import HighlightRowController from "./highlight_row_controller"
-application.register("highlight-row", HighlightRowController)
 
 import InputmaskController from "./inputmask_controller"
 application.register("inputmask", InputmaskController)
@@ -121,8 +119,8 @@ application.register("shift-toggle", ShiftToggleController)
 import SidebarController from "./sidebar_controller"
 application.register("sidebar", SidebarController)
 
-import SpreadHighlightsController from "./spread_highlights_controller"
-application.register("spread-highlights", SpreadHighlightsController)
+import SpreadWatchesController from "./spread_watches_controller"
+application.register("spread-watches", SpreadWatchesController)
 
 import ToastController from "./toast_controller"
 application.register("toast", ToastController)
@@ -132,3 +130,6 @@ application.register("tooltip", TooltipController)
 
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)
+
+import WatchRowController from "./watch_row_controller"
+application.register("watch-row", WatchRowController)

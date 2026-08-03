@@ -399,7 +399,7 @@ module DropdownHelper
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end
 
-  def gender_dropdown_menu(view_object)
+  def gender_dropdown_menu(view_object, include_watched: false)
     genders = view_object.relevant_genders
     genders.unshift("combined")
 
@@ -409,6 +409,14 @@ module DropdownHelper
         link: request.params.merge(filter: { gender: gender }, page: nil),
         active: view_object.gender_text == gender,
         disabled: view_object.gender_text == gender,
+      }
+    end
+
+    if include_watched
+      dropdown_items << {
+        name: safe_join(["Watched ", tag.span("", data: { spread_watches_target: "watchCount" })]),
+        link: "#",
+        data: { action: "spread-watches#toggleOnly", spread_watches_target: "watchedItem" },
       }
     end
 

@@ -31,7 +31,7 @@
 
 <div data-controller="spread-watches"
      data-spread-watches-event-group-id-value="<%= @presenter.event.event_group_id %>"
-     data-action="watches:changed@window->spread-watches#refresh hashchange@window->spread-watches#onHashChange">
+     data-action="watches:changed@window->spread-watches#refresh hashchange@window->spread-watches#seedFromFragment">
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">

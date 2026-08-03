@@ -20,13 +20,6 @@ export default class extends Controller {
     this.refresh()
   }
 
-  // Opening a shared #watch= link while already on the page is a
-  // hash-only change with no reload, so connect() never re-fires
-  onHashChange() {
-    this.seedFromFragment()
-    window.dispatchEvent(new CustomEvent("watches:changed"))
-  }
-
   refresh() {
     const count = watchedEffortIds(this.eventGroupIdValue).length
 
@@ -61,10 +54,14 @@ export default class extends Controller {
     window.location.replace(url)
   }
 
+  // Bound to hashchange because opening a shared #watch= link while
+  // already on the page is a hash-only change with no reload, so
+  // connect() never re-fires
   seedFromFragment() {
     const match = window.location.hash.match(/watch=([\d,]+)/)
     if (!match) return
 
     mergeWatchedEfforts(this.eventGroupIdValue, match[1].split(","))
+    window.dispatchEvent(new CustomEvent("watches:changed"))
   }
 }

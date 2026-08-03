@@ -5,21 +5,28 @@ RSpec.describe "watch entrants on the spread page", :js do
   let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
   let(:other_effort) { efforts(:hardrock_2015_erich_larson) }
 
-  scenario "toggle, persist, filter, and clear watches" do
+  scenario "watched is a first-class selection that clears the gender filter" do
+    female_effort = efforts(:hardrock_2015_cassondra_nienow)
     visit_with_clean_store
 
     click_button "Combined"
     expect(page).not_to have_link("Watched")
 
     watch_button(effort).click
+    watch_button(female_effort).click
     expect(page).to have_css("tr#effort_#{effort.id}.effort-watched")
 
     visit spread_event_path(event)
     expect(page).to have_css("tr#effort_#{effort.id}.effort-watched")
 
     click_button "Combined"
+    click_link "Female"
+    expect(page).not_to have_selector("tr#effort_#{effort.id}")
+
+    click_button "Female"
     click_link "Watched"
     expect(page).to have_selector("tr#effort_#{effort.id}")
+    expect(page).to have_selector("tr#effort_#{female_effort.id}")
     expect(page).not_to have_selector("tr#effort_#{other_effort.id}")
     expect(page).to have_button("Watched")
 

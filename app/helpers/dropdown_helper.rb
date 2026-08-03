@@ -415,8 +415,8 @@ module DropdownHelper
     if include_watched
       dropdown_items << {
         name: "Watched",
-        link: "#",
-        data: { action: "spread-watches#toggleOnly", spread_watches_target: "watchedItem" },
+        link: request.params.merge(filter: { gender: "combined" }, page: nil, anchor: "watched"),
+        data: { spread_watches_target: "watchedItem" },
       }
     end
 

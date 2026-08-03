@@ -1,7 +1,7 @@
 <%# locals: (presenter:) -%>
 
 <% active_card = presenter.active_widget_card %>
-<% selected_event = presenter.respond_to?(:event) ? presenter.event : nil %>
+<% selected_event = presenter.active_event %>
 
 <div id="<%= dom_id(presenter.event_group, "setup_widget") %>" data-controller="scroll-strip">
   <div class="d-flex align-items-stretch">

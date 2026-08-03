@@ -118,6 +118,10 @@ class EventGroupSetupPresenter < BasePresenter
     params[:service_identifier]
   end
 
+  def active_event
+    nil
+  end
+
   def active_widget_card
     if controller_name == "event_groups" && action_name.in?(%w[setup new])
       :overview

@@ -15,6 +15,10 @@ class EventSetupPresenter < BasePresenter
     @current_user = view_context.current_user
   end
 
+  def active_event
+    event
+  end
+
   def active_widget_card
     :events_and_courses
   end

@@ -7,8 +7,13 @@ class EventSetupCoursePresenter < BasePresenter
   end
 
   attr_reader :course, :event, :event_group
+
   delegate :description, :name, :ordered_splits, :organization, to: :course
-  delegate :concealed?, :status, to: :event_group
+  delegate :concealed?, to: :event_group
+
+  def active_event
+    event
+  end
 
   def active_widget_card
     :events_and_courses
@@ -49,5 +54,4 @@ class EventSetupCoursePresenter < BasePresenter
   private
 
   attr_reader :view_context
-
 end

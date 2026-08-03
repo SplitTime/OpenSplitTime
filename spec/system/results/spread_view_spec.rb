@@ -28,6 +28,22 @@ RSpec.describe "visit the spread page" do
     verify_efforts_present(subject_efforts)
   end
 
+  scenario "A visitor arrives via a legacy URL with a flat filter param" do
+    visit spread_event_path(event, filter: "combined", display_style: "elapsed", sort: "-overall_rank")
+
+    expect(page).to have_current_path(%r{/spread\?.*filter%5Bgender%5D=combined}, url: true)
+    expect(page).to have_content(event.name)
+    verify_efforts_present(subject_efforts)
+  end
+
+  scenario "A visitor arrives via a legacy URL with an unrecognized flat filter param" do
+    visit spread_event_path(event, filter: "bogus", display_style: "elapsed")
+
+    expect(page).not_to have_current_path(/filter/, url: true)
+    expect(page).to have_content(event.name)
+    verify_efforts_present(subject_efforts)
+  end
+
   scenario "A visitor searches for an entrant by name" do
     subject_effort = efforts(:hardrock_2015_tuan_jacobs)
     visit spread_event_path(event)

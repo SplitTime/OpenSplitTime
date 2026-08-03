@@ -40,17 +40,18 @@
         </div>
       </div>
       <div class="col-12 col-md-4 col-lg-3 order-last order-md-0 mb-2 mb-md-0">
+        <% gender_param = params[:filter].is_a?(ActionController::Parameters) ? params[:filter][:gender] : nil %>
         <%= form_tag spread_event_path(@presenter.event), method: :get do %>
           <%= hidden_field_tag :display_style, params[:display_style] if params[:display_style].present? %>
           <%= hidden_field_tag :sort, params[:sort] if params[:sort].present? %>
-          <%= hidden_field_tag "filter[gender]", params.dig(:filter, :gender) if params.dig(:filter, :gender).present? %>
+          <%= hidden_field_tag "filter[gender]", gender_param if gender_param.present? %>
           <div class="input-group">
             <%= text_field_tag "filter[search]",
-                               params.dig(:filter, :search),
+                               prepared_params[:search],
                                placeholder: "Name or bib number",
                                autocomplete: "off",
                                class: "form-control" %>
-            <% if params.dig(:filter, :search).present? %>
+            <% if prepared_params[:search].present? %>
               <%= link_to spread_path_without_search(@presenter),
                           id: "spread-search-clear",
                           class: "btn btn-outline-secondary input-group-text" do %>
@@ -83,7 +84,7 @@
 
 <article class="ost-article container-fluid">
   <% cache @presenter.cache_key do %>
-    <% if @presenter.effort_times_rows.empty? && params.dig(:filter, :search).present? %>
+    <% if @presenter.effort_times_rows.empty? && prepared_params[:search].present? %>
       <div class="text-center my-5">
         <h4>No entrants match this search</h4>
         <p>

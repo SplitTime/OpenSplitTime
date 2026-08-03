@@ -151,6 +151,12 @@ class EventsController < ApplicationController
 
   # GET /events/1/spread
   def spread
+    if params[:filter].is_a?(String)
+      gender = params[:filter].presence_in(Effort.genders.keys << "combined")
+      return redirect_to request.params.merge(filter: gender ? { gender: gender } : nil),
+                         status: :moved_permanently
+    end
+
     @presenter = EventSpreadDisplay.new(event: @event, params: prepared_params, current_user: current_user)
     respond_to do |format|
       format.html

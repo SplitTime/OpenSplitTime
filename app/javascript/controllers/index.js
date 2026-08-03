@@ -64,7 +64,6 @@ application.register("gating-controls", GatingControlsController)
 import HighlightController from "./highlight_controller"
 application.register("highlight", HighlightController)
 
-
 import InputmaskController from "./inputmask_controller"
 application.register("inputmask", InputmaskController)
 

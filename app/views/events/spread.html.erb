@@ -30,7 +30,7 @@
 </header>
 
 <div data-controller="spread-watches"
-     data-spread-watches-event-group-id-value="<%= @presenter.event.event_group_id %>"
+     data-spread-watches-event-group-id-value="<%= @presenter.event_group_id %>"
      data-action="watches:changed@window->spread-watches#refresh hashchange@window->spread-watches#seedFromFragment">
 <aside class="ost-toolbar">
   <div class="container">
@@ -133,7 +133,7 @@
         <tr id="<%= "effort_#{row.id}" %>"
             data-controller="watch-row"
             data-watch-row-effort-id-value="<%= row.id %>"
-            data-watch-row-event-group-id-value="<%= @presenter.event.event_group_id %>"
+            data-watch-row-event-group-id-value="<%= @presenter.event_group_id %>"
             data-action="watches:changed@window->watch-row#apply">
           <td class="text-center">
             <button type="button"

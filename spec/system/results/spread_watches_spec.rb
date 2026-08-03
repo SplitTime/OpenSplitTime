@@ -24,6 +24,8 @@ RSpec.describe "watch entrants on the spread page", :js do
     expect(page).to have_button("Watched")
 
     click_button "Watched"
+    expect(page).to have_css("a.dropdown-item.active.disabled", text: "Watched")
+    expect(page).not_to have_css("a.dropdown-item.active", text: "Combined")
     click_link "Combined"
     expect(page).to have_selector("tr#effort_#{other_effort.id}")
     expect(page).to have_css("tr#effort_#{effort.id}.effort-watched")

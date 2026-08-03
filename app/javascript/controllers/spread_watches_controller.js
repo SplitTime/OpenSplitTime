@@ -49,30 +49,33 @@ export default class extends Controller {
     this.applyOnlyState(false)
   }
 
-  // While the watched filter is on, the dropdown toggle reads "Watched"
-  // and the disabled current-gender item is re-enabled so it serves as
-  // the way back to the unfiltered view (its link reloads the page,
-  // which resets this ephemeral filter)
+  // While the watched filter is on, the dropdown follows its usual
+  // selected-item convention: Watched becomes active and disabled, the
+  // toggle reads "Watched", and the current-gender item is demoted to a
+  // plain selectable item so it serves as the way back to the
+  // unfiltered view (its link reloads the page, which resets this
+  // ephemeral filter)
   applyOnlyState(on) {
     if (on === this.element.classList.contains("watches-only")) return
 
     this.element.classList.toggle("watches-only", on)
     if (!this.hasWatchedItemTarget) return
 
-    this.watchedItemTarget.classList.toggle("active", on)
     const dropdown = this.watchedItemTarget.closest(".btn-group")
     const toggle = dropdown?.querySelector(".dropdown-toggle")
     const toggleText = toggle?.childNodes[0]
 
     if (on) {
+      this.watchedItemTarget.classList.add("active", "disabled")
       this.originalToggleText = toggleText?.textContent
       if (toggleText) toggleText.textContent = "Watched "
-      this.reenabledGenderItem = dropdown?.querySelector("a.dropdown-item.disabled")
-      this.reenabledGenderItem?.classList.remove("disabled")
+      this.demotedGenderItem = dropdown?.querySelector("a.dropdown-item.active:not([data-spread-watches-target])")
+      this.demotedGenderItem?.classList.remove("active", "disabled")
     } else {
+      this.watchedItemTarget.classList.remove("active", "disabled")
       if (toggleText && this.originalToggleText) toggleText.textContent = this.originalToggleText
-      this.reenabledGenderItem?.classList.add("disabled")
-      this.reenabledGenderItem = null
+      this.demotedGenderItem?.classList.add("active", "disabled")
+      this.demotedGenderItem = null
     }
   }
 

@@ -414,7 +414,7 @@ module DropdownHelper
 
     if include_watched
       dropdown_items << {
-        name: safe_join(["Watched ", tag.span("", data: { spread_watches_target: "watchCount" })]),
+        name: "Watched",
         link: "#",
         data: { action: "spread-watches#toggleOnly", spread_watches_target: "watchedItem" },
       }

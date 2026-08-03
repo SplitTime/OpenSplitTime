@@ -8,6 +8,9 @@ RSpec.describe "watch entrants on the spread page", :js do
   scenario "toggle, persist, filter, and clear watches" do
     visit_with_clean_store
 
+    click_button "Combined"
+    expect(page).not_to have_link("Watched")
+
     watch_button(effort).click
     expect(page).to have_css("tr#effort_#{effort.id}.effort-watched")
 
@@ -15,14 +18,19 @@ RSpec.describe "watch entrants on the spread page", :js do
     expect(page).to have_css("tr#effort_#{effort.id}.effort-watched")
 
     click_button "Combined"
-    expect(page).to have_link("Watched (1)")
-    click_link "Watched (1)"
+    click_link "Watched"
     expect(page).to have_selector("tr#effort_#{effort.id}")
     expect(page).not_to have_selector("tr#effort_#{other_effort.id}")
+    expect(page).to have_button("Watched")
+
+    click_button "Watched"
+    click_link "Combined"
+    expect(page).to have_selector("tr#effort_#{other_effort.id}")
+    expect(page).to have_css("tr#effort_#{effort.id}.effort-watched")
+    expect(page).to have_button("Combined")
 
     find("button[aria-label='Clear all watches']").click
     expect(page).not_to have_css("tr.effort-watched")
-    expect(page).to have_selector("tr#effort_#{other_effort.id}")
     expect(page).not_to have_selector("button[aria-label='Clear all watches']")
   end
 

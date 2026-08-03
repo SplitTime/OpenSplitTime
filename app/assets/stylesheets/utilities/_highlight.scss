@@ -28,15 +28,10 @@
 // Persistent viewer-chosen watch (see watch_row_controller) —
 // deliberately a different amber from the transient bg-highlight flash.
 // Sets --bs-table-bg-state for the same striped-table reason as
-// .bg-highlight; the first cell keeps that state shadow alongside its
-// accent bar because box-shadow declarations replace, not stack.
+// .bg-highlight.
 tr.effort-watched {
     --bs-table-bg-state: #{lighten($orange, 33%)};
     background: lighten($orange, 33%) !important;
-
-    > td:first-child {
-        box-shadow: inset 0.25rem 0 0 $orange, inset 0 0 0 9999px var(--bs-table-bg-state);
-    }
 }
 
 .watches-only tbody tr:not(.effort-watched) {

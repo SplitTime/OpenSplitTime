@@ -1,46 +1,68 @@
 <%# locals: (presenter:) -%>
 
-<div id="<%= dom_id(presenter.event_group, "setup_widget") %>">
-  <div class="row bg-white border border-2 border-primary rounded">
+<% active_card = presenter.active_widget_card %>
 
-    <!-- Event Group Card-->
-    <div class="col border-end">
-      <%= render "event_groups/setup_widget_header", title: "Overview" %>
-      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_event_group(presenter) %>
-    </div>
+<div id="<%= dom_id(presenter.event_group, "setup_widget") %>" data-controller="scroll-strip">
+  <div class="d-flex align-items-stretch">
+    <button type="button"
+            class="btn btn-link text-secondary px-2 d-none"
+            aria-label="Scroll setup cards left"
+            data-scroll-strip-target="prevButton"
+            data-action="scroll-strip#prev">
+      <i class="far fa-chevron-left"></i>
+    </button>
+    <div class="scroll-strip flex-grow-1"
+         data-scroll-strip-target="viewport"
+         data-action="scroll->scroll-strip#updateArrows">
+      <div class="row flex-nowrap mx-0 setup-widget-row bg-white border border-2 border-primary rounded">
 
-    <!-- Events Card-->
-    <div class="col-5 border-end">
-      <%= render "event_groups/setup_widget_header", title: "Events and Courses" %>
-      <% if presenter.event_group.new_record? %>
-        <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_new_event(presenter) %>
-      <% else %>
-        <%= render "event_groups/setup_widget_events", presenter: presenter %>
-      <% end %>
-    </div>
+        <!-- Event Group Card-->
+        <div class="col border-end" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :overview %>>
+          <%= render "event_groups/setup_widget_header", title: "Overview" %>
+          <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_event_group(presenter) %>
+        </div>
 
-    <!-- Entrants Card-->
-    <div class="col border-end">
-      <%= render "event_groups/setup_widget_header", title: "Entrants" %>
-      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_entrants(presenter) %>
-    </div>
+        <!-- Events Card-->
+        <div class="col-5 border-end setup-widget-card-wide" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :events_and_courses %>>
+          <%= render "event_groups/setup_widget_header", title: "Events and Courses" %>
+          <% if presenter.event_group.new_record? %>
+            <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_new_event(presenter) %>
+          <% else %>
+            <%= render "event_groups/setup_widget_events", presenter: presenter %>
+          <% end %>
+        </div>
 
-    <!-- Partners Card-->
-    <div class="col border-end">
-      <%= render "event_groups/setup_widget_header", title: "Partners" %>
-      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_partners(presenter) %>
-    </div>
+        <!-- Entrants Card-->
+        <div class="col border-end" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :entrants %>>
+          <%= render "event_groups/setup_widget_header", title: "Entrants" %>
+          <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_entrants(presenter) %>
+        </div>
 
-    <!-- Crew Access Card-->
-    <div class="col-2 border-end">
-      <%= render "event_groups/setup_widget_header", title: "Crew Access" %>
-      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_gating_locations(presenter) %>
-    </div>
+        <!-- Partners Card-->
+        <div class="col border-end" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :partners %>>
+          <%= render "event_groups/setup_widget_header", title: "Partners" %>
+          <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_partners(presenter) %>
+        </div>
 
-    <!-- Summary Card-->
-    <div class="col">
-      <%= render "event_groups/setup_widget_header", title: "Status" %>
-      <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_summary(presenter) %>
+        <!-- Crew Access Card-->
+        <div class="col-2 border-end" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :gating_locations %>>
+          <%= render "event_groups/setup_widget_header", title: "Crew Access" %>
+          <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_gating_locations(presenter) %>
+        </div>
+
+        <!-- Summary Card-->
+        <div class="col" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :status %>>
+          <%= render "event_groups/setup_widget_header", title: "Status" %>
+          <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_summary(presenter) %>
+        </div>
+      </div>
     </div>
+    <button type="button"
+            class="btn btn-link text-secondary px-2 d-none"
+            aria-label="Scroll setup cards right"
+            data-scroll-strip-target="nextButton"
+            data-action="scroll-strip#next">
+      <i class="far fa-chevron-right"></i>
+    </button>
   </div>
 </div>

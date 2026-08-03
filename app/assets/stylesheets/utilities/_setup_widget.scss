@@ -1,0 +1,21 @@
+// Below md, the setup widget becomes a horizontally scrolling strip
+// (see scroll_strip_controller): percentage-based columns would shrink
+// to fit rather than overflow, so cards take content-based minimum
+// widths instead. Above md, the grid classes govern and nothing here
+// applies.
+.setup-widget-row {
+  @include media-breakpoint-down(md) {
+    width: max-content;
+    min-width: 100%;
+
+    > [class*="col"] {
+      flex: 0 0 auto;
+      width: auto;
+      min-width: 9rem;
+    }
+
+    > .setup-widget-card-wide {
+      min-width: 22rem;
+    }
+  }
+}

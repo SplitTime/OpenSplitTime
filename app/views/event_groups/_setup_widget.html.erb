@@ -1,6 +1,7 @@
 <%# locals: (presenter:) -%>
 
 <% active_card = presenter.active_widget_card %>
+<% selected_event = presenter.respond_to?(:event) ? presenter.event : nil %>
 
 <div id="<%= dom_id(presenter.event_group, "setup_widget") %>" data-controller="scroll-strip">
   <div class="d-flex align-items-stretch">
@@ -23,7 +24,7 @@
         </div>
 
         <!-- Events Card-->
-        <div class="col border-end setup-widget-card-wide" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :events_and_courses %>>
+        <div class="col border-end setup-widget-card-wide" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :events_and_courses && (selected_event.nil? || selected_event.new_record?) %>>
           <%= render "event_groups/setup_widget_header", title: "Events and Courses" %>
           <% if presenter.event_group.new_record? %>
             <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_new_event(presenter) %>

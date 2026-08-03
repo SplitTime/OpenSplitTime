@@ -1,6 +1,6 @@
 <%# locals: (presenter:, event:, css_class:) -%>
 
-<div class="col text-center <%= css_class %>">
+<div class="col text-center <%= css_class %>" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if presenter.respond_to?(:event) && presenter.event == event %>>
   <div>
     <%= link_to_setup_widget_event(presenter, event) %>
   </div>

@@ -1,0 +1,15 @@
+.scroll-strip {
+  overflow-x: auto;
+  // A flex item's min-width defaults to auto, which would let this
+  // viewport grow to its content instead of overflowing and scrolling
+  min-width: 0;
+  // Keep content borders off the clip edge, where anti-aliasing would
+  // render them half-width
+  padding-inline: 1px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

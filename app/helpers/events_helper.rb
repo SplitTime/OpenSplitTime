@@ -73,6 +73,13 @@ module EventsHelper
             target: "_blank", rel: "noopener"
   end
 
+  def spread_path_without_search(view_object)
+    query = request.query_parameters.deep_dup
+    query["filter"]&.delete("search")
+    query.delete("filter") if query["filter"].blank?
+    spread_event_path(view_object.event, query)
+  end
+
   def link_to_download_spread_csv(view_object, current_user)
     return unless current_user&.authorized_to_edit?(view_object.event) && view_object.event_finished?
 

@@ -109,6 +109,9 @@ application.register("raw-times-push", RawTimesPushController)
 import ResultsTemplateController from "./results_template_controller"
 application.register("results-template", ResultsTemplateController)
 
+import ScrollStripController from "./scroll_strip_controller"
+application.register("scroll-strip", ScrollStripController)
+
 import ShiftToggleController from "./shift_toggle_controller"
 application.register("shift-toggle", ShiftToggleController)
 

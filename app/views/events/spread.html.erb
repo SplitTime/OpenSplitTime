@@ -33,13 +33,37 @@
   <div class="container">
     <div class="row">
       <%= render "event_groups/event_widget", events: @presenter.ordered_events_within_group, current_event: @presenter.event %>
-      <div class="col-12 col-md-auto d-inline-flex mb-2 mb-md-0">
+      <div class="col-auto d-inline-flex mb-2 mb-md-0">
         <div>
           <%= explore_dropdown_menu(@presenter) %>
           <%= link_to_download_spread_csv(@presenter, current_user) %>
         </div>
       </div>
-      <div class="col-12 col-md text-md-end">
+      <div class="col-12 col-md-4 col-lg-3 order-last order-md-0 mb-2 mb-md-0">
+        <%= form_tag spread_event_path(@presenter.event), method: :get do %>
+          <%= hidden_field_tag :display_style, params[:display_style] if params[:display_style].present? %>
+          <%= hidden_field_tag :sort, params[:sort] if params[:sort].present? %>
+          <%= hidden_field_tag "filter[gender]", params.dig(:filter, :gender) if params.dig(:filter, :gender).present? %>
+          <div class="input-group">
+            <%= text_field_tag "filter[search]",
+                               params.dig(:filter, :search),
+                               placeholder: "Name or bib number",
+                               autocomplete: "off",
+                               class: "form-control" %>
+            <% if params.dig(:filter, :search).present? %>
+              <%= link_to spread_path_without_search(@presenter),
+                          id: "spread-search-clear",
+                          class: "btn btn-outline-secondary input-group-text" do %>
+                <i class="fas fa-times"></i>
+              <% end %>
+            <% end %>
+            <%= button_tag(type: :submit, id: "spread-search-submit", class: "btn btn-primary input-group-text") do %>
+              <i class="fas fa-search"></i>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="col text-md-end">
         <div>
           <%= gender_dropdown_menu(@presenter) %>
           <%= display_style_dropdown_menu(@presenter) %>
@@ -59,6 +83,14 @@
 
 <article class="ost-article container-fluid">
   <% cache @presenter.cache_key do %>
+    <% if @presenter.effort_times_rows.empty? && params.dig(:filter, :search).present? %>
+      <div class="text-center my-5">
+        <h4>No entrants match this search</h4>
+        <p>
+          <%= link_to "Clear search", spread_path_without_search(@presenter) %>
+        </p>
+      </div>
+    <% else %>
     <table class="table table-sm table-striped mx-sm-4">
       <thead>
       <tr>
@@ -104,5 +136,6 @@
       <% end %>
       </tbody>
     </table>
+    <% end %>
   <% end %>
 </article>

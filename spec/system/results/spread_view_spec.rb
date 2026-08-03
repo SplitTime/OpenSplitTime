@@ -28,6 +28,41 @@ RSpec.describe "visit the spread page" do
     verify_efforts_present(subject_efforts)
   end
 
+  scenario "A visitor searches for an entrant by name" do
+    subject_effort = efforts(:hardrock_2015_tuan_jacobs)
+    visit spread_event_path(event)
+    verify_efforts_present(subject_efforts)
+
+    fill_in "filter[search]", with: subject_effort.last_name
+    find("#spread-search-submit").click
+
+    verify_efforts_present(Effort.where(id: subject_effort.id))
+    verify_efforts_absent(subject_efforts.where.not(last_name: subject_effort.last_name))
+
+    find("#spread-search-clear").click
+    verify_efforts_present(subject_efforts)
+  end
+
+  scenario "A visitor searches with no matching entrants" do
+    visit spread_event_path(event, filter: { search: "zzyzx" })
+    expect(page).to have_content("No entrants match this search")
+
+    click_link "Clear search"
+    verify_efforts_present(subject_efforts)
+  end
+
+  scenario "A search preserves the gender filter" do
+    subject_effort = efforts(:hardrock_2015_cassondra_nienow)
+    visit spread_event_path(event, filter: { gender: "female" })
+    verify_efforts_absent(subject_efforts.male)
+
+    fill_in "filter[search]", with: subject_effort.last_name
+    find("#spread-search-submit").click
+
+    verify_efforts_present(Effort.where(id: subject_effort.id))
+    expect(page).to have_button("Female")
+  end
+
   scenario "A user filters using the gender dropdown" do
     visit spread_event_path(event)
     expect(page).to have_content(event.name)

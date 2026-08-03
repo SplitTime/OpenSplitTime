@@ -21,9 +21,10 @@ class EventWithEffortsPresenter < BasePresenter
   end
 
   def ranked_effort_rows
-    @ranked_effort_rows ||= filtered_ranked_efforts.map do |effort|
-      effort.person = indexed_people[effort.person_id]
-      EffortRow.new(effort)
+    @ranked_effort_rows ||= begin
+      efforts = filtered_ranked_efforts.to_a
+      ActiveRecord::Associations::Preloader.new(records: efforts, associations: :person).call
+      efforts.map { |effort| EffortRow.new(effort) }
     end
   end
 
@@ -81,14 +82,6 @@ class EventWithEffortsPresenter < BasePresenter
 
   def filtered_ids
     @filtered_ids ||= event_efforts.where(filter_hash).search(search_text).ids.to_set
-  end
-
-  def indexed_people
-    @indexed_people ||= Person.where(id: person_ids).index_by(&:id)
-  end
-
-  def person_ids
-    @person_ids ||= filtered_ranked_efforts.map(&:person_id).compact
   end
 
   def validate_setup

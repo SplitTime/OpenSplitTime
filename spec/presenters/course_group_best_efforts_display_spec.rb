@@ -37,6 +37,7 @@ RSpec.describe CourseGroupBestEffortsDisplay do
 
       expect(segments.size).to be > 1
       expect(person_queries).to eq(0)
+      expect(segments).to all(satisfy { |segment| segment.association(:person).loaded? && segment.person&.id == segment.person_id })
     ensure
       ActiveSupport::Notifications.unsubscribe(subscription) if subscription
     end

@@ -27,14 +27,16 @@ class EventSpreadDisplay < EventWithEffortsPresenter
   end
 
   def effort_times_rows
-    @effort_times_rows ||=
-      filtered_ranked_efforts.map do |effort|
-        effort.person = indexed_people[effort.person_id]
+    @effort_times_rows ||= begin
+      efforts = filtered_ranked_efforts.to_a
+      ActiveRecord::Associations::Preloader.new(records: efforts, associations: :person).call
+      efforts.map do |effort|
         EffortTimesRow.new(effort: effort,
                            lap_splits: lap_splits,
                            split_times: split_times_by_effort.fetch(effort.id, []),
                            display_style: display_style)
       end
+    end
   end
 
   def effort_times_row_ids

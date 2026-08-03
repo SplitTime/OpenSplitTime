@@ -65,6 +65,21 @@ RSpec.describe "watch entrants on the spread page", :js do
     expect(page).not_to have_css("tr#effort_#{other_effort.id}.effort-watched")
   end
 
+  scenario "a signed-in user's followed entrants are watched automatically" do
+    rufa_event = events(:rufa_2017_12h)
+    followed_effort = efforts(:rufa_2017_12h_not_started)
+    sign_in users(:admin_user)
+
+    visit spread_event_path(rufa_event)
+    page.execute_script("localStorage.clear()")
+    visit spread_event_path(rufa_event)
+
+    expect(page).to have_css("tr#effort_#{followed_effort.id}.effort-watched")
+
+    watch_button(efforts(:rufa_2017_12h_progress_lap2)).click
+    expect(page).to have_css("tr.effort-watched", count: 2)
+  end
+
   def watch_button(effort)
     page.find("tr#effort_#{effort.id} button[aria-label='Watch this entrant']")
   end

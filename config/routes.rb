@@ -142,6 +142,7 @@ Rails.application.routes.draw do
       get :export_raw_times
       get :finish_line
       get :follow
+      get :followed_effort_ids
       get :manage_entrant_photos
       get :manage_start_times
       get :manage_start_times_edit_actual

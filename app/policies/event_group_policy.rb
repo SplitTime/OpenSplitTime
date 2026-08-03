@@ -134,6 +134,11 @@ class EventGroupPolicy < ApplicationPolicy
     user.authorized_to_edit?(event_group)
   end
 
+  # Returns only the requesting user's own subscription data
+  def followed_effort_ids?
+    user.present?
+  end
+
   def set_data_status?
     roster?
   end

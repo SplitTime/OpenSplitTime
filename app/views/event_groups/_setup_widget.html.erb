@@ -23,7 +23,7 @@
         </div>
 
         <!-- Events Card-->
-        <div class="col-5 border-end setup-widget-card-wide" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :events_and_courses %>>
+        <div class="col border-end setup-widget-card-wide" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :events_and_courses %>>
           <%= render "event_groups/setup_widget_header", title: "Events and Courses" %>
           <% if presenter.event_group.new_record? %>
             <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_new_event(presenter) %>
@@ -45,7 +45,7 @@
         </div>
 
         <!-- Crew Access Card-->
-        <div class="col-2 border-end" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :gating_locations %>>
+        <div class="col border-end" <%= tag.attributes(data: { scroll_strip_target: "selected" }) if active_card == :gating_locations %>>
           <%= render "event_groups/setup_widget_header", title: "Crew Access" %>
           <%= render "event_groups/setup_widget_body", link: link_to_setup_widget_gating_locations(presenter) %>
         </div>

@@ -1,21 +1,28 @@
-// Below md, the setup widget becomes a horizontally scrolling strip
-// (see scroll_strip_controller): percentage-based columns would shrink
-// to fit rather than overflow, so cards take content-based minimum
-// widths instead. Above md, the grid classes govern and nothing here
-// applies.
+// The setup widget is a horizontally scrolling strip at every width
+// (see scroll_strip_controller): cards take content-based minimum
+// widths and grow to fill spare room, so a group with many events
+// scrolls behind the arrows instead of squeezing its cards. Percentage
+// grid columns are unsuitable here because they shrink to fit inside a
+// nowrap container rather than overflow.
 .setup-widget-row {
-  @include media-breakpoint-down(md) {
-    width: max-content;
-    min-width: 100%;
+  width: max-content;
+  min-width: 100%;
 
-    > [class*="col"] {
-      flex: 0 0 auto;
-      width: auto;
-      min-width: 9rem;
-    }
+  > [class*="col"] {
+    flex: 1 0 auto;
+    width: auto;
+    min-width: 9rem;
+  }
 
-    > .setup-widget-card-wide {
-      min-width: 22rem;
-    }
+  > .setup-widget-card-wide {
+    min-width: max-content;
+  }
+}
+
+.setup-widget-events-row {
+  > [class*="col"] {
+    flex: 1 0 auto;
+    width: auto;
+    min-width: 5rem;
   }
 }

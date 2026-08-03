@@ -1,6 +1,6 @@
 <%# locals: (presenter:) -%>
 
-<div class="row py-3">
+<div class="row py-3 flex-nowrap setup-widget-events-row">
   <% presenter.event_group.events.each do |event| %>
     <% next if event.new_record? %>
     <!-- Event-->

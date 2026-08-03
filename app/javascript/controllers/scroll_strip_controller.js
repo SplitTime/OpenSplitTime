@@ -6,7 +6,7 @@ export default class extends Controller {
   static targets = ["viewport", "selected", "prevButton", "nextButton"]
 
   initialize() {
-    this.updateArrows = this.updateArrows.bind(this)
+    this.handleResize = this.handleResize.bind(this)
   }
 
   connect() {
@@ -15,12 +15,35 @@ export default class extends Controller {
     if (document.fonts) {
       document.fonts.ready.then(() => this.settle())
     }
-    window.addEventListener("resize", this.updateArrows)
+    this.lastViewportWidth = this.viewportTarget.clientWidth
+    window.addEventListener("resize", this.handleResize)
   }
 
   disconnect() {
-    window.removeEventListener("resize", this.updateArrows)
+    window.removeEventListener("resize", this.handleResize)
     clearTimeout(this.snapTimer)
+  }
+
+  // Height-only resizes (e.g. mobile URL bar collapse) are ignored;
+  // a width change that pushes the selected item out of view re-centers
+  // it, while a deliberate scroll position is otherwise preserved
+  handleResize() {
+    this.updateArrows()
+
+    const width = this.viewportTarget.clientWidth
+    if (width === this.lastViewportWidth) return
+
+    this.lastViewportWidth = width
+    if (this.hasSelectedTarget && !this.selectedFullyVisible()) {
+      this.centerSelected()
+    }
+  }
+
+  selectedFullyVisible() {
+    const viewportRect = this.viewportTarget.getBoundingClientRect()
+    const selectedRect = this.selectedTarget.getBoundingClientRect()
+
+    return selectedRect.left >= viewportRect.left && selectedRect.right <= viewportRect.right
   }
 
   settle() {

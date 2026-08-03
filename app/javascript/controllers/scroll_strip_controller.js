@@ -10,15 +10,24 @@ export default class extends Controller {
   }
 
   connect() {
-    if (this.hasSelectedTarget) {
-      this.centerSelected()
+    this.settle()
+    // Web font loading changes button widths; re-settle with final metrics
+    if (document.fonts) {
+      document.fonts.ready.then(() => this.settle())
     }
-    this.updateArrows()
     window.addEventListener("resize", this.updateArrows)
   }
 
   disconnect() {
     window.removeEventListener("resize", this.updateArrows)
+    clearTimeout(this.snapTimer)
+  }
+
+  settle() {
+    if (this.hasSelectedTarget) {
+      this.centerSelected()
+    }
+    this.updateArrows()
   }
 
   prev() {
@@ -38,8 +47,30 @@ export default class extends Controller {
     this.nextButtonTarget.classList.toggle("d-none", !overflowing)
 
     if (overflowing) {
-      this.prevButtonTarget.disabled = viewport.scrollLeft <= 0
-      this.nextButtonTarget.disabled = viewport.scrollLeft >= maxScroll - 1
+      const atStart = viewport.scrollLeft <= 1
+      const atEnd = viewport.scrollLeft >= maxScroll - 1
+
+      this.prevButtonTarget.classList.toggle("invisible", atStart)
+      this.prevButtonTarget.disabled = atStart
+      this.nextButtonTarget.classList.toggle("invisible", atEnd)
+      this.nextButtonTarget.disabled = atEnd
+
+      // Once scrolling settles, snap any sub-pixel or rounding remainder
+      // so content is never left clipped by a hair at either edge
+      clearTimeout(this.snapTimer)
+      this.snapTimer = setTimeout(() => this.snapToEdge(), 150)
+    }
+  }
+
+  snapToEdge() {
+    const viewport = this.viewportTarget
+    const maxScroll = viewport.scrollWidth - viewport.clientWidth
+    if (maxScroll <= 1) return
+
+    if (viewport.scrollLeft > 0 && viewport.scrollLeft <= 1) {
+      viewport.scrollLeft = 0
+    } else if (viewport.scrollLeft < maxScroll && viewport.scrollLeft >= maxScroll - 1) {
+      viewport.scrollLeft = maxScroll
     }
   }
 

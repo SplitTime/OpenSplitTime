@@ -400,7 +400,7 @@ module DropdownHelper
   end
 
   def gender_dropdown_menu(view_object, include_watched: false)
-    watched_mode = include_watched && params[:watched].present?
+    watched_mode = include_watched && view_object.watched_view?
     genders = view_object.relevant_genders
     genders.unshift("combined")
 

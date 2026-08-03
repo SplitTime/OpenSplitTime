@@ -5,20 +5,20 @@ import { effortWatched, toggleWatchedEffort } from "../src/utils/watch_store"
 // replaced by Turbo broadcasts re-apply their own watch automatically.
 export default class extends Controller {
   static targets = ["icon"]
-  static values = { effortId: Number, group: Number }
+  static values = { effortId: Number, eventGroupId: Number }
 
   connect() {
     this.apply()
   }
 
   toggle() {
-    toggleWatchedEffort(this.groupValue, this.effortIdValue)
+    toggleWatchedEffort(this.eventGroupIdValue, this.effortIdValue)
     this.apply()
     window.dispatchEvent(new CustomEvent("watches:changed"))
   }
 
   apply() {
-    const watched = effortWatched(this.groupValue, this.effortIdValue)
+    const watched = effortWatched(this.eventGroupIdValue, this.effortIdValue)
 
     this.element.classList.toggle("effort-watched", watched)
     if (this.hasIconTarget) {

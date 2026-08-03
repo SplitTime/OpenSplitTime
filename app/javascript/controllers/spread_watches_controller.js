@@ -13,7 +13,7 @@ import { clearWatchedEfforts, mergeWatchedEfforts, watchedEffortIds } from "../s
 // watches:changed event.
 export default class extends Controller {
   static targets = ["watchedItem", "clearButton"]
-  static values = { group: Number }
+  static values = { eventGroupId: Number }
 
   connect() {
     this.seedFromFragment()
@@ -31,7 +31,7 @@ export default class extends Controller {
   }
 
   refresh() {
-    const count = watchedEffortIds(this.groupValue).length
+    const count = watchedEffortIds(this.eventGroupIdValue).length
 
     if (this.hasWatchedItemTarget) {
       this.watchedItemTarget.classList.toggle("d-none", count === 0)
@@ -43,7 +43,7 @@ export default class extends Controller {
   }
 
   clear() {
-    clearWatchedEfforts(this.groupValue)
+    clearWatchedEfforts(this.eventGroupIdValue)
     window.dispatchEvent(new CustomEvent("watches:changed"))
   }
 
@@ -92,6 +92,6 @@ export default class extends Controller {
     const match = window.location.hash.match(/watch=([\d,]+)/)
     if (!match) return
 
-    mergeWatchedEfforts(this.groupValue, match[1].split(","))
+    mergeWatchedEfforts(this.eventGroupIdValue, match[1].split(","))
   }
 }

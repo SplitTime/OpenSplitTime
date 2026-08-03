@@ -43,6 +43,20 @@ RSpec.describe "watch entrants on the spread page", :js do
     expect(page).not_to have_selector("button[aria-label='Clear all watches']")
   end
 
+  scenario "clearing all watches while in the watched view returns to combined" do
+    visit_with_clean_store
+
+    watch_button(effort).click
+    click_button "Combined"
+    click_link "Watched"
+    expect(page).to have_button("Watched")
+
+    find("button[aria-label='Clear all watches']").click
+    expect(page).to have_button("Combined")
+    expect(page).to have_selector("tr#effort_#{other_effort.id}")
+    expect(page).not_to have_css("tr.effort-watched")
+  end
+
   scenario "a shared link fragment seeds watches" do
     visit_with_clean_store
 

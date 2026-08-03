@@ -29,6 +29,9 @@
   </div>
 </header>
 
+<div data-controller="spread-watches"
+     data-spread-watches-event-group-id-value="<%= @presenter.event_group_id %>"
+     data-action="watches:changed@window->spread-watches#refresh hashchange@window->spread-watches#seedFromFragment">
 <aside class="ost-toolbar">
   <div class="container">
     <div class="row">
@@ -66,7 +69,7 @@
       </div>
       <div class="col text-md-end">
         <div>
-          <%= gender_dropdown_menu(@presenter) %>
+          <%= gender_dropdown_menu(@presenter, include_watched: true) %>
           <%= display_style_dropdown_menu(@presenter) %>
         </div>
       </div>
@@ -95,6 +98,17 @@
     <table class="table table-sm table-striped mx-sm-4">
       <thead>
       <tr>
+        <th class="text-center align-bottom">
+          <button type="button"
+                  class="btn btn-link p-0 d-none"
+                  aria-label="Clear all watches"
+                  data-spread-watches-target="clearButton"
+                  data-action="spread-watches#clear"
+                  data-controller="tooltip"
+                  data-bs-original-title="Clear all watches">
+            <i class="fas fa-star-sharp-half-stroke text-warning"></i>
+          </button>
+        </th>
         <th>O/G<br><%= link_to_reversing_sort_heading("Place", :overall_rank, @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading("Bib", :bib_number, @presenter.existing_sort) %></th>
         <th><%= link_to_reversing_sort_heading("Name", "last_name,first_name", @presenter.existing_sort) %></th>
@@ -116,7 +130,19 @@
 
       <tbody>
       <% @presenter.effort_times_rows.each do |row| %>
-        <tr id="<%= "effort_#{row.id}" %>">
+        <tr id="<%= "effort_#{row.id}" %>"
+            data-controller="watch-row"
+            data-watch-row-effort-id-value="<%= row.id %>"
+            data-watch-row-event-group-id-value="<%= @presenter.event_group_id %>"
+            data-action="watches:changed@window->watch-row#apply">
+          <td class="text-center">
+            <button type="button"
+                    class="btn btn-link p-0"
+                    aria-label="Watch this entrant"
+                    data-action="watch-row#toggle">
+              <i class="far fa-star-sharp text-secondary" data-watch-row-target="icon"></i>
+            </button>
+          </td>
           <td><%= "#{row.display_overall_rank}/#{row.display_gender_rank}" %></td>
           <td><%= row.bib_number %></td>
           <td class="text-nowrap"><strong><%= link_to row.display_full_name, effort_path(row.effort) %></strong></td>
@@ -140,3 +166,4 @@
     <% end %>
   <% end %>
 </article>
+</div>

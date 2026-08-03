@@ -91,6 +91,13 @@ RSpec.describe EventSpreadDisplay do
       expect(a).to eq(b)
     end
 
+    it "is identical with and without the watched param" do
+      a = presenter_with(display_style: "elapsed").cache_key
+      b = presenter_with(display_style: "elapsed", watched: "true").cache_key
+
+      expect(a).to eq(b)
+    end
+
     it "changes when sort changes" do
       a = presenter_with(display_style: "elapsed", sort: "name").cache_key
       b = presenter_with(display_style: "elapsed", sort: "-name").cache_key
@@ -107,6 +114,25 @@ RSpec.describe EventSpreadDisplay do
       ).cache_key
 
       expect(junked).to eq(baseline)
+    end
+  end
+
+  describe "#watched_view?" do
+    let(:event) { events(:hardrock_2015) }
+
+    def presenter_with(raw_params)
+      described_class.new(
+        event: event,
+        params: build(:prepared_params, params: ActionController::Parameters.new(raw_params)),
+      )
+    end
+
+    it "is true when the watched param is present" do
+      expect(presenter_with(watched: "true").watched_view?).to be(true)
+    end
+
+    it "is false when the watched param is absent" do
+      expect(presenter_with({}).watched_view?).to be(false)
     end
   end
 

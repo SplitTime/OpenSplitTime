@@ -118,6 +118,9 @@ application.register("shift-toggle", ShiftToggleController)
 import SidebarController from "./sidebar_controller"
 application.register("sidebar", SidebarController)
 
+import SpreadWatchesController from "./spread_watches_controller"
+application.register("spread-watches", SpreadWatchesController)
+
 import ToastController from "./toast_controller"
 application.register("toast", ToastController)
 
@@ -126,3 +129,6 @@ application.register("tooltip", TooltipController)
 
 import VisibilityController from "./visibility_controller"
 application.register("visibility", VisibilityController)
+
+import WatchRowController from "./watch_row_controller"
+application.register("watch-row", WatchRowController)

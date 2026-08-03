@@ -1,3 +1,5 @@
+@import "../variables";
+
 // Register --bs-table-bg-state as a <color> so it can be transitioned. Without
 // this, custom-property values change instantaneously and the cell-level inset
 // box-shadow that uses this variable would snap rather than fade.
@@ -21,4 +23,17 @@
 .bg-highlight-faded-fast > td,
 .bg-highlight-faded-fast > th {
     transition: box-shadow 1s linear;
+}
+
+// Persistent viewer-chosen watch (see watch_row_controller) —
+// deliberately a different amber from the transient bg-highlight flash.
+// Sets --bs-table-bg-state for the same striped-table reason as
+// .bg-highlight.
+tr.effort-watched {
+    --bs-table-bg-state: #{lighten($orange, 33%)};
+    background: lighten($orange, 33%) !important;
+}
+
+.watches-only tbody tr:not(.effort-watched) {
+    display: none;
 }

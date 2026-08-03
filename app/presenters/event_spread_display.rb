@@ -26,6 +26,10 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     { elapsed: "Elapsed", ampm: "AM/PM", military: "24-Hour", segment: "Segment" }
   end
 
+  def watched_view?
+    params[:watched].present?
+  end
+
   def effort_times_rows
     @effort_times_rows ||= begin
       efforts = filtered_ranked_efforts.to_a

@@ -399,16 +399,27 @@ module DropdownHelper
     build_dropdown_menu("Actions", dropdown_items, button: true)
   end
 
-  def gender_dropdown_menu(view_object)
+  def gender_dropdown_menu(view_object, include_watched: false)
+    watched_mode = include_watched && view_object.watched_view?
     genders = view_object.relevant_genders
     genders.unshift("combined")
 
     dropdown_items = genders.map do |gender|
       {
         name: gender.titleize,
-        link: request.params.merge(filter: { gender: gender }, page: nil),
-        active: view_object.gender_text == gender,
-        disabled: view_object.gender_text == gender,
+        link: request.params.merge(filter: { gender: gender }, page: nil, watched: nil),
+        active: !watched_mode && view_object.gender_text == gender,
+        disabled: !watched_mode && view_object.gender_text == gender,
+      }
+    end
+
+    if include_watched
+      dropdown_items << {
+        name: "Watched",
+        link: request.params.merge(filter: { gender: "combined" }, page: nil, watched: true),
+        active: watched_mode,
+        disabled: watched_mode,
+        data: { spread_watches_target: "watchedItem" },
       }
     end
 

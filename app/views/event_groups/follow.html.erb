@@ -75,6 +75,20 @@
     </div>
     <br>
 
+    <div class="card">
+      <h4 class="card-header">Watching Entrants</h4>
+      <div class="card-body">
+        <p>To pick your entrants out of the field at a glance, click the star next to an entrant's name on
+          <%= @presenter.multiple_events? ? "any of the Live Results pages" : "the Live Results page" %> above. Watched
+          entrants are highlighted, and the filter menu gains a "Watched" option that limits the table to only the
+          entrants you are watching.</p>
+        <p>Watches are saved on your device, and if you are signed in, entrants you follow by email or text are watched
+          automatically. See <%= link_to "Watching Entrants", docs_url("user-info/watching-entrants/"), target: "_blank", rel: "noopener" %>
+          for full details.</p>
+      </div>
+    </div>
+    <br>
+
     <% if @presenter.effort_planning_available? %>
       <div class="card">
         <h4 class="card-header">Live Time Projections</h4>

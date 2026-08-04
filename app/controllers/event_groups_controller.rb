@@ -182,7 +182,7 @@ class EventGroupsController < ApplicationController
     authorize @event_group
 
     effort_ids = current_user.subscriptions
-                             .where(subscribable_type: "Effort", subscribable_id: @event_group.efforts.select(:id))
+                             .where(subscribable: @event_group.efforts)
                              .distinct
                              .pluck(:subscribable_id)
 

@@ -17,6 +17,10 @@ production:
     class: SweepOrphanedBlobsJob
     queue: default
     schedule: at 8am every day
+  repair_stale_performance_data:
+    class: RepairStalePerformanceDataJob
+    queue: default
+    schedule: at 8:30am every day
   sweep_effort_subscriptions_and_topics:
     class: Sweepers::EffortSubscriptionsAndTopicsJob
     queue: default

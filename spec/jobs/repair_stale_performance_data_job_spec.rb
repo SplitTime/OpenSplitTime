@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe SweepStalePerformanceDataJob do
+RSpec.describe RepairStalePerformanceDataJob do
   let(:event) { events(:hardrock_2015) }
   let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
 

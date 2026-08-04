@@ -1,4 +1,4 @@
-class SweepStalePerformanceDataJob < ApplicationJob
+class RepairStalePerformanceDataJob < ApplicationJob
   queue_as :default
 
   def perform
@@ -18,12 +18,12 @@ class SweepStalePerformanceDataJob < ApplicationJob
     end
 
     healed_count = stale_event_ids.size - failures.size
-    Rails.logger.info("SweepStalePerformanceDataJob healed #{healed_count} of #{stale_event_ids.size} stale events")
+    Rails.logger.info("RepairStalePerformanceDataJob healed #{healed_count} of #{stale_event_ids.size} stale events")
 
     return if failures.empty?
 
     report_text = <<~TEXT
-      The nightly performance data sweep found #{stale_event_ids.size} stale events and could not heal #{failures.size}:
+      The nightly performance data repair found #{stale_event_ids.size} stale events and could not heal #{failures.size}:
 
       #{failures.join("\n")}
     TEXT

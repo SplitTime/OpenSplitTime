@@ -158,6 +158,7 @@ class EventsController < ApplicationController
     end
 
     @presenter = EventSpreadDisplay.new(event: @event, params: prepared_params, current_user: current_user)
+    RecomputeEffortPerformanceDataJob.enqueue_if_stale(@event, current_user)
     respond_to do |format|
       format.html
       format.csv do

@@ -98,6 +98,10 @@ class Event < ApplicationRecord
     slug
   end
 
+  def performance_data_stale?
+    ::Results::EffortPerformanceDataAudit.stale_for_event?(self)
+  end
+
   def split_times
     SplitTime.joins(:effort).where(efforts: { event_id: id })
   end

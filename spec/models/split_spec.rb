@@ -448,4 +448,23 @@ RSpec.describe Split, kind: :model do
       expect(split.parameterized_base_name).to eq("aid-station-1")
     end
   end
+
+  describe "recomputing effort performance data" do
+    let(:split) { splits(:hardrock_cw_cunningham) }
+
+    it "enqueues a recompute for the split's events when distance changes" do
+      expect { split.update!(distance_from_start: split.distance_from_start + 100) }
+        .to have_enqueued_job(RecomputeEffortPerformanceDataJob).with(split.events.ids)
+    end
+
+    it "enqueues a recompute when the sub split bitmap changes" do
+      expect { split.update!(sub_split_bitmap: 1) }
+        .to have_enqueued_job(RecomputeEffortPerformanceDataJob)
+    end
+
+    it "does not enqueue a recompute for other changes" do
+      expect { split.update!(description: "A lovely spot") }
+        .not_to have_enqueued_job(RecomputeEffortPerformanceDataJob)
+    end
+  end
 end

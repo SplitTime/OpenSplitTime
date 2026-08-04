@@ -26,6 +26,11 @@ class Split < ApplicationRecord
 
   before_validation :parameterize_base_name
   after_commit :touch_all_events
+  # A distance or sub split change silently invalidates the stored
+  # overall_performance of every effort whose events use this split;
+  # ranks scramble on the next single-effort recompute. See issue #2210.
+  after_update_commit :recompute_effort_performance_data,
+                      if: -> { saved_change_to_distance_from_start? || saved_change_to_sub_split_bitmap? }
 
   validates :base_name, :distance_from_start, :sub_split_bitmap, :kind, presence: true
   validates :kind, inclusion: { in: Split.kinds.keys }
@@ -183,5 +188,12 @@ class Split < ApplicationRecord
 
   def touch_all_events
     events.touch_all
+  end
+
+  def recompute_effort_performance_data
+    event_ids = events.ids
+    return if event_ids.empty?
+
+    RecomputeEffortPerformanceDataJob.perform_later(event_ids)
   end
 end

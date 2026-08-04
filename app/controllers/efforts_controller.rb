@@ -11,6 +11,7 @@ class EffortsController < ApplicationController
   def show
     @presenter = EffortShowView.new(@effort)
     session[:return_to] = effort_path(@effort)
+    RecomputeEffortPerformanceDataJob.enqueue_if_stale(@effort.event, current_user)
   end
 
   # GET /efforts/new

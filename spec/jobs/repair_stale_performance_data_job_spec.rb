@@ -10,33 +10,38 @@ RSpec.describe RepairStalePerformanceDataJob do
     effort.update_columns(overall_performance: bits[0...15] + field + bits[45..])
   end
 
-  it "heals stale events and sends no mail" do
+  it "heals stale events and reports them as healed" do
     perturb_distance(effort)
 
-    expect { described_class.perform_now }.not_to have_enqueued_mail(AdminMailer, :job_report)
+    expect { described_class.perform_now }
+      .to have_enqueued_mail(AdminMailer, :job_report)
+      .with(described_class.name, a_string_including("Healed:\n#{event.slug}"))
     expect(event.performance_data_stale?).to be(false)
   end
 
-  it "does nothing when no events are stale" do
+  it "issues no recomputes and reports a clean run when no events are stale" do
     expect(Results::SetEffortPerformanceData).not_to receive(:perform!)
-    expect { described_class.perform_now }.not_to have_enqueued_mail(AdminMailer, :job_report)
+
+    expect { described_class.perform_now }
+      .to have_enqueued_mail(AdminMailer, :job_report)
+      .with(described_class.name, a_string_including("no stale events"))
   end
 
-  it "emails an admin report when an event fails to heal" do
+  it "reports an event that fails to heal" do
     perturb_distance(effort)
     allow(Results::SetEffortPerformanceData).to receive(:perform!)
 
     expect { described_class.perform_now }
       .to have_enqueued_mail(AdminMailer, :job_report)
-      .with(described_class.name, a_string_including(event.slug))
+      .with(described_class.name, a_string_including("#{event.slug}: still stale after recompute"))
   end
 
-  it "emails an admin report when a recompute raises" do
+  it "reports the error when a recompute raises" do
     perturb_distance(effort)
     allow(Results::SetEffortPerformanceData).to receive(:perform!).and_raise(ActiveRecord::StatementInvalid, "boom")
 
     expect { described_class.perform_now }
       .to have_enqueued_mail(AdminMailer, :job_report)
-      .with(described_class.name, a_string_including("boom"))
+      .with(described_class.name, a_string_including("#{event.slug}: boom"))
   end
 end

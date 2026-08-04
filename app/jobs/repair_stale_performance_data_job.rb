@@ -1,32 +1,44 @@
 class RepairStalePerformanceDataJob < ApplicationJob
   queue_as :default
 
+  # Reports by email on every run for now; switch to failure-only
+  # reporting once the job has a track record
   def perform
-    stale_event_ids = Results::EffortPerformanceDataAudit.stale_event_ids
-    return if stale_event_ids.empty?
-
+    healed = []
     failures = []
 
-    stale_event_ids.each do |event_id|
+    Results::EffortPerformanceDataAudit.stale_event_ids.each do |event_id|
       event = Event.find(event_id)
       begin
         RecomputeEffortPerformanceDataJob.perform_now([event.id])
-        failures << "#{event.slug}: still stale after recompute" if event.performance_data_stale?
+        if event.performance_data_stale?
+          failures << "#{event.slug}: still stale after recompute"
+        else
+          healed << event.slug
+        end
       rescue StandardError => e
         failures << "#{event.slug}: #{e.message}"
       end
     end
 
-    healed_count = stale_event_ids.size - failures.size
-    Rails.logger.info("RepairStalePerformanceDataJob healed #{healed_count} of #{stale_event_ids.size} stale events")
+    total = healed.size + failures.size
+    Rails.logger.info("RepairStalePerformanceDataJob healed #{healed.size} of #{total} stale events")
+    AdminMailer.job_report(self.class.name, report_text(healed, failures)).deliver_later
+  end
 
-    return if failures.empty?
+  private
 
-    report_text = <<~TEXT
-      The nightly performance data repair found #{stale_event_ids.size} stale events and could not heal #{failures.size}:
+  def report_text(healed, failures)
+    return "The performance data repair job found no stale events." if healed.empty? && failures.empty?
 
-      #{failures.join("\n")}
+    <<~TEXT
+      The performance data repair job found #{healed.size + failures.size} stale events.
+
+      Healed:
+      #{healed.presence&.join("\n") || '(none)'}
+
+      Failed:
+      #{failures.presence&.join("\n") || '(none)'}
     TEXT
-    AdminMailer.job_report(self.class.name, report_text).deliver_later
   end
 end

@@ -136,6 +136,48 @@ RSpec.describe EventSpreadDisplay do
     end
   end
 
+  describe "#followed_effort_ids" do
+    let(:subscribed_user) { users(:admin_user) }
+    let(:followed_effort) { efforts(:rufa_2017_12h_not_started) }
+
+    def presenter_with(event:, current_user:)
+      described_class.new(event: event, params: prepared_params, current_user: current_user)
+    end
+
+    context "when the user follows an effort in the event group" do
+      let(:presenter) { presenter_with(event: events(:rufa_2017_12h), current_user: subscribed_user) }
+
+      it "returns the effort id once, although the user has multiple subscriptions to it" do
+        expect(subscribed_user.subscriptions.where(subscribable: followed_effort).count).to be > 1
+        expect(presenter.followed_effort_ids).to eq([followed_effort.id])
+      end
+    end
+
+    context "when the user's followed efforts are all in other event groups" do
+      let(:presenter) { presenter_with(event: events(:hardrock_2015), current_user: subscribed_user) }
+
+      it "returns an empty array" do
+        expect(presenter.followed_effort_ids).to eq([])
+      end
+    end
+
+    context "when the user follows no efforts" do
+      let(:presenter) { presenter_with(event: events(:rufa_2017_12h), current_user: users(:third_user)) }
+
+      it "returns an empty array" do
+        expect(presenter.followed_effort_ids).to eq([])
+      end
+    end
+
+    context "when there is no current user" do
+      let(:presenter) { presenter_with(event: events(:rufa_2017_12h), current_user: nil) }
+
+      it "returns an empty array" do
+        expect(presenter.followed_effort_ids).to eq([])
+      end
+    end
+  end
+
   describe "#split_header_data" do
     let(:course) { build_stubbed(:course, name: "Testrock Counter-clockwise", splits: splits) }
     let(:event) { build_stubbed(:event, course: course, splits: splits) }

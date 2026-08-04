@@ -12,12 +12,23 @@ import { clearWatchedEfforts, mergeWatchedEfforts, watchedEffortIds } from "../s
 // watches:changed event.
 export default class extends Controller {
   static targets = ["watchedItem", "clearButton"]
-  static values = { eventGroupId: Number }
+  static values = { eventGroupId: Number, followedEffortIds: Array }
 
   connect() {
+    this.seedFromFollows()
     this.seedFromFragment()
     if (this.watchedMode()) this.element.classList.add("watches-only")
     this.refresh()
+  }
+
+  // Merges the signed-in user's followed entrants (notification
+  // subscriptions), rendered into followedEffortIds by the server, into
+  // the device-local watch set
+  seedFromFollows() {
+    if (this.followedEffortIdsValue.length === 0) return
+
+    mergeWatchedEfforts(this.eventGroupIdValue, this.followedEffortIdsValue)
+    window.dispatchEvent(new CustomEvent("watches:changed"))
   }
 
   refresh() {

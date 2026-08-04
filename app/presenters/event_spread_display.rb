@@ -30,6 +30,15 @@ class EventSpreadDisplay < EventWithEffortsPresenter
     params[:watched].present?
   end
 
+  def followed_effort_ids
+    return [] if current_user.nil?
+
+    @followed_effort_ids ||= current_user.subscriptions
+                                         .where(subscribable: event_group.efforts)
+                                         .distinct
+                                         .pluck(:subscribable_id)
+  end
+
   def effort_times_rows
     @effort_times_rows ||= begin
       efforts = filtered_ranked_efforts.to_a

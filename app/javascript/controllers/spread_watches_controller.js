@@ -12,35 +12,23 @@ import { clearWatchedEfforts, mergeWatchedEfforts, watchedEffortIds } from "../s
 // watches:changed event.
 export default class extends Controller {
   static targets = ["watchedItem", "clearButton"]
-  static values = { eventGroupId: Number, followedUrl: String }
+  static values = { eventGroupId: Number, followedEffortIds: Array }
 
   connect() {
+    this.seedFromFollows()
     this.seedFromFragment()
     if (this.watchedMode()) this.element.classList.add("watches-only")
-    this.seedFromFollows().finally(() => this.refresh())
+    this.refresh()
   }
 
   // Merges the signed-in user's followed entrants (notification
-  // subscriptions) into the device-local watch set. The server renders
-  // followedUrl only for signed-in users, so anonymous visits make no
-  // request. Deferring refresh() until the fetch settles keeps a
-  // bookmarked ?watched URL from bouncing to Combined before
-  // server-known follows arrive on a fresh device.
-  async seedFromFollows() {
-    if (!this.hasFollowedUrlValue) return
+  // subscriptions), rendered into followedEffortIds by the server, into
+  // the device-local watch set
+  seedFromFollows() {
+    if (this.followedEffortIdsValue.length === 0) return
 
-    try {
-      const response = await fetch(this.followedUrlValue, { headers: { "Accept": "application/json" } })
-      if (!response.ok) return
-
-      const { effort_ids: effortIds } = await response.json()
-      if (!Array.isArray(effortIds) || effortIds.length === 0) return
-
-      mergeWatchedEfforts(this.eventGroupIdValue, effortIds)
-      window.dispatchEvent(new CustomEvent("watches:changed"))
-    } catch {
-      // Device-local watches remain authoritative when the request fails
-    }
+    mergeWatchedEfforts(this.eventGroupIdValue, this.followedEffortIdsValue)
+    window.dispatchEvent(new CustomEvent("watches:changed"))
   }
 
   refresh() {

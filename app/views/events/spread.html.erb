@@ -31,8 +31,8 @@
 
 <div data-controller="spread-watches"
      data-spread-watches-event-group-id-value="<%= @presenter.event_group_id %>"
-     <% if current_user.present? %>
-       data-spread-watches-followed-url-value="<%= followed_effort_ids_event_group_path(@presenter.event_group_id) %>"
+     <% if @presenter.followed_effort_ids.present? %>
+       data-spread-watches-followed-effort-ids-value="<%= @presenter.followed_effort_ids.to_json %>"
      <% end %>
      data-action="watches:changed@window->spread-watches#refresh hashchange@window->spread-watches#seedFromFragment">
 <aside class="ost-toolbar">

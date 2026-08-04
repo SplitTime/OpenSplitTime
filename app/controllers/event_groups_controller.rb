@@ -177,18 +177,6 @@ class EventGroupsController < ApplicationController
     redirect_to event_group_path(@event_group)
   end
 
-  # GET /event_groups/1/followed_effort_ids
-  def followed_effort_ids
-    authorize @event_group
-
-    effort_ids = current_user.subscriptions
-                             .where(subscribable: @event_group.efforts)
-                             .distinct
-                             .pluck(:subscribable_id)
-
-    render json: { effort_ids: effort_ids }
-  end
-
   # GET /event_groups/1/traffic
   def traffic
     if params[:split_name]

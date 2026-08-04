@@ -1,0 +1,42 @@
+require "rails_helper"
+
+RSpec.describe SweepStalePerformanceDataJob do
+  let(:event) { events(:hardrock_2015) }
+  let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
+
+  def perturb_distance(effort)
+    bits = effort.overall_performance.to_s
+    field = (bits[15...45].to_i(2) + 1).to_s(2).rjust(30, "0")
+    effort.update_columns(overall_performance: bits[0...15] + field + bits[45..])
+  end
+
+  it "heals stale events and sends no mail" do
+    perturb_distance(effort)
+
+    expect { described_class.perform_now }.not_to have_enqueued_mail(AdminMailer, :job_report)
+    expect(event.performance_data_stale?).to be(false)
+  end
+
+  it "does nothing when no events are stale" do
+    expect(Results::SetEffortPerformanceData).not_to receive(:perform!)
+    expect { described_class.perform_now }.not_to have_enqueued_mail(AdminMailer, :job_report)
+  end
+
+  it "emails an admin report when an event fails to heal" do
+    perturb_distance(effort)
+    allow(Results::SetEffortPerformanceData).to receive(:perform!)
+
+    expect { described_class.perform_now }
+      .to have_enqueued_mail(AdminMailer, :job_report)
+      .with(described_class.name, a_string_including(event.slug))
+  end
+
+  it "emails an admin report when a recompute raises" do
+    perturb_distance(effort)
+    allow(Results::SetEffortPerformanceData).to receive(:perform!).and_raise(ActiveRecord::StatementInvalid, "boom")
+
+    expect { described_class.perform_now }
+      .to have_enqueued_mail(AdminMailer, :job_report)
+      .with(described_class.name, a_string_including("boom"))
+  end
+end

@@ -17,11 +17,18 @@ module Results
     SQL
 
     def self.stale_for_event?(event)
-      event.efforts
-           .joins("join split_times on split_times.id = efforts.final_split_time_id")
-           .joins("join splits on splits.id = split_times.split_id")
-           .where(STALE_PREDICATE)
-           .exists?
+      stale_efforts(event.efforts).exists?
     end
+
+    def self.stale_event_ids
+      stale_efforts(::Effort.all).distinct.pluck(:event_id)
+    end
+
+    def self.stale_efforts(efforts)
+      efforts.joins("join split_times on split_times.id = efforts.final_split_time_id")
+             .joins("join splits on splits.id = split_times.split_id")
+             .where(STALE_PREDICATE)
+    end
+    private_class_method :stale_efforts
   end
 end

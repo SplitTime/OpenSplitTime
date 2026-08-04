@@ -31,4 +31,18 @@ RSpec.describe Results::EffortPerformanceDataAudit do
       expect(described_class.stale_for_event?(event)).to be(false)
     end
   end
+
+  describe ".stale_event_ids" do
+    let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
+
+    it "returns only the event ids having stale efforts" do
+      expect(described_class.stale_event_ids).to eq([])
+
+      bits = effort.overall_performance.to_s
+      field = (bits[15...45].to_i(2) + 1).to_s(2).rjust(30, "0")
+      effort.update_columns(overall_performance: bits[0...15] + field + bits[45..])
+
+      expect(described_class.stale_event_ids).to eq([effort.event_id])
+    end
+  end
 end

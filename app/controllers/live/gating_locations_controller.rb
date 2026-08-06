@@ -20,6 +20,14 @@ module Live
 
       @presenter = EventGroupPresenter.new(@event_group, params, current_user)
       @display = build_gating_display(@event_group.gating_locations.find(params[:id]))
+
+      # Controls submissions and periodic refreshes target a single card's
+      # frame; rendering just that card skips row computation for the others
+      requested_gle = @display.gated_events.find { |gle| gle.id.to_s == params[:gating_location_event_id].to_s }
+      return unless turbo_frame_request? && requested_gle
+
+      render partial: "live/gating_locations/event_rows",
+             locals: { gating_location_event: requested_gle, display: @display }
     end
 
     private

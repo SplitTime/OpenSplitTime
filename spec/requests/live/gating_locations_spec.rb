@@ -98,6 +98,31 @@ RSpec.describe "Live::GatingLocations" do
 
         expect(response).to have_http_status(:ok)
       end
+
+      context "when requested for a single card's turbo frame" do
+        let(:gle_100k) { gating_location_events(:sum_bandera_gate_100k) }
+        let(:gle_55k) { gating_location_events(:sum_bandera_gate_55k) }
+
+        it "renders only that card's frame" do
+          get live_event_group_gating_location_path(event_group, gating_location),
+              params: { gating_location_event_id: gle_100k.id },
+              headers: { "Turbo-Frame" => "crew_access_rows_gating_location_event_#{gle_100k.id}" }
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include("crew_access_rows_gating_location_event_#{gle_100k.id}")
+          expect(response.body).not_to include("crew_access_rows_gating_location_event_#{gle_55k.id}")
+          expect(response.body).not_to include("<html")
+        end
+
+        it "renders the full page when no matching event is identified" do
+          get live_event_group_gating_location_path(event_group, gating_location),
+              headers: { "Turbo-Frame" => "crew_access_rows_gating_location_event_#{gle_100k.id}" }
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include("crew_access_rows_gating_location_event_#{gle_100k.id}")
+          expect(response.body).to include("crew_access_rows_gating_location_event_#{gle_55k.id}")
+        end
+      end
     end
 
     context "when live entry is not available for the event group" do

@@ -1,7 +1,10 @@
 <%# locals: (board:) -%>
 
+<%# turbo_action: "replace" promotes each frame navigation to the page URL, so the
+    address bar always reproduces the current view (bookmarkable, reload-safe) %>
 <%= form_with url: live_event_group_crew_access_board_path(board.event_group, board.gating_location_event), method: :get,
-              data: { controller: "gating-controls", turbo_frame: dom_id(board.gating_location_event, :crew_access_rows) },
+              data: { controller: "gating-controls", turbo_frame: dom_id(board.gating_location_event, :crew_access_rows),
+                      turbo_action: "replace" },
               class: "row gx-3 gy-2 align-items-end" do |form| %>
   <div class="col-auto">
     <%= form.label :buffer, "Buffer (min)", class: "form-label mb-0 small" %>

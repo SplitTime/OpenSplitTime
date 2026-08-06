@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Crew Access - #{@gating_location.name}" %>
+  <% "OpenSplitTime: Crew Access - #{@board.name} - #{@board.event.guaranteed_short_name}" %>
 <% end %>
 
 <header class="ost-header">
@@ -7,13 +7,13 @@
     <div class="ost-heading row">
       <div class="col">
         <div class="ost-title">
-          <h1 class="fw-bold">Crew Access: <%= @gating_location.name %></h1>
+          <h1 class="fw-bold">Crew Access: <%= @board.name %></h1>
           <ul class="breadcrumb breadcrumb-ost">
             <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
             <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
             <li class="breadcrumb-item"><%= link_to "Crew Access", live_event_group_gating_locations_path(@presenter.event_group) %></li>
-            <li class="breadcrumb-item active"><%= @gating_location.name %></li>
+            <li class="breadcrumb-item active"><%= @board.name %>: <%= @board.event.guaranteed_short_name %></li>
           </ul>
         </div>
       </div>
@@ -23,16 +23,13 @@
 </header>
 
 <article class="ost-article container">
-  <p class="text-body-secondary">Choose an event to open its release board.</p>
-  <% @gating_location.gating_location_events.sort_by { |gle| gle.event.guaranteed_short_name }.each do |gating_location_event| %>
-    <%= link_to live_event_group_crew_access_board_path(@presenter.event_group, gating_location_event),
-                class: "text-decoration-none" do %>
-      <div class="card my-2">
-        <div class="card-body d-flex align-items-center justify-content-between">
-          <h5 class="fw-bold mb-0"><%= gating_location_event.event.guaranteed_short_name %></h5>
-          <span class="text-body-secondary">&rarr;</span>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
+  <div class="card my-3">
+    <div class="card-header">
+      <h5 class="fw-bold mb-2"><%= @board.event.guaranteed_short_name %></h5>
+      <%= render "live/crew_access_boards/controls", board: @board %>
+    </div>
+    <div class="card-body">
+      <%= render "live/crew_access_boards/event_rows", board: @board %>
+    </div>
+  </div>
 </article>

@@ -109,7 +109,7 @@ module DropdownHelper
         active: action_name == "drop_list" },
       { name: "Crew Access",
         link: live_event_group_gating_locations_path(view_object.event_group),
-        active: controller_name == "gating_locations",
+        active: controller_name.in?(%w[gating_locations crew_access_boards]),
         visible: view_object.event_group.gating_locations.any? },
       { name: "Progress",
         link: progress_report_live_event_path(view_object.event),

@@ -361,6 +361,7 @@ class Effort < ApplicationRecord
 
   def broadcast_update
     broadcast_render_later_to event_group, partial: "efforts/updated", locals: { effort: self }
+    broadcast_refresh_later_to(event_group, :crew_access) if event_group.gating_locations.exists?
   end
 
   private

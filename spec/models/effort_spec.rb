@@ -111,6 +111,27 @@ RSpec.describe Effort, type: :model do
   end
 
   describe "callbacks" do
+    describe "broadcasting a crew access refresh on update" do
+      context "when the event group has gating locations" do
+        let(:effort) { efforts(:sum_100k_drop_anvil) }
+
+        it "broadcasts a refresh on the event group's crew_access stream" do
+          expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_later_to)
+            .with(effort.event_group, :crew_access, request_id: anything)
+          effort.update!(comments: "steady at the gate")
+        end
+      end
+
+      context "when the event group has no gating locations" do
+        let(:effort) { efforts(:hardrock_2015_tuan_jacobs) }
+
+        it "does not broadcast a crew access refresh" do
+          expect(Turbo::StreamsChannel).not_to receive(:broadcast_refresh_later_to)
+          effort.update!(comments: "no gates here")
+        end
+      end
+    end
+
     describe "sets age based on birthdate" do
       subject { build(:effort, event: event, age: age, birthdate: birthdate) }
 

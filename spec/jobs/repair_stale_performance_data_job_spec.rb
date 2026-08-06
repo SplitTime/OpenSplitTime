@@ -10,21 +10,17 @@ RSpec.describe RepairStalePerformanceDataJob do
     effort.update_columns(overall_performance: bits[0...15] + field + bits[45..])
   end
 
-  it "heals stale events and reports them as healed" do
+  it "heals stale events without sending mail" do
     perturb_distance(effort)
 
-    expect { described_class.perform_now }
-      .to have_enqueued_mail(AdminMailer, :job_report)
-      .with(described_class.name, a_string_including("Healed:\n#{event.slug}"))
+    expect { described_class.perform_now }.not_to have_enqueued_mail(AdminMailer, :job_report)
     expect(event.performance_data_stale?).to be(false)
   end
 
-  it "issues no recomputes and reports a clean run when no events are stale" do
+  it "issues no recomputes and sends no mail when no events are stale" do
     expect(Results::SetEffortPerformanceData).not_to receive(:perform!)
 
-    expect { described_class.perform_now }
-      .to have_enqueued_mail(AdminMailer, :job_report)
-      .with(described_class.name, a_string_including("no stale events"))
+    expect { described_class.perform_now }.not_to have_enqueued_mail(AdminMailer, :job_report)
   end
 
   it "reports an event that fails to heal" do

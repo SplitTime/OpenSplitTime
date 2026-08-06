@@ -9,6 +9,31 @@
     initial-value: transparent;
 }
 
+// The registration above means --bs-table-bg-state is never unset, which kills
+// the var() fallback chain Bootstrap paints cell state with — striping sets
+// --bs-table-bg-type and relies on that chain. Re-supply stripes at the state
+// level, then restate hover after them so it wins on odd rows just as it does
+// in Bootstrap's own source order.
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-bg-state: var(--bs-table-striped-bg);
+}
+
+.table-hover > tbody > tr:hover > * {
+    --bs-table-bg-state: var(--bs-table-hover-bg);
+}
+
+// The flash (.bg-highlight, see _colors.scss) and watch tints set the variable
+// on the <tr> and reach cells by inheritance, which the direct cell-level
+// stripe rule above defeats. Restate them on the cells themselves; the .table
+// prefix matches the stripe rule's specificity so source order decides.
+.table > tbody > tr.bg-highlight > * {
+    --bs-table-bg-state: #{lighten($yellow, 20%)};
+}
+
+.table > tbody > tr.effort-watched > * {
+    --bs-table-bg-state: #{lighten($orange, 33%)};
+}
+
 .bg-highlight-faded {
     transition: background 4s linear;
 }

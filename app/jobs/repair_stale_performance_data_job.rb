@@ -1,8 +1,6 @@
 class RepairStalePerformanceDataJob < ApplicationJob
   queue_as :default
 
-  # Reports by email on every run for now; switch to failure-only
-  # reporting once the job has a track record
   def perform
     healed = []
     failures = []
@@ -23,14 +21,14 @@ class RepairStalePerformanceDataJob < ApplicationJob
 
     total = healed.size + failures.size
     Rails.logger.info("RepairStalePerformanceDataJob healed #{healed.size} of #{total} stale events")
+    return if failures.empty?
+
     AdminMailer.job_report(self.class.name, report_text(healed, failures)).deliver_later
   end
 
   private
 
   def report_text(healed, failures)
-    return "The performance data repair job found no stale events." if healed.empty? && failures.empty?
-
     <<~TEXT
       The performance data repair job found #{healed.size + failures.size} stale events.
 
@@ -38,7 +36,7 @@ class RepairStalePerformanceDataJob < ApplicationJob
       #{healed.presence&.join("\n") || '(none)'}
 
       Failed:
-      #{failures.presence&.join("\n") || '(none)'}
+      #{failures.join("\n")}
     TEXT
   end
 end

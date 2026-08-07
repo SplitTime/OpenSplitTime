@@ -35,7 +35,10 @@
       <% if row.released?(board.controls.buffer) %>
         <span class="badge bg-success">Now</span>
       <% else %>
-        <%= day_time_military_format(row.release_time_local(board.controls.buffer)) %>
+        <span data-controller="release-flip"
+              data-release-flip-epoch-value="<%= row.release_time(board.controls.buffer).to_i %>">
+          <%= day_time_military_format(row.release_time_local(board.controls.buffer)) %>
+        </span>
       <% end %>
     <% else %>
       <span class="text-body-secondary">Insufficient data</span>

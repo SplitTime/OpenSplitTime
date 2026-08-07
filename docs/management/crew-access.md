@@ -145,8 +145,16 @@ crews you need to act on soonest at the top.
 
 1. **Hide passed:** hide runners whose crews you have already marked as passed.
 
-The board reflects the data OpenSplitTime has at the moment you load it. Refresh the page to pick up newly
-recorded times, much as you would with the other [monitoring tools](../monitor/).
+Every control you change is reflected in the page's address, so your tailored view survives a reload — you can
+bookmark the board with your preferred buffer, sort, and filters, or share the exact view with another official.
+
+### The Board Keeps Itself Current
+
+There is no need to refresh the page. As new times are recorded for runners in your Event Group, the board
+updates itself within a few seconds, keeping your buffer, sort, filters, search, and scroll position exactly as
+you left them. A release time in the **Release** column flips to the green **Now** badge on its own as the clock
+passes it. If another official marks a crew as passed on their own device, your board shows it moments later, so
+several officials can work the same gate without stepping on each other.
 
 ### Marking a Crew as Passed
 

@@ -19,7 +19,12 @@ class CrewPassage < ApplicationRecord
   private
 
   def broadcast_crew_access_refresh
-    broadcast_refresh_later_to(event_group, :crew_access)
+    # In a cascading destroy (event group teardown), the gating location or its
+    # event group may already be gone by the time this commit callback fires
+    target_event_group = gating_location&.event_group
+    return if target_event_group.blank?
+
+    broadcast_refresh_later_to(target_event_group, :crew_access)
   end
 
   def effort_event_is_gated_at_location

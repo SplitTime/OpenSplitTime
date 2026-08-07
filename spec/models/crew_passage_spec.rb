@@ -55,6 +55,12 @@ RSpec.describe CrewPassage, type: :model do
   end
 
   describe "crew access refresh broadcasts" do
+    it "does not raise when destroyed in an event group cascade" do
+      # The gating location dies before effort-owned crew passages in the
+      # cascade, so the commit callback must tolerate a vanished parent
+      expect { event_groups(:sum).destroy! }.not_to raise_error
+    end
+
     it "broadcasts on create" do
       expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_later_to)
         .with(gating_location.event_group, :crew_access, request_id: anything)

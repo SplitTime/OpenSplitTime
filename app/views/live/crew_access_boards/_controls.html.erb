@@ -8,9 +8,11 @@
               class: "row gx-3 gy-2 align-items-end" do |form| %>
   <div class="col-auto">
     <%= form.label :buffer, "Buffer (min)", class: "form-label mb-0 small" %>
+    <%# data-turbo-permanent (with a stable id) keeps a background morph refresh
+        from clobbering a value the steward is mid-editing %>
     <%= form.number_field :buffer, value: board.controls.buffer, min: 0, max: 1200,
                                    class: "form-control form-control-sm", style: "width: 6rem;", autocomplete: "off",
-                                   data: { action: "input->gating-controls#debounce" } %>
+                                   data: { action: "input->gating-controls#debounce", turbo_permanent: true } %>
   </div>
   <div class="col-auto">
     <%= form.label :sort, "Sort by", class: "form-label mb-0 small" %>
@@ -22,7 +24,7 @@
     <%= form.label :search, "Find runner", class: "form-label mb-0 small" %>
     <%= form.search_field :search, value: board.controls.search, placeholder: "Bib or name…",
                                    class: "form-control form-control-sm", autocomplete: "off",
-                                   data: { action: "input->gating-controls#debounce" } %>
+                                   data: { action: "input->gating-controls#debounce", turbo_permanent: true } %>
   </div>
   <div class="col-auto">
     <div class="form-check form-switch">

@@ -53,4 +53,26 @@ RSpec.describe CrewPassage, type: :model do
       expect { efforts(:sum_100k_progress_cascade).destroy }.to change(described_class, :count).by(-1)
     end
   end
+
+  describe "crew access refresh broadcasts" do
+    it "does not raise when destroyed in an event group cascade" do
+      # The gating location dies before effort-owned crew passages in the
+      # cascade, so the commit callback must tolerate a vanished parent
+      expect { event_groups(:sum).destroy! }.not_to raise_error
+    end
+
+    it "broadcasts on create" do
+      expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_later_to)
+        .with(gating_location.event_group, :crew_access, request_id: anything)
+      described_class.create!(gating_location: gating_location, effort: effort, passed_at: passed_at)
+    end
+
+    it "broadcasts on destroy" do
+      crew_passage = described_class.create!(gating_location: gating_location, effort: effort, passed_at: passed_at)
+
+      expect(Turbo::StreamsChannel).to receive(:broadcast_refresh_later_to)
+        .with(gating_location.event_group, :crew_access, request_id: anything)
+      crew_passage.destroy!
+    end
+  end
 end

@@ -2,6 +2,13 @@
   <% "OpenSplitTime: Crew Access - #{@board.name} - #{@board.event.guaranteed_short_name}" %>
 <% end %>
 
+<%# Effort and crew passage changes broadcast a refresh on this stream; the page
+    re-fetches its own URL (which carries the steward's control state) and morphs %>
+<% content_for :head do %>
+  <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+<% end %>
+<%= turbo_stream_from @board.event_group, :crew_access %>
+
 <header class="ost-header">
   <div class="container">
     <div class="ost-heading row">

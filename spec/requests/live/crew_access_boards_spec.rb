@@ -82,6 +82,14 @@ RSpec.describe "Live::CrewAccessBoards" do
         expect(response.body).to include("Hide passed")
       end
 
+      it "subscribes to the crew access refresh stream and opts into morph refreshes" do
+        get live_event_group_crew_access_board_path(event_group, gle_100k)
+
+        expect(response.body).to include("turbo-cable-stream-source")
+        expect(response.body).to include(%(name="turbo-refresh-method" content="morph"))
+        expect(response.body).to include(%(name="turbo-refresh-scroll" content="preserve"))
+      end
+
       it "accepts the control params without error" do
         get live_event_group_crew_access_board_path(event_group, gle_100k),
             params: { buffer: "90", sort: "release", hide_departed: "1", hide_passed: "1", search: "999" }

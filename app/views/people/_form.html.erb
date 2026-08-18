@@ -72,15 +72,6 @@
       </div>
     </div>
 
-    <% if current_user&.admin? %>
-      <div class="row">
-        <div class="col-md-3 mb-3">
-          <%= f.label :concealed, "Concealed (unsearchable)?", class: "me-2" %>
-          <%= f.check_box :concealed %>
-        </div>
-      </div>
-    <% end %>
-
     <br>
     <div class="row">
       <div class="col-md-2 mb-3">

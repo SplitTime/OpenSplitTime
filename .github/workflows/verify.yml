@@ -185,7 +185,17 @@ jobs:
           cache-version: ${{ steps.runner-image.outputs.fingerprint }}
 
       - name: Install libvips
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips42
+        timeout-minutes: 5
+        run: |
+          for attempt in 1 2 3; do
+            if timeout 90 sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=15 &&
+               timeout 90 sudo apt-get install -y --no-install-recommends -o Acquire::Retries=3 -o Acquire::http::Timeout=15 libvips42; then
+              exit 0
+            fi
+            echo "apt attempt ${attempt} failed or timed out; retrying"
+            sleep 5
+          done
+          exit 1
 
       - name: Download assets
         uses: actions/download-artifact@v8

@@ -8,11 +8,11 @@ RSpec.describe Api::V1::RawTimesController do
   let(:params) { { event_group_id: event_group_id, id: raw_time_id } }
   let(:event_group_id) { event_group&.id }
   let(:raw_time_id) { raw_time&.id }
-  let(:event_group) { event_groups(:sum) }
   let(:raw_time) { raw_times(:raw_time_0003) }
 
   describe "#index" do
     subject(:make_request) { get :index, params: params }
+
     let(:params) { { event_group_id: event_group_id, filter: filter, sort: sort } }
     let(:filter) { {} }
     let(:sort) { nil }
@@ -26,7 +26,7 @@ RSpec.describe Api::V1::RawTimesController do
 
         it "returns the first page of raw_times in the event group" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["data"].size).to eq(25)
           expect(parsed_response["data"].map { |item| item["id"].to_i }).to all be_in(event_group.raw_times.ids)
         end
@@ -36,6 +36,17 @@ RSpec.describe Api::V1::RawTimesController do
           header = response.header
           expect(header["Link"]).to include("rel=\"next\"")
           expect(header["Link"]).to include("rel=\"last\"")
+        end
+      end
+
+      context "when a sort parameter is permitted for query but is not a raw_times column" do
+        let(:sort) { "effort_last_name" }
+
+        it "ignores the sort and returns a 200 response" do
+          make_request
+          expect(response.status).to eq(200)
+          parsed_response = response.parsed_body
+          expect(parsed_response["data"].map { |item| item["id"].to_i }).to all be_in(event_group.raw_times.ids)
         end
       end
 
@@ -49,7 +60,7 @@ RSpec.describe Api::V1::RawTimesController do
 
         it "returns the first page of raw_times in the event group" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["data"].size).to eq(25)
           expect(parsed_response["data"].map { |item| item["id"].to_i }).to all be_in(event_group.raw_times.ids)
         end
@@ -70,7 +81,7 @@ RSpec.describe Api::V1::RawTimesController do
 
           it "returns data of a single raw_time" do
             make_request
-            parsed_response = JSON.parse(response.body)
+            parsed_response = response.parsed_body
             expect(parsed_response["data"]["id"].to_i).to eq(raw_time_id)
             expect(response.body).to be_jsonapi_response_for(type)
           end
@@ -81,7 +92,7 @@ RSpec.describe Api::V1::RawTimesController do
 
           it "returns an error" do
             make_request
-            parsed_response = JSON.parse(response.body)
+            parsed_response = response.parsed_body
             expect(parsed_response["errors"]).to include(/not found/)
             expect(response.status).to eq(404)
           end
@@ -92,7 +103,7 @@ RSpec.describe Api::V1::RawTimesController do
 
           it "returns an error" do
             make_request
-            parsed_response = JSON.parse(response.body)
+            parsed_response = response.parsed_body
             expect(parsed_response["errors"]).to include(/not found/)
             expect(response.status).to eq(404)
           end
@@ -104,7 +115,7 @@ RSpec.describe Api::V1::RawTimesController do
 
         it "returns an error" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["errors"]).to include(/not found/)
           expect(response.status).to eq(404)
         end

@@ -6,7 +6,7 @@ module Api
       before_action :set_resource, only: [:show]
 
       def index
-        @raw_times = @event_group.raw_times.where(prepared_params[:filter]).order(prepared_params[:sort])
+        @raw_times = @event_group.raw_times.where(prepared_params[:filter]).order(column_sort)
         @raw_times = paginate @raw_times
 
         serialize_and_render(@raw_times, is_collection: true)
@@ -21,7 +21,8 @@ module Api
       private
 
       def set_event_group
-        @event_group = EventGroupPolicy::Scope.new(current_user, EventGroup).viewable.friendly.find(params[:event_group_id])
+        @event_group = EventGroupPolicy::Scope.new(current_user,
+                                                   EventGroup).viewable.friendly.find(params[:event_group_id])
       end
 
       def authorize_event_group

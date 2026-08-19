@@ -8,6 +8,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#index" do
     subject(:make_request) { get :index, params: params }
+
     let(:params) { {} }
 
     via_login_and_jwt do
@@ -20,7 +21,7 @@ RSpec.describe Api::V1::EventGroupsController do
         make_request
         expect(response.status).to eq(200)
         expect(EventGroup.count).to eq(8)
-        parsed_response = JSON.parse(response.body)
+        parsed_response = response.parsed_body
         expect(parsed_response["data"].size).to eq(8)
         expect(parsed_response["data"].map { |item| item["id"].to_i }).to eq(EventGroup.all.map(&:id))
       end
@@ -30,7 +31,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it "sorts properly in ascending order based on the parameter" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           names = parsed_response["data"].map { |item| item.dig("attributes", "name") }
           expect(names.first).to eq("Dirty 30")
           expect(names.last).to eq("SUM")
@@ -42,7 +43,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it "sorts properly in descending order based on the parameter" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           names = parsed_response["data"].map { |item| item.dig("attributes", "name") }
           expect(names.first).to eq("SUM")
           expect(names.last).to eq("Dirty 30")
@@ -54,10 +55,21 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it "sorts properly on multiple fields" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           names = parsed_response["data"].map { |item| item.dig("attributes", "name") }
           expect(names.first).to eq("Hardrock 2014")
           expect(names.last).to eq("SUM")
+        end
+      end
+
+      context "when a sort parameter is permitted for query but is not an event_groups column" do
+        let(:params) { { sort: "-scheduled_start_time" } }
+
+        it "ignores the sort and returns a successful 200 response" do
+          make_request
+          expect(response.status).to eq(200)
+          parsed_response = response.parsed_body
+          expect(parsed_response["data"].map { |item| item["id"].to_i }).to eq(EventGroup.all.map(&:id))
         end
       end
 
@@ -69,7 +81,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
           expect(response.status).to eq(200)
           expected = ["Dirty 30", "Hardrock 2015", "Hardrock 2016", "RUFA 2017", "SUM"]
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["data"].size).to eq(5)
           expect(parsed_response["data"].map { |item| item.dig("attributes", "name") }).to match_array(expected)
         end
@@ -162,25 +174,25 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it "returns data of a single event_group" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["data"]["id"].to_i).to eq(event_group.id)
           expect(response.body).to be_jsonapi_response_for(type)
         end
 
         it "includes a dataEntryGroups key containing information mapping aid station names to relevant data entry information" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["data"]["attributes"]["dataEntryGroups"].first).to eq(data_entry_groups.first)
           expect(response.body).to be_jsonapi_response_for(type)
         end
       end
 
-      context "if the event_group does not exist" do
+      context "when the event_group does not exist" do
         let(:params) { { id: 0 } }
 
         it "returns an error" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["errors"]).to include(/not found/)
           expect(response.status).to eq(404)
         end
@@ -190,6 +202,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#create" do
     subject(:make_request) { post :create, params: params }
+
     let(:organization) { organizations(:hardrock) }
     let(:home_time_zone) { "Arizona" }
 
@@ -200,13 +213,13 @@ RSpec.describe Api::V1::EventGroupsController do
         it "returns a successful json response" do
           make_request
           expect(response.body).to be_jsonapi_response_for(type)
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["data"]["id"]).not_to be_nil
           expect(response.status).to eq(201)
         end
 
         it "creates an event_group record" do
-          expect { make_request }.to change { EventGroup.count }.by(1)
+          expect { make_request }.to change(EventGroup, :count).by(1)
         end
       end
     end
@@ -214,6 +227,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#update" do
     subject(:make_request) { put :update, params: params }
+
     let(:params) { { id: event_group_id, data: { type: type, attributes: attributes } } }
     let(:attributes) { { name: "Updated EventGroup Name" } }
 
@@ -239,7 +253,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it "returns an error" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["errors"]).to include(/not found/)
           expect(response.status).to eq(404)
         end
@@ -261,7 +275,7 @@ RSpec.describe Api::V1::EventGroupsController do
         end
 
         it "destroys the event_group record" do
-          expect { make_request }.to change { EventGroup.count }.by(-1)
+          expect { make_request }.to change(EventGroup, :count).by(-1)
         end
       end
 
@@ -270,7 +284,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
         it "returns an error if the event_group does not exist" do
           make_request
-          parsed_response = JSON.parse(response.body)
+          parsed_response = response.parsed_body
           expect(parsed_response["errors"]).to include(/not found/)
           expect(response.status).to eq(404)
         end
@@ -312,12 +326,12 @@ RSpec.describe Api::V1::EventGroupsController do
       context "when raw_time data is valid" do
         via_login_and_jwt do
           it "creates raw_times" do
-            expect { make_request }.to change { RawTime.count }.by(2)
+            expect { make_request }.to change(RawTime, :count).by(2)
             raw_times = RawTime.last(2)
 
             expect(response.status).to eq(201)
-            parsed_response = JSON.parse(response.body)
-            expect(parsed_response["data"].map { |record| record["type"] }).to all eq("rawTimes")
+            parsed_response = response.parsed_body
+            expect(parsed_response["data"].pluck("type")).to all eq("rawTimes")
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
             expect(raw_times.map(&:entered_time).map(&:to_datetime)).to eq([entered_time_in, entered_time_out])
@@ -352,12 +366,12 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:bib_number_leading_zeros) { "00#{bib_number}" }
 
           it "creates_raw_times" do
-            expect { make_request }.to change { RawTime.count }.by(2)
+            expect { make_request }.to change(RawTime, :count).by(2)
             raw_times = RawTime.last(2)
 
             expect(response.status).to eq(201)
-            parsed_response = JSON.parse(response.body)
-            expect(parsed_response["data"].map { |record| record["type"] }).to all eq("rawTimes")
+            parsed_response = response.parsed_body
+            expect(parsed_response["data"].pluck("type")).to all eq("rawTimes")
             expect(raw_times.map(&:bib_number)).to all eq(bib_number_leading_zeros)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
             expect(raw_times.map { |rt| rt.entered_time.to_datetime }).to eq([entered_time_in, entered_time_out])
@@ -380,9 +394,9 @@ RSpec.describe Api::V1::EventGroupsController do
           end
 
           it "does not create any raw_times and returns 422" do
-            expect { make_request }.to change { RawTime.count }.by(0)
+            expect { make_request }.to change(RawTime, :count).by(0)
             expect(response.status).to eq(422)
-            parsed_response = JSON.parse(response.body)
+            parsed_response = response.parsed_body
             expect(parsed_response["errors"].first.dig("detail", "messages")).to include("Bib number can't be blank")
           end
         end
@@ -393,12 +407,12 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:strict) { true }
 
           it "creates raw_times and returns 201" do
-            expect { make_request }.to change { RawTime.count }.by(2)
+            expect { make_request }.to change(RawTime, :count).by(2)
             raw_times = RawTime.last(2)
 
             expect(response.status).to eq(201)
-            parsed_response = JSON.parse(response.body)
-            expect(parsed_response["data"].map { |record| record["type"] }).to all(eq("rawTimes"))
+            parsed_response = response.parsed_body
+            expect(parsed_response["data"].pluck("type")).to all(eq("rawTimes"))
             expect(raw_times.size).to eq(2)
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
             expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
@@ -413,11 +427,11 @@ RSpec.describe Api::V1::EventGroupsController do
           let(:limited_response) { true }
 
           it "creates raw_times and returns 201 without sending other data" do
-            expect { make_request }.to change { RawTime.count }.by(2)
+            expect { make_request }.to change(RawTime, :count).by(2)
             raw_times = RawTime.last(2)
 
             expect(response.status).to eq(201)
-            parsed_response = JSON.parse(response.body)
+            parsed_response = response.parsed_body
             expect(parsed_response).to eq({})
             expect(raw_times.size).to eq(2)
             expect(raw_times.map(&:bib_number)).to all eq(bib_number)
@@ -432,15 +446,15 @@ RSpec.describe Api::V1::EventGroupsController do
         context "when unique_key is set" do
           via_login_and_jwt do
             let(:unique_key) { %w[enteredTime splitName bitkey bibNumber source withPacer stoppedHere] }
-            
+
             before do
               create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey,
-                     entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source,
-                     created_by: request_spec_admin.id)
+                                entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source,
+                                created_by: request_spec_admin.id)
             end
 
             it "saves the non-duplicate raw_time to the database and updates the duplicate raw_time" do
-              expect { make_request }.to change { RawTime.count }.by(1)
+              expect { make_request }.to change(RawTime, :count).by(1)
 
               expect(response.status).to eq(201)
             end
@@ -450,15 +464,15 @@ RSpec.describe Api::V1::EventGroupsController do
         context "when unique_key is not set" do
           via_login_and_jwt do
             let(:unique_key) { nil }
-            
+
             before do
               create(:raw_time, event_group: event_group, bib_number: bib_number, split_name: split_name, bitkey: in_bitkey,
-                     entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source,
-                     created_by: request_spec_admin.id)
+                                entered_time: entered_time_in, with_pacer: true, stopped_here: false, source: source,
+                                created_by: request_spec_admin.id)
             end
 
             it "saves both raw_times to the database" do
-              expect { make_request }.to change { RawTime.count }.by(2)
+              expect { make_request }.to change(RawTime, :count).by(2)
               expect(response.status).to eq(201)
             end
           end
@@ -469,17 +483,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#pull_raw_times" do
     subject(:make_request) { patch :pull_raw_times, params: request_params }
+
     let(:request_params) { { id: event_group.id } }
 
     let(:event_group) { event_groups(:hardrock_2016) }
     let(:event) { events(:hardrock_2016) }
     let!(:effort_1) { efforts(:hardrock_2016_progress_sherman) }
     let!(:effort_2) { efforts(:hardrock_2016_dropped_grouse) }
-    let!(:start_split) { event.ordered_splits.first }
     let!(:aid_split) { event.ordered_splits.second }
     let!(:finish_split) { event.ordered_splits.last }
-    let!(:effort_1_split_time_1) { split_times(:hardrock_2016_progress_sherman_start_1) }
-    let!(:effort_1_split_time_2) { split_times(:hardrock_2016_progress_sherman_telluride_in_1) }
 
     let(:current_user) { controller.current_user }
 
@@ -496,10 +508,10 @@ RSpec.describe Api::V1::EventGroupsController do
           time_rows = result.dig("data", "rawTimeRows")
 
           expect(time_rows.size).to eq(2)
-          expect(time_rows.map { |row| row["rawTimes"].size }).to match_array([1, 1])
+          expect(time_rows.map { |row| row["rawTimes"].size }).to contain_exactly(1, 1)
           expect(time_rows.map { |row| row["rawTimes"].first["splitName"] }).to all eq(finish_split.base_name)
-          expect(time_rows.map { |row| row["rawTimes"].first["bibNumber"] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
-          expect(time_rows.map { |row| row["rawTimes"].first["enteredTime"] }).to match_array(["2017-07-01 11:22:33-0600", "2017-07-01 12:23:34-0600"])
+          expect(time_rows.map { |row| row["rawTimes"].first["bibNumber"] }).to contain_exactly(raw_time_1.bib_number, raw_time_2.bib_number)
+          expect(time_rows.map { |row| row["rawTimes"].first["enteredTime"] }).to contain_exactly("2017-07-01 11:22:33-0600", "2017-07-01 12:23:34-0600")
         end
       end
     end
@@ -520,8 +532,8 @@ RSpec.describe Api::V1::EventGroupsController do
 
           time_row = time_rows.first
           expect(time_row["rawTimes"].size).to eq(2)
-          expect(time_row["rawTimes"].map { |rt| rt["splitName"] }).to match_array([aid_split.base_name, aid_split.base_name])
-          expect(time_row["rawTimes"].map { |rt| rt["bibNumber"] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
+          expect(time_row["rawTimes"].pluck("splitName")).to contain_exactly(aid_split.base_name, aid_split.base_name)
+          expect(time_row["rawTimes"].pluck("bibNumber")).to contain_exactly(raw_time_1.bib_number, raw_time_2.bib_number)
         end
       end
     end
@@ -541,8 +553,8 @@ RSpec.describe Api::V1::EventGroupsController do
 
           time_row = time_rows.first
           expect(time_row["rawTimes"].size).to eq(2)
-          expect(time_row["rawTimes"].map { |rt| rt["splitName"] }).to match_array([aid_split.base_name, aid_split.base_name])
-          expect(time_row["rawTimes"].map { |rt| rt["bibNumber"] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
+          expect(time_row["rawTimes"].pluck("splitName")).to contain_exactly(aid_split.base_name, aid_split.base_name)
+          expect(time_row["rawTimes"].pluck("bibNumber")).to contain_exactly(raw_time_1.bib_number, raw_time_2.bib_number)
         end
       end
     end
@@ -562,8 +574,8 @@ RSpec.describe Api::V1::EventGroupsController do
 
           time_row = time_rows.first
           expect(time_row["rawTimes"].size).to eq(2)
-          expect(time_row["rawTimes"].map { |rt| rt["splitName"] }).to match_array([raw_time_1.split_name, raw_time_2.split_name])
-          expect(time_row["rawTimes"].map { |rt| rt["bibNumber"] }).to match_array([raw_time_1.bib_number, raw_time_2.bib_number])
+          expect(time_row["rawTimes"].pluck("splitName")).to contain_exactly(raw_time_1.split_name, raw_time_2.split_name)
+          expect(time_row["rawTimes"].pluck("bibNumber")).to contain_exactly(raw_time_1.bib_number, raw_time_2.bib_number)
         end
       end
     end
@@ -571,8 +583,11 @@ RSpec.describe Api::V1::EventGroupsController do
     context "when no unreviewed raw_times are available" do
       via_login_and_jwt do
         let!(:reviewer_user) { users(:third_user) }
-        let!(:raw_time_1) { create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 11:22:33", split_name: "Finish", created_by: request_spec_admin.id, reviewed_by: reviewer_user.id, reviewed_at: Time.now) }
-        let!(:raw_time_2) { create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 12:23:34", split_name: "Finish", created_by: request_spec_admin.id, reviewed_by: reviewer_user.id, reviewed_at: Time.now) }
+
+        before do
+          create(:raw_time, event_group: event_group, bib_number: "111", absolute_time: "2017-07-01 11:22:33", split_name: "Finish", created_by: request_spec_admin.id, reviewed_by: reviewer_user.id, reviewed_at: Time.zone.now)
+          create(:raw_time, event_group: event_group, bib_number: "112", absolute_time: "2017-07-01 12:23:34", split_name: "Finish", created_by: request_spec_admin.id, reviewed_by: reviewer_user.id, reviewed_at: Time.zone.now)
+        end
 
         it "returns an empty array" do
           response = make_request
@@ -586,6 +601,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#enrich_raw_time_row" do
     subject(:make_request) { get :enrich_raw_time_row, params: request_params }
+
     let(:request_params) { { id: event_group.id, data: { raw_time_row: raw_time_row } } }
     let(:raw_time_row) { { raw_times: raw_time_attributes } }
     let(:raw_time_attributes) { { 0 => raw_time_attributes_1, 1 => raw_time_attributes_2 }.compact }
@@ -610,15 +626,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
           raw_times = raw_time_row["rawTimes"]
           expect(raw_times.size).to eq(2)
-          expect(raw_times.map { |rt| rt["bibNumber"] }).to all eq(effort_1.bib_number.to_s)
-          expect(raw_times.map { |rt| rt["lap"] }).to eq([1, 1])
-          expect(raw_times.map { |rt| rt["splitName"] }).to eq(%w[Telluride Telluride])
-          expect(raw_times.map { |rt| rt["subSplitKind"] }).to eq(%w[In Out])
-          expect(raw_times.map { |rt| rt["militaryTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["enteredTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["splitTimeExists"] }).to eq([true, true])
-          expect(raw_times.map { |rt| rt["stoppedHere"] }).to eq([false, true])
-          expect(raw_times.map { |rt| rt["withPacer"] }).to eq([true, true])
+          expect(raw_times.pluck("bibNumber")).to all eq(effort_1.bib_number.to_s)
+          expect(raw_times.pluck("lap")).to eq([1, 1])
+          expect(raw_times.pluck("splitName")).to eq(%w[Telluride Telluride])
+          expect(raw_times.pluck("subSplitKind")).to eq(%w[In Out])
+          expect(raw_times.pluck("militaryTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("enteredTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("splitTimeExists")).to eq([true, true])
+          expect(raw_times.pluck("stoppedHere")).to eq([false, true])
+          expect(raw_times.pluck("withPacer")).to eq([true, true])
         end
       end
     end
@@ -652,15 +668,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
           raw_times = raw_time_row["rawTimes"]
           expect(raw_times.size).to eq(1)
-          expect(raw_times.map { |rt| rt["bibNumber"] }).to eq([effort_1.bib_number.to_s])
-          expect(raw_times.map { |rt| rt["lap"] }).to eq([1])
-          expect(raw_times.map { |rt| rt["splitName"] }).to eq(["Telluride"])
-          expect(raw_times.map { |rt| rt["subSplitKind"] }).to eq(["In"])
-          expect(raw_times.map { |rt| rt["militaryTime"] }).to eq(%w[11:22:33])
-          expect(raw_times.map { |rt| rt["enteredTime"] }).to eq(%w[11:22:33])
-          expect(raw_times.map { |rt| rt["splitTimeExists"] }).to eq([true])
-          expect(raw_times.map { |rt| rt["stoppedHere"] }).to eq([false])
-          expect(raw_times.map { |rt| rt["withPacer"] }).to eq([true])
+          expect(raw_times.pluck("bibNumber")).to eq([effort_1.bib_number.to_s])
+          expect(raw_times.pluck("lap")).to eq([1])
+          expect(raw_times.pluck("splitName")).to eq(["Telluride"])
+          expect(raw_times.pluck("subSplitKind")).to eq(["In"])
+          expect(raw_times.pluck("militaryTime")).to eq(%w[11:22:33])
+          expect(raw_times.pluck("enteredTime")).to eq(%w[11:22:33])
+          expect(raw_times.pluck("splitTimeExists")).to eq([true])
+          expect(raw_times.pluck("stoppedHere")).to eq([false])
+          expect(raw_times.pluck("withPacer")).to eq([true])
         end
       end
     end
@@ -679,15 +695,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
           raw_times = raw_time_row["rawTimes"]
           expect(raw_times.size).to eq(2)
-          expect(raw_times.map { |rt| rt["lap"] }).to eq([1, 1])
-          expect(raw_times.map { |rt| rt["bibNumber"] }).to all eq(effort_2.bib_number.to_s)
-          expect(raw_times.map { |rt| rt["splitName"] }).to eq(%w[Telluride Telluride])
-          expect(raw_times.map { |rt| rt["subSplitKind"] }).to eq(%w[In Out])
-          expect(raw_times.map { |rt| rt["militaryTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["enteredTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["splitTimeExists"] }).to eq([true, false])
-          expect(raw_times.map { |rt| rt["stoppedHere"] }).to eq([false, true])
-          expect(raw_times.map { |rt| rt["withPacer"] }).to eq([true, true])
+          expect(raw_times.pluck("lap")).to eq([1, 1])
+          expect(raw_times.pluck("bibNumber")).to all eq(effort_2.bib_number.to_s)
+          expect(raw_times.pluck("splitName")).to eq(%w[Telluride Telluride])
+          expect(raw_times.pluck("subSplitKind")).to eq(%w[In Out])
+          expect(raw_times.pluck("militaryTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("enteredTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("splitTimeExists")).to eq([true, false])
+          expect(raw_times.pluck("stoppedHere")).to eq([false, true])
+          expect(raw_times.pluck("withPacer")).to eq([true, true])
         end
       end
     end
@@ -706,15 +722,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
           raw_times = raw_time_row["rawTimes"]
           expect(raw_times.size).to eq(2)
-          expect(raw_times.map { |rt| rt["bibNumber"] }).to all eq(effort_1.bib_number.to_s)
-          expect(raw_times.map { |rt| rt["lap"] }).to eq([1, 1])
-          expect(raw_times.map { |rt| rt["splitName"] }).to eq(%w[Telluride Telluride])
-          expect(raw_times.map { |rt| rt["subSplitKind"] }).to eq(%w[In Out])
-          expect(raw_times.map { |rt| rt["militaryTime"] }).to eq([nil, "11:23:34"])
-          expect(raw_times.map { |rt| rt["enteredTime"] }).to eq(%w[11:22:99 11:23:34])
-          expect(raw_times.map { |rt| rt["splitTimeExists"] }).to eq([true, true])
-          expect(raw_times.map { |rt| rt["stoppedHere"] }).to eq([false, true])
-          expect(raw_times.map { |rt| rt["withPacer"] }).to eq([true, true])
+          expect(raw_times.pluck("bibNumber")).to all eq(effort_1.bib_number.to_s)
+          expect(raw_times.pluck("lap")).to eq([1, 1])
+          expect(raw_times.pluck("splitName")).to eq(%w[Telluride Telluride])
+          expect(raw_times.pluck("subSplitKind")).to eq(%w[In Out])
+          expect(raw_times.pluck("militaryTime")).to eq([nil, "11:23:34"])
+          expect(raw_times.pluck("enteredTime")).to eq(%w[11:22:99 11:23:34])
+          expect(raw_times.pluck("splitTimeExists")).to eq([true, true])
+          expect(raw_times.pluck("stoppedHere")).to eq([false, true])
+          expect(raw_times.pluck("withPacer")).to eq([true, true])
         end
       end
     end
@@ -733,15 +749,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
           raw_times = raw_time_row["rawTimes"]
           expect(raw_times.size).to eq(2)
-          expect(raw_times.map { |rt| rt["lap"] }).to eq([1, 1])
-          expect(raw_times.map { |rt| rt["bibNumber"] }).to eq(%w[999 999])
-          expect(raw_times.map { |rt| rt["splitName"] }).to eq(%w[Telluride Telluride])
-          expect(raw_times.map { |rt| rt["subSplitKind"] }).to eq(%w[In Out])
-          expect(raw_times.map { |rt| rt["militaryTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["enteredTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["splitTimeExists"] }).to eq([nil, nil])
-          expect(raw_times.map { |rt| rt["stoppedHere"] }).to eq([false, true])
-          expect(raw_times.map { |rt| rt["withPacer"] }).to eq([true, true])
+          expect(raw_times.pluck("lap")).to eq([1, 1])
+          expect(raw_times.pluck("bibNumber")).to eq(%w[999 999])
+          expect(raw_times.pluck("splitName")).to eq(%w[Telluride Telluride])
+          expect(raw_times.pluck("subSplitKind")).to eq(%w[In Out])
+          expect(raw_times.pluck("militaryTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("enteredTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("splitTimeExists")).to eq([nil, nil])
+          expect(raw_times.pluck("stoppedHere")).to eq([false, true])
+          expect(raw_times.pluck("withPacer")).to eq([true, true])
         end
       end
     end
@@ -760,15 +776,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
           raw_times = raw_time_row["rawTimes"]
           expect(raw_times.size).to eq(2)
-          expect(raw_times.map { |rt| rt["lap"] }).to eq([1, 1])
-          expect(raw_times.map { |rt| rt["bibNumber"] }).to all eq(effort_1.bib_number.to_s)
-          expect(raw_times.map { |rt| rt["splitName"] }).to eq(%w[Nonexistent Nonexistent])
-          expect(raw_times.map { |rt| rt["subSplitKind"] }).to eq(%w[In Out])
-          expect(raw_times.map { |rt| rt["militaryTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["enteredTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["splitTimeExists"] }).to eq([nil, nil])
-          expect(raw_times.map { |rt| rt["stoppedHere"] }).to eq([false, true])
-          expect(raw_times.map { |rt| rt["withPacer"] }).to eq([true, true])
+          expect(raw_times.pluck("lap")).to eq([1, 1])
+          expect(raw_times.pluck("bibNumber")).to all eq(effort_1.bib_number.to_s)
+          expect(raw_times.pluck("splitName")).to eq(%w[Nonexistent Nonexistent])
+          expect(raw_times.pluck("subSplitKind")).to eq(%w[In Out])
+          expect(raw_times.pluck("militaryTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("enteredTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("splitTimeExists")).to eq([nil, nil])
+          expect(raw_times.pluck("stoppedHere")).to eq([false, true])
+          expect(raw_times.pluck("withPacer")).to eq([true, true])
         end
       end
     end
@@ -787,15 +803,15 @@ RSpec.describe Api::V1::EventGroupsController do
 
           raw_times = raw_time_row["rawTimes"]
           expect(raw_times.size).to eq(2)
-          expect(raw_times.map { |rt| rt["lap"] }).to eq([1, 1])
-          expect(raw_times.map { |rt| rt["bibNumber"] }).to eq(%w[9*9 9*9])
-          expect(raw_times.map { |rt| rt["splitName"] }).to eq(%w[Telluride Telluride])
-          expect(raw_times.map { |rt| rt["subSplitKind"] }).to eq(%w[In Out])
-          expect(raw_times.map { |rt| rt["militaryTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["enteredTime"] }).to eq(%w[11:22:33 11:23:34])
-          expect(raw_times.map { |rt| rt["splitTimeExists"] }).to eq([nil, nil])
-          expect(raw_times.map { |rt| rt["stoppedHere"] }).to eq([false, true])
-          expect(raw_times.map { |rt| rt["withPacer"] }).to eq([true, true])
+          expect(raw_times.pluck("lap")).to eq([1, 1])
+          expect(raw_times.pluck("bibNumber")).to eq(%w[9*9 9*9])
+          expect(raw_times.pluck("splitName")).to eq(%w[Telluride Telluride])
+          expect(raw_times.pluck("subSplitKind")).to eq(%w[In Out])
+          expect(raw_times.pluck("militaryTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("enteredTime")).to eq(%w[11:22:33 11:23:34])
+          expect(raw_times.pluck("splitTimeExists")).to eq([nil, nil])
+          expect(raw_times.pluck("stoppedHere")).to eq([false, true])
+          expect(raw_times.pluck("withPacer")).to eq([true, true])
         end
       end
     end
@@ -803,6 +819,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#submit_raw_time_rows" do
     subject(:make_request) { post :submit_raw_time_rows, params: request_params }
+
     let(:request_params) { { id: event_group.id, data: raw_time_data, force_submit: force_submit } }
     let(:raw_time_data) { [{ "raw_time_row" => { "raw_times" => [raw_time_attributes_1, raw_time_attributes_2] } }] }
 
@@ -924,7 +941,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
       via_login_and_jwt do
         it "does not create raw_times or split_times" do
-          expect { make_request }.to change { RawTime.count }.by(0).and change { SplitTime.count }.by(0)
+          expect { make_request }.to change(RawTime, :count).by(0).and change(SplitTime, :count).by(0)
         end
 
         it "returns raw_time_rows with descriptive errors" do
@@ -943,7 +960,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
       via_login_and_jwt do
         it "does not create raw_times or split_times" do
-          expect { make_request }.to change { RawTime.count }.by(0).and change { SplitTime.count }.by(0)
+          expect { make_request }.to change(RawTime, :count).by(0).and change(SplitTime, :count).by(0)
         end
 
         it "does not create raw_times or split_times and returns raw_time_rows with a descriptive error" do
@@ -962,7 +979,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
       via_login_and_jwt do
         it "does not create raw_times or split_times" do
-          expect { make_request }.to change { RawTime.count }.by(0).and change { SplitTime.count }.by(0)
+          expect { make_request }.to change(RawTime, :count).by(0).and change(SplitTime, :count).by(0)
         end
 
         it "returns raw_time_rows with a descriptive error" do
@@ -977,6 +994,7 @@ RSpec.describe Api::V1::EventGroupsController do
 
   describe "#not_expected" do
     subject(:make_request) { get :not_expected, params: request_params }
+
     let(:event_group) { event_groups(:sum) }
     let(:request_params) { { id: event_group.id, split_name: split_name } }
 
@@ -989,7 +1007,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(response).to be_successful
 
           result = JSON.parse(response.body)
-          expect(result.dig("data", "bib_numbers")).to match_array([101, 105, 109, 111, 114, 134, 140, 222, 333, 444, 777, 999])
+          expect(result.dig("data", "bib_numbers")).to contain_exactly(101, 105, 109, 111, 114, 134, 140, 222, 333, 444, 777, 999)
         end
       end
     end
@@ -1003,7 +1021,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(response).to be_successful
 
           result = JSON.parse(response.body)
-          expect(result.dig("data", "bib_numbers")).to match_array([101, 105, 109, 111, 114, 132, 134, 140, 222, 333, 444, 777, 999])
+          expect(result.dig("data", "bib_numbers")).to contain_exactly(101, 105, 109, 111, 114, 132, 134, 140, 222, 333, 444, 777, 999)
         end
       end
     end

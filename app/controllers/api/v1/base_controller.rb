@@ -10,7 +10,7 @@ module Api
 
         authorized_scope = policy_class::Scope.new(current_user, controller_class)
         working_scope = prepared_params[:editable] ? authorized_scope.editable : authorized_scope.viewable
-        @resources = working_scope.where(prepared_params[:filter]).order(prepared_params[:sort]).standard_includes
+        @resources = working_scope.where(prepared_params[:filter]).order(column_sort).standard_includes
         @resources = paginate @resources
 
         serialize_and_render(@resources, is_collection: true)
@@ -56,7 +56,7 @@ module Api
       private
 
       def render_errors(resource)
-        render json: {errors: [jsonapi_error_object(resource)]}, status: :unprocessable_content
+        render json: { errors: [jsonapi_error_object(resource)] }, status: :unprocessable_content
       end
 
       def serialize_and_render(resource, options = {})
@@ -70,7 +70,7 @@ module Api
         options[:include] = *options[:include] if options[:include].present?
         options[:include] ||= prepared_params[:include]
         options[:fields] ||= prepared_params[:fields]
-        serializer_params = {params: {current_user: current_user}}.merge(options)
+        serializer_params = { params: { current_user: current_user } }.merge(options)
 
         # The BaseSerializer chokes when certain options are passed, so blank them out
         serializer_params = {} if serializer_class == ::Api::V1::BaseSerializer
@@ -87,8 +87,16 @@ module Api
         serializer_class_name.constantize
       rescue NameError
         raise NameError, "#{name} cannot resolve a serializer class for '#{record.model_name}'.  " \
-                           "Attempted to find '#{serializer_class_name}'. " \
-                           "Consider specifying the serializer directly through options[:serializer]."
+                         "Attempted to find '#{serializer_class_name}'. " \
+                         "Consider specifying the serializer directly through options[:serializer]."
+      end
+
+      # prepared_params[:sort] is allowlisted against permitted_query, which
+      # includes nested-resource fields (used by presenters to sort a parent's
+      # efforts); ordering this resource's own table by one of those raises
+      # PG::UndefinedColumn, so restrict to actual columns
+      def column_sort
+        prepared_params[:sort].slice(*controller_class.column_names)
       end
 
       def set_resource

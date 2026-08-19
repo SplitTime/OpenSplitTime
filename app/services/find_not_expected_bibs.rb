@@ -1,8 +1,8 @@
-require "ostruct"
-
 class FindNotExpectedBibs
   include Interactors::Errors
   include SplitAnalyzable
+
+  Response = Struct.new(:errors, :bib_numbers, keyword_init: true)
 
   def self.perform(event_group, split_name)
     new(event_group, split_name).perform
@@ -10,13 +10,13 @@ class FindNotExpectedBibs
 
   def initialize(event_group, split_name)
     @event_group = event_group
-    @parameterized_split_name = split_name.parameterize
+    @parameterized_split_name = split_name.to_s.parameterize
     @errors = []
     validate_setup
   end
 
   def perform
-    OpenStruct.new(errors: errors, bib_numbers: bib_numbers)
+    Response.new(errors: errors, bib_numbers: bib_numbers)
   end
 
   private
@@ -31,8 +31,8 @@ class FindNotExpectedBibs
   end
 
   def validate_setup
-    unless parameterized_split_names.include?(parameterized_split_name)
-      errors << invalid_split_name_error(parameterized_split_name, parameterized_split_names)
-    end
+    return if parameterized_split_names.include?(parameterized_split_name)
+
+    errors << invalid_split_name_error(parameterized_split_name, parameterized_split_names)
   end
 end

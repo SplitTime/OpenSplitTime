@@ -206,6 +206,15 @@
                     data-bs-placement="bottom"
                     data-bs-original-title="When checked, this event's split times help power pacing plans and live projections for events on this course, even if this event is not public. Uncheck if this event's times are unreliable (for example, unrealistic test data or serious timing problems) and should not influence predictions."><i class="fas fa-circle-question"></i></span>
               <%= form.check_box :use_for_projections %>
+              <% if presenter.event_group.concealed? %>
+                <div class="callout callout-warning mt-2 mb-0">
+                  <p class="mb-0">
+                    This Event Group is private, but this Event's times will still feed pacing plans
+                    and projections for its Course while the box above is checked. If this Event
+                    contains (or is expected to contain) test data or unrealistic times, uncheck the box.
+                  </p>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>

@@ -30,12 +30,18 @@ module EventGroupsHelper
   end
 
   def button_to_event_group_make_private(view_object)
+    sentences = [t("event_groups.setup.make_private_confirm", event_group_name: view_object.event_group_name)]
+    if view_object.events.any?(&:use_for_projections?)
+      sentences << t("event_groups.setup.make_private_projections_addendum")
+    end
+    sentences << t("event_groups.setup.confirm_proceed")
+    confirm = sentences.join(" ")
+
     button_to "Take Private",
               organization_event_group_path(view_object.organization, view_object.event_group,
                                             event_group: { concealed: true }),
               method: :patch,
-              data: { turbo_confirm: t("event_groups.setup.make_private_confirm",
-                                       event_group_name: view_object.event_group_name) },
+              data: { turbo_confirm: confirm },
               class: "btn btn-outline-success"
   end
 

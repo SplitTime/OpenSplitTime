@@ -1,0 +1,21 @@
+<%# locals: (presenter:) -%>
+
+<% projectable_events = presenter.event_group.concealed? ? presenter.events.select(&:use_for_projections?) : [] %>
+<% if projectable_events.present? %>
+  <aside class="col-12">
+    <div class="callout callout-warning">
+      <div class="d-block d-md-inline-flex">
+        <div class="text-center py-2 py-md-0 me-md-2">
+          <span class="text-warning me-1"><%= fa_icon "triangle-exclamation", type: :regular, size: "2x" %></span>
+        </div>
+        <div>
+          <div class="h5 fw-bold text-center text-md-start"><%= t("event_groups.setup.projections_warning_main") %></div>
+          <p class="text-center text-md-start mb-0">
+            <%= t("event_groups.setup.projections_warning_detail") %>
+            <%= safe_join(projectable_events.map { |event| link_to(event.guaranteed_short_name, edit_event_group_event_path(presenter.event_group, event)) }, ", ") %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </aside>
+<% end %>

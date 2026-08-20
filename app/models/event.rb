@@ -43,6 +43,7 @@ class Event < ApplicationRecord
   after_touch :notify_event_update, if: :topic_resource_key?
 
   scope :name_search, ->(search_param) { where("events.name ILIKE ?", "%#{search_param}%") }
+  scope :used_for_projections, -> { where(use_for_projections: true) }
   scope :select_with_params, lambda { |search_param|
     search(search_param)
       .left_joins(:efforts).left_joins(:event_group)

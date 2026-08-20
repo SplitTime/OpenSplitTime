@@ -50,11 +50,11 @@ RSpec.describe "visit the plan efforts page and plan an effort" do
       visit_page
 
       verify_content_present(course)
-      expect(page).to have_content("No events have been held on this course.")
+      expect(page).to have_content("No events on this course are available for planning.")
     end
   end
 
-  scenario "Inputmask works", js: true do
+  scenario "Inputmask works", :js do
     visit_page
 
     expected_values = {

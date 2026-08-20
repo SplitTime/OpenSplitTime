@@ -68,6 +68,11 @@ class Course < ApplicationRecord
     events.visible
   end
 
+  # @return [Event::ActiveRecord_AssociationRelation]
+  def projectable_events
+    events.used_for_projections
+  end
+
   # @return [String, nil]
   def home_time_zone
     events.latest&.home_time_zone

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_29_185523) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -308,6 +308,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_29_185523) do
     t.string "slug", null: false
     t.string "topic_resource_key"
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "use_for_projections", default: true, null: false
     t.index ["course_id"], name: "index_events_on_course_id"
     t.index ["event_group_id", "short_name"], name: "index_events_on_event_group_id_and_short_name", unique: true
     t.index ["event_group_id"], name: "index_events_on_event_group_id"

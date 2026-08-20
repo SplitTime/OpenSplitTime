@@ -85,6 +85,22 @@ RSpec.describe ::Projection, type: :model do
       end
     end
 
+    context "when an event on the course is flagged not to be used for projections" do
+      before { events(:hardrock_2014).update_column(:use_for_projections, false) }
+
+      it "does not draw from that event's efforts" do
+        expect(subject.first.effort_years).to eq([2016])
+      end
+    end
+
+    context "when an event in a concealed event group is flagged for projections" do
+      before { event_groups(:hardrock_2014).update_column(:concealed, true) }
+
+      it "draws from that event's efforts" do
+        expect(subject.first.effort_years).to eq([2014, 2016])
+      end
+    end
+
     context "when given a starting split time" do
       let(:split_time) { effort.ordered_split_times.first }
       it "returns an empty array" do

@@ -197,6 +197,17 @@
               <%= form.text_field :beacon_url, class: "form-control", placeholder: "example.com/tracking/my-event" %>
             </div>
           </div>
+
+          <div class="row">
+            <div class="mb-3 col">
+              <%= form.label :use_for_projections, "Use this event's times for projections", class: "me-2" %>
+              <span tabindex="-1"
+                    data-controller="tooltip"
+                    data-bs-placement="bottom"
+                    data-bs-original-title="When checked, this event's split times help power pacing plans and live projections for events on this course, even if this event is not public. Uncheck if this event's times are unreliable (shortened course, timing problems) and should not influence predictions."><i class="fas fa-circle-question"></i></span>
+              <%= form.check_box :use_for_projections %>
+            </div>
+          </div>
         </div>
 
         <br>

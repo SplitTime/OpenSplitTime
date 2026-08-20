@@ -14,6 +14,7 @@ class EventParameters < BaseParameters
       :results_template_id,
       :notice_text,
       :lottery_id,
+      :use_for_projections,
     ]
   end
 

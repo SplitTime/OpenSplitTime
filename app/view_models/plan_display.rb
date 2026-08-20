@@ -3,16 +3,24 @@ class PlanDisplay < EffortWithLapSplitRows
 
   include CourseAnalysisMethods
   include TimeFormats
+
   attr_reader :course, :error_messages
 
   delegate :name, :organization, :simple?, to: :course
   delegate :multiple_laps?, to: :event, allow_nil: true
 
-  def initialize(args)
+  def initialize(args) # rubocop:disable Lint/MissingSuper
     @course = args[:course]
     @params = args[:params]
     @error_messages = []
     validate_setup
+  end
+
+  # Overrides CourseAnalysisMethods#event: planning anchors on the same
+  # events the projection engine draws data from, so a course whose only
+  # events are concealed seed events can still plan
+  def event
+    @event ||= course.projectable_events.latest
   end
 
   def effort
@@ -103,7 +111,7 @@ class PlanDisplay < EffortWithLapSplitRows
   end
 
   def validate_setup
-    error_messages << "No events have been held on this course." if course.visible_events.empty?
+    error_messages << "No events on this course are available for planning." if course.projectable_events.empty?
     AssignSegmentTimes.perform(ordered_split_times) if error_messages.empty?
   rescue ArgumentError => e
     error_messages << e.message

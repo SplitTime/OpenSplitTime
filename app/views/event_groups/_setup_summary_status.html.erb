@@ -23,6 +23,8 @@
     <% end %>
   </aside>
 
+  <%= render "projections_warning", presenter: presenter %>
+
   <aside class="col-12">
     <% if presenter.event_group.available_live? %>
       <%= render partial: "shared/callout_with_link",

@@ -164,6 +164,8 @@ class Event < ApplicationRecord
 
   def conform_changed_course
     return unless persisted? && course_id_changed?
+    # Let the belongs_to presence validation reject a blank course_id
+    return if course.nil?
 
     response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
     response.errors.each { |error| errors.add(:base, error[:title]) }

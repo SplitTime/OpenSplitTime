@@ -126,6 +126,17 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe "clearing the course on a persisted event" do
+    it "is invalid rather than raising from the course-change conforming" do
+      event = events(:hardrock_2016)
+      event.course_id = nil
+
+      expect { event.valid? }.not_to raise_error
+      expect(event).not_to be_valid
+      expect(event.errors[:course]).to include("must exist")
+    end
+  end
+
   describe "methods that produce lap_splits and time_points" do
     let(:event) { build_stubbed(:event, laps_required: laps_required) }
     let(:laps_required) { 2 }

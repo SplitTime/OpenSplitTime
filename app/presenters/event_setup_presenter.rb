@@ -40,11 +40,19 @@ class EventSetupPresenter < BasePresenter
   end
 
   def courses_for_select
-    available_courses = organization.courses.includes(:splits).order(:name).map do |course|
+    available_courses = organization.courses.includes(:splits).order(:name).to_a
+    # An event's course can belong to another organization; without it in the
+    # options, the selector falls back to "Create a new course" and the form
+    # submits a blank course_id
+    if event.course.present? && available_courses.exclude?(event.course)
+      available_courses = [event.course] + available_courses
+    end
+
+    course_options = available_courses.map do |course|
       [course.name, course.id, distance_component(course)]
     end
 
-    [["Create a new course", nil, nil]] + available_courses
+    [["Create a new course", nil, nil]] + course_options
   end
 
   def distance_component(course)

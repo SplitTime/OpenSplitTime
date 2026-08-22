@@ -143,6 +143,27 @@ RSpec.describe SegmentTimesContainer do
       expect(container.limits(segment)).to eq({})
     end
 
+    it "returns an empty hash instead of a degenerate band when a scaling typical time is zero" do
+      segment = lap_1_start_to_lap_2_finish
+      container = described_class.new(calc_model: :stats)
+      allow(container).to receive(:segment_time).and_return(0.0)
+      expect(container.limits(segment)).to eq({})
+    end
+
+    it "returns an empty hash when a scaling typical time is negative" do
+      segment = lap_1_start_to_lap_2_finish
+      container = described_class.new(calc_model: :stats)
+      allow(container).to receive(:segment_time).and_return(-100.0)
+      expect(container.limits(segment)).to eq({})
+    end
+
+    it "still returns a usable band for an in-aid segment with a zero typical time" do
+      segment = lap_1_in_aid_1
+      container = described_class.new(calc_model: :stats)
+      allow(container).to receive(:segment_time).and_return(0.0)
+      expect(container.limits(segment)[:high_bad]).to be_positive
+    end
+
     def validate_limits(segment, expected_time, expected_limits_type, calc_model)
       allow(DataStatus).to receive(:limits)
       container = SegmentTimesContainer.new(calc_model: calc_model, effort_ids: [1, 2, 3])

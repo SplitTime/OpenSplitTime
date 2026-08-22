@@ -32,6 +32,12 @@ RSpec.describe DuplicateEventGroup, type: :model do
       it "sets created_by to the provided user" do
         expect(subject.new_event_group.created_by).to eq(user.id)
       end
+
+      it "keeps use_for_projections on the duplicated events" do
+        # UI duplicates are next year's real races; their live times must
+        # feed projections and statistics when the race runs
+        expect(subject.new_event_group.events).to all(have_attributes(use_for_projections: true))
+      end
     end
 
     context "when the source event group has a webhook token" do

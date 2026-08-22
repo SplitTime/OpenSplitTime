@@ -18,6 +18,10 @@ RSpec.describe SimulateInProgressEventGroup do
     expect(result.new_event_group.name).to include("Simulated")
   end
 
+  it "excludes the simulated events from projections and statistics" do
+    expect(result.new_event_group.events).to all(have_attributes(use_for_projections: false))
+  end
+
   it "places the group start at the requested start time" do
     expect(result.new_event_group.events.map(&:scheduled_start_time).min).to be_within(1.second).of(start_time)
   end

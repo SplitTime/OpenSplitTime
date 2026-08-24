@@ -449,6 +449,21 @@ RSpec.describe PreparedParams do
       it { expect(result).to eq(1) }
     end
 
+    context "when page is a negative integer" do
+      let(:page) { -11 }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is a negative string" do
+      let(:page) { "-11" }
+      it { expect(result).to eq(1) }
+    end
+
+    context "when page is a SQL injection probe" do
+      let(:page) { "-11' UNION ALL SELECT NULL,NULL--" }
+      it { expect(result).to eq(1) }
+    end
+
     context "when page is integer 1" do
       let(:page) { 1 }
       it { expect(result).to eq(1) }

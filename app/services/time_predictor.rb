@@ -1,4 +1,10 @@
 class TimePredictor
+  # Bounds on how far a runner's imputed pace may scale the limits band;
+  # real pace factors fall roughly within 0.3..3, so the clamp binds only
+  # when the pooled baseline is corrupt
+  MIN_PACE_FACTOR = 0.1
+  MAX_PACE_FACTOR = 10.0
+
   def self.segment_time(segment:, effort:, lap_splits: nil, completed_split_time: nil,
                         calc_model: nil, similar_effort_ids: nil, times_container: nil)
     new(
@@ -52,11 +58,18 @@ class TimePredictor
   end
 
   def pace_factor
-    @pace_factor ||= measurable_pace? ? actual_completed_time / typical_completed_time : 1
+    @pace_factor ||=
+      if measurable_pace?
+        (actual_completed_time / typical_completed_time).clamp(MIN_PACE_FACTOR, MAX_PACE_FACTOR)
+      else
+        1
+      end
   end
 
   def measurable_pace?
-    completed_lap_split.distance_from_start.positive? && actual_completed_time && typical_completed_time
+    completed_lap_split.distance_from_start.positive? &&
+      actual_completed_time&.positive? &&
+      typical_completed_time&.positive?
   end
 
   def actual_completed_time

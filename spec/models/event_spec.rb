@@ -126,6 +126,48 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe "course organization consistency" do
+    it "is invalid when the course belongs to a different organization than the event group" do
+      event = build(:event, :with_short_name, course: courses(:d30_12m_course), event_group: event_groups(:hardrock_2016))
+      expect(event).not_to be_valid
+      expect(event.errors[:course_id]).to include("must belong to the same organization as the event group")
+    end
+
+    it "is valid when the course belongs to the event group's organization" do
+      event = build(:event, :with_short_name, course: courses(:hardrock_ccw), event_group: event_groups(:hardrock_2016))
+      expect(event).to be_valid
+    end
+
+    it "gives factory-built events a course in the event group's organization" do
+      event = build(:event)
+      expect(event.course.organization).to eq(event.event_group.organization)
+    end
+
+    context "when changing a persisted event's course to another organization's course" do
+      it "is invalid and does not persist the change" do
+        event = events(:hardrock_2016)
+        original_course = event.course
+
+        response = event.update(course_id: courses(:d30_12m_course).id)
+
+        expect(response).to eq(false)
+        expect(event.errors[:course_id]).to include("must belong to the same organization as the event group")
+        expect(event.reload.course).to eq(original_course)
+      end
+    end
+  end
+
+  describe "clearing the course on a persisted event" do
+    it "is invalid rather than raising from the course-change conforming" do
+      event = events(:hardrock_2016)
+      event.course_id = nil
+
+      expect { event.valid? }.not_to raise_error
+      expect(event).not_to be_valid
+      expect(event.errors[:course]).to include("must exist")
+    end
+  end
+
   describe "methods that produce lap_splits and time_points" do
     let(:event) { build_stubbed(:event, laps_required: laps_required) }
     let(:laps_required) { 2 }

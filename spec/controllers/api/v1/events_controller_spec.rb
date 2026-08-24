@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Api::V1::EventsController do
   let(:type) { "events" }
   let(:event) { create(:event, course: course, event_group: event_group) }
-  let(:course) { create(:course) }
+  let(:course) { create(:course, organization: event_group.organization) }
   let(:event_group) { create(:event_group) }
 
   let(:parsed_response) { response.parsed_body }

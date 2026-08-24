@@ -16,7 +16,7 @@ RSpec.describe Interactors::UpsertSplitTimesFromRawTimeRow do
 
   let(:effort) { create(:effort, :with_bib_number, event: event) }
   let(:event) { create(:event, course: course, event_group: event_group, scheduled_start_time_local: "2018-02-10 06:00:00") }
-  let(:course) { create(:course) }
+  let(:course) { create(:course, organization: event_group.organization) }
   let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }
   let(:split_3) { create(:split, course: course) }

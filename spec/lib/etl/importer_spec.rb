@@ -23,7 +23,7 @@ RSpec.describe Etl::Importer do
     let(:source_data) { file_fixture("test_splits.csv") }
     let(:data_format) { :csv_splits }
     let(:options) { { parent: event, current_user_id: 1 } }
-    let(:event) { create(:event, course: course) }
+    let(:event) { create(:event, course: course, event_group: create(:event_group, organization: course.organization)) }
     let(:course) { create(:course) }
 
     it "creates all new splits within the given course" do
@@ -40,7 +40,7 @@ RSpec.describe Etl::Importer do
     let(:source_data) { file_fixture("test_splits.csv") }
     let(:data_format) { :csv_splits }
     let(:options) { { parent: event, current_user_id: 1 } }
-    let(:event) { create(:event, course: course) }
+    let(:event) { create(:event, course: course, event_group: create(:event_group, organization: course.organization)) }
     let(:course) { create(:course) }
     before do
       create(:split, :start, course: course)
@@ -61,7 +61,7 @@ RSpec.describe Etl::Importer do
     let(:source_data) { file_fixture("test_splits_minimal.csv") }
     let(:data_format) { :csv_splits }
     let(:options) { { parent: event, current_user_id: 1 } }
-    let(:event) { create(:event, course: course) }
+    let(:event) { create(:event, course: course, event_group: create(:event_group, organization: course.organization)) }
     let(:course) { create(:course) }
     before do
       create(:split, :start, base_name: "Start", course: course)

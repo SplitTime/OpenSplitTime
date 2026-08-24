@@ -29,7 +29,7 @@ RSpec.describe Interactors::ChangeEventCourse do
   end
 
   describe "#perform!" do
-    let(:event) { create(:event, course: old_course) }
+    let(:event) { create(:event, course: old_course, event_group: create(:event_group, organization: old_course.organization)) }
     let!(:old_course) { create(:course, splits: old_splits) }
     let(:old_split_1) { create(:split, :start, base_name: "Start") }
     let(:old_split_2) { create(:split, distance_from_start: 1000, base_name: "Aid 1") }
@@ -38,7 +38,7 @@ RSpec.describe Interactors::ChangeEventCourse do
     let!(:efforts) { create_list(:effort, 2, event: event) }
 
     context "when the new course has splits with the same distances as the old" do
-      let(:new_course) { create(:course, splits: new_splits) }
+      let(:new_course) { create(:course, splits: new_splits, organization: old_course.organization) }
       let(:new_split_1) { create(:split, :start, base_name: "Start") }
       let(:new_split_2) { create(:split, base_name: old_course.ordered_splits.second.base_name) }
       let(:new_split_3) { create(:split, base_name: old_course.ordered_splits.third.base_name) }
@@ -57,7 +57,7 @@ RSpec.describe Interactors::ChangeEventCourse do
         response = subject.perform!
         expect(event.course_id).to eq(new_course.id)
         expect(response).to be_successful
-        expect(response.message).to match(/was changed from/)
+        expect(response.message).to include("was changed from")
       end
 
       it "changes the split_ids of event split_times to the corresponding split_ids of the new course" do

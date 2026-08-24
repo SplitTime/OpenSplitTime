@@ -67,5 +67,47 @@ RSpec.describe SplitTimeQuery do
         expect(time).to be_within(100).of(300)
       end
     end
+
+    context "when the event is not used for projections" do
+      before { events(:hardrock_2015).update_column(:use_for_projections, false) }
+
+      context "when effort_ids are not provided" do
+        let(:segment) { start_to_cunningham_in }
+        let(:effort_ids) { nil }
+
+        it "excludes the event's efforts from the pool" do
+          expect(count).to eq(0)
+          expect(time).to be_nil
+        end
+      end
+
+      context "when effort_ids are provided" do
+        let(:event) { events(:hardrock_2015) }
+        let(:segment) { in_aid_sherman }
+        let(:effort_ids) { event.efforts.order(:bib_number).ids.first(2) }
+
+        it "excludes the event's efforts even when focused" do
+          expect(count).to eq(0)
+          expect(time).to be_nil
+        end
+      end
+    end
+
+    context "when a segment time is negative" do
+      let(:segment) { in_aid_sherman }
+      let(:effort_ids) { [effort.id] }
+      let(:effort) { events(:hardrock_2015).efforts.order(:bib_number).first }
+
+      before do
+        in_time = effort.split_times.find_by(split: sherman_split, bitkey: in_bitkey)
+        out_time = effort.split_times.find_by(split: sherman_split, bitkey: out_bitkey)
+        out_time.update_column(:absolute_time, in_time.absolute_time - 1.minute)
+      end
+
+      it "excludes the negative pair from the pool" do
+        expect(count).to eq(0)
+        expect(time).to be_nil
+      end
+    end
   end
 end

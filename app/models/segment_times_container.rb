@@ -21,8 +21,13 @@ class SegmentTimesContainer
   def limits(segment)
     return @limits_hashes[segment] if @limits_hashes.key?(segment)
 
+    typical_time = segment_time(segment)
     @limits_hashes[segment] =
-      segment_time(segment) ? DataStatus.limits(segment_time(segment), limits_type(segment)) : {}
+      if typical_time.nil? || (!typical_time.positive? && scaling_limits_type?(segment))
+        {}
+      else
+        DataStatus.limits(typical_time, limits_type(segment))
+      end
   end
 
   def data_status(segment, seconds)
@@ -35,6 +40,13 @@ class SegmentTimesContainer
 
   def limits_type(segment)
     segment.special_limits_type || calc_model
+  end
+
+  # zero_start bands are intentionally all-zero, and in_aid adds a fixed
+  # positive allowance, so a zero typical time still yields a usable band
+  # for those types; all others scale purely with the typical time
+  def scaling_limits_type?(segment)
+    !limits_type(segment).to_s.in?(%w[zero_start in_aid])
   end
 
   def validate_setup

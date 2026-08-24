@@ -16,9 +16,12 @@ class SplitTimeQuery < BaseQuery
            (select extract(epoch from(st2.absolute_time - st1.absolute_time)) as seconds
             from (select st.effort_id, st.absolute_time
                  from split_times st
+                   inner join efforts ef on ef.id = st.effort_id
+                   inner join events ev on ev.id = ef.event_id
                  where st.lap = #{begin_lap}
                    and st.split_id = #{begin_id}
                    and st.sub_split_bitkey = #{begin_bitkey}
+                   and ev.use_for_projections is true
                    and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
                  as st1,
                  (select st.effort_id, st.absolute_time
@@ -28,7 +31,9 @@ class SplitTimeQuery < BaseQuery
                    and st.sub_split_bitkey = #{end_bitkey}
                    and (st.data_status in (#{valid_statuses_list}) or st.data_status is null))
                  as st2
-            where st1.effort_id = st2.effort_id and #{focus_clause}),
+            where st1.effort_id = st2.effort_id
+              and st2.absolute_time >= st1.absolute_time
+              and #{focus_clause}),
 
         quartiles as
           (select percentile_cont(0.25) within group (order by seconds) as q1,

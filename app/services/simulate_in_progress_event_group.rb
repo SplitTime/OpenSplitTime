@@ -52,7 +52,9 @@ class SimulateInProgressEventGroup
     end
 
     shift = start_time - new_event_group.scheduled_start_time
-    new_event_group.events.each { |event| event.update!(scheduled_start_time: event.scheduled_start_time + shift) }
+    new_event_group.events.each do |event|
+      event.update!(scheduled_start_time: event.scheduled_start_time + shift, use_for_projections: false)
+    end
     new_event_group.update!(available_live: true)
   end
 

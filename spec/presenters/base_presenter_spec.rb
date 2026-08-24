@@ -5,7 +5,7 @@ RSpec.describe BasePresenter do
 
   let(:presenter_class) do
     Class.new(described_class) do
-      def initialize(params)
+      def initialize(params) # rubocop:disable Lint/MissingSuper -- the parent initializer raises NotImplementedError
         @params = params
       end
 

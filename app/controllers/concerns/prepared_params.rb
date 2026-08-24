@@ -53,7 +53,7 @@ class PreparedParams
 
   def page
     result = params[:page]&.to_i || FIRST_PAGE
-    result.zero? ? FIRST_PAGE : result
+    result < 1 ? FIRST_PAGE : result
   end
 
   def search

@@ -259,4 +259,39 @@ RSpec.describe TimePredictor do
       completed_split_time.time_from_start / completed_typical_time
     end
   end
+
+  describe "#data_status with a degenerate stats baseline" do
+    subject do
+      described_class.new(segment: segment, effort: effort, lap_splits: lap_splits,
+                          completed_split_time: completed_split_time, calc_model: :stats)
+    end
+
+    let(:segment) { aid_2_to_aid_5 }
+    let(:completed_split_time) { subject_split_times.first(5).last }
+    let(:subject_segment_average) { 10_000.0 }
+
+    before do
+      allow(SplitTimeQuery).to receive(:typical_segment_time) do |queried_segment, _effort_ids|
+        average = queried_segment == segment ? subject_segment_average : completed_segment_average
+        { "effort_count" => 10, "average" => average }.with_indifferent_access
+      end
+    end
+
+    context "when the completed-segment average is zero" do
+      let(:completed_segment_average) { 0.0 }
+
+      it "treats the pace as unmeasurable instead of raising" do
+        expect { subject.data_status(9_999) }.not_to raise_error
+        expect(subject.data_status(9_999)).to eq("good")
+      end
+    end
+
+    context "when the completed-segment average is negative" do
+      let(:completed_segment_average) { -100.0 }
+
+      it "treats the pace as unmeasurable" do
+        expect(subject.data_status(9_999)).to eq("good")
+      end
+    end
+  end
 end

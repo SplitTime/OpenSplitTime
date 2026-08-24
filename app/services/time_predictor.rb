@@ -56,7 +56,9 @@ class TimePredictor
   end
 
   def measurable_pace?
-    completed_lap_split.distance_from_start.positive? && actual_completed_time && typical_completed_time
+    completed_lap_split.distance_from_start.positive? &&
+      actual_completed_time&.positive? &&
+      typical_completed_time&.positive?
   end
 
   def actual_completed_time

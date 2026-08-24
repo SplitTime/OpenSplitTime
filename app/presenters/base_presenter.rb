@@ -41,12 +41,12 @@ class BasePresenter
 
   def page
     result = params[:page]&.to_i || FIRST_PAGE
-    result.zero? ? FIRST_PAGE : result
+    result < 1 ? FIRST_PAGE : result
   end
 
   def per_page
     result = params[:per_page]&.to_i || DEFAULT_PER_PAGE
-    result.zero? ? DEFAULT_PER_PAGE : result
+    result < 1 ? DEFAULT_PER_PAGE : result
   end
 
   def search_text

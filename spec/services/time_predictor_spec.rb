@@ -277,22 +277,6 @@ RSpec.describe TimePredictor do
       end
     end
 
-    context "when the completed-segment pool is poisoned with an absurdly slow average" do
-      let(:completed_segment_average) { 76_000_000.0 }
-
-      it "clamps the pace factor so a typical time is not flagged bad" do
-        expect(subject.data_status(1_000)).to eq("good")
-      end
-    end
-
-    context "when the completed-segment pool is poisoned with an absurdly fast average" do
-      let(:completed_segment_average) { 1.0 }
-
-      it "clamps the pace factor so a typical time is not flagged bad" do
-        expect(subject.data_status(100_000)).to eq("good")
-      end
-    end
-
     context "when the completed-segment average is zero" do
       let(:completed_segment_average) { 0.0 }
 

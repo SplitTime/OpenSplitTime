@@ -35,6 +35,7 @@ class Event < ApplicationRecord
   validates :scheduled_start_time, :laps_required, presence: true
   validates :short_name, uniqueness: { case_sensitive: false, scope: :event_group_id }
   validate :course_is_consistent
+  validate :course_matches_event_group_organization
 
   before_validation :add_default_results_template
   before_validation :conform_changed_course
@@ -93,6 +94,13 @@ class Event < ApplicationRecord
     return unless splits.any? { |split| split.course_id != course_id }
 
     errors.add(:course_id, "does not reconcile with one or more splits")
+  end
+
+  def course_matches_event_group_organization
+    return unless course && event_group&.organization_id
+    return if course.organization_id == event_group.organization_id
+
+    errors.add(:course_id, "must belong to the same organization as the event group")
   end
 
   def to_s
@@ -164,6 +172,8 @@ class Event < ApplicationRecord
 
   def conform_changed_course
     return unless persisted? && course_id_changed?
+    # Let the belongs_to presence validation reject a blank course_id
+    return if course.nil?
 
     response = Interactors::ChangeEventCourse.perform!(event: self, new_course: course)
     response.errors.each { |error| errors.add(:base, error[:title]) }

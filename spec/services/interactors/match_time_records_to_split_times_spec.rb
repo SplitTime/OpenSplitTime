@@ -129,7 +129,7 @@ RSpec.describe Interactors::MatchTimeRecordsToSplitTimes do
     end
 
     context "when the candidate pool contains a matching split_time belonging to an effort in a different event_group" do
-      let(:other_event_group) { create(:event_group) }
+      let(:other_event_group) { create(:event_group, organization: event.event_group.organization) }
       let(:other_event) do
         create(:event, event_group: other_event_group, course: event.course,
                        scheduled_start_time: event.scheduled_start_time)

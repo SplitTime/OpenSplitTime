@@ -4,7 +4,7 @@ RSpec.describe Etl::Loaders::UpsertStrategy do
   subject { described_class.new(proto_records, options) }
 
   let(:course) { create(:course, id: 10) }
-  let(:event) { create(:event, id: 1, course: course) }
+  let(:event) { create(:event, id: 1, course: course, event_group: create(:event_group, organization: course.organization)) }
   let(:options) { { parent: course, event: event, unique_key: [:course_id, :distance_from_start], current_user_id: 111 } }
   let(:valid_proto_records) do
     [ProtoRecord.new({ record_type: :split, kind: 0, sub_split_bitmap: 1, base_name: "Start", distance_from_start: 0, course_id: 10 }),

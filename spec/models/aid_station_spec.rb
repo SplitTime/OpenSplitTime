@@ -51,10 +51,10 @@ RSpec.describe AidStation, type: :model do
       let(:event_1) { create(:event, :with_short_name, course: course_1, event_group: event_group) }
       let(:event_2) { create(:event, :with_short_name, course: course_2, event_group: event_group) }
       let(:event_group) { create(:event_group, home_time_zone: "Arizona") }
-      let(:course_1) { create(:course) }
+      let(:course_1) { create(:course, organization: event_group.organization) }
       let(:course_1_split_1) { create(:split, :start, course: course_1, base_name: "Start", latitude: 40, longitude: -105) }
       let(:course_1_split_2) { create(:split, :finish, course: course_1, base_name: "Finish", latitude: 42, longitude: -107) }
-      let(:course_2) { create(:course) }
+      let(:course_2) { create(:course, organization: event_group.organization) }
       let(:course_2_split_1) { create(:split, :start, course: course_2, base_name: "Start", latitude: 40, longitude: -105) }
       before do
         event_1.splits << course_1_split_1

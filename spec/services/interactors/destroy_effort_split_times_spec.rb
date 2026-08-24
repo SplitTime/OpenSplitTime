@@ -3,23 +3,26 @@ require "rails_helper"
 RSpec.describe Interactors::DestroyEffortSplitTimes do
   include BitkeyDefinitions
 
-  subject { Interactors::DestroyEffortSplitTimes.new(effort, split_time_ids) }
-  let!(:split_time_1) { create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false) }
-  let!(:split_time_2) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10_000, stopped_here: false) }
+  subject { described_class.new(effort, split_time_ids) }
+
+  before do
+    create(:split_time, effort: effort, lap: 1, split: split_1, bitkey: in_bitkey, time_from_start: 0, stopped_here: false)
+    create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: in_bitkey, time_from_start: 10_000, stopped_here: false)
+    effort.reload
+  end
+
   let!(:split_time_3) { create(:split_time, effort: effort, lap: 1, split: split_2, bitkey: out_bitkey, time_from_start: 11_000, stopped_here: false) }
   let!(:split_time_4) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: in_bitkey, time_from_start: 20_000, stopped_here: false) }
   let!(:split_time_5) { create(:split_time, effort: effort, lap: 1, split: split_3, bitkey: out_bitkey, time_from_start: 21_000, stopped_here: true) }
   let(:split_time_ids) { split_times.map { |st| st.id.to_s } }
 
   let(:effort) { create(:effort, event: event) }
-  let(:event) { create(:event, course: course) }
+  let(:event) { create(:event, course: course, event_group: create(:event_group, organization: course.organization)) }
   let(:course) { create(:course) }
   let(:split_1) { create(:split, :start, course: course) }
   let(:split_2) { create(:split, course: course) }
   let(:split_3) { create(:split, course: course) }
   let(:split_4) { create(:split, :finish, course: course) }
-
-  before { effort.reload }
 
   describe "#initialize" do
     context "when effort and split_time_ids arguments are provided" do
@@ -31,7 +34,8 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
     end
 
     context "when no effort is provided" do
-      subject { Interactors::DestroyEffortSplitTimes.new(nil, split_time_ids) }
+      subject { described_class.new(nil, split_time_ids) }
+
       let(:split_times) { [split_time_4, split_time_5] }
 
       it "raises an error" do
@@ -40,7 +44,7 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
     end
 
     context "when no split_time_ids argument is provided" do
-      subject { Interactors::DestroyEffortSplitTimes.new(effort, nil) }
+      subject { described_class.new(effort, nil) }
 
       it "raises an error" do
         expect { subject }.to raise_error(/split_time_ids argument was not provided/)
@@ -68,7 +72,7 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
         expect(effort.split_times.size).to eq(3)
         split_time_3.reload
         expect(split_time_3.stopped_here).to eq(true)
-        expect(response.resources).to match_array([split_time_3, split_time_4, split_time_5])
+        expect(response.resources).to contain_exactly(split_time_3, split_time_4, split_time_5)
       end
     end
 
@@ -82,7 +86,7 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
         expect(effort.split_times.size).to eq(3)
         split_time_5.reload
         expect(split_time_5.stopped_here).to eq(true)
-        expect(response.resources).to match_array([split_time_3, split_time_4])
+        expect(response.resources).to contain_exactly(split_time_3, split_time_4)
       end
     end
 
@@ -94,7 +98,7 @@ RSpec.describe Interactors::DestroyEffortSplitTimes do
         response = subject.perform!
         effort.reload
         expect(effort.split_times.size).to eq(5)
-        expect(response.resources).to match_array([])
+        expect(response.resources).to be_empty
       end
     end
   end

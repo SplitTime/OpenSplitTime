@@ -60,7 +60,8 @@ has been configured.
 
 1. Go to **Live > Crew Access** to see a list of your gating locations.
 
-1. Click a gating location to open its release board. The board shows one table per Event.
+1. Click a gating location to open its release board. Each Event has its own board; if a gating location
+applies to more than one Event in your group, choose the Event first.
 
 For each runner, the table shows:
 
@@ -130,7 +131,7 @@ It only matters when there are aid stations between the gate and the target.
 
 ### Adjusting the View
 
-Controls above each Event's table let you tailor the board:
+Controls above the table let you tailor the board:
 
 1. **Buffer (min):** temporarily override the travel buffer for this Event. Increase it if the drive is slow
 today, or decrease it if crews are moving quickly. This does not change the default you set during construction.

@@ -64,18 +64,19 @@ class PodiumPresenter < BasePresenter
   # @return [Array<Results::Category>]
   def ordered_fixed_categories
     categories.select(&:fixed_position?)
-        .group_by { |c| [c.low_age, c.high_age] }.values
-        .map { |category_pair| category_pair.sort_by(&:best_performance).reverse }
-        .flatten
+              .group_by { |c| [c.low_age, c.high_age] }.values
+              .map { |category_pair| category_pair.sort_by(&:best_performance).reverse }
+              .flatten
   end
 
   # @return [Array<Results::Category>]
   def ordered_floating_categories
-    categories.reject(&:fixed_position?)
-        .partition(&:male?)
-        .map { |gender_group| gender_group.sort_by(&:best_performance).reverse }
-        .transpose
-        .map { |category_pair| category_pair.sort_by(&:best_performance).reverse }
-        .flatten
+    male_categories, female_categories = categories.reject(&:fixed_position?).partition(&:male?)
+    male_categories = male_categories.sort_by(&:best_performance).reverse
+    female_categories = female_categories.sort_by(&:best_performance).reverse
+
+    pair_count = [male_categories.size, female_categories.size].max
+    category_pairs = Array.new(pair_count) { |i| [male_categories[i], female_categories[i]].compact }
+    category_pairs.flat_map { |category_pair| category_pair.sort_by(&:best_performance).reverse }
   end
 end

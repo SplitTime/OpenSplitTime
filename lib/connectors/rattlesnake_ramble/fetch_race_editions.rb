@@ -33,7 +33,7 @@ module Connectors
       # @param [Hash] raw_race_edition
       # @return [::Connectors::RattlesnakeRamble::Models::RaceEdition]
       def race_edition_from_raw(raw_race_edition)
-        ::Connectors::RattlesnakeRamble::Models::RaceEdition.new(raw_race_edition)
+        ::Connectors::RattlesnakeRamble::Models::RaceEdition.new(**raw_race_edition)
       end
     end
   end

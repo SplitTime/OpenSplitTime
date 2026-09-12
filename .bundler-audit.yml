@@ -8,3 +8,10 @@ ignore:
   # version exists as of 2026-07-06 (the advisory affects webrick through 1.9.2, the latest
   # release). Remove this once a fixed webrick ships and the bundle picks it up.
   - CVE-2026-38969
+  # CVE-2026-85396 / GHSA-47m2-wp7j-p9vc — path traversal when extracting archives with rubyzip < 3.4.0.
+  # rubyzip is a development-only transitive dependency (pulled in by rails_real_favicon, which
+  # we run by hand to regenerate favicons); nothing in the app extracts zip files at runtime.
+  # rails_real_favicon 0.1.1 (the latest release as of 2026-09-11) pins rubyzip ~> 2, so the
+  # bundle cannot pick up 3.4.0. Remove this once rails_real_favicon allows rubyzip 3.x, or if
+  # the gem is dropped.
+  - CVE-2026-85396

@@ -4,7 +4,8 @@ module Connectors
       RaceEntry = Struct.new(
         :bib_number,
         :scheduled_start_time,
-        :racer
+        :racer,
+        keyword_init: true
       ) do
         def first_name
           racer&.first_name

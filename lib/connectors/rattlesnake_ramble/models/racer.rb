@@ -8,7 +8,8 @@ module Connectors
         :birth_date,
         :email,
         :city,
-        :state
+        :state,
+        keyword_init: true
       )
     end
   end

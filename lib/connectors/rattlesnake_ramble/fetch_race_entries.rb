@@ -40,8 +40,8 @@ module Connectors
       def race_entry_from_raw(raw_race_entry)
         raw_racer = raw_race_entry.delete("racer")
 
-        race_entry = ::Connectors::RattlesnakeRamble::Models::RaceEntry.new(raw_race_entry)
-        race_entry.racer = ::Connectors::RattlesnakeRamble::Models::Racer.new(raw_racer)
+        race_entry = ::Connectors::RattlesnakeRamble::Models::RaceEntry.new(**raw_race_entry)
+        race_entry.racer = ::Connectors::RattlesnakeRamble::Models::Racer.new(**raw_racer)
         race_entry
       end
     end

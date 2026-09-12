@@ -4,8 +4,7 @@ module Connectors
       RaceEdition = Struct.new(
         :id,
         :date,
-        :race_name,
-        keyword_init: true
+        :race_name
       ) do
         def name
           race_name

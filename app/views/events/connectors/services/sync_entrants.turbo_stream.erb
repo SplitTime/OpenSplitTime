@@ -1,9 +1,9 @@
-<%# locals: (event:, service:, view_context:, interactor_response:) %>
+<%# locals: (event:, service:, view_context:, import_job:) %>
 
 <%= turbo_stream.replace(dom_id(event, :sync_efforts_card),
                          partial: "events/connectors/services/sync_efforts_card",
                          locals: {
                            presenter: ConnectServicePresenter.new(event.event_group, service, view_context),
                            event: event,
-                           interactor_response: interactor_response,
-                         } ) %>
+                           import_job: import_job,
+                         }) %>

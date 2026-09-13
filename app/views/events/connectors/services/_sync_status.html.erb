@@ -1,0 +1,21 @@
+<%# locals: (import_job:) -%>
+
+<div id="<%= dom_id(import_job, :sync_status) %>" class="text-end">
+  <% if import_job.failed? %>
+    <%= fa_icon("circle-xmark", type: :solid, class: "text-danger", text: "Sync failed") %>
+    <% import_job.parsed_errors.each do |error| %>
+      <% if error.is_a?(Hash) %>
+        <div class="small text-danger"><%= [error["title"], error.dig("detail", "messages")&.join("; ")].compact.join(": ") %></div>
+      <% else %>
+        <div class="small text-danger"><%= error %></div>
+      <% end %>
+    <% end %>
+  <% elsif import_job.finished? %>
+    <%= fa_icon("circle-check", type: :regular, class: "text-success", text: "Sync complete") %>
+    <div class="small text-muted">
+      <%= "#{import_job.succeeded_count} synced, #{import_job.ignored_count} unchanged, #{import_job.failed_count} failed" %>
+    </div>
+  <% else %>
+    <%= fa_icon("spinner", class: "fa-spin", text: "Sync #{import_job.status}…") %>
+  <% end %>
+</div>

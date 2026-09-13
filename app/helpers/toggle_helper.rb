@@ -52,18 +52,17 @@ module ToggleHelper
   # Toggle for marking a runner's crew as having passed through a gating location. Creates a
   # CrewPassage when not yet passed, destroys it when already passed. Carries the frame's current
   # controls so the re-rendered Turbo frame keeps its buffer/sort/filters.
-  def button_to_toggle_crew_passage(row:, gating_location_event:, display:, controls:)
+  def button_to_toggle_crew_passage(row:, board:)
     control_params = {
-      gating_location_event_id: gating_location_event.id,
-      buffer: controls.buffer,
-      sort: controls.sort_order,
-      hide_departed: controls.hide_departed,
-      hide_passed: controls.hide_passed,
-      search: controls.search,
+      buffer: board.controls.buffer,
+      sort: board.controls.sort_order,
+      hide_departed: board.controls.hide_departed,
+      hide_passed: board.controls.hide_passed,
+      search: board.controls.search,
     }
 
     if row.crew_passed?
-      url = live_event_group_gating_location_crew_passage_path(display.event_group, display.gating_location,
+      url = live_event_group_gating_location_crew_passage_path(board.event_group, board.gating_location,
                                                                row.crew_passage)
       method = :delete
       icon_name = "check-square"
@@ -71,7 +70,7 @@ module ToggleHelper
       button_class = "success"
       params = control_params
     else
-      url = live_event_group_gating_location_crew_passages_path(display.event_group, display.gating_location)
+      url = live_event_group_gating_location_crew_passages_path(board.event_group, board.gating_location)
       method = :post
       icon_name = "square"
       button_text = "Mark passed"

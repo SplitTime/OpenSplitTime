@@ -16,7 +16,7 @@ RSpec.describe "Live::GatingLocations::CrewPassages" do
 
   def post_create
     post live_event_group_gating_location_crew_passages_path(event_group, gating_location),
-         params: { effort_id: effort.id, gating_location_event_id: gle_100k.id }, as: :turbo_stream
+         params: { effort_id: effort.id }, as: :turbo_stream
   end
 
   describe "POST create" do
@@ -34,6 +34,7 @@ RSpec.describe "Live::GatingLocations::CrewPassages" do
       it "creates a crew passage for the effort at the gating location" do
         expect { post_create }.to change { gating_location.crew_passages.count }.by(1)
         expect(response).to have_http_status(:ok)
+        expect(response.body).to include("crew_access_rows_gating_location_event_#{gle_100k.id}")
       end
 
       it "is idempotent" do
@@ -48,7 +49,7 @@ RSpec.describe "Live::GatingLocations::CrewPassages" do
 
     def delete_destroy
       delete live_event_group_gating_location_crew_passage_path(event_group, gating_location, crew_passage),
-             params: { gating_location_event_id: gle_100k.id }, as: :turbo_stream
+             as: :turbo_stream
     end
 
     context "when the user is authorized" do

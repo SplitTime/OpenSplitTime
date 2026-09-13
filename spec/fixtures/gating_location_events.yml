@@ -10,3 +10,9 @@ sum_bandera_gate_55k:
   event: sum_55k
   gating_aid_station: aid_station_0038
   target_aid_station: aid_station_0039
+sum_molas_gate_100k:
+  gating_location: sum_molas_gate
+  event: sum_100k
+  gating_aid_station: aid_station_0017
+  target_aid_station: aid_station_0019
+  default_travel_buffer: 30

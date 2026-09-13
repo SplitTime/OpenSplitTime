@@ -2,3 +2,6 @@
 sum_bandera_gate:
   event_group: sum
   name: Bandera Gate
+sum_molas_gate:
+  event_group: sum
+  name: Molas Gate

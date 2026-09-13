@@ -1,0 +1,38 @@
+<%# locals: (board:) -%>
+
+<%= form_with url: live_event_group_crew_access_board_path(board.event_group, board.gating_location_event), method: :get,
+              data: { controller: "gating-controls", turbo_frame: dom_id(board.gating_location_event, :crew_access_rows) },
+              class: "row gx-3 gy-2 align-items-end" do |form| %>
+  <div class="col-auto">
+    <%= form.label :buffer, "Buffer (min)", class: "form-label mb-0 small" %>
+    <%= form.number_field :buffer, value: board.controls.buffer, min: 0, max: 1200,
+                                   class: "form-control form-control-sm", style: "width: 6rem;", autocomplete: "off",
+                                   data: { action: "input->gating-controls#debounce" } %>
+  </div>
+  <div class="col-auto">
+    <%= form.label :sort, "Sort by", class: "form-label mb-0 small" %>
+    <%= form.select :sort, [["Bib number", "bib"], ["Release time", "release"]],
+                    { selected: board.controls.sort_order },
+                    { class: "form-select form-select-sm", data: { action: "change->gating-controls#submit" } } %>
+  </div>
+  <div class="col-auto">
+    <%= form.label :search, "Find runner", class: "form-label mb-0 small" %>
+    <%= form.search_field :search, value: board.controls.search, placeholder: "Bib or name…",
+                                   class: "form-control form-control-sm", autocomplete: "off",
+                                   data: { action: "input->gating-controls#debounce" } %>
+  </div>
+  <div class="col-auto">
+    <div class="form-check form-switch">
+      <%= form.check_box :hide_departed,
+                         { checked: board.controls.hide_departed, class: "form-check-input", role: "switch",
+                           data: { action: "change->gating-controls#submit" } } %>
+      <%= form.label :hide_departed, "Hide departed", class: "form-check-label small" %>
+    </div>
+    <div class="form-check form-switch">
+      <%= form.check_box :hide_passed,
+                         { checked: board.controls.hide_passed, class: "form-check-input", role: "switch",
+                           data: { action: "change->gating-controls#submit" } } %>
+      <%= form.label :hide_passed, "Hide passed", class: "form-check-label small" %>
+    </div>
+  </div>
+<% end %>

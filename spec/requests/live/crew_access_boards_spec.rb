@@ -1,10 +1,10 @@
 require "rails_helper"
 
-RSpec.describe "Live::GatingLocations" do
+RSpec.describe "Live::CrewAccessBoards" do
   include Warden::Test::Helpers
 
   let(:event_group) { event_groups(:sum) }
-  let(:gating_location) { gating_locations(:sum_bandera_gate) }
+  let(:gle_100k) { gating_location_events(:sum_bandera_gate_100k) }
   let(:admin_user) { users(:admin_user) }
   let(:other_user) { users(:third_user) }
   let(:owner_user) { users(:fourth_user) }
@@ -12,8 +12,10 @@ RSpec.describe "Live::GatingLocations" do
 
   after { Warden.test_reset! }
 
-  describe "GET index authorization" do
-    subject(:make_request) { get live_event_group_gating_locations_path(event_group) }
+  before { allow(Projection).to receive(:execute_query).and_return([]) }
+
+  describe "GET show authorization" do
+    subject(:make_request) { get live_event_group_crew_access_board_path(event_group, gle_100k) }
 
     context "when the user is not signed in" do
       it "redirects" do
@@ -68,50 +70,36 @@ RSpec.describe "Live::GatingLocations" do
   describe "as an authorized user" do
     before { login_as admin_user, scope: :user }
 
-    describe "GET index" do
-      it "lists the event group's gating locations" do
-        get live_event_group_gating_locations_path(event_group)
+    describe "GET show" do
+      it "renders the board controls (buffer, sort, find runner, hide filters)" do
+        get live_event_group_crew_access_board_path(event_group, gle_100k)
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Bandera Gate")
-      end
-    end
-
-    describe "GET show" do
-      context "when the location has more than one gated event" do
-        it "renders a chooser linking each event's board" do
-          get live_event_group_gating_location_path(event_group, gating_location)
-
-          expect(response).to have_http_status(:ok)
-          expect(response.body).to include(
-            live_event_group_crew_access_board_path(event_group, gating_location_events(:sum_bandera_gate_100k)),
-          )
-          expect(response.body).to include(
-            live_event_group_crew_access_board_path(event_group, gating_location_events(:sum_bandera_gate_55k)),
-          )
-        end
+        expect(response.body).to include("Buffer (min)")
+        expect(response.body).to include("Sort by")
+        expect(response.body).to include("Find runner")
+        expect(response.body).to include("Hide departed")
+        expect(response.body).to include("Hide passed")
       end
 
-      context "when the location has exactly one gated event" do
-        let(:gating_location) { gating_locations(:sum_molas_gate) }
-        let(:gle) { gating_location_events(:sum_molas_gate_100k) }
+      it "accepts the control params without error" do
+        get live_event_group_crew_access_board_path(event_group, gle_100k),
+            params: { buffer: "90", sort: "release", hide_departed: "1", hide_passed: "1", search: "999" }
 
-        it "redirects to that event's board, preserving control params" do
-          get live_event_group_gating_location_path(event_group, gating_location),
-              params: { sort: "bib", hide_passed: "1" }
+        expect(response).to have_http_status(:ok)
+      end
 
-          expect(response).to redirect_to(
-            live_event_group_crew_access_board_path(event_group, gle, sort: "bib", hide_passed: "1"),
-          )
-        end
+      it "is not found for a gated event belonging to another event group" do
+        expect { get live_event_group_crew_access_board_path(event_groups(:hardrock_2015), gle_100k) }
+          .to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context "when live entry is not available for the event group" do
       before { event_group.update!(available_live: false) }
 
-      it "redirects away from the index" do
-        get live_event_group_gating_locations_path(event_group)
+      it "redirects away from the board" do
+        get live_event_group_crew_access_board_path(event_group, gle_100k)
 
         expect(response).not_to have_http_status(:ok)
       end

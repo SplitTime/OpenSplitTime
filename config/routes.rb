@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   root to: "visitors#index"
-  get "photo_credits", to: "visitors#photo_credits"
   get "about", to: "visitors#about"
   get "privacy_policy", to: "visitors#privacy_policy"
   get "sms_info", to: "visitors#sms_info"

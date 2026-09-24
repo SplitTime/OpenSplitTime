@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe ImportJob, type: :model do
   subject { build(:import_job, parent: parent, format: format, started_at: started_at) }
+
   let(:parent) { lotteries(:lottery_without_tickets) }
   let(:format) { :lottery_entrants }
   let(:started_at) { nil }
@@ -9,8 +10,48 @@ RSpec.describe ImportJob, type: :model do
 
   before { travel_to test_start_time }
 
+  describe "#external_service_sync?" do
+    context "when format is a Connectors::Service identifier" do
+      let(:parent) { events(:hardrock_2016) }
+      let(:format) { "runsignup" }
+      it { expect(subject).to be_external_service_sync }
+    end
+
+    context "when format is a file-import format" do
+      it { expect(subject).not_to be_external_service_sync }
+    end
+  end
+
+  describe "validations" do
+    context "without files attached, for an external-service sync" do
+      subject { build(:import_job, parent: events(:hardrock_2016), format: "runsignup") }
+
+      it "is valid (file content_type / size validations don't fire)" do
+        expect(subject).to be_valid
+      end
+    end
+  end
+
   describe "#parent_path" do
     let(:result) { subject.parent_path }
+
+    context "when parent is an event and format is a sync service identifier" do
+      let(:parent) { events(:hardrock_2016) }
+      let(:format) { "runsignup" }
+
+      it "returns the connection management page for that event group + service" do
+        expect(result).to eq("/event_groups/hardrock-2016/connect_service/runsignup")
+      end
+    end
+
+    context "when parent is an event group and format is a sync service identifier" do
+      let(:parent) { event_groups(:hardrock_2016) }
+      let(:format) { "runsignup" }
+
+      it "returns the connection management page for that event group + service" do
+        expect(result).to eq("/event_groups/hardrock-2016/connect_service/runsignup")
+      end
+    end
 
     context "when parent is an organization" do
       let(:parent) { organizations(:hardrock) }
@@ -45,7 +86,6 @@ RSpec.describe ImportJob, type: :model do
         it "returns a course setup path" do
           expect(result).to eq("/event_groups/hardrock-2016/events/hardrock-2016/setup_course")
         end
-
       end
 
       context "when the format is not course_group_splits" do
@@ -67,6 +107,7 @@ RSpec.describe ImportJob, type: :model do
 
       context "when started at time has been set" do
         before { subject.assign_attributes(started_at: 30.seconds.ago) }
+
         it "does not set elapsed time" do
           subject.set_elapsed_time!
           expect(subject.elapsed_time).to be_nil
@@ -76,6 +117,7 @@ RSpec.describe ImportJob, type: :model do
 
     context "when the record has been persisted" do
       before { subject.save! }
+
       context "when started at time has not been set" do
         it "does not set elapsed time" do
           subject.set_elapsed_time!
@@ -85,6 +127,7 @@ RSpec.describe ImportJob, type: :model do
 
       context "when started at time has been set" do
         before { subject.update(started_at: 30.seconds.ago) }
+
         it "sets elapsed time to the amount of time that has passed" do
           subject.set_elapsed_time!
           expect(subject.elapsed_time).to eq(30)

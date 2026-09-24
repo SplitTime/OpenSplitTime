@@ -1,4 +1,4 @@
-<%# locals: (presenter:, event:, interactor_response: nil) -%>
+<%# locals: (presenter:, event:, import_job: nil) -%>
 
 <%= content_tag(:div, id: dom_id(event, :sync_efforts_card)) do %>
   <div class="card my-3">
@@ -8,7 +8,9 @@
           <h4 class="mt-1"><%= event.name %></h4>
         </div>
         <div class="col" id="<%= dom_id(event, :sync_efforts_response) %>">
-          <%= render partial: "events/connectors/services/sync_efforts_response", locals: { interactor_response: interactor_response } %>
+          <% if import_job %>
+            <%= render partial: "events/connectors/services/sync_status", locals: { import_job: import_job } %>
+          <% end %>
         </div>
       </div>
     </div>

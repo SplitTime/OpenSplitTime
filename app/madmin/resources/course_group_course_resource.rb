@@ -5,8 +5,8 @@ class CourseGroupCourseResource < Madmin::Resource
   attribute :updated_at, form: false
 
   # Associations
-  attribute :course_group
-  attribute :course
+  attribute :course_group, index: true
+  attribute :course, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

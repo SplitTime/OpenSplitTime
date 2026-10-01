@@ -1,14 +1,14 @@
 class RawTimeResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :split_name
-  attribute :bitkey
-  attribute :bib_number
-  attribute :absolute_time
+  attribute :split_name, index: true
+  attribute :bitkey, index: true
+  attribute :bib_number, index: true
+  attribute :absolute_time, index: true
   attribute :entered_time
   attribute :with_pacer
   attribute :stopped_here
-  attribute :source
+  attribute :source, index: true
   attribute :reviewer
   attribute :reviewed_at
   attribute :creator
@@ -17,7 +17,7 @@ class RawTimeResource < Madmin::Resource
   attribute :parameterized_split_name
   attribute :remarks
   attribute :sortable_bib_number
-  attribute :data_status
+  attribute :data_status, index: true
   attribute :matchable_bib_number
   attribute :disassociated_from_effort
   attribute :entered_lap
@@ -26,7 +26,7 @@ class RawTimeResource < Madmin::Resource
 
   # Associations
   attribute :versions
-  attribute :event_group
+  attribute :event_group, index: true
   attribute :split_time
 
   # Uncomment this to customize the display name of records in the admin area.

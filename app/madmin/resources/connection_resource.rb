@@ -1,14 +1,14 @@
 class ConnectionResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :service_identifier
-  attribute :source_type
-  attribute :source_id
+  attribute :service_identifier, index: true
+  attribute :source_type, index: true
+  attribute :source_id, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
 
   # Associations
-  attribute :destination
+  attribute :destination, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

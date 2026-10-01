@@ -1,15 +1,15 @@
 class PartnerResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :banner_link
-  attribute :weight
+  attribute :banner_link, index: true
+  attribute :weight, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :name
   attribute :banner, index: false
 
   # Associations
-  attribute :partnerable
+  attribute :partnerable, index: true
   attribute :versions
 
   # Uncomment this to customize the display name of records in the admin area.

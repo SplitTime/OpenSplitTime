@@ -1,20 +1,20 @@
 class CourseGroupFinisherResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :first_name
-  attribute :last_name
-  attribute :gender
+  attribute :first_name, index: true
+  attribute :last_name, index: true
+  attribute :gender, index: true
   attribute :city
   attribute :state_code
   attribute :country_code
   attribute :state_name
   attribute :country_name
   attribute :slug
-  attribute :finish_count, form: false
+  attribute :finish_count, form: false, index: true
 
   # Associations
   attribute :person
-  attribute :course_group
+  attribute :course_group, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

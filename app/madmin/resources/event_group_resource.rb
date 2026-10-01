@@ -2,12 +2,12 @@ class EventGroupResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
   attribute :name
-  attribute :available_live
-  attribute :concealed
+  attribute :available_live, index: true
+  attribute :concealed, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :created_by
-  attribute :slug
+  attribute :slug, index: true
   attribute :data_entry_grouping_strategy
   attribute :monitor_pacers
   attribute :home_time_zone
@@ -20,12 +20,11 @@ class EventGroupResource < Madmin::Resource
   attribute :events
   attribute :efforts
   attribute :raw_times
-  attribute :organization
+  attribute :organization, index: true
 
-  # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    record.name
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

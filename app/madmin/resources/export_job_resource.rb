@@ -1,14 +1,14 @@
 class ExportJobResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :status
+  attribute :status, index: true
   attribute :source_url
-  attribute :started_at
-  attribute :elapsed_time
+  attribute :started_at, index: true
+  attribute :elapsed_time, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :controller_name
-  attribute :resource_class_name
+  attribute :resource_class_name, index: true
   attribute :sql_string
   attribute :error_message
   attribute :file, index: false

@@ -6,7 +6,7 @@ class GatingLocationResource < Madmin::Resource
   attribute :updated_at, form: false
 
   # Associations
-  attribute :event_group
+  attribute :event_group, index: true
 
   def self.display_name(record)
     "#{record.event_group.name}: #{record.name}"

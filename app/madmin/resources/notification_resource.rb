@@ -1,19 +1,19 @@
 class NotificationResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :distance
+  attribute :distance, index: true
   attribute :bitkey
   attribute :follower_ids
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :kind
+  attribute :kind, index: true
   attribute :topic_resource_key
-  attribute :subject
+  attribute :subject, index: true
   attribute :notice_text
 
   # Associations
-  attribute :effort
-  attribute :event
+  attribute :effort, index: true
+  attribute :event, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

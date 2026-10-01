@@ -2,27 +2,26 @@ class LotteryResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
   attribute :name
-  attribute :scheduled_start_date
+  attribute :scheduled_start_date, index: true
   attribute :slug
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :concealed
-  attribute :status
+  attribute :concealed, index: true
+  attribute :status, index: true
   attribute :calculation_class
 
   # Associations
   attribute :partners
-  attribute :organization
+  attribute :organization, index: true
   attribute :divisions
   attribute :entrants
   attribute :tickets
   attribute :simulation_runs
   attribute :slugs
 
-  # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    record.name
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

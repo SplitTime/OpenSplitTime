@@ -2,18 +2,18 @@ class EffortResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
   attribute :wave
-  attribute :bib_number
+  attribute :bib_number, index: true
   attribute :city
   attribute :state_code
   attribute :age
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :first_name
-  attribute :last_name
-  attribute :gender
+  attribute :first_name, index: true
+  attribute :last_name, index: true
+  attribute :gender, index: true
   attribute :country_code
   attribute :birthdate
-  attribute :data_status
+  attribute :data_status, index: true
   attribute :beacon_url
   attribute :report_url
   attribute :phone
@@ -44,15 +44,14 @@ class EffortResource < Madmin::Resource
   attribute :followers
   attribute :slugs
   attribute :versions
-  attribute :event
-  attribute :person
+  attribute :event, index: true
+  attribute :person, index: true
   attribute :split_times
   attribute :notifications
 
-  # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    record.full_name
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

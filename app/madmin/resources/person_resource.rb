@@ -15,14 +15,11 @@ class PersonResource < Madmin::Resource
   attribute :user_id
   attribute :concealed, index: true
   attribute :slug
-  attribute :topic_resource_key
   attribute :state_name
   attribute :country_name
   attribute :photo, index: false
 
   # Associations
-  attribute :subscriptions
-  attribute :followers
   attribute :slugs
   attribute :versions
   attribute :efforts

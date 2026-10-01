@@ -2,8 +2,8 @@ module ActiveStorage
   class VariantRecordResource < Madmin::Resource
     # Attributes
     attribute :id, form: false
-    attribute :variation, index: false, show: false
-    attribute :variation_confirmation, index: false, show: false
+    attribute :variation, index: false, show: false, form: false
+    attribute :variation_confirmation, index: false, show: false, form: false
     attribute :image, index: false
 
     # Associations

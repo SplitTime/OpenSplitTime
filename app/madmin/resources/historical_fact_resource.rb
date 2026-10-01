@@ -1,12 +1,12 @@
 class HistoricalFactResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :kind
-  attribute :quantity
+  attribute :kind, index: true
+  attribute :quantity, index: true
   attribute :comments
   attribute :external_id
-  attribute :first_name
-  attribute :last_name
+  attribute :first_name, index: true
+  attribute :last_name, index: true
   attribute :birthdate
   attribute :gender
   attribute :address
@@ -21,8 +21,8 @@ class HistoricalFactResource < Madmin::Resource
   attribute :updated_at, form: false
 
   # Associations
-  attribute :organization
-  attribute :person
+  attribute :organization, index: true
+  attribute :person, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

@@ -1,15 +1,15 @@
 class SplitResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :distance_from_start
+  attribute :distance_from_start, index: true
   attribute :vert_gain_from_start
   attribute :vert_loss_from_start
-  attribute :kind
+  attribute :kind, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :description
-  attribute :base_name
-  attribute :sub_split_bitmap
+  attribute :base_name, index: true
+  attribute :sub_split_bitmap, index: true
   attribute :latitude
   attribute :longitude
   attribute :elevation
@@ -19,15 +19,14 @@ class SplitResource < Madmin::Resource
   # Associations
   attribute :slugs
   attribute :versions
-  attribute :course
+  attribute :course, index: true
   attribute :split_times
   attribute :aid_stations
   attribute :events
 
-  # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    record.base_name
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

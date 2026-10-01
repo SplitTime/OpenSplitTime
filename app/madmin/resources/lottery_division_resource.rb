@@ -4,19 +4,18 @@ class LotteryDivisionResource < Madmin::Resource
   attribute :name
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :maximum_entries
-  attribute :maximum_wait_list
+  attribute :maximum_entries, index: true
+  attribute :maximum_wait_list, index: true
 
   # Associations
-  attribute :lottery
+  attribute :lottery, index: true
   attribute :entrants
   attribute :tickets
   attribute :draws
 
-  # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    "#{record.lottery.name}: #{record.name}"
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

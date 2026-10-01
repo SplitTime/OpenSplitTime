@@ -1,19 +1,19 @@
 class PersonResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :first_name
-  attribute :last_name
-  attribute :gender
-  attribute :birthdate
+  attribute :first_name, index: true
+  attribute :last_name, index: true
+  attribute :gender, index: true
+  attribute :birthdate, index: true
   attribute :city
-  attribute :state_code
+  attribute :state_code, index: true
   attribute :email
   attribute :phone
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :country_code
   attribute :user_id
-  attribute :concealed
+  attribute :concealed, index: true
   attribute :slug
   attribute :topic_resource_key
   attribute :state_name
@@ -28,10 +28,9 @@ class PersonResource < Madmin::Resource
   attribute :efforts
   attribute :claimant
 
-  # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    record.full_name
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

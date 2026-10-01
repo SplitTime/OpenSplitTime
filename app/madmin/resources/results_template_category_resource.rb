@@ -3,12 +3,12 @@ class ResultsTemplateCategoryResource < Madmin::Resource
   attribute :id, form: false
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :position
-  attribute :fixed_position
+  attribute :position, index: true
+  attribute :fixed_position, index: true
 
   # Associations
-  attribute :template
-  attribute :category
+  attribute :template, index: true
+  attribute :category, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   def self.display_name(record)

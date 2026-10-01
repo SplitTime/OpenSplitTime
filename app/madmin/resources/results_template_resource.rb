@@ -1,17 +1,17 @@
 class ResultsTemplateResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :slug
+  attribute :slug, index: true
   attribute :name
-  attribute :aggregation_method
-  attribute :podium_size
+  attribute :aggregation_method, index: true
+  attribute :podium_size, index: true
   attribute :point_system
   attribute :created_at, form: false
   attribute :updated_at, form: false
 
   # Associations
   attribute :slugs
-  attribute :organization
+  attribute :organization, index: true
   attribute :template_categories
   attribute :categories
 

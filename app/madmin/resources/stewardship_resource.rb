@@ -3,12 +3,12 @@ class StewardshipResource < Madmin::Resource
   attribute :id, form: false
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :level
+  attribute :level, index: true
 
   # Associations
   attribute :versions
   attribute :user
-  attribute :organization
+  attribute :organization, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

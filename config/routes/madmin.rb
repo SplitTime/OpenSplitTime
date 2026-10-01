@@ -18,7 +18,6 @@ namespace :madmin do
   namespace :shortener do
     resources :shortened_urls
   end
-  resources :best_effort_segments
   resources :aid_stations
   resources :gating_locations
   resources :gating_location_events
@@ -35,7 +34,6 @@ namespace :madmin do
   resources :lottery_simulations
   resources :lottery_simulation_runs
   resources :lottery_entrants
-  resources :lottery_division_ticket_stats
   resources :lottery_draws
   resources :lottery_divisions
   resources :lotteries
@@ -44,10 +42,8 @@ namespace :madmin do
   resources :export_jobs
   resources :event_series
   resources :event_groups
-  resources :effort_segments
   resources :users
   resources :events
-  resources :versions
   namespace :friendly_id do
     resources :slugs
   end

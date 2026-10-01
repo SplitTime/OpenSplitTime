@@ -5,8 +5,8 @@ class EventSeriesEventResource < Madmin::Resource
   attribute :updated_at, form: false
 
   # Associations
-  attribute :event_series
-  attribute :event
+  attribute :event_series, index: true
+  attribute :event, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

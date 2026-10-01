@@ -4,11 +4,11 @@ class LotteryDrawResource < Madmin::Resource
   attribute :lottery_ticket_id
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :position
+  attribute :position, index: true
 
   # Associations
-  attribute :division
-  attribute :ticket
+  attribute :division, index: true
+  attribute :ticket, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

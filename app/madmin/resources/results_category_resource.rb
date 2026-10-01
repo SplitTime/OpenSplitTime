@@ -1,13 +1,13 @@
 class ResultsCategoryResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :slug
+  attribute :slug, index: true
   attribute :name
-  attribute :male
-  attribute :female
-  attribute :nonbinary
-  attribute :low_age
-  attribute :high_age
+  attribute :male, index: true
+  attribute :female, index: true
+  attribute :nonbinary, index: true
+  attribute :low_age, index: true
+  attribute :high_age, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :invalid_efforts, index: false
@@ -15,7 +15,7 @@ class ResultsCategoryResource < Madmin::Resource
   attribute :fixed_position, index: false
 
   # Associations
-  attribute :organization
+  attribute :organization, index: true
   attribute :template_categories
   attribute :templates
 

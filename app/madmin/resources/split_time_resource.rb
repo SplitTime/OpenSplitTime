@@ -1,15 +1,15 @@
 class SplitTimeResource < Madmin::Resource
   # Attributes
   attribute :id, form: false
-  attribute :data_status
+  attribute :data_status, index: true
   attribute :created_at, form: false
   attribute :updated_at, form: false
-  attribute :sub_split_bitkey
+  attribute :sub_split_bitkey, index: true
   attribute :pacer
   attribute :remarks
-  attribute :lap
+  attribute :lap, index: true
   attribute :stopped_here
-  attribute :absolute_time
+  attribute :absolute_time, index: true
   attribute :elapsed_seconds
   attribute :absolute_estimate_early, index: false
   attribute :absolute_estimate_late, index: false
@@ -19,8 +19,8 @@ class SplitTimeResource < Madmin::Resource
 
   # Associations
   attribute :versions
-  attribute :effort
-  attribute :split
+  attribute :effort, index: true
+  attribute :split, index: true
   attribute :raw_times
 
   # Uncomment this to customize the display name of records in the admin area.

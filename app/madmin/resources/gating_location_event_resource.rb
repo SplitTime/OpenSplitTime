@@ -5,8 +5,8 @@ class GatingLocationEventResource < Madmin::Resource
   attribute :updated_at, form: false
 
   # Associations
-  attribute :gating_location
-  attribute :event
-  attribute :gating_aid_station
-  attribute :target_aid_station
+  attribute :gating_location, index: true
+  attribute :event, index: true
+  attribute :gating_aid_station, index: true
+  attribute :target_aid_station, index: true
 end

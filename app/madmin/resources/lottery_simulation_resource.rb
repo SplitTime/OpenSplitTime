@@ -8,7 +8,7 @@ class LotterySimulationResource < Madmin::Resource
   attribute :updated_at, form: false
 
   # Associations
-  attribute :simulation_run
+  attribute :simulation_run, index: true
 
   # Uncomment this to customize the display name of records in the admin area.
   # def self.display_name(record)

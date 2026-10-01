@@ -6,21 +6,20 @@ class LotterySimulationRunResource < Madmin::Resource
   attribute :created_at, form: false
   attribute :updated_at, form: false
   attribute :requested_count, form: false
-  attribute :status
+  attribute :status, index: true
   attribute :error_message
-  attribute :success_count, form: false
-  attribute :failure_count, form: false
+  attribute :success_count, form: false, index: true
+  attribute :failure_count, form: false, index: true
   attribute :started_at
-  attribute :elapsed_time
+  attribute :elapsed_time, index: true
 
   # Associations
-  attribute :lottery
+  attribute :lottery, index: true
   attribute :simulations
 
-  # Uncomment this to customize the display name of records in the admin area.
-  # def self.display_name(record)
-  #   record.name
-  # end
+  def self.display_name(record)
+    record.name
+  end
 
   # Uncomment this to customize the default sort column and direction.
   # def self.default_sort_column

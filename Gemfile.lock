@@ -210,8 +210,6 @@ GEM
     cuprite (0.17)
       capybara (~> 3.0)
       ferrum (~> 0.17.0)
-    dalli (5.1.1)
-      logger
     data_migrate (11.3.1)
       activerecord (>= 6.1)
       railties (>= 6.1)
@@ -815,7 +813,6 @@ DEPENDENCIES
   cssbundling-rails
   csv
   cuprite
-  dalli
   data_migrate
   derailed_benchmarks
   devise

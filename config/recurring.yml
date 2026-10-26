@@ -29,7 +29,11 @@ production:
     class: Sweepers::EventSubscriptionsAndTopicsJob
     queue: default
     schedule: every Sunday at 4:30am
+<%# Staging's IAM user lacks the sms-voice opt-out permissions; running there only fails hourly %>
+<% unless OstConfig.credentials_env == "staging" %>
   reconcile_sms_carrier_opt_outs:
     class: ReconcileSmsCarrierOptOutsJob
     queue: default
     schedule: every hour at minute 7
+<% end %>
+

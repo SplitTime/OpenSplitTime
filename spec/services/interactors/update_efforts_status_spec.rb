@@ -130,6 +130,35 @@ RSpec.describe Interactors::UpdateEffortsStatus do
       end
     end
 
+    context "when persisting split time statuses fails" do
+      let(:persist_error) { { title: "Database error", detail: { messages: ["update_all failed"] } } }
+
+      before do
+        effort.update(data_status: nil)
+        split_times.each { |st| st.update(data_status: nil) }
+        allow(Persist::BulkUpdateAll).to receive(:perform!).and_call_original
+        allow(Persist::BulkUpdateAll).to receive(:perform!).with(SplitTime, anything, anything)
+                                                           .and_return(Interactors::Response.new([persist_error], "Split times could not be updated. "))
+      end
+
+      it "returns an unsuccessful response carrying the persistence error" do
+        expect(response).not_to be_successful
+        expect(response.errors).to include(persist_error)
+      end
+
+      it "does not persist effort statuses or derived data" do
+        expect(Results::SetEffortPerformanceData).not_to receive(:perform!)
+        response
+
+        expect(effort.reload.data_status).to be_nil
+      end
+
+      it "does not broadcast or notify" do
+        expect(effort).not_to receive(:broadcast_update)
+        response
+      end
+    end
+
     context "when a split_time has bad data" do
       let(:split_time) { split_times.second }
 

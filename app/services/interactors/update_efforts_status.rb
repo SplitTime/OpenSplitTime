@@ -15,8 +15,7 @@ module Interactors
 
     def perform!
       ActiveRecord::Base.transaction do
-        Persist::BulkUpdateAll.perform!(SplitTime, changed_split_times, update_fields: :data_status)
-        Persist::BulkUpdateAll.perform!(Effort, changed_efforts, update_fields: :data_status)
+        persist_data_statuses
         raise ActiveRecord::Rollback if errors.present?
 
         update_derived_data
@@ -28,6 +27,17 @@ module Interactors
     private
 
     attr_reader :efforts, :times_container, :errors
+
+    # Persist::BulkUpdateAll rescues database errors into its response, and its
+    # nested Rollback does not undo the enclosing transaction, so a failure must
+    # be carried here or later statements run against an aborted transaction
+    def persist_data_statuses
+      [[SplitTime, changed_split_times], [Effort, changed_efforts]].each do |model, resources|
+        response = Persist::BulkUpdateAll.perform!(model, resources, update_fields: :data_status)
+        errors.concat(response.errors)
+        break if errors.present?
+      end
+    end
 
     # Bulk updates bypass the per-record callbacks that would otherwise
     # set performance data, touch, notify, and broadcast; each is

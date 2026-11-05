@@ -136,6 +136,22 @@ RSpec.describe Etl::AsyncImporter do
       expect(import_job.elapsed_time).to be_present
       expect(import_job.error_message).to be_blank
     end
+
+    context "when the file uses the downloadable template headers" do
+      let(:source_data) { file_fixture("test_efforts_template_headers.csv") }
+
+      it "imports emergency contact information" do
+        subject.import!
+        entrant_1 = ::Effort.find_by(first_name: "Bjorn", last_name: "Borg")
+        entrant_2 = ::Effort.find_by(first_name: "Lucy", last_name: "Pendergrast")
+
+        expect(entrant_1.bib_number).to eq(2001)
+        expect(entrant_1.emergency_contact).to eq("Mariana Borg")
+        expect(entrant_1.emergency_phone).to eq("3035552345")
+        expect(entrant_2.emergency_contact).to be_nil
+        expect(entrant_2.emergency_phone).to be_nil
+      end
+    end
   end
 
   context "when a historical_facts import file is valid and format is recognized" do

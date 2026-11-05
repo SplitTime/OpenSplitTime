@@ -75,7 +75,6 @@ group :development do
   gem "derailed_benchmarks"
   gem "listen"
   gem "rails-erd"
-  gem "rails_real_favicon", ">= 0.1.0"
   gem "spring"
   gem "web-console", "~> 3.7", ">= 3.7.0"
 end

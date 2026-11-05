@@ -91,20 +91,24 @@ module EffortsHelper
     return if row.split_time_ids.compact.blank?
 
     row.split_time_ids.each do |id|
-      url = id.blank? ? "#" : split_time_path(id)
-      html_options = {
-        disabled: id.blank?,
-        class: "btn btn-sm btn-outline-danger mx-1",
-        method: :delete,
-        data: {
-          turbo_confirm: "This action cannot be undone. OK to proceed?",
-          turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
-        },
-      }
-
-      button = button_to(url, html_options) { fa_icon("trash") }
-      concat button
+      concat button_to_split_time_delete(id)
     end
+  end
+
+  def button_to_split_time_delete(split_time_id)
+    url = split_time_id.blank? ? "#" : split_time_path(split_time_id)
+    html_options = {
+      id: split_time_id.present? ? "delete-split-time-#{split_time_id}" : nil,
+      disabled: split_time_id.blank?,
+      class: "btn btn-sm btn-outline-danger mx-1",
+      method: :delete,
+      data: {
+        turbo_confirm: "This action cannot be undone. OK to proceed?",
+        turbo_submits_with: fa_icon("spinner", class: "fa-spin"),
+      },
+    }
+
+    button_to(url, html_options) { fa_icon("trash") }
   end
 
   def link_to_start_effort(effort)

@@ -77,7 +77,7 @@ If you already have your roster in a spreadsheet, or your registration platform 
 2. Click **Import > Event Group Entrants > Download CSV Template**.
 3. Fill in the template. Required columns are **First Name**, **Last Name**, and **Gender**.
 4. **If your Event Group has multiple Events**, you'll also need an **Event Name** column whose value exactly matches each Event's Short Name.
-5. Add anything else you have — birthdate, age, city, state, email, phone — to help OpenSplitTime match your entrants against existing people in the database. The more data you provide, the cleaner the reconciliation. The **Emergency Contact** and **Emergency Phone** columns are visible only to organizers and stewards.
+5. Add anything else you have — birthdate, age, city, state, email, phone — to help OpenSplitTime match your entrants against existing people in the database. The more data you provide, the cleaner the reconciliation. Data imported from the **Emergency Contact** and **Emergency Phone** columns are visible only to organizers and stewards.
 6. Save the file as CSV and import it via **Import > Event Group Entrants**.
 
 Two optional columns worth knowing about:

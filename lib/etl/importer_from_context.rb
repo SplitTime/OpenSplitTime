@@ -35,15 +35,11 @@ module Etl
     end
 
     def options
-      options_hash = { parent: parent, current_user_id: current_user.id, strict: strict }
+      options_hash = { parent: parent, current_user_id: current_user.id }
       options_hash[:unique_key] = unique_key if unique_key
       options_hash[:split_name] = params[:split_name] if params[:split_name]
       options_hash[:ignore_time_indices] = params[:ignore_time_indices] if params[:ignore_time_indices]
       options_hash
-    end
-
-    def strict
-      params[:load_records] != "single"
     end
 
     def unique_key

@@ -46,6 +46,8 @@ RSpec.describe Etl::CsvTemplates do
           "State",
           "Country",
           "Bib Number",
+          "Emergency Contact",
+          "Emergency Phone",
           "Start",
           "Molas Pass (Aid1) In",
           "Molas Pass (Aid1) Out",
@@ -82,6 +84,8 @@ RSpec.describe Etl::CsvTemplates do
             "State",
             "Country",
             "Bib Number",
+            "Emergency Contact",
+            "Emergency Phone",
           ]
         end
 
@@ -105,6 +109,8 @@ RSpec.describe Etl::CsvTemplates do
             "State",
             "Country",
             "Bib Number",
+            "Emergency Contact",
+            "Emergency Phone",
             "Event Name",
           ]
         end

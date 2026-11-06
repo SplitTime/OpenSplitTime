@@ -16,6 +16,8 @@ module Etl
     EFFORT_ATTRIBUTES = [
       *PERSON_ATTRIBUTES,
       "Bib Number",
+      "Emergency Contact",
+      "Emergency Phone",
     ].freeze
 
     FIXED_HEADERS_BY_FORMAT = {

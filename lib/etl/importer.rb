@@ -54,10 +54,6 @@ module Etl
       end
     end
 
-    def strict?
-      options[:strict]
-    end
-
     private
 
     attr_reader :source_data, :format, :options
@@ -72,13 +68,10 @@ module Etl
       proto_records = transformer.transform
       self.errors += transformer.errors and return if transformer.errors.present?
 
-      proto_record_groups = strict? ? [proto_records] : proto_records.map { |record| [record] }
-      proto_record_groups.each do |proto_record_group|
-        loader = Etl::Loader.new(proto_record_group, load_strategy, options)
-        loader.load_records
-        REPORT_ARRAYS.each do |report_array|
-          loader.send(report_array).each { |report_element| send(report_array) << report_element }
-        end
+      loader = Etl::Loader.new(proto_records, load_strategy, options)
+      loader.load_records
+      REPORT_ARRAYS.each do |report_array|
+        loader.send(report_array).each { |report_element| send(report_array) << report_element }
       end
     end
 

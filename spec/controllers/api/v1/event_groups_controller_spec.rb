@@ -304,13 +304,12 @@ RSpec.describe Api::V1::EventGroupsController do
     let(:entered_time_out) { time_zone.parse("2016-07-15 17:20:00") }
     let(:effort) { efforts(:hardrock_2016_start_only) }
     let(:bib_number) { effort.bib_number.to_s }
-    let(:strict) { nil }
     let(:unique_key) { nil }
     let(:limited_response) { nil }
 
     context "when provided with an array of raw_time hashes and data_format: :jsonapi_batch" do
       let(:split_name) { ordered_splits.second.base_name }
-      let(:request_params) { { id: event_group.id, data_format: "jsonapi_batch", data: data, strict: strict, unique_key: unique_key, limited_response: limited_response } }
+      let(:request_params) { { id: event_group.id, data_format: "jsonapi_batch", data: data, unique_key: unique_key, limited_response: limited_response } }
       let(:data) do
         [
           { type: "raw_time",
@@ -398,26 +397,6 @@ RSpec.describe Api::V1::EventGroupsController do
             expect(response.status).to eq(422)
             parsed_response = response.parsed_body
             expect(parsed_response["errors"].first.dig("detail", "messages")).to include("Bib number can't be blank")
-          end
-        end
-      end
-
-      context 'when params[:strict] is "true"' do
-        via_login_and_jwt do
-          let(:strict) { true }
-
-          it "creates raw_times and returns 201" do
-            expect { make_request }.to change(RawTime, :count).by(2)
-            raw_times = RawTime.last(2)
-
-            expect(response.status).to eq(201)
-            parsed_response = response.parsed_body
-            expect(parsed_response["data"].pluck("type")).to all(eq("rawTimes"))
-            expect(raw_times.size).to eq(2)
-            expect(raw_times.map(&:bib_number)).to all eq(bib_number)
-            expect(raw_times.map(&:bitkey)).to eq([in_bitkey, out_bitkey])
-            expect(raw_times.map { |rt| rt.entered_time.to_datetime }).to eq([entered_time_in, entered_time_out])
-            expect(raw_times.map(&:event_group_id)).to all eq(event_group.id)
           end
         end
       end
@@ -898,7 +877,7 @@ RSpec.describe Api::V1::EventGroupsController do
           expect(result.dig("data", "rawTimeRows")).to eq(expected)
           effort_1.reload
           expect(effort_1.ordered_split_times.first(3).map(&:military_time)).to eq(%w[06:00:00 13:44:00 13:47:00])
-          expect(RawTime.count).to eq(prior_raw_time_count + 0)
+          expect(RawTime.count).to eq(prior_raw_time_count)
         end
       end
     end

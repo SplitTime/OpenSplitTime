@@ -51,7 +51,7 @@ RSpec.describe "Manage start times", type: :system do
     updated_actual_start_time_text = "02/11/2017 07:01:23"
 
     visit page_path
-    expect(page).to have_text "Set Start Times in Bulk"
+    expect(page).to have_text "Bulk Set Start Times"
     turbo_frame = find("turbo-frame", id: "#{event.id}_#{actual_start_time.to_i}")
     edit_button = turbo_frame.find("a")
 
@@ -79,7 +79,7 @@ RSpec.describe "Manage start times", type: :system do
     updated_actual_start_time_text = "02/11/2017 07:01:23"
 
     visit page_path
-    expect(page).to have_text "Set Start Times in Bulk"
+    expect(page).to have_text "Bulk Set Start Times"
     turbo_frame = find("turbo-frame", id: "#{event.id}_#{actual_start_time.to_i}")
     edit_button = turbo_frame.find("a")
 

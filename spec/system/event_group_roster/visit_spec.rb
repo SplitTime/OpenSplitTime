@@ -66,7 +66,7 @@ RSpec.describe "visit an event group roster page and try various features" do
   def verify_links_present
     verify_content_present(event_group)
     all_efforts.each { |effort| verify_link_present(effort, :full_name) }
-    expect(page).to have_link("Set Start Times in Bulk", href: manage_start_times_event_group_path(event_group))
+    expect(page).to have_link("Bulk Set Start Times", href: manage_start_times_event_group_path(event_group))
   end
 
   def verify_single_link_present

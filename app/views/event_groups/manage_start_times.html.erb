@@ -1,9 +1,9 @@
 <% content_for :title do %>
-  <% "OpenSplitTime: Set Start Times in Bulk - #{@presenter.event_group.name}" %>
+  <% "OpenSplitTime: Bulk Set Start Times - #{@presenter.event_group.name}" %>
 <% end %>
 
 <%= render "shared/mode_widget", event_group: @presenter.event_group %>
-<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Set Start Times in Bulk"] %>
+<%= render "event_groups/setup_header", presenter: @presenter, breadcrumbs: ["Bulk Set Start Times"] %>
 
 <aside class="container ost-toolbar">
   <%= link_to "Back to entrants",

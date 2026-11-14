@@ -148,7 +148,7 @@ Sometimes you may need to start a single Entrant. You can do this from the Show 
 
 1. Click **Start Effort**
 
-If you need to start more than a few Entrants this way, use [Set Start Times in Bulk](#set-start-times-in-bulk)
+If you need to start more than a few Entrants this way, use [Bulk Set Start Times](#bulk-set-start-times)
 instead.
 
 ## Nothing to Start, but My Race Has Started
@@ -164,16 +164,16 @@ incorrectly&mdash;for example, in the wrong time zone&mdash;Entrants may not bec
 the actual start.
 
 In either case, you can start all of your unstarted Entrants immediately using
-[Set Start Times in Bulk](#set-start-times-in-bulk).
+[Bulk Set Start Times](#bulk-set-start-times).
 
-## Set Start Times in Bulk
+## Bulk Set Start Times
 
-The Set Start Times in Bulk view lets you start every unstarted Entrant in an Event at once, or change the start
+The Bulk Set Start Times view lets you start every unstarted Entrant in an Event at once, or change the start
 time for a whole group of Entrants who have already been started. You can reach it in either of two ways:
 
-- From the Roster (**Admin > Roster**), click **Set Start Times in Bulk**
+- From the Roster (**Admin > Roster**), click **Bulk Set Start Times**
 
-- From the Construction Entrants view, go to **Admin > Construction > Entrants > Actions > Set Start Times in Bulk**
+- From the Construction Entrants view, go to **Admin > Construction > Entrants > Actions > Bulk Set Start Times**
 
 In the view, you will see all Entrants listed for your Event Group, grouped by Event and by actual start time.
 Entrants who have not been started appear in a group labeled **Not started**.
@@ -182,7 +182,7 @@ Entrants who have not been started appear in a group labeled **Not started**.
 
 To start every unstarted Entrant in an Event at the same time, do the following:
 
-1. Go to the Set Start Times in Bulk view
+1. Go to the Bulk Set Start Times view
 
 1. Find the **Not started** group for the Event in question
 
@@ -205,7 +205,7 @@ start time at the exact scheduled start time of 07:00:00, and later you may dete
 was a few seconds later, at 07:00:04. To change the start time for all Entrants in a particular Event having an
 actual start time of 07:00:00, do the following:
 
-1. Go to the Set Start Times in Bulk view
+1. Go to the Bulk Set Start Times view
 
 1. Find the group of Entrants for the Event in question having an actual start time of 07:00:00 (the date will be
 shown as well)

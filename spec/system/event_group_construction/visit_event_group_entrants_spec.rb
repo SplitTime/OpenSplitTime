@@ -186,7 +186,7 @@ RSpec.describe "Visit an event group entrants page and try various features", :j
     expect(page).to have_link("Reconcile")
     expect(page).to have_link("Assign Bibs")
     expect(page).to have_link("Manage Photos")
-    expect(page).to have_link("Set Start Times in Bulk")
+    expect(page).to have_link("Bulk Set Start Times")
     expect(page).to have_link("Export")
     expect(page).to have_link("Delete all entrants")
   end

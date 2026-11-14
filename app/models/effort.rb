@@ -113,6 +113,23 @@ class Effort < ApplicationRecord
     names_locations_default_all(parser.word_component).bib_number_among(parser.number_component)
   end
 
+  # update_all skips PaperTrail, so versions are written directly to keep an audit trail
+  def self.bulk_set_checked_in(checked_in)
+    changes = where.not(checked_in: checked_in).or(where(checked_in: nil)).pluck(:id, :checked_in)
+    return if changes.empty?
+
+    now = Time.current
+    transaction do
+      where(id: changes.map(&:first)).update_all(checked_in: checked_in, updated_at: now)
+      PaperTrail::Version.insert_all(
+        changes.map do |id, old_value|
+          { item_type: name, item_id: id, event: "update", whodunnit: PaperTrail.request.whodunnit,
+            object_changes: { "checked_in" => [old_value, checked_in] }, created_at: now }
+        end,
+      )
+    end
+  end
+
   def to_s
     slug
   end

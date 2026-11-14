@@ -440,6 +440,37 @@ RSpec.describe Effort, type: :model do
     end
   end
 
+  describe ".bulk_set_checked_in" do
+    subject(:bulk_set) { PaperTrail.request(whodunnit: "42") { subject_efforts.bulk_set_checked_in(true) } }
+
+    let(:subject_efforts) { described_class.where(id: [unchanged_effort.id, changed_effort.id]) }
+    let(:unchanged_effort) { efforts(:rufa_2017_12h_not_started) }
+    let(:changed_effort) { efforts(:rufa_2017_24h_not_started) }
+
+    before do
+      unchanged_effort.update_columns(checked_in: true)
+      changed_effort.update_columns(checked_in: false)
+    end
+
+    it "updates efforts whose value changes" do
+      expect { bulk_set }.to change { changed_effort.reload.checked_in }.from(false).to(true)
+    end
+
+    it "does not touch efforts whose value is unchanged" do
+      expect { bulk_set }.not_to(change { unchanged_effort.reload.updated_at })
+    end
+
+    it "records a version for each changed effort" do
+      expect { bulk_set }.to change(PaperTrail::Version, :count).by(1)
+
+      version = PaperTrail::Version.last
+      expect(version.item).to eq(changed_effort)
+      expect(version.event).to eq("update")
+      expect(version.whodunnit).to eq("42")
+      expect(version.changeset["checked_in"]).to eq([false, true])
+    end
+  end
+
   describe "#ordered_split_times" do
     subject { effort.ordered_split_times(lap_split) }
 

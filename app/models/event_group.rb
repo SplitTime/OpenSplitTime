@@ -100,7 +100,7 @@ class EventGroup < ApplicationRecord
   end
 
   def home_time_zone_exists
-    return if time_zone_valid?(home_time_zone)
+    return if home_time_zone.blank? || time_zone_valid?(home_time_zone)
 
     errors.add(:home_time_zone, "must be the name of an ActiveSupport::TimeZone object")
   end

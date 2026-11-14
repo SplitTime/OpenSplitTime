@@ -27,7 +27,7 @@
               data-bs-placement="bottom"
               data-bs-original-title="Choose a timezone for your event. You will add a start time in the next step."><i class="fas fa-circle-question"></i></span>
         <%= form.collection_select(:home_time_zone, ActiveSupport::TimeZone.all, :name, :name,
-                                   { selected: presenter.event_group.home_time_zone || "Mountain Time (US & Canada)" },
+                                   { prompt: "Select a time zone" },
                                    { class: "form-control dropdown-select-field" }) %>
       </div>
 

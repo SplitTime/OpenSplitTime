@@ -5,18 +5,17 @@ RSpec.describe "Create an event group" do
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
-
-  before do
-    organization.update(created_by: owner.id)
-    organization.stewards << steward
-  end
-
   let(:event_group) { event_groups(:sum) }
   let(:organization) { event_group.organization }
   let(:new_event_group_name) { "Test Event Group" }
   let(:new_event_group_time_zone) { "Pacific Time (US & Canada)" }
   let(:updated_event_group_name) { "Updated Test Event Group" }
   let(:updated_event_group_time_zone) { "Eastern Time (US & Canada)" }
+
+  before do
+    organization.update(created_by: owner.id)
+    organization.stewards << steward
+  end
 
   scenario "The user is a visitor" do
     verify_unable_to_create_event_group
@@ -37,6 +36,22 @@ RSpec.describe "Create an event group" do
     create_and_verify_event_group
   end
 
+  scenario "The organization has no event groups" do
+    new_organization = create(:organization, owner: owner)
+    login_as owner, scope: :user
+
+    visit new_organization_event_group_path(new_organization)
+    expect(page).to have_field("event_group_home_time_zone", with: "")
+
+    fill_in "event_group_name", with: new_event_group_name
+    expect { click_button "Continue" }.not_to(change(EventGroup, :count))
+    expect(page).to have_content(:all, "Home time zone can't be blank")
+
+    select new_event_group_time_zone, from: "event_group_home_time_zone"
+    expect { click_button "Continue" }.to change(EventGroup, :count).by(1)
+    expect(EventGroup.last.home_time_zone).to eq(new_event_group_time_zone)
+  end
+
   private
 
   def verify_unable_to_create_event_group
@@ -52,6 +67,7 @@ RSpec.describe "Create an event group" do
     expect(page).to have_current_path(new_organization_event_group_path(organization))
     expect(page).to have_content("Your Event Group")
     expect(page).to have_button("Continue")
+    expect(page).to have_select("event_group_home_time_zone", selected: "Mountain Time (US & Canada)")
 
     click_button "Continue"
     expect(page).to have_content(:all, "Name can't be blank")
@@ -59,7 +75,7 @@ RSpec.describe "Create an event group" do
     fill_in "event_group_name", with: new_event_group_name
     select new_event_group_time_zone, from: "event_group_home_time_zone"
 
-    expect { click_button "Continue" }.to change { EventGroup.count }.by(1)
+    expect { click_button "Continue" }.to change(EventGroup, :count).by(1)
     new_event_group = EventGroup.last
     expect(new_event_group.name).to eq(new_event_group_name)
     expect(new_event_group.home_time_zone).to eq(new_event_group_time_zone)
@@ -71,11 +87,12 @@ RSpec.describe "Create an event group" do
 
     expect(page).to have_content(new_event_group.name)
     expect(page).to have_button("Continue")
+    expect(page).to have_select("event_group_home_time_zone", selected: new_event_group_time_zone)
 
     fill_in "event_group_name", with: updated_event_group_name
     select updated_event_group_time_zone, from: "event_group_home_time_zone"
 
-    expect { click_button "Continue" }.not_to change { EventGroup.count }
+    expect { click_button "Continue" }.not_to(change(EventGroup, :count))
     updated_event_group = EventGroup.last
     expect(updated_event_group.name).to eq(updated_event_group_name)
     expect(updated_event_group.home_time_zone).to eq(updated_event_group_time_zone)

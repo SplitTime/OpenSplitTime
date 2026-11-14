@@ -64,6 +64,10 @@ class Organization < ApplicationRecord
     end
   end
 
+  def default_home_time_zone
+    event_groups.order(created_at: :desc, id: :desc).pick(:home_time_zone)
+  end
+
   def owner_full_name
     owner&.full_name
   end

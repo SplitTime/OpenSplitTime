@@ -98,6 +98,29 @@ RSpec.describe Organization, type: :model do
     end
   end
 
+  describe "#default_home_time_zone" do
+    subject(:default_zone) { organization.default_home_time_zone }
+
+    let(:organization) { organizations(:hardrock) }
+
+    # Fixture groups share a created_at, so give them a distinct order
+    before do
+      event_groups(:hardrock_2014).update_columns(created_at: 3.days.ago)
+      event_groups(:hardrock_2016).update_columns(created_at: 2.days.ago)
+      event_groups(:hardrock_2015).update_columns(created_at: 1.day.ago, home_time_zone: "Eastern Time (US & Canada)")
+    end
+
+    it "returns the time zone of the most recently created event group" do
+      expect(default_zone).to eq("Eastern Time (US & Canada)")
+    end
+
+    context "when the organization has no event groups" do
+      let(:organization) { create(:organization) }
+
+      it { is_expected.to be_nil }
+    end
+  end
+
   describe ".visible_or_authorized_for" do
     subject(:found) { described_class.visible_or_authorized_for(user).friendly.find(historical_slug) }
 

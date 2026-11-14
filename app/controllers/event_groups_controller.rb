@@ -31,7 +31,7 @@ class EventGroupsController < ApplicationController
   def new
     organization = Organization.friendly.find(params[:organization_id])
 
-    event_group = organization.event_groups.new
+    event_group = organization.event_groups.new(home_time_zone: organization.default_home_time_zone)
     authorize event_group
 
     @presenter = ::EventGroupSetupPresenter.new(event_group, view_context)

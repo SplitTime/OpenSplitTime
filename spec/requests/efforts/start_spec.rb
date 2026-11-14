@@ -8,7 +8,6 @@ RSpec.describe "Efforts start" do
   let(:start_time) { effort.starting_split_time.absolute_time }
 
   before { login_as admin_user, scope: :user }
-  after { Warden.test_reset! }
 
   describe "PATCH start" do
     context "when the effort has later times but no start time" do

@@ -176,6 +176,7 @@ class EffortsController < ApplicationController
 
     start_time = params[:actual_start_time]
     response = ::Interactors::StartEfforts.perform!(efforts: [@effort], start_time: start_time)
+    response = response.merge(::Interactors::UpdateEffortsStatus.perform!(effort_with_splits)) if response.successful?
     set_flash_message(response)
     @effort.reload
 

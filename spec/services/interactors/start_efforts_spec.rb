@@ -136,6 +136,19 @@ RSpec.describe Interactors::StartEfforts do
             expect(split_times).to all be_nil
           end
         end
+
+        context "when start_time is shaped like a datetime but has an out-of-range component" do
+          let(:start_time) { "111/14/2026 06:22:00" }
+
+          it "returns an unsuccessful response without creating split_times" do
+            response = subject.perform!
+
+            expect(response).not_to be_successful
+            subject_efforts.each(&:reload)
+            split_times = subject_efforts.map(&:starting_split_time)
+            expect(split_times).to all be_nil
+          end
+        end
       end
 
       context "when one effort has an existing starting split time" do

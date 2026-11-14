@@ -130,8 +130,15 @@ module Interactors
       elsif start_time.acts_like?(:time)
         start_time
       elsif start_time.is_a?(String)
-        start_time.in_time_zone(time_zone)
+        parsed_start_time
       end
+    end
+
+    # Well-formed but out-of-range strings like "111/14/2026" raise rather than return nil
+    def parsed_start_time
+      start_time.in_time_zone(time_zone)
+    rescue ArgumentError
+      nil
     end
 
     def time_zone
@@ -173,7 +180,7 @@ module Interactors
     end
 
     def invalid_start_time?
-      start_time.is_a?(String) && start_time.present? && start_time.in_time_zone(time_zone).nil?
+      start_time.is_a?(String) && start_time.present? && parsed_start_time.nil?
     end
   end
 end

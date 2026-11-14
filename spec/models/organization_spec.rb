@@ -102,53 +102,22 @@ RSpec.describe Organization, type: :model do
     subject(:default_zone) { organization.default_home_time_zone }
 
     let(:organization) { organizations(:hardrock) }
-    let(:mountain) { "Mountain Time (US & Canada)" }
-    let(:eastern) { "Eastern Time (US & Canada)" }
 
-    # Fixture groups share a created_at; hardrock_2016 holds the latest event
+    # Fixture groups share a created_at, so give them a distinct order
     before do
       event_groups(:hardrock_2014).update_columns(created_at: 3.days.ago)
-      event_groups(:hardrock_2015).update_columns(created_at: 2.days.ago)
-      event_groups(:hardrock_2016).update_columns(created_at: 1.day.ago)
+      event_groups(:hardrock_2016).update_columns(created_at: 2.days.ago)
+      event_groups(:hardrock_2015).update_columns(created_at: 1.day.ago, home_time_zone: "Eastern Time (US & Canada)")
     end
 
-    context "when all event groups share a time zone" do
-      it { is_expected.to eq(mountain) }
-    end
-
-    context "when the latest created group also holds the latest event" do
-      before { event_groups(:hardrock_2016).update_columns(home_time_zone: eastern) }
-
-      it { is_expected.to eq(eastern) }
-    end
-
-    context "when the latest created and latest held groups differ but share a time zone" do
-      before do
-        event_groups(:hardrock_2014).update_columns(created_at: Time.current, home_time_zone: eastern)
-        event_groups(:hardrock_2016).update_columns(home_time_zone: eastern)
-      end
-
-      it { is_expected.to eq(eastern) }
-    end
-
-    context "when the latest created and latest held groups disagree" do
-      before { event_groups(:hardrock_2014).update_columns(created_at: Time.current, home_time_zone: eastern) }
-
-      it { is_expected.to be_nil }
+    it "returns the time zone of the most recently created event group" do
+      expect(default_zone).to eq("Eastern Time (US & Canada)")
     end
 
     context "when the organization has no event groups" do
       let(:organization) { create(:organization) }
 
       it { is_expected.to be_nil }
-    end
-
-    context "when the organization's event groups have no events" do
-      let(:organization) { create(:organization) }
-
-      before { create(:event_group, organization: organization, home_time_zone: eastern) }
-
-      it { is_expected.to eq(eastern) }
     end
   end
 

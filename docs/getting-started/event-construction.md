@@ -25,6 +25,8 @@ If you already have an Organization (for example, from a prior year's event), op
 
 From the Organization page, click **New event group**. This brings you to the **Event Construction** pages. Give the group a name (for example, "2026 Sufferfest") and a date.
 
+Choose the time zone in which your event takes place. A new Event Group defaults to the time zone of your Organization's most recently created Event Group; for an Organization's first Event Group, you'll need to choose one. **Check the time zone before you enter any start times or import entrants.** OpenSplitTime interprets times in the Event Group's time zone at the moment you enter them, and changing the time zone later does not move times you've already entered.
+
 Until you make it public, an Event Group — and everything inside it — is visible only to you and any Stewards you've invited. You can experiment freely.
 
 ## Add an Event

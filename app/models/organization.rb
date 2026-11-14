@@ -64,6 +64,16 @@ class Organization < ApplicationRecord
     end
   end
 
+  def default_home_time_zone
+    latest_created = event_groups.order(created_at: :desc, id: :desc).pick("event_groups.home_time_zone")
+    latest_held = event_groups.joins(:events)
+                              .order(Event.arel_table[:scheduled_start_time].desc)
+                              .pick("event_groups.home_time_zone")
+    zones = [latest_created, latest_held].compact.uniq
+
+    zones.first if zones.one?
+  end
+
   def owner_full_name
     owner&.full_name
   end

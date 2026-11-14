@@ -61,16 +61,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
     t.string "event"
     t.string "event_type"
     t.string "ip"
-    t.string "provider_event_id"
-    t.string "provider_message_id"
     t.string "reason"
     t.string "response"
+    t.string "provider_event_id"
+    t.string "provider_message_id"
     t.string "smtp_id"
     t.string "status"
     t.datetime "timestamp"
-    t.string "type", null: false
     t.datetime "updated_at", null: false
     t.string "useragent"
+    t.string "type", null: false
   end
 
   create_table "analytics_file_downloads", force: :cascade do |t|
@@ -87,14 +87,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   end
 
   create_table "analytics_sms_inbound_messages", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "destination_number", null: false
-    t.string "inbound_message_id"
-    t.string "keyword"
-    t.string "message_body", null: false
     t.string "origination_number", null: false
+    t.string "destination_number", null: false
+    t.string "message_body", null: false
     t.datetime "received_at", null: false
     t.string "sns_message_id", null: false
+    t.string "inbound_message_id"
+    t.string "keyword"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["origination_number"], name: "index_analytics_sms_inbound_messages_on_origination_number"
     t.index ["received_at"], name: "index_analytics_sms_inbound_messages_on_received_at"
@@ -102,16 +102,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   end
 
   create_table "async_tasks", force: :cascade do |t|
-    t.string "context_key"
-    t.datetime "created_at", null: false
-    t.string "description"
-    t.text "error_message"
-    t.string "job_class", null: false
-    t.bigint "parent_id", null: false
     t.string "parent_type", null: false
-    t.integer "status", default: 0, null: false
-    t.datetime "updated_at", null: false
+    t.bigint "parent_id", null: false
     t.bigint "user_id"
+    t.string "job_class", null: false
+    t.string "context_key"
+    t.string "description"
+    t.integer "status", default: 0, null: false
+    t.text "error_message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["parent_type", "parent_id", "job_class", "context_key"], name: "index_async_tasks_on_parent_and_job_class_and_context_key"
     t.index ["user_id"], name: "index_async_tasks_on_user_id"
   end
@@ -120,11 +120,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
     t.datetime "created_at", null: false
     t.bigint "destination_id", null: false
     t.string "destination_type", null: false
-    t.jsonb "field_mappings", default: [], null: false
     t.string "service_identifier", null: false
     t.string "source_id", null: false
     t.string "source_type", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "field_mappings", default: [], null: false
     t.index ["destination_type", "destination_id"], name: "index_connections_on_destination"
     t.index ["service_identifier", "source_type", "source_id", "destination_type", "destination_id"], name: "index_connections_on_service_source_and_destination", unique: true
   end
@@ -173,10 +173,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   end
 
   create_table "crew_passages", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.integer "effort_id", null: false
     t.bigint "gating_location_id", null: false
+    t.integer "effort_id", null: false
     t.datetime "passed_at", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["effort_id"], name: "index_crew_passages_on_effort_id"
     t.index ["gating_location_id", "effort_id"], name: "index_crew_passages_on_gating_location_id_and_effort_id", unique: true
@@ -344,14 +344,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   end
 
   create_table "gating_location_events", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.integer "default_travel_buffer", default: 30, null: false
+    t.bigint "gating_location_id", null: false
     t.integer "event_id", null: false
     t.integer "gating_aid_station_id", null: false
-    t.bigint "gating_location_id", null: false
     t.integer "target_aid_station_id", null: false
-    t.boolean "update_release_times", default: true, null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "default_travel_buffer", default: 30, null: false
+    t.boolean "update_release_times", default: true, null: false
     t.index ["event_id"], name: "index_gating_location_events_on_event_id"
     t.index ["gating_aid_station_id"], name: "index_gating_location_events_on_gating_aid_station_id"
     t.index ["gating_location_id", "event_id"], name: "idx_on_gating_location_id_event_id_587c564f97", unique: true
@@ -360,9 +360,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   end
 
   create_table "gating_locations", force: :cascade do |t|
-    t.datetime "created_at", null: false
     t.integer "event_group_id", null: false
     t.string "name", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_group_id", "name"], name: "index_gating_locations_on_event_group_id_and_name", unique: true
     t.index ["event_group_id"], name: "index_gating_locations_on_event_group_id"
@@ -533,12 +533,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   end
 
   create_table "monetary_donations", force: :cascade do |t|
-    t.decimal "amount", precision: 10, scale: 2, null: false
-    t.datetime "created_at", null: false
-    t.text "note"
     t.bigint "organization_id", null: false
     t.date "received_on", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
     t.string "source", null: false
+    t.text "note"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id", "received_on"], name: "index_monetary_donations_on_organization_id_and_received_on"
     t.index ["organization_id"], name: "index_monetary_donations_on_organization_id"
@@ -565,9 +565,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
     t.text "description"
     t.date "good_standing_through"
     t.string "name", limit: 64, null: false
-    t.boolean "non_profit", default: false, null: false
     t.string "slug", null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "non_profit", default: false, null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
   end
 
@@ -591,15 +591,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
     t.string "email"
     t.string "first_name", limit: 32, null: false
     t.integer "gender", null: false
-    t.boolean "hide_age", default: false, null: false
     t.string "last_name", limit: 64, null: false
-    t.boolean "obscure_name", default: false, null: false
     t.string "phone"
     t.string "slug", null: false
     t.string "state_code"
     t.string "state_name"
     t.datetime "updated_at", precision: nil, null: false
     t.integer "user_id"
+    t.boolean "hide_age", default: false, null: false
+    t.boolean "obscure_name", default: false, null: false
     t.index ["slug"], name: "index_people_on_slug", unique: true
     t.index ["user_id"], name: "index_people_on_user_id", unique: true
   end
@@ -730,23 +730,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
   end
 
   create_table "solid_cache_dashboard_events", force: :cascade do |t|
-    t.integer "byte_size"
-    t.datetime "created_at", null: false
-    t.float "duration"
     t.string "event_type", null: false
     t.bigint "key_hash", null: false
     t.string "key_string"
+    t.integer "byte_size"
+    t.float "duration"
+    t.datetime "created_at", null: false
     t.index ["created_at"], name: "index_solid_cache_dashboard_events_on_created_at"
     t.index ["event_type"], name: "index_solid_cache_dashboard_events_on_event_type"
     t.index ["key_hash"], name: "index_solid_cache_dashboard_events_on_key_hash"
   end
 
   create_table "solid_cache_entries", force: :cascade do |t|
-    t.integer "byte_size", null: false
-    t.datetime "created_at", null: false
     t.binary "key", null: false
-    t.bigint "key_hash", null: false
     t.binary "value", null: false
+    t.datetime "created_at", null: false
+    t.bigint "key_hash", null: false
+    t.integer "byte_size", null: false
     t.index ["byte_size"], name: "index_solid_cache_entries_on_byte_size"
     t.index ["key_hash", "byte_size"], name: "index_solid_cache_entries_on_key_hash_and_byte_size"
     t.index ["key_hash"], name: "index_solid_cache_entries_on_key_hash", unique: true
@@ -883,10 +883,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
     t.boolean "pacer"
     t.string "remarks"
     t.integer "split_id", null: false
-    t.string "status_reason"
     t.boolean "stopped_here", default: false
     t.integer "sub_split_bitkey", null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "status_reason"
     t.index ["effort_id", "lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_effort_id_and_time_point", unique: true
     t.index ["effort_id"], name: "index_split_times_on_effort_id"
     t.index ["lap", "split_id", "sub_split_bitkey"], name: "index_split_times_on_time_point"
@@ -972,10 +972,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_162536) do
     t.integer "role"
     t.integer "sign_in_count", default: 0, null: false
     t.string "slug", null: false
-    t.datetime "sms_carrier_opted_out_at"
     t.string "uid"
     t.string "unconfirmed_email"
     t.datetime "updated_at", precision: nil, null: false
+    t.datetime "sms_carrier_opted_out_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

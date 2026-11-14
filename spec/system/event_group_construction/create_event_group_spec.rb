@@ -87,6 +87,7 @@ RSpec.describe "Create an event group" do
 
     expect(page).to have_content(new_event_group.name)
     expect(page).to have_button("Continue")
+    expect(page).to have_select("event_group_home_time_zone", selected: new_event_group_time_zone)
 
     fill_in "event_group_name", with: updated_event_group_name
     select updated_event_group_time_zone, from: "event_group_home_time_zone"

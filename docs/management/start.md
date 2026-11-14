@@ -148,28 +148,66 @@ Sometimes you may need to start a single Entrant. You can do this from the Show 
 
 1. Click **Start Effort**
 
-## Changing Start Times
+If you need to start more than a few Entrants this way, use [Set Start Times in Bulk](#set-start-times-in-bulk)
+instead.
 
-Sometimes you may start entrants with the wrong start time. For example, you may have started entrants with a
+## Nothing to Start, but My Race Has Started
+
+If your race is underway but the Roster's green button still says **Nothing to Start**, one of the following is
+usually the cause:
+
+1. **Your Entrants are not checked in.** Only checked-in Entrants are eligible to start using the green button.
+
+1. **Your Entrants' scheduled start times are wrong or still in the future.** An Entrant becomes eligible to
+start only after the Entrant's scheduled start time has passed. If the scheduled start times were entered
+incorrectly&mdash;for example, in the wrong time zone&mdash;Entrants may not become eligible until hours after
+the actual start.
+
+In either case, you can start all of your unstarted Entrants immediately using
+[Set Start Times in Bulk](#set-start-times-in-bulk).
+
+## Set Start Times in Bulk
+
+The Set Start Times in Bulk view lets you start every unstarted Entrant in an Event at once, or change the start
+time for a whole group of Entrants who have already been started. You can reach it in either of two ways:
+
+- From the Roster (**Admin > Roster**), click **Set Start Times in Bulk**
+
+- From the Construction Entrants view, go to **Admin > Construction > Entrants > Actions > Set Start Times in Bulk**
+
+In the view, you will see all Entrants listed for your Event Group, grouped by Event and by actual start time.
+Entrants who have not been started appear in a group labeled **Not started**.
+
+### Starting All Unstarted Entrants
+
+To start every unstarted Entrant in an Event at the same time, do the following:
+
+1. Go to the Set Start Times in Bulk view
+
+1. Find the **Not started** group for the Event in question
+
+1. In the header for that group, click the blue pencil icon
+
+1. Enter the actual start time (including the date)
+
+1. Click the submit button (the button with the check mark)
+
+All Entrants in the **Not started** group for that Event will be started at the time you entered.
+
+**This process starts every Entrant in the group, whether or not the Entrant is checked in.** If some Entrants
+did not show up for your race, you will need to un-start them afterward by clicking the blue **Started** button
+for each of those Entrants in the Roster.
+
+### Changing Start Times
+
+Sometimes you may start Entrants with the wrong start time. For example, you may have started Entrants with a
 start time at the exact scheduled start time of 07:00:00, and later you may determine that the actual start time
-was a few seconds later, at 07:00:04.
-**You can change start times in bulk using the Manage Start Times view.**
+was a few seconds later, at 07:00:04. To change the start time for all Entrants in a particular Event having an
+actual start time of 07:00:00, do the following:
 
-## Manage Start Times View
+1. Go to the Set Start Times in Bulk view
 
-You can reach the Manage Start Times View by going to **Admin > Construction > Entrants > Actions > Manage
-Start Times**.
-
-In the view, you will see all efforts listed for your event group. The efforts will be grouped by event and by
-actual start time. This view allows you to change, in bulk, start times for all efforts having a given actual
-start time.
-
-For example, assume you want to change all efforts in a particular event having an actual start time
-of 07:00:00 to 07:00:04. Do this as follows:
-
-1. Go to the Manage Start Times view
-
-1. Find the group of efforts for the event in question having an actual start time of 07:00:00 (the date will be
+1. Find the group of Entrants for the Event in question having an actual start time of 07:00:00 (the date will be
 shown as well)
 
 1. In the header for that group, click the blue pencil icon
@@ -178,4 +216,4 @@ shown as well)
 
 1. Click the submit button (the button with the check mark)
 
-The actual start time for all efforts in that group will be updated to reflect the corrected time.
+The actual start time for all Entrants in that group will be updated to reflect the corrected time.

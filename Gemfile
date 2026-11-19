@@ -1,4 +1,4 @@
-ruby "4.0.6"
+ruby "4.0.10"
 
 source "https://rubygems.org"
 

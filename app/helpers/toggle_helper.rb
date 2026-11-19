@@ -126,7 +126,7 @@ module ToggleHelper
         bs_original_title: "Check out all",
       },
     }
-    button_to(url, html_options) { fa_icon("square", text: "All", type: :regular) }
+    button_to(url, html_options) { fa_icon("square", text: "None", type: :regular) }
   end
 
   def link_to_subscription(subscribable, protocol)

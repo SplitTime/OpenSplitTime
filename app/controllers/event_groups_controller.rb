@@ -410,8 +410,9 @@ class EventGroupsController < ApplicationController
   def update_all_efforts
     authorize @event_group
 
-    attributes = params.expect(efforts: [:checked_in]).to_hash
-    @event_group.efforts.update_all(attributes)
+    checked_in = params.expect(efforts: [:checked_in])[:checked_in].to_boolean
+    efforts = checked_in ? @event_group.efforts : @event_group.efforts.unstarted
+    efforts.bulk_set_checked_in(checked_in)
 
     redirect_to roster_event_group_path(@event_group)
   end

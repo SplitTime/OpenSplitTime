@@ -1,14 +1,13 @@
 require "rails_helper"
 
-RSpec.describe "manage check-ins from the event group roster page", js: true do
+RSpec.describe "manage check-ins from the event group roster page", :js do
   include ActionView::RecordIdentifier
 
   let(:steward) { users(:fifth_user) }
-
-  before { organization.stewards << steward }
-
   let(:event_group) { event_groups(:rufa_2017) }
   let(:organization) { event_group.organization }
+
+  before { organization.stewards << steward }
 
   context "when the entrant is not started" do
     let(:effort) { efforts(:rufa_2017_12h_not_started) }
@@ -46,7 +45,7 @@ RSpec.describe "manage check-ins from the event group roster page", js: true do
     end
   end
 
-  context "bulk check in and out" do
+  context "when checking in or out in bulk" do
     let(:effort_1) do
       efforts(:rufa_2017_12h_not_started)
     end
@@ -73,18 +72,18 @@ RSpec.describe "manage check-ins from the event group roster page", js: true do
     end
 
     scenario "check out all" do
-      all_efforts.each { |effort| effort.update(checked_in: true) }
+      started_effort = efforts(:rufa_2017_12h_start_only)
+      [*all_efforts, started_effort].each { |effort| effort.update(checked_in: true) }
 
       login_as steward, scope: :user
       visit_page
 
       button = page.find("#check_out_all")
-      expect do
-        page.accept_confirm do
-          button.click
-        end
-        wait_for_spinner_to_stop
-      end.to change { effort_1.reload.checked_in }.from(true).to(false).and change { effort_2.reload.checked_in }.from(true).to(false)
+      page.accept_confirm { button.click }
+      wait_for_spinner_to_stop
+
+      expect(all_efforts.map { |effort| effort.reload.checked_in }).to all(be(false))
+      expect(started_effort.reload.checked_in).to be(true)
     end
   end
 

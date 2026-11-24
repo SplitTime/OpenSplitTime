@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <%= form_with(model: import_job, local: true, html: { class: "form-horizontal", data: { turbo: false } }) do |f| %>
+    <%= form_with(model: import_job, local: true, html: { class: "form-horizontal", data: { turbo: false, controller: "form-disable-submit" } }) do |f| %>
       <div class="row text-center">
 
         <div class="mb-3 text-center">

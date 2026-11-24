@@ -30,17 +30,23 @@ class ImportJobsController < ApplicationController
 
     authorize @import_job
 
+    unless @import_job.files.attached?
+      flash.now[:danger] = "No file was uploaded. The upload may have failed; please try again."
+      render "new", status: :unprocessable_content
+      return
+    end
+
     begin
       if @import_job.save
         ::ImportAsyncJob.perform_later(@import_job.id)
         flash[:success] = "Import in progress."
         redirect_to import_jobs_path
       else
-        flash[:danger] = "Unable to create import job: #{@import_job.errors.full_messages.join(', ')}"
+        flash.now[:danger] = "Unable to create import job: #{@import_job.errors.full_messages.join(', ')}"
         render "new", status: :unprocessable_content
       end
     rescue Aws::Errors::NoSuchEndpointError => e
-      flash[:danger] = "Unable to create import job: #{e}"
+      flash.now[:danger] = "Unable to create import job: #{e}"
       @import_job.failed!
       render "new", status: :unprocessable_content
     end
@@ -63,7 +69,7 @@ class ImportJobsController < ApplicationController
         parent = params[:parent_type].constantize.find(params[:parent_id])
         import_job_format = params[:import_job_format].to_sym
         csv_template_headers = ::Etl::CsvTemplates.headers(import_job_format, parent)
-        csv_template = csv_template_headers.join(",") + "\n"
+        csv_template = "#{csv_template_headers.join(',')}\n"
         filename_components = [import_job_format, parent.class.name.underscore, parent.id, "template.csv"]
         filename = filename_components.join("_")
 

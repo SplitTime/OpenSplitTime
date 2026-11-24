@@ -1,18 +1,17 @@
 require "rails_helper"
 
-RSpec.describe "Import entrants from the event group setup view", type: :system, js: true do
+RSpec.describe "Import entrants from the event group setup view", :js, type: :system do
   let(:user) { users(:third_user) }
   let(:owner) { users(:fourth_user) }
   let(:steward) { users(:fifth_user) }
   let(:admin) { users(:admin_user) }
+  let(:event_group) { event_groups(:sum) }
+  let(:organization) { event_group.organization }
 
   before do
     organization.update(created_by: owner.id)
     organization.stewards << steward
   end
-
-  let(:event_group) { event_groups(:sum) }
-  let(:organization) { event_group.organization }
 
   scenario "the user is a visitor" do
     visit_page
@@ -66,6 +65,7 @@ RSpec.describe "Import entrants from the event group setup view", type: :system,
   end
 
   def validate_import_job_created
+    expect(page).to have_button("Import", disabled: true)
     upload_to_dropzone("test_efforts_utf_8.csv")
     expect do
       click_button "Import"

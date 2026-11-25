@@ -222,7 +222,7 @@ jobs:
           CI: true
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          RUBYOPT: -W:deprecated
+          RUBYOPT: -W:deprecated --enable-frozen-string-literal
         run: bin/rspec ${{ matrix.rspec_args }}
 
       - name: Save capybara screenshots as artifact

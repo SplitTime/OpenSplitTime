@@ -1,7 +1,7 @@
 module Live
   module GatingLocations
     class CrewPassagesController < Live::BaseController
-      include BuildsGatingDisplay
+      include BuildsCrewAccessBoard
 
       before_action :set_event_group
       before_action :set_gating_location
@@ -25,8 +25,8 @@ module Live
       private
 
       def render_event_frame(effort)
-        @display = build_gating_display(@gating_location)
-        @gating_location_event = @gating_location.gating_location_events.find_by(event_id: effort.event_id)
+        gating_location_event = @gating_location.gating_location_events.find_by(event_id: effort.event_id)
+        @board = build_crew_access_board(gating_location_event)
         render :update
       end
 

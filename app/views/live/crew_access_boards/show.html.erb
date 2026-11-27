@@ -1,0 +1,35 @@
+<% content_for :title do %>
+  <% "OpenSplitTime: Crew Access - #{@board.name} - #{@board.event.guaranteed_short_name}" %>
+<% end %>
+
+<header class="ost-header">
+  <div class="container">
+    <div class="ost-heading row">
+      <div class="col">
+        <div class="ost-title">
+          <h1 class="fw-bold">Crew Access: <%= @board.name %></h1>
+          <ul class="breadcrumb breadcrumb-ost">
+            <li class="breadcrumb-item"><%= link_to "Organizations", organizations_path %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.organization.name, organization_path(@presenter.organization) %></li>
+            <li class="breadcrumb-item"><%= link_to @presenter.event_group.name, event_group_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item"><%= link_to "Crew Access", live_event_group_gating_locations_path(@presenter.event_group) %></li>
+            <li class="breadcrumb-item active"><%= @board.name %>: <%= @board.event.guaranteed_short_name %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <%= render "events/view_buttons", view_object: @presenter %>
+  </div>
+</header>
+
+<article class="ost-article container">
+  <div class="card my-3">
+    <div class="card-header">
+      <h5 class="fw-bold mb-2"><%= @board.event.guaranteed_short_name %></h5>
+      <%= render "live/crew_access_boards/controls", board: @board %>
+    </div>
+    <div class="card-body">
+      <%= render "live/crew_access_boards/event_rows", board: @board %>
+    </div>
+  </div>
+</article>

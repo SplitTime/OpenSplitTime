@@ -78,25 +78,32 @@ RSpec.describe "Live::GatingLocations" do
     end
 
     describe "GET show" do
-      before { allow(Projection).to receive(:execute_query).and_return([]) }
+      context "when the location has more than one gated event" do
+        it "renders a chooser linking each event's board" do
+          get live_event_group_gating_location_path(event_group, gating_location)
 
-      it "renders the per-event controls (buffer, sort, find runner, hide filters)" do
-        get live_event_group_gating_location_path(event_group, gating_location)
-
-        expect(response).to have_http_status(:ok)
-        expect(response.body).to include("Buffer (min)")
-        expect(response.body).to include("Sort by")
-        expect(response.body).to include("Find runner")
-        expect(response.body).to include("Hide departed")
-        expect(response.body).to include("Hide passed")
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include(
+            live_event_group_crew_access_board_path(event_group, gating_location_events(:sum_bandera_gate_100k)),
+          )
+          expect(response.body).to include(
+            live_event_group_crew_access_board_path(event_group, gating_location_events(:sum_bandera_gate_55k)),
+          )
+        end
       end
 
-      it "accepts the sort and filter params without error" do
-        get live_event_group_gating_location_path(event_group, gating_location),
-            params: { gating_location_event_id: gating_location_events(:sum_bandera_gate_100k).id,
-                      sort: "release", hide_departed: "1", hide_passed: "1", search: "999" }
+      context "when the location has exactly one gated event" do
+        let(:gating_location) { gating_locations(:sum_molas_gate) }
+        let(:gle) { gating_location_events(:sum_molas_gate_100k) }
 
-        expect(response).to have_http_status(:ok)
+        it "redirects to that event's board, preserving control params" do
+          get live_event_group_gating_location_path(event_group, gating_location),
+              params: { sort: "bib", hide_passed: "1" }
+
+          expect(response).to redirect_to(
+            live_event_group_crew_access_board_path(event_group, gle, sort: "bib", hide_passed: "1"),
+          )
+        end
       end
     end
 

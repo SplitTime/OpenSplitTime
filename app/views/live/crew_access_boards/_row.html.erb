@@ -1,4 +1,4 @@
-<%# locals: (row:, controls:, gating_location_event:, display:) -%>
+<%# locals: (row:, board:) -%>
 
 <tr class="<%= "text-body-secondary" if row.crew_passed? %>">
   <td><%= row.bib_number %></td>
@@ -32,10 +32,10 @@
     <% elsif row.reached_target? %>
       <span class="badge bg-secondary">Arrived</span>
     <% elsif row.predicted_target_arrival %>
-      <% if row.released?(controls.buffer) %>
+      <% if row.released?(board.controls.buffer) %>
         <span class="badge bg-success">Now</span>
       <% else %>
-        <%= day_time_military_format(row.release_time_local(controls.buffer)) %>
+        <%= day_time_military_format(row.release_time_local(board.controls.buffer)) %>
       <% end %>
     <% else %>
       <span class="text-body-secondary">Insufficient data</span>
@@ -43,6 +43,6 @@
   </td>
 
   <td class="text-center">
-    <%= button_to_toggle_crew_passage(row: row, gating_location_event: gating_location_event, display: display, controls: controls) %>
+    <%= button_to_toggle_crew_passage(row: row, board: board) %>
   </td>
 </tr>
